@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/gryText"
+    app:cardElevation="@dimen/_3sdp"
+    app:cardCornerRadius="@dimen/_2sdp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lLayout"
+        android:paddingStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey_heading"
+            android:textStyle="bold"
+            android:background="@color/gryText"
+            android:textSize="@dimen/_12sdp"
+            android:id="@+id/txtInvestigation"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:background="@color/gryText"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:text="@string/colon"
+            android:textSize="@dimen/_12sdp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:background="@color/gryText"
+            android:textSize="@dimen/_12sdp"
+            android:id="@+id/txtInvestigationValue"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

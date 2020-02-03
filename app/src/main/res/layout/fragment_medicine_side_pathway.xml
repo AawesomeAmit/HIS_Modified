@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Fragment.MedicineSidePathway">
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:textColor="@color/blue_text"
+        android:text="@string/medication_side_effect" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioGroup
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:id="@+id/rdGrp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rdCurrent"
+                android:checked="true"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:text="@string/current"/>
+            <View
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:background="@color/viewlinecolor" />
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/all"
+                android:id="@+id/rdAll"
+                android:layout_marginStart="@dimen/_10sdp"/>
+        </RadioGroup>
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/rectangle_edittext_transparent"
+            android:ellipsize="end"
+            android:hint="@string/search_symptom"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="@dimen/_5sdp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:importantForAutofill="no" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMedSidePathway"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/inner_medicine_side_pathway"/>
+</LinearLayout>

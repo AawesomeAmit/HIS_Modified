@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activity.ShowPatientAnalyzingGraph">
+    <TextView
+        android:layout_width="match_parent"
+        android:textColor="@color/blue_text"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="@string/patient_analyzing_graph"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="bold"
+        android:layout_height="@dimen/_30sdp"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/gryText"
+        app:cardElevation="@dimen/_3sdp"
+        app:cardCornerRadius="@dimen/_2sdp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:layout_gravity="center"
+            android:background="@color/gryText"
+            android:textSize="@dimen/_12sdp"
+            android:id="@+id/txtDateTime"/>
+    </androidx.cardview.widget.CardView>
+    <com.highsoft.highcharts.core.HIChartView
+        android:id="@+id/hcView"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_height="@dimen/_400sdp" />
+</LinearLayout>

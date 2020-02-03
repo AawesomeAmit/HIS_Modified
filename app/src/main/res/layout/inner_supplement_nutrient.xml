@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:paddingStart="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_2sdp"
+        android:background="@color/white">
+        <TextView
+            android:id="@+id/txtSup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="left"
+            android:gravity="start"
+            android:text="@string/supplement"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txtMi"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txtMi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="left"
+            android:gravity="start"
+            android:text="@string/mineral"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/txtSup"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txtSupplement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/txtMineral"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtSup" />
+
+        <TextView
+            android:id="@+id/txtMineral"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/txtSupplement"
+            app:layout_constraintTop_toBottomOf="@+id/txtMi" />
+
+        <TextView
+            android:id="@+id/txtAch1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/achieved"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/txtRda1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtSupplement" />
+
+        <TextView
+            android:id="@+id/txtRda1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/rda"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/txtRcmnded1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/txtAch1"
+            app:layout_constraintTop_toBottomOf="@+id/txtSupplement" />
+
+        <TextView
+            android:id="@+id/txtRcmnded1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/recommended"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/txtRda1"
+            app:layout_constraintTop_toBottomOf="@+id/txtMineral" />
+
+        <TextView
+            android:id="@+id/txtRcmnded"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/txtRda1"
+            app:layout_constraintTop_toBottomOf="@+id/txtAch1" />
+
+        <TextView
+            android:id="@+id/txtRda"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/txtRcmnded1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/txtAch1"
+            app:layout_constraintTop_toBottomOf="@+id/txtAch1" />
+
+        <TextView
+            android:id="@+id/txtAch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/txtRda1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtAch1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@color/gryText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtAch" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

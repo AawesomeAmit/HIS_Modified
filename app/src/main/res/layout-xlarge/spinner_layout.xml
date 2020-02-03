@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:id="@+id/tvHintCompletion"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/_2sdp"
+    android:paddingEnd="@dimen/_2sdp"
+    android:paddingTop="@dimen/_1sdp"
+    android:paddingBottom="@dimen/_1sdp"
+    android:textColor="@color/black"
+    android:textSize="@dimen/_8sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android"/>

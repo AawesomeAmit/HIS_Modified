@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6F6F6"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context=".Fragment.AddMedication">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlRecordDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="@string/record_date"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@id/date"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/_10sdp" />
+
+            <!--<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_medicine"
+                android:paddingTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:textSize="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:textColor="@color/white"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:gravity="end"
+                android:background="@drawable/btn_medication"
+                android:id="@+id/btnAdd" />-->
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@color/viewlinecolor" />
+
+
+        <LinearLayout
+            android:id="@+id/rlConsultantDiagnosis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvConsultantDiagnosisHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:text="Consultant Diagnosis:"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvConsultantDiagnosisHead"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@color/white">
+
+                <AutoCompleteTextView
+                    android:id="@+id/etConsultant"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:background="@drawable/edt_bor"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:textSize="@dimen/_10sdp" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewDiagnosis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="@drawable/edt_bor" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@color/viewlinecolor" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_5sdp"
+                        android:weightSum="30">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/edtMedName"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="@dimen/_1sdp"
+                            android:layout_weight="20"
+                            android:background="@drawable/edt_bor"
+                            android:drawableStart="@drawable/ic_med"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:hint="@string/medicine_name"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:layout_weight="10"
+                            android:background="@drawable/edt_bor">
+
+                            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                                android:id="@+id/txtDoseForm"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:paddingStart="@dimen/_2sdp"
+                                android:paddingEnd="@dimen/_2sdp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_13sdp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <EditText
+                            android:id="@+id/txtStr"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:layout_marginEnd="@dimen/_1sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edt_bor"
+                            android:drawableStart="@drawable/ic_dosageform"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:hint="Enter Strength"
+                            android:inputType="number|numberDecimal"
+                            android:maxLength="4"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:layout_marginEnd="@dimen/_1sdp"
+                            android:layout_weight="1">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/etUnit"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/_1sdp"
+                                android:layout_marginEnd="@dimen/_1sdp"
+                                android:layout_weight="5"
+                                android:background="@drawable/edt_bor"
+                                android:drawableStart="@drawable/ic_unit"
+                                android:drawablePadding="@dimen/_2sdp"
+                                android:hint="Enter Unit"
+                                android:paddingStart="@dimen/_2sdp"
+                                android:paddingEnd="@dimen/_2sdp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <!--
+                                                    <androidx.appcompat.widget.AppCompatSpinner
+                                                        android:id="@+id/txtUnit"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_gravity="center_vertical"
+                                                        android:drawablePadding="@dimen/_2sdp"
+                                                        android:paddingStart="@dimen/_2sdp"
+                                                        android:paddingEnd="@dimen/_2sdp"
+                                                        android:textColor="@color/black"
+                                                        android:textSize="@dimen/_13sdp" />
+                            -->
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_marginEnd="@dimen/_1sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edt_bor">
+
+                            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                                android:id="@+id/spnFreq"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:drawableStart="@drawable/ic_frequency"
+                                android:drawablePadding="@dimen/_2sdp"
+                                android:paddingStart="@dimen/_2sdp"
+                                android:paddingEnd="@dimen/_2sdp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10sdp" />
+                        </LinearLayout>
+
+                        <!-- <EditText
+                             android:id="@+id/txtStr"
+                             android:layout_width="0dp"
+                             android:layout_height="@dimen/_30sdp"
+                             android:layout_gravity="center_vertical"
+                             android:layout_marginStart="@dimen/_1sdp"
+                             android:layout_marginEnd="@dimen/_1sdp"
+                             android:layout_weight="5"
+                             android:background="@drawable/edt_bor"
+                             android:drawableStart="@drawable/ic_dosageform"
+                             android:drawablePadding="@dimen/_2sdp"
+                             android:inputType="number|numberDecimal"
+                             android:paddingStart="@dimen/_2sdp"
+                             android:paddingEnd="@dimen/_2sdp"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/_13sdp" />
+
+                         <LinearLayout
+                             android:layout_width="0dp"
+                             android:layout_height="@dimen/_30sdp"
+                             android:layout_marginStart="@dimen/_1sdp"
+                             android:layout_marginEnd="@dimen/_1sdp"
+                             android:layout_weight="6"
+                             android:background="@drawable/edt_bor">
+
+                             <AutoCompleteTextView
+                                 android:id="@+id/etUnit"
+                                 android:layout_width="0dp"
+                                 android:layout_height="@dimen/_30sdp"
+                                 android:layout_gravity="center_vertical"
+                                 android:layout_marginStart="@dimen/_1sdp"
+                                 android:layout_marginEnd="@dimen/_1sdp"
+                                 android:layout_weight="5"
+                                 android:background="@drawable/edt_bor"
+                                 android:drawableStart="@drawable/ic_unit"
+                                 android:drawablePadding="@dimen/_2sdp"
+                                 android:paddingStart="@dimen/_2sdp"
+                                 android:paddingEnd="@dimen/_2sdp"
+                                 android:textColor="@color/black"
+                                 android:textSize="@dimen/_13sdp" />
+
+                             &lt;!&ndash;
+                                                     <androidx.appcompat.widget.AppCompatSpinner
+                                                         android:id="@+id/txtUnit"
+                                                         android:layout_width="match_parent"
+                                                         android:layout_height="match_parent"
+                                                         android:layout_gravity="center_vertical"
+                                                         android:drawablePadding="@dimen/_2sdp"
+                                                         android:paddingStart="@dimen/_2sdp"
+                                                         android:paddingEnd="@dimen/_2sdp"
+                                                         android:textColor="@color/black"
+                                                         android:textSize="@dimen/_13sdp" />
+                             &ndash;&gt;
+
+                         </LinearLayout>-->
+
+                        <!--<EditText
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:textColor="@color/black"
+                            android:layout_weight="10"
+                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:background="@drawable/edt_bor"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:drawableStart="@drawable/ic_duration"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="@dimen/_13sdp"
+                            android:id="@+id/txtTime"/>-->
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:layout_marginEnd="@dimen/_1sdp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
+
+                            <TextView
+                                android:id="@+id/tvTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="@dimen/_1sdp"
+                                android:layout_marginEnd="@dimen/_1sdp"
+                                android:layout_weight="10"
+                                android:background="@drawable/edt_bor"
+                                android:drawableStart="@drawable/ic_time"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:drawableTint="@color/blue_text"
+                                android:gravity="center_vertical"
+                                android:hint="Start Time"
+                                android:paddingStart="@dimen/_2sdp"
+                                android:paddingEnd="@dimen/_2sdp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10sdp" />
+
+
+                            <!--  <EditText
+                                  android:id="@+id/edtHour"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="match_parent"
+                                  android:layout_gravity="center_vertical"
+                                  android:layout_marginEnd="@dimen/_2sdp"
+                                  android:layout_weight="2.5"
+                                  android:background="@null"
+                                  android:gravity="center"
+                                  android:hint="@string/_00"
+                                  android:inputType="number"
+                                  android:maxLength="2"
+                                  android:paddingStart="@dimen/_2sdp"
+                                  android:paddingEnd="@dimen/_2sdp"
+                                  android:singleLine="true"
+                                  android:textColor="@color/black"
+                                  android:textSize="@dimen/_13sdp" />
+
+                              <TextView
+                                  android:layout_width="0dp"
+                                  android:layout_height="match_parent"
+                                  android:layout_gravity="center_vertical"
+                                  android:layout_marginEnd="@dimen/_2sdp"
+                                  android:layout_weight="1"
+                                  android:drawablePadding="@dimen/_2sdp"
+                                  android:gravity="center"
+                                  android:maxLength="2"
+                                  android:paddingStart="@dimen/_2sdp"
+                                  android:paddingEnd="@dimen/_2sdp"
+                                  android:text="@string/colon"
+                                  android:textColor="@color/black"
+                                  android:textSize="@dimen/_8sdp" />
+
+                              <EditText
+                                  android:id="@+id/edtMinute"
+                                  android:layout_width="0dp"
+                                  android:layout_height="match_parent"
+                                  android:layout_gravity="center_vertical"
+                                  android:layout_marginEnd="@dimen/_2sdp"
+                                  android:layout_weight="2.5"
+                                  android:background="@null"
+                                  android:drawablePadding="@dimen/_2sdp"
+                                  android:gravity="center"
+                                  android:hint="@string/_00"
+                                  android:inputType="number"
+                                  android:maxLength="2"
+                                  android:paddingStart="@dimen/_2sdp"
+                                  android:paddingEnd="@dimen/_2sdp"
+                                  android:singleLine="true"
+                                  android:textColor="@color/black"
+                                  android:textSize="@dimen/_13sdp" />
+
+                              <EditText
+                                  android:id="@+id/txtTime"
+                                  android:layout_width="0dp"
+                                  android:layout_height="match_parent"
+                                  android:layout_gravity="center_vertical"
+                                  android:layout_marginEnd="@dimen/_2sdp"
+                                  android:layout_weight="3"
+                                  android:background="@null"
+                                  android:digits="AapmM"
+                                  android:drawablePadding="@dimen/_2sdp"
+                                  android:gravity="center"
+                                  android:hint="@string/am"
+                                  android:paddingStart="@dimen/_2sdp"
+                                  android:paddingEnd="@dimen/_2sdp"
+                                  android:singleLine="true"
+                                  android:textColor="@color/black"
+                                  android:textSize="@dimen/_13sdp" />-->
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_5sdp">
+
+                        <EditText
+                            android:id="@+id/edtRemark"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="@drawable/edt_bor"
+                            android:drawableStart="@drawable/ic_remark"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:hint="@string/remark"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtAction"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:background="@color/blue_text"
+                        android:drawableTint="@color/white"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/_2sdp"
+                        android:text="Add Medicine"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_10sdp" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvData"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView"
+                android:layout_marginTop="@dimen/_5sdp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="20"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="4.5"
+                        android:layout_gravity="center_vertical"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_7sdp"
+                        android:id="@+id/txtMedName"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/_7sdp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/_7sdp"
+                        android:id="@+id/txtDuration"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/_7sdp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="3"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/_7sdp"
+                        android:id="@+id/txtNumDays"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="3.5"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/_7sdp"
+                        android:id="@+id/txtRemark"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:layout_marginEnd="@dimen/_1sdp"
+                        android:layout_gravity="center_vertical"
+                        android:drawableStart="@drawable/ic_edit_pres_l"
+                        android:textSize="@dimen/_10sdp"
+                        android:id="@+id/txtEdit"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:visibility="gone"
+                        android:layout_gravity="center_vertical"
+                        android:drawableStart="@drawable/ic_remove_pres_l" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:layout_marginEnd="@dimen/_1sdp"
+                        android:foregroundGravity="center"
+                        android:layout_gravity="center"
+                        android:drawableStart="@drawable/ic_stop_l"
+                        android:id="@+id/txtStop"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:visibility="gone"
+                        android:foregroundGravity="center"
+                        android:layout_gravity="center"
+                        android:drawableStart="@drawable/ic_delete_l"
+                        android:id="@+id/txtDelete"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMedication"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:background="#F8F8F8"
+                app:layout_constraintBottom_toTopOf="@+id/scrollNoti"
+                app:layout_constraintTop_toBottomOf="@+id/cvData" />
+
+            <ScrollView
+                android:id="@+id/scrollNoti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rvMedication"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:fillViewport="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/llFooter">
+
+                <TextView
+                    android:id="@+id/txtNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:gravity="start"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:textColor="#D85858" />
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/llFooter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="end"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/btnSave"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@drawable/btn_medication"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>

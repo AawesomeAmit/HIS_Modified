@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="@dimen/_3sdp"
+    app:cardCornerRadius="@dimen/_2sdp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lLayout"
+        android:paddingStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:padding="@dimen/_2sdp"
+            android:drawablePadding="@dimen/_5sdp"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12sdp"
+            android:id="@+id/txtNTitle"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:padding="@dimen/_2sdp"
+            android:textSize="@dimen/_12sdp"
+            android:id="@+id/txtNBody"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="end"
+            android:text="@string/date"
+            android:padding="@dimen/_2sdp"
+            android:textSize="@dimen/_12sdp"
+            android:id="@+id/txtNDate"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.trueform.era.his">
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".database.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.AchievedNutrientGraphActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activity.GuardPostPatientListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.GuardPostActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.NotificationDetail"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activity.DiseasePatientList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Fragment.DiseaseList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Fragment.NutritiAnalyzer"
+            android:label="@string/title_activity_nutriti_analyzer"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Fragment.IntakeOutputVitalRange"
+            android:label="@string/title_activity_intake_output_vital_range"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <!--
+
+<activity
+            android:name=".Activity.PatientRange"
+            android:label="@string/title_activity_patient_range"
+            android:theme="@style/AppTheme.NoActionBar" />
+        -->
+
+        <activity
+            android:name=".Fragment.NutriAnalyserFragment"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Activity.AverageNutrientReportActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.IdealNutrientIntakeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Fragment.ActivityProblemInput"
+            android:label="@string/title_activity_problem_input"
+            android:parentActivityName=".Activity.Dashboard"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.trueform.era.his.Activity.Dashboard" />
+        </activity>
+        <activity
+            android:name=".Activity.PatientDashboard"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".Fragment.IntakeInput"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_intake_input"
+            android:parentActivityName=".Activity.Dashboard"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.trueform.era.his.Activity.Dashboard" />
+        </activity>
+        <activity android:name=".Activity.EnterPID"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.ShowPatientAnalyzingGraph"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.NotificationList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.PriscriptionOverviewPopup"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@style/AppTheme.CustomTheme"/>
+        <activity
+            android:name=".Activity.PatientList"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Fragment.MedicineSidePathway"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <!--
+<activity
+            android:name=".Activity.SubHeadList"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@style/AppTheme.myDialog" />
+        -->
+        <activity
+            android:name=".Activity.PreDashboard"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.Dashboard"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_dashboard"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".Activity.StartActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activity.ProgressNoteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.ComplaintActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.PatientHistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.PhysicalExaminationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.ProcedureNoteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.AngioReportActivity"
+            android:screenOrientation="portrait"/>
+
+        <service
+            android:name=".Utils.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+    </application>
+
+</manifest>

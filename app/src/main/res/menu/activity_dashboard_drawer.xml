@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single"
+        android:id="@+id/outmenu">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/dashboard" />
+        <item
+            android:id="@+id/nav_patient_list"
+            android:icon="@drawable/patientlist"
+            android:title="@string/patient_list" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/nav_observation"
+            android:icon="@drawable/ic_observationgraph"
+            android:title="@string/observation_graph" />
+        <item
+            android:id="@+id/nav_vital_graph"
+            android:icon="@drawable/ic_observationgraph"
+            android:visible="false"
+            android:title="@string/vital_graph" />
+        <item
+            android:id="@+id/nav_detail_graph"
+            android:icon="@drawable/ic_observationgraph"
+            android:title="@string/patient_detail_graph" />
+        <item
+            android:id="@+id/nav_patient_dashboard"
+            android:icon="@drawable/ic_observationgraph"
+            android:visible="false"
+            android:title="@string/patient_dashboard" />
+        <item
+            android:id="@+id/nav_cal_patient"
+            android:icon="@drawable/ic_observationgraph"
+            android:visible="false"
+            android:title="@string/calcium_patient_report" />
+        <item
+            android:id="@+id/nav_prescription"
+            android:icon="@drawable/ic_prescription"
+            android:title="@string/prescription" />
+        <item
+            android:id="@+id/nav_view_medication"
+            android:icon="@drawable/ic_medication"
+            android:title="@string/view_medication" />
+        <item
+            android:id="@+id/nav_investigation"
+            android:icon="@drawable/ic_viewinvestigation"
+            android:title="@string/view_investigation" />
+        <item
+            android:id="@+id/nav_input_vital"
+            android:icon="@drawable/ic_viewinvestigation"
+            android:title="@string/input_vital" />
+        <item
+            android:id="@+id/nav_input_intake"
+            android:icon="@drawable/ic_viewinvestigation"
+            android:title="@string/input_intake" />
+        <item
+            android:id="@+id/nav_output"
+            android:icon="@drawable/ic_viewinvestigation"
+            android:title="@string/output" />
+        <item
+            android:id="@+id/nav_range"
+            android:icon="@drawable/ic_viewinvestigation"
+            android:title="@string/patient_range" />
+        <item
+            android:id="@+id/nav_activity_problem"
+            android:icon="@drawable/ic_viewinvestigation"
+            android:title="@string/activity_problem" />
+        <item
+            android:id="@+id/nav_activity_movement"
+            android:icon="@drawable/ic_viewinvestigation"
+            android:visible="true"
+            android:title="@string/patient_input" />
+        <item
+            android:visible="false"
+            android:id="@+id/nav_progress_note"
+            android:icon="@drawable/progressnote"
+            android:title="@string/progress_note" />
+        <item
+            android:id="@+id/nav_calculator"
+            android:icon="@drawable/calculator"
+            android:title="@string/calculator" />
+        <item
+            android:id="@+id/nav_nutrition"
+            android:icon="@drawable/calculator"
+            android:title="@string/nutrition" />
+        <item
+            android:id="@+id/nav_intake"
+            android:icon="@drawable/ic_intakegraph"
+            android:visible="false"
+            android:title="@string/intake_graph" />
+        <item
+            android:id="@+id/nav_questionnaire"
+            android:icon="@drawable/ic_questionnaire"
+            android:title="@string/questionnaire" />
+    </group>
+</menu>

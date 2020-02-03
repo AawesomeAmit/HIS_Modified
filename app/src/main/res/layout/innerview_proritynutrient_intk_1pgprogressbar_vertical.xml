@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_55sdp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:background="@color/progressbarcolor"
+                android:orientation="vertical">
+                <!-- <ProgressBar
+                     android:id="@+id/textView7"
+                     style="@style/AppTheme.Vertical"
+                     android:layout_width="@dimen/_10sdp"
+                     android:layout_height="@dimen/_55sdp"
+                     android:max="100"
+                     android:progress="10"
+                     android:progressBackgroundTint="@color/light_gray"
+                     android:progressDrawable="@drawable/vertical_progressbar" />-->
+                <!--<ProgressBar
+                    android:id="@+id/textView7"
+                    style="@android:style/Widget.Holo.Light.ProgressBar.Horizontal"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:max="100"
+                    android:progressBackgroundTint="@color/white"
+                    android:progressDrawable="@drawable/progress_drawable_orange" />-->
+
+
+                <com.trueform.era.his.Utils.VerticalProgressBar
+                    android:id="@+id/textView7"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:max="100"
+                    android:progressBackgroundTint="@color/white"
+                    android:progressDrawable="@drawable/progress_drawable_orange"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_55sdp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/target"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="wrap_content"
+                    android:text="145.0 %"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8sdp" />
+
+                <TextView
+                    android:id="@+id/exceed"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text="23.7g exceed"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_8sdp" />
+
+                <TextView
+                    android:id="@+id/consume"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:text="100.7g"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8sdp" />
+            </LinearLayout>
+        </LinearLayout>
+        <!-- <View
+             android:id="@+id/view"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/_1sdp"
+             android:layout_marginStart="@dimen/_5sdp"
+             android:layout_marginEnd="@dimen/_10sdp"
+             android:layout_marginTop="@dimen/_2sdp"
+             android:background="@color/black"/>-->
+        <TextView
+            android:id="@+id/tvMnrlName"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="Protine"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>

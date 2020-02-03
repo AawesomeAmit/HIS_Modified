@@ -1,0 +1,428 @@
+package com.trueform.era.his.Activity;
+
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.trueform.era.his.Adapter.HeadAdp;
+import com.trueform.era.his.Adapter.RecyclerTouchListener;
+import com.trueform.era.his.Adapter.SubHeadAdp;
+import com.trueform.era.his.Fragment.NutriAnalyserFragment;
+import com.trueform.era.his.Model.GetMemberId;
+import com.trueform.era.his.Model.HeadAssign;
+import com.trueform.era.his.Model.SubDept;
+import com.trueform.era.his.R;
+import com.trueform.era.his.Response.GetAllMedicineByAlphabetRes;
+import com.trueform.era.his.Response.MemberIdResp;
+import com.trueform.era.his.Response.NotificationCountResp;
+import com.trueform.era.his.Response.SubHeadIDResp;
+import com.trueform.era.his.Utils.ClickListener;
+import com.trueform.era.his.Utils.ConnectivityChecker;
+import com.trueform.era.his.Utils.RetrofitClient;
+import com.trueform.era.his.Utils.RetrofitClient1;
+import com.trueform.era.his.Utils.RetrofitClientOrgan;
+import com.trueform.era.his.Utils.SharedPrefManager;
+import com.trueform.era.his.Utils.Utils;
+import com.trueform.era.his.database.DatabaseController;
+import com.trueform.era.his.database.TableMedicineList;
+import com.trueform.era.his.database.TableSubDeptList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class PreDashboard extends AppCompatActivity {
+    TextView txtDrName, txtDept, img, count;
+    ImageView imgNotification;
+    SubHeadIDResp subHeadIDResp;
+    ArrayList<HeadAssign> headAssigns;
+    ProgressDialog progressDialog;
+    RecyclerView rvGrid;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pre_dashboard);
+        rvGrid = findViewById(R.id.rvGrid);
+        count = findViewById(R.id.count);
+        img = findViewById(R.id.img);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait...");
+        imgNotification = findViewById(R.id.imgNotification);
+        String head = "headList";
+        GridLayoutManager mGridLayoutManager;
+        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE)
+            mGridLayoutManager = new GridLayoutManager(PreDashboard.this, 4);
+        else mGridLayoutManager = new GridLayoutManager(PreDashboard.this, 3);
+        rvGrid.setLayoutManager(mGridLayoutManager);
+        txtDrName = findViewById(R.id.txtDrName);
+        txtDept = findViewById(R.id.txtDept);
+        txtDrName.setText(SharedPrefManager.getInstance(this).getUser().getDisplayName());
+        txtDept.setText(SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName());
+        headAssigns = SharedPrefManager.getInstance(PreDashboard.this).getHeadList(head);
+        rvGrid.setAdapter(new HeadAdp(PreDashboard.this, headAssigns));
+        Call<List<NotificationCountResp>> call1 = RetrofitClient.getInstance().getApi().getUnReadNotificationCount(SharedPrefManager.getInstance(this).getUser().getAccessToken(), SharedPrefManager.getInstance(this).getUser().getUserid().toString(), SharedPrefManager.getInstance(this).getUser().getUserid());
+        call1.enqueue(new Callback<List<NotificationCountResp>>() {
+            @Override
+            public void onResponse(Call<List<NotificationCountResp>> call, Response<List<NotificationCountResp>> response) {
+                progressDialog.show();
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        count.setText(String.valueOf(response.body().get(0).getUnReadCount()));
+                    }
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<List<NotificationCountResp>> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
+        img.setOnClickListener(view -> {
+            PopupMenu menu = new PopupMenu(PreDashboard.this, img);
+            menu.getMenuInflater().inflate(R.menu.popup_menu, menu.getMenu());
+            menu.setOnMenuItemClickListener(item -> {
+                Call<ResponseBody> call = RetrofitClient.getInstance().getApi().logOut(SharedPrefManager.getInstance(PreDashboard.this).getUser().getAccessToken(), SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid().toString(), SharedPrefManager.getInstance(PreDashboard.this).getFCMToken(), String.valueOf(SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid()));
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        progressDialog.show();
+                        if (response.isSuccessful()) {
+                            Toast.makeText(PreDashboard.this, "Logged out successfully!", Toast.LENGTH_SHORT).show();
+                            SharedPrefManager.getInstance(PreDashboard.this).clear();
+                            Intent intent = new Intent(PreDashboard.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(PreDashboard.this, "Network problem!", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                });
+                return true;
+            });
+            menu.show();
+        });
+        rvGrid.addOnItemTouchListener(new RecyclerTouchListener(this, rvGrid, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //if((headAssigns.get(position).getHeadID()==2) || (headAssigns.get(position).getHeadID()==3)||(headAssigns.get(position).getHeadID()==4)) {
+                //Intent intent = new Intent(PreDashboard.this, SubHeadList.class);
+                SharedPrefManager.getInstance(PreDashboard.this).setHeadID(headAssigns.get(position).getHeadID(), headAssigns.get(position).getHeadName(), headAssigns.get(position).getColor());
+                //startActivity(intent);
+                try {
+                    showPopup(view);
+                }catch (Exception ex){
+                    Log.v("error", Objects.requireNonNull(ex.getMessage()));
+                    ex.printStackTrace();
+                }
+                /*} else {
+                    Intent intent = new Intent(PreDashboard.this, EnterPID.class);
+                    SharedPrefManager.getInstance(PreDashboard.this).setHeadID(headAssigns.get(position).getHeadID(), headAssigns.get(position).getHeadName());
+                    startActivity(intent);
+                }*/
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+        imgNotification.setOnClickListener(view -> {
+            Intent intent = new Intent(PreDashboard.this, NotificationList.class);
+            startActivity(intent);
+        });
+        count.setOnClickListener(view -> {
+            Intent intent = new Intent(PreDashboard.this, NotificationList.class);
+            startActivity(intent);
+        });
+
+        hitGetUserProfileByPID();
+    }
+
+    public void showPopup(final View anchorView) {
+        progressDialog.show();
+        final RecyclerView recycler;
+        ImageView close;
+        TextView txtDept;
+        RelativeLayout relLayout;
+        View popupView = getLayoutInflater().inflate(R.layout.activity_sub_head_list, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        txtDept = popupView.findViewById(R.id.txtDept);
+        recycler = popupView.findViewById(R.id.recycler);
+        close = popupView.findViewById(R.id.close);
+        relLayout = popupView.findViewById(R.id.relLayout);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        anchorView.getLocationOnScreen(location);
+        txtDept.setText(SharedPrefManager.getInstance(this).getHead().getHeadName());
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        relLayout.setBackgroundColor(Color.parseColor(SharedPrefManager.getInstance(PreDashboard.this).getHead().getColor()));
+
+        if (ConnectivityChecker.checker(PreDashboard.this)){
+
+            progressDialog.show();
+            Call<SubHeadIDResp> call = RetrofitClient.getInstance().getApi().getsubDepertmentByHID(
+                    SharedPrefManager.getInstance(PreDashboard.this).getUser().getAccessToken(),
+                    SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid().toString(),
+                    SharedPrefManager.getInstance(PreDashboard.this).getHeadID().toString(),
+                    SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid());
+            call.enqueue(new Callback<SubHeadIDResp>() {
+                @Override
+                public void onResponse(Call<SubHeadIDResp> call, Response<SubHeadIDResp> response) {
+                    if (response.isSuccessful()) {
+                        subHeadIDResp = response.body();
+                        if (subHeadIDResp.getSubDept().size() > 1) {
+                            recycler.setAdapter(new SubHeadAdp(PreDashboard.this, subHeadIDResp));
+                            popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
+
+                            try {
+                                DatabaseController.myDataBase.beginTransaction();
+
+//                                DatabaseController.myDataBase.delete(TableSubDeptList.sub_dept_list, null, null);
+
+                                for (int i = 0; i < subHeadIDResp.getSubDept().size(); i++) {
+
+                                    SubDept subDept = response.body().getSubDept().get(i);
+
+                                    ContentValues contentValues = new ContentValues();
+
+                                    contentValues.put(TableSubDeptList.subDeptListColumn.id.toString(), subDept.getId());
+                                    contentValues.put(TableSubDeptList.subDeptListColumn.headID.toString(), subDept.getHeadID());
+                                    contentValues.put(TableSubDeptList.subDeptListColumn.subDepartmentName.toString(), subDept.getSubDepartmentName());
+                                    contentValues.put(TableSubDeptList.subDeptListColumn.bgColor.toString(), subDept.getBgColor());
+
+                                    if (!DatabaseController.checkRecordExistWhere(TableSubDeptList.sub_dept_list,
+                                            TableSubDeptList.subDeptListColumn.headID +" = '"+ subDept.getHeadID().toString() +"'" +
+                                                    " and "+ TableSubDeptList.subDeptListColumn.id +" = '"+ subDept.getId().toString() +"'")){
+
+                                        DatabaseController.insertData(contentValues, TableSubDeptList.sub_dept_list);
+                                    }
+
+//                                    DatabaseController.insertUpdateData(contentValues, TableSubDeptList.sub_dept_list, "id", subDept.getId().toString());
+
+                                }
+
+                                DatabaseController.myDataBase.setTransactionSuccessful();
+
+                            } finally {
+                                DatabaseController.myDataBase.endTransaction();
+
+                                Utils.hideDialog();
+                            }
+
+                        } else {
+                            if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7))) {//
+                                Intent intent = new Intent(PreDashboard.this, PatientList.class);
+                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                startActivity(intent);
+                            } else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 10) {
+                                Intent intent = new Intent(PreDashboard.this, Dashboard.class);
+                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                startActivity(intent);
+                            }  else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 26) {
+                                Intent intent = new Intent(PreDashboard.this, EnterPID.class);
+                                //Intent intent = new Intent(PreDashboard.this, MedicineSidePathway.class);
+//                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                //SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                startActivity(intent);
+                            } /*else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) {
+                                Intent intent = new Intent(PreDashboard.this, NutriAnalyserFragment.class);
+                                //Intent intent = new Intent(PreDashboard.this, MedicineSidePathway.class);
+//                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                //SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                startActivity(intent);
+                            }*/ else {
+                                Intent intent = new Intent(PreDashboard.this, EnterPID.class);
+                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                SharedPrefManager.getInstance(PreDashboard.this).setHeadID(SharedPrefManager.getInstance(PreDashboard.this).getHeadID(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getHeadName(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getColor());
+                                startActivity(intent);
+                            }
+                        }
+                    } else
+                        Toast.makeText(PreDashboard.this, response.message(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<SubHeadIDResp> call, Throwable t) {
+                    Toast.makeText(PreDashboard.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
+        }else {
+            subHeadIDResp = new SubHeadIDResp();
+            subHeadIDResp.setSubDept(DatabaseController.getSubDeptList(SharedPrefManager.getInstance(PreDashboard.this).getHeadID().toString()));
+
+            if (subHeadIDResp.getSubDept().size() > 1) {
+                recycler.setAdapter(new SubHeadAdp(PreDashboard.this, subHeadIDResp));
+                popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
+            }else {
+                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7))) {
+                    Intent intent = new Intent(PreDashboard.this, PatientList.class);
+                    SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                    startActivity(intent);
+                } else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 10) {
+                    Intent intent = new Intent(PreDashboard.this, PatientDashboard.class);
+                    SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(PreDashboard.this, EnterPID.class);
+                    SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                    SharedPrefManager.getInstance(PreDashboard.this).setHeadID(SharedPrefManager.getInstance(PreDashboard.this).getHeadID(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getHeadName(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getColor());
+                    startActivity(intent);
+                }
+            }
+        }
+
+        recycler.addOnItemTouchListener(new RecyclerTouchListener(this, recycler, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if (subHeadIDResp.getSubDept().get(position).getHeadID() == 1) {
+                    SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(position));
+                    Intent intent = new Intent(PreDashboard.this, EnterPID.class);
+                    SharedPrefManager.getInstance(PreDashboard.this).setHeadID(SharedPrefManager.getInstance(PreDashboard.this).getHeadID(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getHeadName(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getColor());
+                    startActivity(intent);
+                }  else if (subHeadIDResp.getSubDept().get(position).getHeadID() == 26) {
+                    Intent intent = new Intent(PreDashboard.this, EnterPID.class);
+                    startActivity(intent);
+                } else if (subHeadIDResp.getSubDept().get(position).getHeadID() == 7) {
+                    Intent intent = new Intent(PreDashboard.this, NutriAnalyserFragment.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(PreDashboard.this, PatientList.class);
+                    SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(position));
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "Yes",
+                        (dialog, id) -> {
+                            moveTaskToBack(true);
+                            finish();
+                            System.exit(0);
+                        })
+
+                .setNegativeButton(
+                        "No",
+                        (dialog, id) -> dialog.cancel())
+                .show();
+    }
+
+    private void getAllMedicine() {
+
+        Utils.showRequestDialog(this);
+
+        Call<GetAllMedicineByAlphabetRes> call = RetrofitClientOrgan.getInstance().getApi().getAllMedicineByAlphabet("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZmlyc3ROYW1lIjoic2FkZGFtIiwibGFzdE5hbWUiOm51bGwsImVtYWlsSWQiOm51bGwsIm1vYmlsZU5vIjoiODk2MDI1MzEzMyIsImNvdW50cnkiOiJJTkRJQSIsInppcENvZGUiOiIyMjYwMjAiLCJvY2N1cGF0aW9uSWQiOjEsImFnZSI6bnVsbCwiZ2VuZGVyIjpudWxsLCJoZWlnaHRJbkZlZXQiOm51bGwsImhlaWdodEluSW5jaCI6bnVsbCwid2VpZ2h0IjpudWxsLCJwYWNrYWdlTmFtZSI6IkZyZWUiLCJpYXQiOjE1NjMwMTM4MDUsImV4cCI6MTU5NDU0OTgwNX0.l220lljQyTXmDPD-gyU53H4vV-I1GDPociKcp2qrWe8", "2");
+        call.enqueue(new Callback<GetAllMedicineByAlphabetRes>() {
+            @Override
+            public void onResponse(Call<GetAllMedicineByAlphabetRes> call, Response<GetAllMedicineByAlphabetRes> response) {
+                if (response != null && response.body().getResponseCode() == 1) {
+
+                    try{
+                        DatabaseController.myDataBase.beginTransaction();
+
+                        DatabaseController.myDataBase.delete(TableMedicineList.icd_list, null, null);
+
+                        for (int i = 0; i < response.body().getResponseValue().size(); i++) {
+
+                            ContentValues contentValues = new ContentValues();
+
+                            contentValues.put(TableMedicineList.icdListColumn.icdId.toString(), response.body().getResponseValue().get(i).getId());
+                            contentValues.put(TableMedicineList.icdListColumn.icdCode.toString(), response.body().getResponseValue().get(i).getMedicineName());
+
+                            DatabaseController.insertData(contentValues, TableMedicineList.icd_list);
+
+                        }
+
+                        DatabaseController.myDataBase.setTransactionSuccessful();
+
+                    } finally {
+                        DatabaseController.myDataBase.endTransaction();
+
+                        Utils.hideDialog();
+
+                        Log.d("checkcount", String.valueOf(DatabaseController.getAllICDListCount()));
+
+                        Log.d("#checkList", String.valueOf(DatabaseController.getICDList()));
+                    }
+
+                }
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<GetAllMedicineByAlphabetRes> call, Throwable t) {
+                Utils.hideDialog();
+            }
+        });
+    }
+
+    private void hitGetUserProfileByPID(){
+        Call<MemberIdResp> call= RetrofitClient1.getInstance().getApi().getUserProfileByPID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", String.valueOf(SharedPrefManager.getInstance(getApplicationContext()).getPid()));
+        call.enqueue(new Callback<MemberIdResp>() {
+            @Override
+            public void onResponse(Call<MemberIdResp> call, Response<MemberIdResp> response) {
+                if (response.body() != null) {
+                    MemberIdResp memberIdResp = response.body();
+                    if (memberIdResp.getResponseCode() == 1) {
+                        SharedPrefManager.getInstance(getApplicationContext()).setMemberId(memberIdResp.getResponseValue().get(0));
+
+
+                    } else {
+                        SharedPrefManager.getInstance(getApplicationContext()).setMemberId(new GetMemberId(0,0));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MemberIdResp> call, Throwable t) {
+                Log.v("showError", t.getMessage());
+            }
+        });
+    }
+}

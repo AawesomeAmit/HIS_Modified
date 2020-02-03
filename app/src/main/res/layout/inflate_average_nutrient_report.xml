@@ -1,0 +1,96 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:visibility="visible"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierVertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="tvNutrientName" />
+
+    <TextView
+        android:id="@+id/tvNutrientName"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:text="Nutrient Name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tvRda"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="wrap_content"
+        android:text="RDA"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/barrierVertical"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierVertical2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="tvRda" />
+
+    <TextView
+        android:id="@+id/tvAchievementPerc"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="wrap_content"
+        android:text="Achievement (%) Avg"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/barrierVertical2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrierVertical4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="tvAchievementPerc" />
+
+
+    <TextView
+        android:id="@+id/tvAchievementAvg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Achievement Avg"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/barrierVertical4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="@color/grey_light"
+                app:layout_constraintTop_toBottomOf="@id/tvAchievementAvg" />
+    -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

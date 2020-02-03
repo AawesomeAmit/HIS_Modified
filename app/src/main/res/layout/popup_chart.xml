@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/border"
+    android:id="@+id/lChart"
+    android:layout_height="match_parent">
+    <!--<android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:background="#F8F8F8"
+        android:layout_marginLeft="@dimen/_5sdp"
+        tools:listitem="@layout/inner_investigation_chart"
+        android:id="@+id/rvInvestigationChart"/>-->
+    <com.highsoft.highcharts.core.HIChartView
+        android:id="@+id/lineChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

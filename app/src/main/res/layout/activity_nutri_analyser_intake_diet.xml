@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/tools"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundcolorlight"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+        <RelativeLayout
+            android:id="@+id/rltv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/nutrient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:text="Nutrients"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/nutrient"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:background="@drawable/difficiencysymbol"
+                android:layout_marginStart="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/tvSupplementNam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/supplement"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:text="Recommendations"
+                android:textColor="@color/green"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/consumeMealList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnSubmit"
+        android:layout_below="@+id/viewmeal"
+        tools:listitem="@layout/innerview_nutri_analyser_intake_diet">
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

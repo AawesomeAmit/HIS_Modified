@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "679802632547",
+    "firebase_url": "https://hisfirebaseproject-3e2f2.firebaseio.com",
+    "project_id": "hisfirebaseproject-3e2f2",
+    "storage_bucket": "hisfirebaseproject-3e2f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679802632547:android:233a1b0fe2bcc1b1",
+        "android_client_info": {
+          "package_name": "com.trueform.era.his"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679802632547-5lka4bbpe1qc45sio8ok3gbdtvvjle06.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trueform.era.his",
+            "certificate_hash": "8a685a9c542a2ac397fd23bbc32f5372534649b4"
+          }
+        },
+        {
+          "client_id": "679802632547-lnegri5tjqpar7m2qm6b4g8scjmdhe34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrTXWoDENqzHaDfiVZsxsICUo2XGMNeYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679802632547-lnegri5tjqpar7m2qm6b4g8scjmdhe34.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
