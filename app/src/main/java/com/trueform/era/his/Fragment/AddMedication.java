@@ -60,6 +60,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -142,10 +143,10 @@ public class AddMedication extends Fragment {
         context=view.getContext();
         edtMedName=view.findViewById(R.id.edtMedName);
         String pHistory="patientHistoryList";
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        Toolbar toolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar);
         spnConsultant=toolbar.findViewById(R.id.spnConsultant);
         txtDate=view.findViewById(R.id.txtDate);
-        TextView btnAdd = view.findViewById(R.id.btnAdd);
+        //TextView btnAdd = view.findViewById(R.id.btnAdd);
         TextView txtAction = view.findViewById(R.id.txtAction);
         TextView btnSave = view.findViewById(R.id.btnSave);
        // edtHour =view.findViewById(R.id.edtHour);

@@ -303,4 +303,7 @@
     <string name="age_gender_">Age/Gender:</string>
     <string name="type">Type:</string>
     <string name="bill_date">Bill Date:</string>
+    <string name="enter_strength">Enter Strength</string>
+    <string name="enter_unit">Enter Unit</string>
+    <string name="start_time">Start Time</string>
 </resources>

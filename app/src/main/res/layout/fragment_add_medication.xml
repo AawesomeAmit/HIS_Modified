@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -19,7 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
@@ -75,7 +74,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:orientation="vertical">
 
@@ -83,17 +81,15 @@
                 android:id="@+id/tvConsultantDiagnosisHead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:text="Consultant Diagnosis:"
+                android:text="@string/consultant_diagnosis"
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="bold" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvConsultantDiagnosisHead"
                 android:layout_marginTop="@dimen/_3sdp"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/white">
 
                 <AutoCompleteTextView
@@ -102,7 +98,8 @@
                     android:layout_height="@dimen/_30sdp"
                     android:background="@drawable/edt_bor"
                     android:paddingLeft="@dimen/_5sdp"
-                    android:paddingRight="@dimen/_5sdp" />
+                    android:paddingRight="@dimen/_5sdp"
+                    tools:ignore="LabelFor" />
 
             </RelativeLayout>
 
@@ -111,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@drawable/edt_bor" />
 
 
@@ -134,11 +131,12 @@
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                tools:ignore="NestedScrolling">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -206,7 +204,7 @@
                             android:background="@drawable/edt_bor"
                             android:drawableStart="@drawable/ic_dosageform"
                             android:drawablePadding="@dimen/_2sdp"
-                            android:hint="Enter Strength"
+                            android:hint="@string/enter_strength"
                             android:inputType="number|numberDecimal"
                             android:maxLength="4"
                             android:paddingStart="@dimen/_2sdp"
@@ -229,15 +227,16 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginStart="@dimen/_1sdp"
                                 android:layout_marginEnd="@dimen/_1sdp"
-                                android:layout_weight="5"
+                                android:layout_weight=" 5"
                                 android:background="@drawable/edt_bor"
                                 android:drawableStart="@drawable/ic_unit"
                                 android:drawablePadding="@dimen/_2sdp"
-                                android:hint="Enter Unit"
+                                android:hint="@string/enter_unit"
                                 android:paddingStart="@dimen/_2sdp"
                                 android:paddingEnd="@dimen/_2sdp"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_13sdp" />
+                                android:textSize="@dimen/_13sdp"
+                                tools:ignore="NestedWeights" />
 
                             <!--
                                                     <androidx.appcompat.widget.AppCompatSpinner
@@ -381,11 +380,12 @@
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:drawableTint="@color/blue_text"
                                 android:gravity="center_vertical"
-                                android:hint="Start Time"
+                                android:hint="@string/start_time"
                                 android:paddingStart="@dimen/_2sdp"
                                 android:paddingEnd="@dimen/_2sdp"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_12sdp"
+                                tools:ignore="NestedWeights,UnusedAttribute" />
 
 
                             <!--  <EditText
@@ -483,7 +483,8 @@
                             android:paddingStart="@dimen/_2sdp"
                             android:paddingEnd="@dimen/_2sdp"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_13sdp" />
+                            android:textSize="@dimen/_13sdp"
+                            tools:ignore="Autofill,TextFields" />
 
 
                     </LinearLayout>
@@ -500,9 +501,11 @@
                         android:drawableTint="@color/white"
                         android:gravity="center"
                         android:paddingStart="@dimen/_2sdp"
-                        android:text="Add Medicine"
+                        android:paddingEnd="@dimen/_2sdp"
+                        android:text="@string/add_medicine"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_13sdp"
+                        tools:ignore="UnusedAttribute" />
 
                 </LinearLayout>
             </ScrollView>
@@ -529,7 +532,7 @@
                         android:layout_marginStart="@dimen/_2sdp"
                         android:layout_weight="7.5"
                         android:layout_gravity="center_vertical"
-                        android:text="Medicine Name"
+                        android:text="@string/medicine_name"
                         android:textSize="@dimen/_11sdp"
                         android:id="@+id/txtMedName"/>
                     <TextView
@@ -642,7 +645,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/llFooter"
                 android:visibility="gone"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                tools:ignore="NestedScrolling">
 
                 <TextView
                     android:id="@+id/txtNotification"
