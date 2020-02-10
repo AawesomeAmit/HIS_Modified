@@ -70,10 +70,10 @@ public class PrescribedMedicine extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_prescribed_mediine, container, false);
         rView = view.findViewById(R.id.rView);
-        llMain = view.findViewById(R.id.llMain);
-        llMain.setWeightSum(12);
-        tvGivenByHead = view.findViewById(R.id.tvGivenByHead);
-        tvGivenByHead.setVisibility(View.GONE);
+        //llMain = view.findViewById(R.id.llMain);
+        //llMain.setWeightSum(12);
+        //tvGivenByHead = view.findViewById(R.id.tvGivenByHead);
+        //tvGivenByHead.setVisibility(View.GONE);
         context = view.getContext();
         dialog = new ProgressDialog(context);
         dialog.setMessage("Please wait...");

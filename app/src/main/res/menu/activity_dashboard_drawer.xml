@@ -38,6 +38,11 @@
             android:visible="false"
             android:title="@string/calcium_patient_report" />
         <item
+            android:id="@+id/nav_cal_dynamic"
+            android:icon="@drawable/ic_observationgraph"
+            android:visible="false"
+            android:title="@string/calcium_hourly_report" />
+        <item
             android:id="@+id/nav_prescription"
             android:icon="@drawable/ic_prescription"
             android:title="@string/prescription" />

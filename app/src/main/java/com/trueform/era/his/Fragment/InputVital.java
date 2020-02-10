@@ -237,7 +237,7 @@ public class InputVital extends Fragment implements View.OnClickListener {
     }
     private void saveVitals(int drId) {
         Utils.showRequestDialog(context);
-        Log.v("hitApi:", RetrofitClient.BASE_URL + "Prescription/saveVitals");
+        Log.v("hitApi:", "http://182.156.200.179:201/api/Prescription/saveVitals");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
         JSONArray array = new JSONArray();
         JSONObject jsonObject = new JSONObject();
@@ -248,7 +248,7 @@ public class InputVital extends Fragment implements View.OnClickListener {
             array.put(object);
             jsonObject.put("PID", SharedPrefManager.getInstance(context).getPid());
             jsonObject.put("headID", SharedPrefManager.getInstance(context).getHeadID());
-            jsonObject.put("vitalDate", format.format(today));
+            jsonObject.put("entryDate", format.format(today));
             jsonObject.put("subDeptID", SharedPrefManager.getInstance(context).getSubDept().getId());
             jsonObject.put("isFinalDiagnosis", false);
             jsonObject.put("ipNo", SharedPrefManager.getInstance(context).getIpNo());

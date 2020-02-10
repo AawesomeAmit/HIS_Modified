@@ -306,4 +306,6 @@
     <string name="enter_strength">Enter Strength</string>
     <string name="enter_unit">Enter Unit</string>
     <string name="start_time">Start Time</string>
+    <string name="view_history">Prescription History</string>
+    <string name="calcium_hourly_report">Calcium Hourly Report</string>
 </resources>

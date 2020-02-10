@@ -50,6 +50,9 @@ public class PrescriptionList {
     @SerializedName("timeInterval")
     @Expose
     public Integer timeInterval;
+    @SerializedName("prescribeBy")
+    @Expose
+    public String prescribeBy;
     @SerializedName("nextDose")
     @Expose
     public String nextDose;
@@ -90,6 +93,10 @@ public class PrescriptionList {
 
     public String getDoseFrequency() {
         return doseFrequency;
+    }
+
+    public String getPrescribeBy() {
+        return prescribeBy;
     }
 
     public String getDuration() {

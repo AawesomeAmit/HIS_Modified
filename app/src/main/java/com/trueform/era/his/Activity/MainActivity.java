@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         startActivity(intent);
                                     } else {
                                         Toast.makeText(MainActivity.this, response.errorBody().string(), Toast.LENGTH_LONG).show();
-                                        Snackbar.make(btnLogin, response.errorBody().string(), Snackbar.LENGTH_LONG).show();
+                                        //Snackbar.make(btnLogin, response.errorBody().string(), Snackbar.LENGTH_LONG).show();
                                     }
                                 } catch (Exception ex){
                                     ex.printStackTrace();

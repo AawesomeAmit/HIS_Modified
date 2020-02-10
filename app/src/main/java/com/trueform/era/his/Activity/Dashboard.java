@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 import com.trueform.era.his.Fragment.ActivityProblemInput;
 import com.trueform.era.his.Fragment.CalciumPatientReport;
+import com.trueform.era.his.Fragment.CalciumReportDynamic;
 import com.trueform.era.his.Fragment.Calculator;
 import com.trueform.era.his.Fragment.InputVital;
 import com.trueform.era.his.Fragment.Intake;
@@ -133,6 +134,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         if(SharedPrefManager.getInstance(this).getHeadID() == 10) {
             menu.findItem(R.id.nav_cal_patient).setVisible(true);
             menu.findItem(R.id.nav_patient_dashboard).setVisible(true);
+            menu.findItem(R.id.nav_cal_dynamic).setVisible(true);
             menu.findItem(R.id.nav_vital_graph).setVisible(false);
             menu.findItem(R.id.nav_detail_graph).setVisible(false);
             menu.findItem(R.id.nav_prescription).setVisible(false);
@@ -251,6 +253,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_intake) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new Intake();
+        } else if (id == R.id.nav_cal_dynamic) {
+            fragment = new CalciumReportDynamic();
         } else if (id == R.id.nav_questionnaire) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new Questionnaire();

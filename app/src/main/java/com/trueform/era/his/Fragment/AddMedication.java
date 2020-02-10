@@ -80,7 +80,7 @@ public class AddMedication extends Fragment {
     @SuppressLint("StaticFieldLeak")
     private static EditText edtRemark, edtStr;//edtHour, edtMinute, txtTime
     private static TextView tvTime;
-    String hour="",minutes="",amPm="",time="";
+    private String hour = "", minutes = "", amPm = "", time = "";
     @SuppressLint("StaticFieldLeak")
     private static Spinner spnFreq, spnForm; //,spnUnit
     private List<String> formList;
@@ -90,14 +90,14 @@ public class AddMedication extends Fragment {
     private static ArrayAdapter<String> arrayAdapter22;
     private static ArrayAdapter<String> arrayAdapter32;
     private JSONArray notification, notificationForSave, notificationForSave1;
-    private TextView txtNotification;
+    private TextView txtNotification, btnHistory;
     ScrollView scrollNoti;
     private FreqUnitResp freqResponse;
-    private String notificationShow ="";
-    private boolean selected=false;
-    private Integer drugID=0;
+    private String notificationShow = "";
+    private boolean selected = false;
+    private Integer drugID = 0;
     private ArrayList<PatientHistory> patientHistoryArrayList;
-    private String drugName="";
+    private String drugName = "";
     private static PrescribedMedResp medicineSearchResp1;
     private static List<Prescription> medicineSearches;
     private static final String ARG_PARAM1 = "param1";
@@ -115,6 +115,7 @@ public class AddMedication extends Fragment {
     AdapterNutrient adapterNutrient;
 
     Calendar c;
+
     public AddMedication() {
 
     }
@@ -139,29 +140,29 @@ public class AddMedication extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_add_medication, container, false);
-        context=view.getContext();
-        edtMedName=view.findViewById(R.id.edtMedName);
-        String pHistory="patientHistoryList";
+        View view = inflater.inflate(R.layout.fragment_add_medication, container, false);
+        context = view.getContext();
+        edtMedName = view.findViewById(R.id.edtMedName);
+        String pHistory = "patientHistoryList";
         Toolbar toolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar);
-        spnConsultant=toolbar.findViewById(R.id.spnConsultant);
-        txtDate=view.findViewById(R.id.txtDate);
+        spnConsultant = toolbar.findViewById(R.id.spnConsultant);
+        txtDate = view.findViewById(R.id.txtDate);
         //TextView btnAdd = view.findViewById(R.id.btnAdd);
         TextView txtAction = view.findViewById(R.id.txtAction);
         TextView btnSave = view.findViewById(R.id.btnSave);
-       // edtHour =view.findViewById(R.id.edtHour);
-       // edtMinute =view.findViewById(R.id.edtMinute);
-      //  txtTime=view.findViewById(R.id.txtTime);
-        tvTime=view.findViewById(R.id.tvTime);
-        edtStr =view.findViewById(R.id.txtStr);
-        edtRemark=view.findViewById(R.id.edtRemark);
-        spnForm =view.findViewById(R.id.txtDoseForm);
-        spnFreq=view.findViewById(R.id.spnFreq);
-      //  spnUnit=view.findViewById(R.id.txtUnit);
-        etUnit=view.findViewById(R.id.etUnit);
-        etConsultant=view.findViewById(R.id.etConsultant);
+        // edtHour =view.findViewById(R.id.edtHour);
+        // edtMinute =view.findViewById(R.id.edtMinute);
+        //  txtTime=view.findViewById(R.id.txtTime);
+        tvTime = view.findViewById(R.id.tvTime);
+        edtStr = view.findViewById(R.id.txtStr);
+        edtRemark = view.findViewById(R.id.edtRemark);
+        spnForm = view.findViewById(R.id.txtDoseForm);
+        spnFreq = view.findViewById(R.id.spnFreq);
+        //  spnUnit=view.findViewById(R.id.txtUnit);
+        etUnit = view.findViewById(R.id.etUnit);
+        etConsultant = view.findViewById(R.id.etConsultant);
 
-        recyclerViewDiagnosis=view.findViewById(R.id.recyclerViewDiagnosis);
+        recyclerViewDiagnosis = view.findViewById(R.id.recyclerViewDiagnosis);
 
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());
         layoutManager.setFlexDirection(FlexDirection.ROW);
@@ -177,41 +178,41 @@ public class AddMedication extends Fragment {
         hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
         minutes = String.valueOf(c.get(Calendar.MINUTE));
 
-        formList=new ArrayList<>();
-        freqList=new ArrayList<>();
-        unitList=new ArrayList<>();
-        notificationForSave1=new JSONArray();
-        medicineSearches=new ArrayList<>();
-        txtNotification=view.findViewById(R.id.txtNotification);
-        scrollNoti=view.findViewById(R.id.scrollNoti);
-        patientHistoryArrayList= SharedPrefManager.getInstance(context).getPatientHistoryList(pHistory);
-        medicineSearchResp1=new PrescribedMedResp();
-        rvMedication=view.findViewById(R.id.rvMedication);
+        formList = new ArrayList<>();
+        freqList = new ArrayList<>();
+        unitList = new ArrayList<>();
+        notificationForSave1 = new JSONArray();
+        medicineSearches = new ArrayList<>();
+        txtNotification = view.findViewById(R.id.txtNotification);
+        scrollNoti = view.findViewById(R.id.scrollNoti);
+        patientHistoryArrayList = SharedPrefManager.getInstance(context).getPatientHistoryList(pHistory);
+        medicineSearchResp1 = new PrescribedMedResp();
+        rvMedication = view.findViewById(R.id.rvMedication);
         rvMedication.setLayoutManager(new LinearLayoutManager(context));
-        Call<FreqUnitResp> call=RetrofitClient.getInstance().getApi().getUnitFrequencyDosages(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString());
+        Call<FreqUnitResp> call = RetrofitClient.getInstance().getApi().getUnitFrequencyDosages(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString());
         call.enqueue(new Callback<FreqUnitResp>() {
             @Override
             public void onResponse(Call<FreqUnitResp> call, Response<FreqUnitResp> response) {
                 Utils.showRequestDialog(context);
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        freqResponse= response.body();
+                        freqResponse = response.body();
                         formList.clear();
                         freqList.clear();
                         unitList.clear();
-                        for(int i=0;i<freqResponse.getDosages().size();i++) {
+                        for (int i = 0; i < freqResponse.getDosages().size(); i++) {
                             formList.add(i, freqResponse.getDosages().get(i).getName());
                         }
-                        for(int i=0;i<freqResponse.getFrequency().size();i++) {
+                        for (int i = 0; i < freqResponse.getFrequency().size(); i++) {
                             freqList.add(i, freqResponse.getFrequency().get(i).getName());
                         }
-                        for(int i=0;i<freqResponse.getDrugUnit().size();i++) {
+                        for (int i = 0; i < freqResponse.getDrugUnit().size(); i++) {
                             unitList.add(i, freqResponse.getDrugUnit().get(i).getDrugunitname());
                         }
 
-                        arrayAdapter12= new ArrayAdapter<>(context, R.layout.spinner_layout, formList);
-                        arrayAdapter22= new ArrayAdapter<>(context, R.layout.spinner_layout, freqList);
-                        arrayAdapter32= new ArrayAdapter<>(context, R.layout.spinner_layout, unitList);
+                        arrayAdapter12 = new ArrayAdapter<>(context, R.layout.spinner_layout, formList);
+                        arrayAdapter22 = new ArrayAdapter<>(context, R.layout.spinner_layout, freqList);
+                        arrayAdapter32 = new ArrayAdapter<>(context, R.layout.spinner_layout, unitList);
                         spnForm.setAdapter(arrayAdapter12);
                         spnForm.setSelection(0);
                         spnFreq.setAdapter(arrayAdapter22);
@@ -234,9 +235,9 @@ public class AddMedication extends Fragment {
         });
         bindData();
         edtMedName.setOnItemClickListener((adapterView, view1, i, l) -> {
-            drugID=medicineSearchResp2.getMedicineSearches().get(i).getDrugID();
-            drugName=medicineSearchResp2.getMedicineSearches().get(i).getDrugName();
-            selected=true;
+            drugID = medicineSearchResp2.getMedicineSearches().get(i).getDrugID();
+            drugName = medicineSearchResp2.getMedicineSearches().get(i).getDrugName();
+            selected = true;
 
             int spinnerPosition1 = arrayAdapter12.getPosition(medicineSearchResp2.getMedicineSearches().get(i).getDosageForm());
             spnForm.setSelection(spinnerPosition1);
@@ -257,7 +258,7 @@ public class AddMedication extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (edtMedName.getText().length()>1) {
+                if (edtMedName.getText().length() > 1) {
                     Call<MedicineSearchResp> call = RetrofitClient.getInstance().getApi().getMedicineBySearch(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(),
                             edtMedName.getText().toString().trim(), SharedPrefManager.getInstance(context).getUser().getUserid());
                     call.enqueue(new Callback<MedicineSearchResp>() {
@@ -265,7 +266,7 @@ public class AddMedication extends Fragment {
                         public void onResponse(Call<MedicineSearchResp> call, Response<MedicineSearchResp> response) {
                             if (response.isSuccessful()) {
                                 if (response.body() != null) {
-                                    medicineSearchResp2=response.body();
+                                    medicineSearchResp2 = response.body();
                                     //medicineSearchResp = response.body();
                                     arrayAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout,
                                             medicineSearchResp2.getMedicineSearches());
@@ -320,13 +321,13 @@ public class AddMedication extends Fragment {
                         @Override
                         public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
 
-                            tvTime.setText(Utils.formatTime(sHour,sMinute));
+                            tvTime.setText(Utils.formatTime(sHour, sMinute));
                             //   tvTime.setText(sHour + ":" + sMinute);
 
                             hour = String.valueOf(sHour);
                             minutes = String.valueOf(sMinute);
                             //amPm =
-                            time = Utils.formatTime(sHour,sMinute);
+                            time = Utils.formatTime(sHour, sMinute);
 
                         }
                     }, Integer.parseInt(hour), Integer.parseInt(minutes), false);
@@ -340,10 +341,10 @@ public class AddMedication extends Fragment {
                 //if (((edtHour.getText().toString().isEmpty() && edtMinute.getText().toString().isEmpty() && txtTime.getText().toString().isEmpty()) || ((!edtHour.getText().toString().isEmpty() && !edtMinute.getText().toString().isEmpty() && !txtTime.getText().toString().isEmpty()) && ((Integer.parseInt(edtHour.getText().toString())<=12) && (Integer.parseInt(edtMinute.getText().toString())<60)))))
                 {
 
-                  //  String time = edtHour.getText().toString().trim() + ":" + edtMinute.getText().toString().trim() + " " + txtTime.getText().toString().trim();
+                    //  String time = edtHour.getText().toString().trim() + ":" + edtMinute.getText().toString().trim() + " " + txtTime.getText().toString().trim();
 //                    String time = hour + ":" + minutes + " " + amPm;
 
-                    if (tvTime.getText().toString().isEmpty()){
+                    if (tvTime.getText().toString().isEmpty()) {
                         time = "";
                     }
 
@@ -351,13 +352,13 @@ public class AddMedication extends Fragment {
                         medicineSearches.add(new Prescription(drugID, drugName, spnForm.getSelectedItem().toString().trim(),
                                 //edtStr.getText().toString().trim(), spnUnit.getSelectedItem()==null?"":spnUnit.getSelectedItem().toString(),
                                 edtStr.getText().toString().trim(), etUnit.getText().toString(),
-                                spnFreq.getSelectedItem()==null?"":spnFreq.getSelectedItem().toString().trim(), time/*checkDigit(hours) + ":" + checkDigit(minutes) + " " + am*/,
+                                spnFreq.getSelectedItem() == null ? "" : spnFreq.getSelectedItem().toString().trim(), time/*checkDigit(hours) + ":" + checkDigit(minutes) + " " + am*/,
                                 edtRemark.getText().toString().trim(), 2));
                     else
                         medicineSearches.add(new Prescription(0, edtMedName.getText().toString().trim(),
-                               // spnForm.getSelectedItem().toString(), edtStr.getText().toString().trim(), spnUnit.getSelectedItem()==null?"":spnUnit.getSelectedItem().toString(),
+                                // spnForm.getSelectedItem().toString(), edtStr.getText().toString().trim(), spnUnit.getSelectedItem()==null?"":spnUnit.getSelectedItem().toString(),
                                 spnForm.getSelectedItem().toString(), edtStr.getText().toString().trim(), etUnit.getText().toString(),
-                                spnFreq.getSelectedItem()==null?"":spnFreq.getSelectedItem().toString().trim(), time/*checkDigit(hours) + ":" + checkDigit(minutes) + " " + am*/,
+                                spnFreq.getSelectedItem() == null ? "" : spnFreq.getSelectedItem().toString().trim(), time/*checkDigit(hours) + ":" + checkDigit(minutes) + " " + am*/,
                                 edtRemark.getText().toString().trim(), 2));
                     medicineSearchResp1.getPrescription().add(medicineSearches.get(medicineSearches.size() - 1));
                     //medicineSearchResp1.setPrescription(medicineSearches);
@@ -378,25 +379,25 @@ public class AddMedication extends Fragment {
             } else Toast.makeText(context, "Please enter medicine", Toast.LENGTH_LONG).show();
         });
         btnSave.setOnClickListener(view13 -> {
-            if (SharedPrefManager.getInstance(context).getUser().getDesigid()==1) {
+            if (SharedPrefManager.getInstance(context).getUser().getDesigid() == 1) {
                 sendPrescription(SharedPrefManager.getInstance(context).getUser().getUserid());
-            }
-            else if (SharedPrefManager.getInstance(context).getUser().getDesigid()!=1 && spnConsultant.getSelectedItemPosition() != 0) {
+            } else if (SharedPrefManager.getInstance(context).getUser().getDesigid() != 1 && spnConsultant.getSelectedItemPosition() != 0) {
                 sendPrescription(SharedPrefManager.getInstance(context).getConsultantList().get(spnConsultant.getSelectedItemPosition()).getUserid());
             } else Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
         });
         return view;
     }
-    private void bindData(){
-        Call<PrescribedMedResp> call1= RetrofitClient.getInstance().getApi().getCurrentPrescripttionHistory(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getHeadID(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
+
+    private void bindData() {
+        Call<PrescribedMedResp> call1 = RetrofitClient.getInstance().getApi().getCurrentPrescripttionHistory(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getHeadID(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
         call1.enqueue(new Callback<PrescribedMedResp>() {
             @Override
             public void onResponse(Call<PrescribedMedResp> call1, Response<PrescribedMedResp> response) {
                 Utils.showRequestDialog(context);
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        medicineSearchResp1=response.body();
-                        if(medicineSearchResp1.getPrescription().size()>0)
+                        medicineSearchResp1 = response.body();
+                        if (medicineSearchResp1.getPrescription().size() > 0)
                             txtDate.setText(medicineSearchResp1.getPrescription().get(0).getPrescribedDated());
                         AddMedicationAdp adp = new AddMedicationAdp(context, medicineSearchResp1);
                         rvMedication.setAdapter(adp);
@@ -405,7 +406,7 @@ public class AddMedication extends Fragment {
 
                         for (int i = 0; i < medicineSearchResp1.getPatientHistory().size(); i++) {
 
-                            if (medicineSearchResp1.getPatientHistory().get(i).getPdmId() == 4){
+                            if (medicineSearchResp1.getPatientHistory().get(i).getPdmId() == 4) {
                                 getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
                                 getIcdCodeModelListMain.get(0).setDetailID(medicineSearchResp1.getPatientHistory().get(i).getDetailID()); // get item
                                 getIcdCodeModelListMain.get(0).setDetails(medicineSearchResp1.getPatientHistory().get(i).getDetails());
@@ -430,8 +431,9 @@ public class AddMedication extends Fragment {
             }
         });
     }
-    public void edit(Integer drugID, String drugName, String dosageForm, String doseStrength, String doseUnit, String doseFrequency, String duration, String remark){
-        medicineSearch=new MedicineSearch(drugID, drugName, dosageForm, doseStrength, doseUnit, doseFrequency, duration, remark);
+
+    public void edit(Integer drugID, String drugName, String dosageForm, String doseStrength, String doseUnit, String doseFrequency, String duration, String remark) {
+        medicineSearch = new MedicineSearch(drugID, drugName, dosageForm, doseStrength, doseUnit, doseFrequency, duration, remark);
         edtMedName.setText(drugName);
         edtMedName.setEnabled(false);
         spnForm.setSelection(arrayAdapter12.getPosition(dosageForm));
@@ -450,6 +452,7 @@ public class AddMedication extends Fragment {
         }*/
         edtRemark.setText(remark);
     }
+
     public void removeRow(int i) {
         try {
             medicineSearchResp1.getPrescription().remove(i);
@@ -461,14 +464,15 @@ public class AddMedication extends Fragment {
             ex.printStackTrace();
         }
     }
+
     public void stopDelMed(final int i, int isStop, int status) {
         try {
-            Call<ResponseBody> call=RetrofitClient.getInstance().getApi().updateMedication(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), medicineSearchResp1.getPrescription().get(i).getId(), isStop,status);
+            Call<ResponseBody> call = RetrofitClient.getInstance().getApi().updateMedication(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), medicineSearchResp1.getPrescription().get(i).getId(), isStop, status);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utils.showRequestDialog(context);
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         medicineSearchResp1.getPrescription().remove(i);
                         medicineSearchResp1.setPrescription(medicineSearchResp1.getPrescription());
                         AddMedicationAdp adp = new AddMedicationAdp(context, medicineSearchResp1);
@@ -486,14 +490,16 @@ public class AddMedication extends Fragment {
             ex.printStackTrace();
         }
     }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
+
     private void getNotification() {
         Utils.showRequestDialog(context);
-        Log.v("hitApi:", RetrofitClient.BASE_URL+"Prescription/GetNotification");
+        Log.v("hitApi:", RetrofitClient.BASE_URL + "Prescription/GetNotification");
         JSONArray medArray = new JSONArray();
         JSONArray diagnosisArray = new JSONArray();
         JSONArray patientDetails = new JSONArray();
@@ -505,7 +511,7 @@ public class AddMedication extends Fragment {
                     object.put("medID", medicineSearchResp1.getPrescription().get(i).getDrugID());
                     object.put("medName", medicineSearchResp1.getPrescription().get(i).getDrugName());
                     object.put("medType", "P");
-                    if(i==medicineSearchResp1.getPrescription().size()-1)
+                    if (i == medicineSearchResp1.getPrescription().size() - 1)
                         object.put("currentStatus", 1);
                     else object.put("currentStatus", 0);
                     medArray.put(object);
@@ -513,7 +519,7 @@ public class AddMedication extends Fragment {
             }
             if (patientHistoryArrayList.size() > 0) {
                 for (int i = 0; i < patientHistoryArrayList.size(); i++) {
-                    if(patientHistoryArrayList.get(i).getPdmId()==4) {
+                    if (patientHistoryArrayList.get(i).getPdmId() == 4) {
                         JSONObject object = new JSONObject();
                         object.put("diagnosisID", patientHistoryArrayList.get(i).getDetailID());
                         object.put("diagnosisName", patientHistoryArrayList.get(i).getDetails());
@@ -523,7 +529,7 @@ public class AddMedication extends Fragment {
             }
             if (patientHistoryArrayList.size() > 0) {
                 for (int i = 0; i < patientHistoryArrayList.size(); i++) {
-                    if(patientHistoryArrayList.get(i).getPdmId()==1) {
+                    if (patientHistoryArrayList.get(i).getPdmId() == 1) {
                         JSONObject object = new JSONObject();
                         object.put("detailID", patientHistoryArrayList.get(i).getDetailID());
                         object.put("details", patientHistoryArrayList.get(i).getDetails());
@@ -544,7 +550,7 @@ public class AddMedication extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post(RetrofitClient.BASE_URL+"Prescription/GetNotification")
+        AndroidNetworking.post(RetrofitClient.BASE_URL + "Prescription/GetNotification")
                 .addHeaders("accessToken", SharedPrefManager.getInstance(context).getUser().getAccessToken())
                 .addHeaders("userID", SharedPrefManager.getInstance(context).getUser().getUserid().toString())
                 .addJSONObjectBody(jsonObject)
@@ -554,24 +560,23 @@ public class AddMedication extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if(response.getJSONArray("showNotificaton")!=null)
-                                notification=response.getJSONArray("showNotificaton");
-                            else notification=null;
-                            if(response.getJSONArray("notificatonForSave")!=null) {
+                            if (response.getJSONArray("showNotificaton") != null)
+                                notification = response.getJSONArray("showNotificaton");
+                            else notification = null;
+                            if (response.getJSONArray("notificatonForSave") != null) {
                                 notificationForSave = response.getJSONArray("notificatonForSave");
                                 for (int i = 0; i < notificationForSave.length(); i++) {
                                     notificationForSave1.put(notificationForSave.get(i));
                                 }
-                            }
-                            else notificationForSave=null;
-                            JSONArray medID=response.getJSONArray("medId");
-                            JSONObject medIDObject=medID.getJSONObject(0);
-                            medicineSearches.get(medicineSearches.size()-1).setDrugID(medIDObject.getInt("currentMedID"));
+                            } else notificationForSave = null;
+                            JSONArray medID = response.getJSONArray("medId");
+                            JSONObject medIDObject = medID.getJSONObject(0);
+                            medicineSearches.get(medicineSearches.size() - 1).setDrugID(medIDObject.getInt("currentMedID"));
                             if (notification != null) {
                                 scrollNoti.setVisibility(View.VISIBLE);
                                 for (int i = 0; i < notification.length(); i++) {
-                                    JSONObject object=notification.getJSONObject(i);
-                                    notificationShow =notificationShow.concat((object.getString("notification")+"\n"+Html.fromHtml(object.getString("remark"))));
+                                    JSONObject object = notification.getJSONObject(i);
+                                    notificationShow = notificationShow.concat((object.getString("notification") + "\n" + Html.fromHtml(object.getString("remark"))));
                                 }
                             }
                             txtNotification.setText(notificationShow);
@@ -596,12 +601,13 @@ public class AddMedication extends Fragment {
                     }
                 });
     }
+
     private void sendPrescription(int drId) {
-        Log.v("hitApi:", RetrofitClient.BASE_URL+"Prescription/SavePrescriptionAndInvistigation");
+        Log.v("hitApi:", RetrofitClient.BASE_URL + "Prescription/SavePrescriptionAndInvistigation");
         JSONArray array = new JSONArray();
         JSONArray arrayPatientDetails = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-        boolean empty=true;
+        boolean empty = true;
         try {
             if (medicineSearchResp1.getPrescription().size() > 0) {
                 for (int i = 0; i < medicineSearchResp1.getPrescription().size(); i++) {
@@ -647,7 +653,7 @@ public class AddMedication extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(!empty) {
+        if (!empty) {
             AndroidNetworking.post(RetrofitClient.BASE_URL + "Prescription/SavePrescriptionAndInvistigation")
                     .addHeaders("accessToken", SharedPrefManager.getInstance(context).getUser().getAccessToken())
                     .addHeaders("userID", SharedPrefManager.getInstance(context).getUser().getUserid().toString())
@@ -673,12 +679,13 @@ public class AddMedication extends Fragment {
                             Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show();
                         }
                     });
-        } else Toast.makeText(context, "Please add atleast 1 medication", Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(context, "Please add atleast 1 medication", Toast.LENGTH_SHORT).show();
     }
 
     private void hitGetICDCode(String searchText) {
 
-       // Utils.showRequestDialog(getActivity());
+        // Utils.showRequestDialog(getActivity());
 
         Call<GetIcdCodeResp> call = RetrofitClient.getInstance().getApi().getICDCode(
                 SharedPrefManager.getInstance(context).getUser().getAccessToken(),
@@ -835,9 +842,11 @@ public class AddMedication extends Fragment {
             getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         }
     }
+
     public String checkDigit(int number) {
         return number <= 9 ? "0" + number : String.valueOf(number);
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

@@ -41,11 +41,8 @@ public class PrescribedMedicationAdp extends RecyclerView.Adapter<PrescribedMedi
     @Override
     public void onBindViewHolder(@NonNull PrescribedMedicationAdp.RecyclerViewHolder holder, int i) {
         PrescriptionList prescriptionLists = prescriptionList.get(i);
-
-        holder.tvGivenBy.setVisibility(View.GONE);
-
-        holder.llMain.setWeightSum(12);
-
+        holder.tvGivenBy.setVisibility(View.VISIBLE);
+        //holder.llMain.setWeightSum(12);
         if (i != 0) {
             if (prescriptionLists.getCreatedDate().equalsIgnoreCase(prescriptionList.get(i - 1).getCreatedDate())) {
                 holder.txtDate.setVisibility(View.GONE);
@@ -70,7 +67,7 @@ public class PrescribedMedicationAdp extends RecyclerView.Adapter<PrescribedMedi
             holder.txtFreq.setText(prescriptionLists.getDoseFrequency());
             holder.txtDosage.setText(prescriptionLists.getDosageForm());
             holder.txtRemark.setText(prescriptionLists.getRemark());
-
+            holder.tvGivenBy.setText(prescriptionLists.getPrescribeBy());
            // String[] time = prescriptionLists.getIntakeDateTime().split("T");
            // holder.tvGivenTime.setText(Utils.formatTimeNew(time[1]));
             holder.tvGivenTime.setText(prescriptionLists.getDuration());
@@ -87,7 +84,6 @@ public class PrescribedMedicationAdp extends RecyclerView.Adapter<PrescribedMedi
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         TextView txtMed, txtStr, txtFreq, txtDate, txtDosage, txtRemark, tvGivenTime, tvGivenBy;
-
         LinearLayout llMain;
 
         public RecyclerViewHolder(@NonNull View itemView) {

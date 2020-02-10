@@ -129,15 +129,6 @@ public class PatientDashboard extends BaseFragment {
                             tvNoDataIpOp.setVisibility(View.GONE);
                         }
 
-                        /*if (clickType == 1 && vitalList.size() == 0){
-                            tvNoData.setVisibility(View.VISIBLE);
-                        }else if (clickType == 5 && response.body().getIntakeList().size() == 0 && response.body().getOutputList().size() == 0){
-                            tvNoData.setVisibility(View.VISIBLE);
-                        }else {
-                            tvNoData.setVisibility(View.GONE);
-                        }*/
-
-                        //recyclerViewPatient.setAdapter(new DiseasePatientListAdp(PatientDashboard.this));
                         String name = "", value = "", date = "", range = "";
 
                         for (int i = 0; i < vitalList.size(); i++) {
@@ -280,47 +271,6 @@ public class PatientDashboard extends BaseFragment {
                 }
                 notifyItemChanged(mExpandedPosition);
             });
-
-
-            ///////////////Working/////////
-           /* if (i == mExpandedPosition) {
-                holder.clSub.setVisibility(View.VISIBLE);
-
-                holder.ivArrow.animate().setDuration(200).rotation(90);
-
-//                Utils.ImageViewAnimatedChange(mCtx,holder.ivArrow,R.drawable.ic_arrow_down);
-
-              //  holder.ivArrow.setImageResource(R.drawable.ic_arrow_down);
-            } else {
-                holder.clSub.setVisibility(View.GONE);
-
-                holder.ivArrow.animate().setDuration(200).rotation(0);
-
-//                Utils.ImageViewAnimatedChange(mCtx,holder.ivArrow,R.drawable.ic_arrow_right);
-
-              //  holder.ivArrow.setImageResource(R.drawable.ic_arrow_right);
-            }
-
-            holder.clMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (mExpandedPosition >= 0) {
-                        int prev = mExpandedPosition;
-
-                        notifyItemChanged(prev);
-                    }
-
-                    mExpandedPosition = i;
-
-                    notifyItemChanged(mExpandedPosition);
-
-                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
-                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
-
-                }
-            });*/
-            /////////////Working end////
 
             holder.tvPid.setText(patientList.get(i).getPid().toString());
             holder.tvName.setText(patientList.get(i).getPatientName());
@@ -515,102 +465,9 @@ public class PatientDashboard extends BaseFragment {
 
                     }
                 }
-
-               /* if (patientList.get(i).getBPDias().equalsIgnoreCase("green")) {
-                    holder.tvBpBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                } else if (patientList.get(i).getBPDias().equalsIgnoreCase("red")) {
-                    holder.tvBpBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
-                } else if (patientList.get(i).getBPDias().equalsIgnoreCase("orange")) {
-                    holder.tvBpBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                }*/
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-           /* try {
-                if (patientList.get(i).getTemperature().equalsIgnoreCase("green")) {
-                    holder.tvTempBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                } else if (patientList.get(i).getTemperature().equalsIgnoreCase("red")) {
-                    holder.tvTempBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
-                } else if (patientList.get(i).getTemperature().equalsIgnoreCase("orange")) {
-                    holder.tvTempBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (patientList.get(i).getRespRate().equalsIgnoreCase("green")) {
-                    holder.tvRespBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                } else if (patientList.get(i).getRespRate().equalsIgnoreCase("red")) {
-                    holder.tvRespBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
-                } else if (patientList.get(i).getRespRate().equalsIgnoreCase("orange")) {
-                    holder.tvRespBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (patientList.get(i).getHeartRate().equalsIgnoreCase("green")) {
-                    holder.tvHbBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                } else if (patientList.get(i).getRespRate().equalsIgnoreCase("red")) {
-                    holder.tvHbBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
-                } else if (patientList.get(i).getRespRate().equalsIgnoreCase("orange")) {
-                    holder.tvHbBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (patientList.get(i).getPulse().equalsIgnoreCase("green")) {
-                    holder.tvPulseBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                } else if (patientList.get(i).getPulse().equalsIgnoreCase("red")) {
-                    holder.tvPulseBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
-                } else if (patientList.get(i).getPulse().equalsIgnoreCase("orange")) {
-                    holder.tvPulseBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (patientList.get(i).getIntake().equalsIgnoreCase("green")) {
-                    holder.tvIntakeBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                } else if (patientList.get(i).getIntake().equalsIgnoreCase("red")) {
-                    holder.tvIntakeBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
-                } else if (patientList.get(i).getIntake().equalsIgnoreCase("orange")) {
-                    holder.tvIntakeBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (patientList.get(i).getOutput().equalsIgnoreCase("green")) {
-                    holder.tvOutputBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                } else if (patientList.get(i).getOutput().equalsIgnoreCase("red")) {
-                    holder.tvOutputBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
-                } else if (patientList.get(i).getOutput().equalsIgnoreCase("orange")) {
-                    holder.tvOutputBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (patientList.get(i).getUserStatus().equalsIgnoreCase("green")) {
-                    holder.tvUserStatusBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                } else if (patientList.get(i).getUserStatus().equalsIgnoreCase("red")) {
-                    holder.tvUserStatusBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
-                } else if (patientList.get(i).getUserStatus().equalsIgnoreCase("orange")) {
-                    holder.tvUserStatusBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
 
             holder.scrollViewVital.setOnTouchListener((view, motionEvent) -> {
                 // Disallow the touch request for parent scroll on touch of child view
