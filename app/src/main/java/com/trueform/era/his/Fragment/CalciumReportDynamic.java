@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +16,34 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.trueform.era.his.Model.CalciumPatientHourly;
+import com.trueform.era.his.Model.CalciumVitalReport;
 import com.trueform.era.his.Model.DischargeTypeList;
+import com.trueform.era.his.Model.DynamicDate;
+import com.trueform.era.his.Model.DynamicDateValue;
+import com.trueform.era.his.Model.ResultListForAndroid;
 import com.trueform.era.his.Model.SubdeptList;
 import com.trueform.era.his.R;
+import com.trueform.era.his.Response.CalciumDynamicReportResp;
+import com.trueform.era.his.Response.CalciumPatientDataResp;
 import com.trueform.era.his.Response.DischargeTypeResp;
 import com.trueform.era.his.Response.SubDeptCalReportResp;
 import com.trueform.era.his.Utils.RetrofitClient;
 import com.trueform.era.his.Utils.SharedPrefManager;
 import com.trueform.era.his.Utils.Utils;
 import com.trueform.era.his.view.BaseFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -46,6 +64,7 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
     private ArrayAdapter<DischargeTypeList> dischargeTypeListAdp;
     SimpleDateFormat format2;
     Calendar c;
+    RecyclerView rvReport;
     private int mYear = 0, mMonth = 0, mDay = 0;
     private int tYear = 0, tMonth = 0, tDay = 0;
     Date today = new Date();
@@ -63,6 +82,7 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
         Objects.requireNonNull(getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         TextView btnShow = view.findViewById(R.id.btnShow);
         txtToDate =view.findViewById(R.id.txtToDate);
+        rvReport =view.findViewById(R.id.rvReport);
         txtFrmDate=view.findViewById(R.id.txtFrmDate);
         spnType=view.findViewById(R.id.spnType);
         spnDept=view.findViewById(R.id.spnDept);
@@ -85,8 +105,8 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
         dischargeTypeList=new ArrayList<>();
         subdeptList.add(0, new SubdeptList(0, "All"));
         dischargeTypeList.add(0, new DischargeTypeList(0, "All"));
-        /*LinearLayoutManager layoutManager=new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
-        rvReport.setLayoutManager(layoutManager);*/
+        LinearLayoutManager layoutManager=new LinearLayoutManager(mActivity, RecyclerView.HORIZONTAL, false);
+        rvReport.setLayoutManager(layoutManager);
         Call<SubDeptCalReportResp> call = RetrofitClient.getInstance().getApi().initControlsSubDept(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
         call.enqueue(new Callback<SubDeptCalReportResp>() {
             @Override
@@ -138,6 +158,82 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
         return view;
     }
 
+    private void showData(){
+        Utils.showRequestDialog(mActivity);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        if(toToday.getTime()>=today.getTime()) {
+            /*Call<CalciumDynamicReportResp> call = RetrofitClient.getInstance().getApi().getPatientCalciumHourlyReport(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), format.format(today), format.format(toToday), dischargeTypeList.get(spnType.getSelectedItemPosition()).getId(), String.valueOf(subdeptList.get(spnDept.getSelectedItemPosition()).getSubids()), "0");
+            call.enqueue(new Callback<CalciumDynamicReportResp>() {
+                @Override
+                public void onResponse(Call<CalciumDynamicReportResp> call, Response<CalciumDynamicReportResp> response) {
+                    if (response.isSuccessful()) {
+                        CalciumDynamicReportResp calciumPatientDataResp = response.body();
+                        if (calciumPatientDataResp != null) {
+                            //CalciumReportAdp calciumReportAdp = new CalciumReportAdp(calciumPatientDataResp.getResultListForAndroid());
+                            //rvReport.setAdapter(calciumReportAdp);
+                        } else rvReport.setAdapter(null);
+                    } else {
+                        try {
+                            Toast.makeText(mActivity, response.errorBody().string(), Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Utils.hideDialog();
+                }
+
+                @Override
+                public void onFailure(Call<CalciumDynamicReportResp> call, Throwable t) {
+                    Utils.hideDialog();
+                }
+            });*/
+            Log.v("hitApi:", RetrofitClient.BASE_URL + "CalciumReport/GetPatientCalciumHourlyReport");
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("date", format.format(today));
+                jsonObject.put("toDate", format.format(toToday));
+                jsonObject.put("dischargeID", dischargeTypeList.get(spnType.getSelectedItemPosition()).getId());
+                jsonObject.put("subDeptId", String.valueOf(subdeptList.get(spnDept.getSelectedItemPosition()).getSubids()));
+                jsonObject.put("wardID", "0");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            AndroidNetworking.post(RetrofitClient.BASE_URL + "CalciumReport/GetPatientCalciumHourlyReport")
+                    .addHeaders("accessToken", SharedPrefManager.getInstance(mActivity).getUser().getAccessToken())
+                    .addHeaders("userID", SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString())
+                    .addJSONObjectBody(jsonObject)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                JSONArray jsonArray=response.getJSONArray("resultListForAndroid");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Utils.hideDialog();
+                        }
+
+                        @Override
+                        public void onError(ANError error) {
+                            if (error.getErrorCode() != 0) {
+                                //loader.cancel();
+                                Log.d("onError errorCode ", "onError errorCode : " + error.getErrorCode());
+                                Log.d("onError errorBody", "onError errorBody : " + error.getErrorBody());
+                                Log.d("onError errorDetail", "onError errorDetail : " + error.getErrorDetail());
+                            } else {
+                                Log.d("onError errorDetail", "onError errorDetail : " + error.getErrorDetail());
+                            }
+                            Toast.makeText(mActivity, "Network error", Toast.LENGTH_SHORT).show();
+                            Utils.hideDialog();
+                        }
+                    });
+        }else{
+            Toast.makeText(mActivity, "To date should not be less than the from date!", Toast.LENGTH_LONG).show();
+            Utils.hideDialog();
+        }
+    }
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.txtFrmDate) {
@@ -169,7 +265,203 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
         } else if(view.getId()==R.id.btnShow){
-            //showData();
+            showData();
         }
     }
+
+    public class CalciumReportAdp extends  RecyclerView.Adapter<CalciumReportAdp.RecyclerViewHolder>{
+        List<ResultListForAndroid> calciumPatientHourly;
+
+        CalciumReportAdp(List<ResultListForAndroid> calciumPatientHourly) {
+            this.calciumPatientHourly = calciumPatientHourly;
+        }
+
+        @NonNull
+        @Override
+        public CalciumReportAdp.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new RecyclerViewHolder(LayoutInflater.from(mActivity).inflate(R.layout.inner_dynamic_calcium_report, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull CalciumReportAdp.RecyclerViewHolder holder, int i) {
+            holder.txtPName.setText(calciumPatientHourly.get(i).getPatientName());
+            //holder.txtAge.setText(calciumPatientHourly.get(i).getAgeGender());
+            holder.txtWard.setText(calciumPatientHourly.get(i).getWardName());
+            holder.txtDoA.setText(calciumPatientHourly.get(i).getAdmitDate());
+            holder.txtDiagnosis.setText(calciumPatientHourly.get(i).getDiagnosis());
+            holder.rvInnerReport.setAdapter(new InnerCalciumReportAdp(calciumPatientHourly.get(i).getDynamicDate()));
+            /*holder.txt8am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital8AM()));
+            holder.txt9am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital9AM()));
+            holder.txt10am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital10AM()));
+            holder.txt11am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital11AM()));
+            holder.txt12am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital12AM()));
+            holder.txt1am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital1AM()));
+            holder.txt2am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital2AM()));
+            holder.txt3am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital3AM()));
+            holder.txt4am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital4AM()));
+            holder.txt5am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital5AM()));
+            holder.txt6am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital6AM()));
+            holder.txt7am.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital7AM()));
+            holder.txt8pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital8PM()));
+            holder.txt9pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital9PM()));
+            holder.txt10pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital10PM()));
+            holder.txt11pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital11PM()));
+            holder.txt12pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital12PM()));
+            holder.txt1pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital1PM()));
+            holder.txt2pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital2PM()));
+            holder.txt3pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital3PM()));
+            holder.txt4pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital4PM()));
+            holder.txt5pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital5PM()));
+            holder.txt6pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital6PM()));
+            holder.txt7pm.setText(Html.fromHtml(calciumPatientHourly.get(i).getVital7PM()));*/
+            /*holder.prCal_8am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_8am.setProgress(calciumPatientHourly.get(i).getCalVal8AM());
+            holder.prCal_9am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_9am.setProgress(calciumPatientHourly.get(i).getCalVal9AM());
+            holder.prCal_10am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_10am.setProgress(calciumPatientHourly.get(i).getCalVal10AM());
+            holder.prCal_11am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_11am.setProgress(calciumPatientHourly.get(i).getCalVal11AM());
+            holder.prCal_12am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_12am.setProgress(calciumPatientHourly.get(i).getCalVal12AM());
+            holder.prCal_1am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_1am.setProgress(calciumPatientHourly.get(i).getCalVal1AM());
+            holder.prCal_2am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_2am.setProgress(calciumPatientHourly.get(i).getCalVal2AM());
+            holder.prCal_3am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_3am.setProgress(calciumPatientHourly.get(i).getCalVal3AM());
+            holder.prCal_4am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_4am.setProgress(calciumPatientHourly.get(i).getCalVal4AM());
+            holder.prCal_5am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_5am.setProgress(calciumPatientHourly.get(i).getCalVal5AM());
+            holder.prCal_6am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_6am.setProgress(calciumPatientHourly.get(i).getCalVal6AM());
+            holder.prCal_7am.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_7am.setProgress(calciumPatientHourly.get(i).getCalVal7AM());
+            holder.prCal_8pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_8pm.setProgress(calciumPatientHourly.get(i).getCalVal8PM());
+            holder.prCal_9pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_9pm.setProgress(calciumPatientHourly.get(i).getCalVal9PM());
+            holder.prCal_10pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_10pm.setProgress(calciumPatientHourly.get(i).getCalVal10PM());
+            holder.prCal_11pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_11pm.setProgress(calciumPatientHourly.get(i).getCalVal11PM());
+            holder.prCal_12pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_12pm.setProgress(calciumPatientHourly.get(i).getCalVal12PM());
+            holder.prCal_1pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_1pm.setProgress(calciumPatientHourly.get(i).getCalVal1PM());
+            holder.prCal_2pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_2pm.setProgress(calciumPatientHourly.get(i).getCalVal2PM());
+            holder.prCal_3pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_3pm.setProgress(calciumPatientHourly.get(i).getCalVal3PM());
+            holder.prCal_4pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_4pm.setProgress(calciumPatientHourly.get(i).getCalVal4PM());
+            holder.prCal_5pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_5pm.setProgress(calciumPatientHourly.get(i).getCalVal5PM());
+            holder.prCal_6pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_6pm.setProgress(calciumPatientHourly.get(i).getCalVal6PM());
+            holder.prCal_7pm.getProgressDrawable().setColorFilter(getResources().getColor(R.color.blue_light), PorterDuff.Mode.SRC_OUT);
+            holder.prCal_7pm.setProgress(calciumPatientHourly.get(i).getCalVal7PM());*/
+        }
+
+        @Override
+        public int getItemCount() {
+            return calciumPatientHourly.size();
+        }
+
+        public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+            TextView txtPName, txtAge, txtWard, txtDiagnosis, txtDoA;
+            RecyclerView rvInnerReport;
+            public RecyclerViewHolder(@NonNull View itemView) {
+                super(itemView);
+                txtPName=itemView.findViewById(R.id.txtPName);
+                txtAge=itemView.findViewById(R.id.txtAge);
+                txtPName=itemView.findViewById(R.id.txtPName);
+                txtWard=itemView.findViewById(R.id.txtWard);
+                txtDoA=itemView.findViewById(R.id.txtDoA);
+                txtDiagnosis=itemView.findViewById(R.id.txtDiagnosis);
+                rvInnerReport=itemView.findViewById(R.id.rvInnerReport);
+                rvInnerReport.setLayoutManager(new LinearLayoutManager(mActivity));
+            }
+        }
+    }
+
+
+    public class InnerCalciumReportAdp extends  RecyclerView.Adapter<InnerCalciumReportAdp.RecyclerViewHolder>{
+        List<DynamicDate> dynamicDateList;
+
+        InnerCalciumReportAdp(List<DynamicDate> dynamicDateList) {
+            this.dynamicDateList = dynamicDateList;
+        }
+
+        @NonNull
+        @Override
+        public InnerCalciumReportAdp.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new RecyclerViewHolder(LayoutInflater.from(mActivity).inflate(R.layout.inner_inner_dynamic_calcium_report, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull InnerCalciumReportAdp.RecyclerViewHolder holder, int i) {
+            holder.txtDateTime.setText(dynamicDateList.get(i).getDate());
+            for (int j = 0; j < dynamicDateList.get(i).getValue().size(); j++) {
+                holder.rvInnerInnerVitalValue.setAdapter(new InnerValuetAdp(dynamicDateList.get(i).getValue().get(j).getVitalDetail()));
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return dynamicDateList.size();
+        }
+
+        public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+            TextView txtDateTime;
+            RecyclerView rvInnerInnerVitalValue, rvInnerInnerInvestigationValue, rvInnerInnerFoodValue, rvInnerInnerMedicineValue, rvInnerInnerDeathValue, rvInnerInnerNutritionValue;
+            public RecyclerViewHolder(@NonNull View itemView) {
+                super(itemView);
+                txtDateTime=itemView.findViewById(R.id.txtDateTime);
+                rvInnerInnerVitalValue=itemView.findViewById(R.id.rvInnerInnerVitalValue);
+                /*rvInnerInnerInvestigationValue=itemView.findViewById(R.id.rvInnerInnerInvestigationValue);
+                rvInnerInnerFoodValue=itemView.findViewById(R.id.rvInnerInnerFoodValue);
+                rvInnerInnerMedicineValue=itemView.findViewById(R.id.rvInnerInnerMedicineValue);
+                rvInnerInnerDeathValue=itemView.findViewById(R.id.rvInnerInnerDeathValue);
+                rvInnerInnerNutritionValue=itemView.findViewById(R.id.rvInnerInnerNutritionValue);*/
+                rvInnerInnerVitalValue.setLayoutManager(new LinearLayoutManager(mActivity));
+            }
+        }
+    }
+
+    public class InnerValuetAdp extends  RecyclerView.Adapter<InnerValuetAdp.RecyclerViewHolder>{
+        List<CalciumVitalReport> dynamicDateValueList;
+
+        InnerValuetAdp(List<CalciumVitalReport> dynamicDateValueList) {
+            this.dynamicDateValueList = dynamicDateValueList;
+        }
+
+        @NonNull
+        @Override
+        public InnerValuetAdp.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new RecyclerViewHolder(LayoutInflater.from(mActivity).inflate(R.layout.inner_inner_inner_calcium, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull InnerValuetAdp.RecyclerViewHolder holder, int i) {
+            holder.txtName.setText(dynamicDateValueList.get(i).getVitalName());
+            holder.txtValue.setText(String.valueOf(dynamicDateValueList.get(i).getVmValue()));
+        }
+
+        @Override
+        public int getItemCount() {
+            return dynamicDateValueList.size();
+        }
+
+        public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+            TextView txtName, txtValue;
+            public RecyclerViewHolder(@NonNull View itemView) {
+                super(itemView);
+                txtName=itemView.findViewById(R.id.txtName);
+                txtValue=itemView.findViewById(R.id.txtValue);
+            }
+        }
+    }
+
 }

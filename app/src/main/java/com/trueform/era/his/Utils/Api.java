@@ -8,6 +8,7 @@ import com.trueform.era.his.Response.AddInvestigationResp;
 import com.trueform.era.his.Response.AnalyzingGraphResp;
 import com.trueform.era.his.Response.AttribValueResp;
 import com.trueform.era.his.Response.BillDetailsResp;
+import com.trueform.era.his.Response.CalciumDynamicReportResp;
 import com.trueform.era.his.Response.CalciumPatientDataResp;
 import com.trueform.era.his.Response.CalculatorResp;
 import com.trueform.era.his.Response.CheckPidResp;
@@ -174,6 +175,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("DateWiseReports/GetCalciumPatientHourlyReport")
     Call<CalciumPatientDataResp> getCalciumPatientHourlyReport(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("fromdate") String fromdate, @Field("todate") String todate, @Field("catIds") Integer catIds, @Field("subDeptID") String subDeptID);
+
+    @FormUrlEncoded
+    @POST("CalciumReport/GetPatientCalciumHourlyReport")
+    Call<CalciumDynamicReportResp> getPatientCalciumHourlyReport(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("date") String date, @Field("toDate") String toDate, @Field("dischargeID") Integer dischargeID, @Field("subDeptId") String subDeptId, @Field("wardID") String wardID);
 
     @FormUrlEncoded
     @POST("PatientPhysicalActivity/GetProblemAttributeValue")

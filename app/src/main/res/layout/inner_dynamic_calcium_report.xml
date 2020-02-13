@@ -82,7 +82,7 @@
             android:alpha="0.3"
             android:background="@color/black" />
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvReport"
+            android:id="@+id/rvInnerReport"
             android:layout_width="match_parent"
             tools:listitem="@layout/inner_inner_dynamic_calcium_report"
             android:scrollbars="none"
