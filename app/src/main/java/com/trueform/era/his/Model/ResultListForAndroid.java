@@ -36,6 +36,51 @@ public class ResultListForAndroid {
     @SerializedName("diagnosis")
     @Expose
     public String diagnosis;
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public void setPmID(Integer pmID) {
+        this.pmID = pmID;
+    }
+
+    public void setIpNo(String ipNo) {
+        this.ipNo = ipNo;
+    }
+
+    public void setUserLoginId(Object userLoginId) {
+        this.userLoginId = userLoginId;
+    }
+
+    public void setMemberId(Object memberId) {
+        this.memberId = memberId;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public void setAdmitDate(String admitDate) {
+        this.admitDate = admitDate;
+    }
+
+    public void setDischargeDate(String dischargeDate) {
+        this.dischargeDate = dischargeDate;
+    }
+
+    public void setWardName(String wardName) {
+        this.wardName = wardName;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public void setDynamicDate(List<DynamicDate> dynamicDate) {
+        this.dynamicDate = dynamicDate;
+    }
+
     @SerializedName("dynamicDate")
     @Expose
     public List<DynamicDate> dynamicDate;

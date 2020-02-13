@@ -17,6 +17,22 @@ public class CalciumVitalReport {
     @Expose
     public Double vmValue;
 
+    public void setPmid(Integer pmid) {
+        this.pmid = pmid;
+    }
+
+    public void setVmid(Integer vmid) {
+        this.vmid = vmid;
+    }
+
+    public void setVitalName(String vitalName) {
+        this.vitalName = vitalName;
+    }
+
+    public void setVmValue(Double vmValue) {
+        this.vmValue = vmValue;
+    }
+
     public Integer getPmid() {
         return pmid;
     }

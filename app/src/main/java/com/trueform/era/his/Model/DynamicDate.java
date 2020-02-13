@@ -13,6 +13,14 @@ public class DynamicDate {
     @Expose
     public List<DynamicDateValue> value = null;
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setValue(List<DynamicDateValue> value) {
+        this.value = value;
+    }
+
     public String getDate() {
         return date;
     }

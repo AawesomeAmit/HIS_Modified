@@ -64,6 +64,7 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
     private ArrayAdapter<DischargeTypeList> dischargeTypeListAdp;
     SimpleDateFormat format2;
     Calendar c;
+    JSONArray jsonArray;
     RecyclerView rvReport;
     private int mYear = 0, mMonth = 0, mDay = 0;
     private int tYear = 0, tMonth = 0, tDay = 0;
@@ -208,7 +209,43 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                JSONArray jsonArray=response.getJSONArray("resultListForAndroid");
+                                jsonArray=response.getJSONArray("resultListForAndroid");
+                                List<ResultListForAndroid> resultListForAndroidList=new ArrayList<>();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    ResultListForAndroid resultListForAndroid=new ResultListForAndroid();
+                                    JSONObject jsonObject1=jsonArray.getJSONObject(i);
+                                    JSONArray jsonArray1=jsonObject1.getJSONArray("dynamicDate");
+                                    List<DynamicDate> dynamicDateList =new ArrayList<>();
+                                    for (int j = 0; j < jsonArray1.length(); j++) {
+                                        JSONObject jsonObject2=jsonArray.getJSONObject(j);
+                                        JSONArray jsonArray2=jsonObject2.getJSONArray("value");
+                                        DynamicDate dynamicDate=new DynamicDate();
+                                        List<DynamicDateValue> dynamicDateValueList=new ArrayList<>();
+                                        for (int k = 0; k < jsonArray2.length(); k++) {
+                                            JSONObject jsonObject3=jsonArray.getJSONObject(k);
+                                            JSONArray jsonArray3=jsonObject3.getJSONArray("vitalDetail");
+                                            DynamicDateValue dynamicDateValue=new DynamicDateValue();
+                                            List<CalciumVitalReport> calciumVitalReportList=new ArrayList<>();
+                                            for (int l = 0; l < jsonArray3.length(); l++) {
+                                                JSONObject jsonObject4=jsonArray.getJSONObject(j);
+                                                CalciumVitalReport calciumVitalReport=new CalciumVitalReport();
+                                                calciumVitalReport.setPmid(jsonObject4.getInt("pmid"));
+                                                calciumVitalReport.setVmid(jsonObject4.getInt("vmid"));
+                                                calciumVitalReport.setVitalName(jsonObject4.getString("vitalName"));
+                                                calciumVitalReport.setVmValue(jsonObject4.getDouble("vmValue"));
+                                                calciumVitalReportList.add(calciumVitalReport);
+                                            }
+                                            dynamicDateValue.setVitalDetail(calciumVitalReportList);
+                                            dynamicDateValueList.add(dynamicDateValue);
+                                        }
+                                        dynamicDate.setDate(jsonObject1.getString("date"));
+                                        dynamicDate.setValue(dynamicDateValueList);
+                                        dynamicDateList.add(dynamicDate);
+                                    }
+                                    resultListForAndroid.setDynamicDate(dynamicDateList);
+                                    resultListForAndroidList.add(resultListForAndroid);
+                                }
+                                rvReport.setAdapter(new CalciumReportAdp(resultListForAndroidList));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

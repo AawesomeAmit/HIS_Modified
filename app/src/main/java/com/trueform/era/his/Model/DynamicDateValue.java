@@ -25,6 +25,30 @@ public class DynamicDateValue {
     @Expose
     public String nutritionDetail;
 
+    public void setVitalDetail(List<CalciumVitalReport> vitalDetail) {
+        this.vitalDetail = vitalDetail;
+    }
+
+    public void setInvestigationDetail(String investigationDetail) {
+        this.investigationDetail = investigationDetail;
+    }
+
+    public void setFoodIntakeDetail(String foodIntakeDetail) {
+        this.foodIntakeDetail = foodIntakeDetail;
+    }
+
+    public void setMedicineIntakeDetail(String medicineIntakeDetail) {
+        this.medicineIntakeDetail = medicineIntakeDetail;
+    }
+
+    public void setDeathDetail(String deathDetail) {
+        this.deathDetail = deathDetail;
+    }
+
+    public void setNutritionDetail(String nutritionDetail) {
+        this.nutritionDetail = nutritionDetail;
+    }
+
     public List<CalciumVitalReport> getVitalDetail() {
         return vitalDetail;
     }
