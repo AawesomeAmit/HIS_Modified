@@ -269,7 +269,7 @@
     <string name="angioplasty_report">Angioplasty Report</string>
     <string name="angiography_report">Angiography Report</string>
     <string name="note">Note</string>
-    <string name="cath_id_no">CATH ID NO.</string>
+    <string name="cath_id_no">Cath Id</string>
     <string name="procedure">Procedure</string>
     <string name="route">Route</string>
     <string name="contrast">Contrast</string>

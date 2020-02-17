@@ -22,41 +22,93 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="5"
-        android:gravity="center_vertical"
-        tools:ignore="DisableBaselineAlignment,RelativeOverlap">
+        android:paddingStart="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_2sdp"
+        android:weightSum="3">
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="1"
+            android:orientation="vertical"
             android:layout_marginEnd="@dimen/_1sdp"
-            android:background="@drawable/edt_bor"
-            android:layout_height="@dimen/_30sdp">
-            <Spinner
-                android:id="@+id/spnDept"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/textblue"
+                android:text="@string/department"/>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_3sdp" />
+                android:layout_marginEnd="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:background="@drawable/edt_bor"
+                android:layout_height="@dimen/_30sdp">
+                <Spinner
+                    android:id="@+id/spnDept"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_3sdp" />
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
+            android:orientation="vertical"
             android:layout_marginEnd="@dimen/_1sdp"
-            android:background="@drawable/edt_bor"
-            android:layout_height="@dimen/_30sdp">
-            <Spinner
-                android:id="@+id/spnType"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/textblue"
+                android:text="@string/ward"/>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_3sdp" />
+                android:layout_marginEnd="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:background="@drawable/edt_bor"
+                android:layout_height="@dimen/_30sdp">
+                <Spinner
+                    android:id="@+id/spnWard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_3sdp" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginEnd="@dimen/_1sdp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/textblue"
+                android:text="Discharge Type"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginEnd="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:background="@drawable/edt_bor"
+                android:layout_height="@dimen/_30sdp">
+                <Spinner
+                    android:id="@+id/spnType"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_3sdp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="10"
-        android:gravity="center_vertical"
-        tools:ignore="RelativeOverlap">
+        android:paddingStart="@dimen/_2sdp"
+        android:paddingEnd="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:weightSum="10">
         <TextView
             android:layout_width="0dp"
             android:textColor="@color/black"

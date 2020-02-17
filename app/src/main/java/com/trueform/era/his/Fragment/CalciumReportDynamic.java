@@ -24,7 +24,12 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.trueform.era.his.Model.CalciumPatientHourly;
+import com.trueform.era.his.Model.CalciumReportWardList;
 import com.trueform.era.his.Model.CalciumVitalReport;
 import com.trueform.era.his.Model.DischargeTypeList;
 import com.trueform.era.his.Model.DynamicDate;
@@ -34,6 +39,7 @@ import com.trueform.era.his.Model.SubdeptList;
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.CalciumDynamicReportResp;
 import com.trueform.era.his.Response.CalciumPatientDataResp;
+import com.trueform.era.his.Response.CalciumWardListResp;
 import com.trueform.era.his.Response.DischargeTypeResp;
 import com.trueform.era.his.Response.SubDeptCalReportResp;
 import com.trueform.era.his.Utils.RetrofitClient;
@@ -46,6 +52,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,6 +69,8 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
     private List<SubdeptList> subdeptList;
     private ArrayAdapter<SubdeptList> subdeptListadp;
     private ArrayAdapter<DischargeTypeList> dischargeTypeListAdp;
+    private List<CalciumReportWardList> calciumReportWardList;
+    private ArrayAdapter<CalciumReportWardList> calciumReportWardListAdp;
     SimpleDateFormat format2;
     Calendar c;
     JSONArray jsonArray;
@@ -74,7 +83,7 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
     private static String toDate = "";
     private TextView txtToDate;
     private TextView txtFrmDate;
-    private Spinner spnType, spnDept;
+    private Spinner spnType, spnDept, spnWard;
 
     @SuppressLint("SimpleDateFormat")
     @Override
@@ -87,6 +96,7 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
         txtFrmDate=view.findViewById(R.id.txtFrmDate);
         spnType=view.findViewById(R.id.spnType);
         spnDept=view.findViewById(R.id.spnDept);
+        spnWard=view.findViewById(R.id.spnWard);
         c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
@@ -104,8 +114,10 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
         btnShow.setOnClickListener(this);
         subdeptList=new ArrayList<>();
         dischargeTypeList=new ArrayList<>();
+        calciumReportWardList=new ArrayList<>();
         subdeptList.add(0, new SubdeptList(0, "All"));
         dischargeTypeList.add(0, new DischargeTypeList(0, "All"));
+        calciumReportWardList.add(0, new CalciumReportWardList(0, "All"));
         LinearLayoutManager layoutManager=new LinearLayoutManager(mActivity, RecyclerView.HORIZONTAL, false);
         rvReport.setLayoutManager(layoutManager);
         Call<SubDeptCalReportResp> call = RetrofitClient.getInstance().getApi().initControlsSubDept(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
@@ -156,6 +168,30 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
 
             }
         });
+        Call<CalciumWardListResp> call2=RetrofitClient.getInstance().getApi().getWardBySubDepartment(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), "");
+        call2.enqueue(new Callback<CalciumWardListResp>() {
+            @Override
+            public void onResponse(Call<CalciumWardListResp> call, Response<CalciumWardListResp> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        calciumReportWardList.addAll(1, response.body().getWardList());
+                        calciumReportWardListAdp = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, calciumReportWardList);
+                        spnWard.setAdapter(calciumReportWardListAdp);
+                    }
+                } else {
+                    try {
+                        Toast.makeText(mActivity, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CalciumWardListResp> call, Throwable t) {
+
+            }
+        });
         return view;
     }
 
@@ -195,7 +231,7 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
                 jsonObject.put("toDate", format.format(toToday));
                 jsonObject.put("dischargeID", dischargeTypeList.get(spnType.getSelectedItemPosition()).getId());
                 jsonObject.put("subDeptId", String.valueOf(subdeptList.get(spnDept.getSelectedItemPosition()).getSubids()));
-                jsonObject.put("wardID", "0");
+                jsonObject.put("wardID", calciumReportWardList.get(spnWard.getSelectedItemPosition()).getId());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -209,14 +245,18 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                jsonArray=response.getJSONArray("resultListForAndroid");
+                                jsonArray= response.getJSONArray("resultListForAndroid");
                                 List<ResultListForAndroid> resultListForAndroidList=new ArrayList<>();
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     ResultListForAndroid resultListForAndroid=new ResultListForAndroid();
                                     JSONObject jsonObject1=jsonArray.getJSONObject(i);
-                                    JSONArray jsonArray1=jsonObject1.getJSONArray("dynamicDate");
-                                    List<DynamicDate> dynamicDateList =new ArrayList<>();
-                                    for (int j = 0; j < jsonArray1.length(); j++) {
+                                    String jsonArray1= jsonObject1.getString("dynamicDate");
+                                    Gson gson = new Gson();
+                                    Type type = new TypeToken<List<DynamicDate>>(){}.getType();
+                                    List<DynamicDate> dynamicDateList = gson.fromJson(jsonArray1, type);
+                                    //List<DynamicDate> dynamicDateList =new ArrayList<>();
+
+                                    /*for (int j = 0; j < jsonArray1.length(); j++) {
                                         JSONObject jsonObject2=jsonArray.getJSONObject(j);
                                         JSONArray jsonArray2=jsonObject2.getJSONArray("value");
                                         DynamicDate dynamicDate=new DynamicDate();
@@ -241,7 +281,15 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
                                         dynamicDate.setDate(jsonObject1.getString("date"));
                                         dynamicDate.setValue(dynamicDateValueList);
                                         dynamicDateList.add(dynamicDate);
-                                    }
+                                    }*/
+
+                                    resultListForAndroid.setPid(jsonObject1.getInt("pid"));
+                                    resultListForAndroid.setPmID(jsonObject1.getInt("pmID"));
+                                    resultListForAndroid.setIpNo(jsonObject1.getString("ipNo"));
+                                    resultListForAndroid.setPatientName(jsonObject1.getString("patientName"));
+                                    resultListForAndroid.setAdmitDate(jsonObject1.getString("admitDate"));
+                                    //resultListForAndroid.setWardName(jsonObject1.getString("wardName"));
+                                    resultListForAndroid.setDiagnosis(jsonObject1.getString("diagnosis"));
                                     resultListForAndroid.setDynamicDate(dynamicDateList);
                                     resultListForAndroidList.add(resultListForAndroid);
                                 }
@@ -322,8 +370,7 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
         @Override
         public void onBindViewHolder(@NonNull CalciumReportAdp.RecyclerViewHolder holder, int i) {
             holder.txtPName.setText(calciumPatientHourly.get(i).getPatientName());
-            //holder.txtAge.setText(calciumPatientHourly.get(i).getAgeGender());
-            holder.txtWard.setText(calciumPatientHourly.get(i).getWardName());
+            //holder.txtWard.setText(calciumPatientHourly.get(i).getWardName());
             holder.txtDoA.setText(calciumPatientHourly.get(i).getAdmitDate());
             holder.txtDiagnosis.setText(calciumPatientHourly.get(i).getDiagnosis());
             holder.rvInnerReport.setAdapter(new InnerCalciumReportAdp(calciumPatientHourly.get(i).getDynamicDate()));
@@ -422,7 +469,6 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
             }
         }
     }
-
 
     public class InnerCalciumReportAdp extends  RecyclerView.Adapter<InnerCalciumReportAdp.RecyclerViewHolder>{
         List<DynamicDate> dynamicDateList;

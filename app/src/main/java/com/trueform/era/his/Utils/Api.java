@@ -1,15 +1,21 @@
 package com.trueform.era.his.Utils;
 
+import android.content.Intent;
+
 import com.trueform.era.his.Model.PatientDetailRDA;
 import com.trueform.era.his.Model.VitalChart;
 import com.trueform.era.his.Response.ActivityDataResp;
 import com.trueform.era.his.Response.ActivityResp;
 import com.trueform.era.his.Response.AddInvestigationResp;
 import com.trueform.era.his.Response.AnalyzingGraphResp;
+import com.trueform.era.his.Response.AngioPatientDetailResp;
+import com.trueform.era.his.Response.AngioReportResp;
+import com.trueform.era.his.Response.AngioplastyResp;
 import com.trueform.era.his.Response.AttribValueResp;
 import com.trueform.era.his.Response.BillDetailsResp;
 import com.trueform.era.his.Response.CalciumDynamicReportResp;
 import com.trueform.era.his.Response.CalciumPatientDataResp;
+import com.trueform.era.his.Response.CalciumWardListResp;
 import com.trueform.era.his.Response.CalculatorResp;
 import com.trueform.era.his.Response.CheckPidResp;
 import com.trueform.era.his.Response.ControlBySubDeptResp;
@@ -171,6 +177,14 @@ public interface Api {
     @FormUrlEncoded
     @POST("PatientPhysicalActivity/GetProblemAttribute")
     Call<ProbAttribResp> getProblemAttribute(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("problemID") Integer problemID);
+
+    @FormUrlEncoded
+    @POST("Radiology/GetAngioReportList")
+    Call<AngioReportResp> getAngioReportList(@Header("accessToken") String accessToken, @Header("userID") Integer userID, @Field("PID") Integer PID, @Field("headID") Integer headID, @Field("userID") Integer userID1);
+
+    @FormUrlEncoded
+    @POST("CalciumReport/GetWardBySubDepartment")
+    Call<CalciumWardListResp> getWardBySubDepartment(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("userID") String userID1);
 
     @FormUrlEncoded
     @POST("DateWiseReports/GetCalciumPatientHourlyReport")
@@ -395,6 +409,10 @@ public interface Api {
     Call<ResponseBody> deleteQuestionnaireInput(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("pid") Integer pid, @Field("answerMainID") Integer answerMainID);
 
     @FormUrlEncoded
+    @POST("Radiology/GetAngioTemplate")
+    Call<AngioplastyResp> getAngioTemplate(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("headID") Integer headID, @Field("userID") Integer userID1, @Field("itemID") String itemID);
+
+    @FormUrlEncoded
     @POST("PatientRange/UpdatePatientRange")
     Call<ResponseBody> updatePatientRange(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("ID") Integer ID);
 
@@ -491,11 +509,11 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("Radiology/GetPatientDetails")
-    Call<ViewProgressResp> getPatientDetails(
+    Call<AngioPatientDetailResp> getPatientDetails(
             @Header("accessToken") String accessToken,
             @Header("userID") Integer userID1,
             @Field("headID") Integer headID,
-            @Field("billNo") Integer billNo,
+            @Field("billNo") String billNo,
             @Field("userID") Integer userID
     );
 

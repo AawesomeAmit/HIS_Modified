@@ -36,6 +36,9 @@ public class ResultListForAndroid {
     @SerializedName("diagnosis")
     @Expose
     public String diagnosis;
+    @SerializedName("dynamicDate")
+    @Expose
+    public List<DynamicDate> dynamicDate;
 
     public void setPid(Integer pid) {
         this.pid = pid;
@@ -81,9 +84,6 @@ public class ResultListForAndroid {
         this.dynamicDate = dynamicDate;
     }
 
-    @SerializedName("dynamicDate")
-    @Expose
-    public List<DynamicDate> dynamicDate;
 
     public Integer getPid() {
         return pid;
