@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.trueform.era.his.Model.AngioReportList;
 import com.trueform.era.his.Model.ConsultantName;
 import com.trueform.era.his.Model.ProgressList;
 import com.trueform.era.his.Model.TestListAngio;
@@ -44,17 +45,19 @@ import java.util.List;
 import java.util.Objects;
 
 import jp.wasabeef.richeditor.RichEditor;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AngioReportActivity extends BaseActivity implements View.OnClickListener {
-    private TextView txtDate, tvPID, tvCrNo, tvIPNo, tvName, tvAgeGender, tvPatientType, tvBillDate;
+    private TextView txtDate, tvBillNo, tvPID, tvCrNo, tvIPNo, tvName, tvAgeGender, tvPatientType, tvBillDate;
     private TextView btnUpdate;
     private TextView btnSave;
     TextView txtDrName, txtDept;
     private Spinner spnConsultant;
     Context context;
+    String test="";
     EditText edtCathId, edtImpression;
     Spinner spnTest;
     List<ConsultantName> consultantNameList;
@@ -88,6 +91,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
         txtDrName = findViewById(R.id.txtDrName);
         tvBillDate = findViewById(R.id.tvBillDate);
+        tvBillNo = findViewById(R.id.tvBillNo);
         tvPatientType = findViewById(R.id.tvPatientType);
         tvCrNo = findViewById(R.id.tvCrNo);
         tvAgeGender = findViewById(R.id.tvAgeGender);
@@ -135,8 +139,6 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                         mDay = dayOfMonth;
                         date = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                         txtDate.setText((date));
-                        //  hitGetProgressHistory(date);
-                        //getVitals();
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
@@ -144,6 +146,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         spnTest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                test=String.valueOf(testListAngio.get(i).getId());
                 Call<AngioplastyResp> call=RetrofitClient.getInstance().getApi().getAngioTemplate(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getHeadID(), Integer.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString()), String.valueOf(testListAngio.get(i).getId()));
                 call.enqueue(new Callback<AngioplastyResp>() {
                     @Override
@@ -166,7 +169,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                
             }
         });
         getAngioReport();
@@ -176,7 +179,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
     private void getConsultantName() {
         consultantNameList.add(0, new ConsultantName(0, 0, "Select Consultant", 0));
-        Call<ControlBySubDeptResp> call = RetrofitClient.getInstance().getApi().getControlsBySubDept(SharedPrefManager.getInstance(this).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(this).getSubDept().getId(), SharedPrefManager.getInstance(this).getHeadID(), SharedPrefManager.getInstance(this).getUser().getUserid());
+        Call<ControlBySubDeptResp> call = RetrofitClient.getInstance().getApi().getControlsBySubDept(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getSubDept().getId(), SharedPrefManager.getInstance(mActivity).getHeadID(), SharedPrefManager.getInstance(mActivity).getUser().getUserid());
         call.enqueue(new Callback<ControlBySubDeptResp>() {
             @Override
             public void onResponse(Call<ControlBySubDeptResp> call, Response<ControlBySubDeptResp> response) {
@@ -196,169 +199,32 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         });
 
     }
-
-    /*private void saveProgressReport(int drId) {
-        Log.v("hitApi:", RetrofitClient.BASE_URL + "Prescription/SaveProgress");
-        JSONArray array = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            JSONObject object = new JSONObject();
-            object.put("detailID", 0);
-            object.put("details",  richTextEditor.getHtml().trim());
-            object.put("pdmID", pdmID);
-            array.put(object);
-
-            jsonObject.put("PID", SharedPrefManager.getInstance(context).getPid());
-            jsonObject.put("headID", SharedPrefManager.getInstance(context).getHeadID());
-            jsonObject.put("ipNo", SharedPrefManager.getInstance(context).getIpNo());
-            jsonObject.put("subDeptID", SharedPrefManager.getInstance(context).getSubDept().getId());
-            jsonObject.put("userID", SharedPrefManager.getInstance(context).getUser().getUserid());
-            jsonObject.put("consultantName", drId);
-            jsonObject.put("patientDetails", array);
-            Log.v("hitApiArr", String.valueOf(jsonObject));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (! richTextEditor.getHtml().isEmpty()) {
-            AndroidNetworking.post(RetrofitClient.BASE_URL + "Prescription/SaveProgress")
-                    .addHeaders("accessToken", SharedPrefManager.getInstance(context).getUser().getAccessToken())
-                    .addHeaders("userID", SharedPrefManager.getInstance(context).getUser().getUserid().toString())
-                    .addJSONObjectBody(jsonObject)
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.v("hitApiArrRes", response.toString());
-                            Toast.makeText(context, "Progress Note saved successfully", Toast.LENGTH_SHORT).show();
-                            hitGetProgressHistory(date);
-                        }
-
-                        @Override
-                        public void onError(ANError error) {
-                            if (error.getErrorCode() != 0) {
-                                //loader.cancel();
-                                Log.d("onError errorCode ", "onError errorCode : " + error.getErrorCode());
-                                Log.d("onError errorBody", "onError errorBody : " + error.getErrorBody());
-                                Log.d("onError errorDetail", "onError errorDetail : " + error.getErrorDetail());
-                            } else {
-                                Log.d("onError errorDetail", "onError errorDetail : " + error.getErrorDetail());
-                            }
-                            Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } else Toast.makeText(context, "Empty progress note!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void updateProgressReport(int drId) {
-        Log.v("hitApi:", RetrofitClient.BASE_URL + "Prescription/UpdateProgress");
-        JSONArray array = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            JSONObject object = new JSONObject();
-            object.put("detailID", 0);
-            object.put("details",  richTextEditor.getHtml().trim());
-            object.put("pdmID", pdmID);
-            array.put(object);
-            jsonObject.put("id", detailId);
-            jsonObject.put("PID", SharedPrefManager.getInstance(context).getPid());
-            jsonObject.put("headID", SharedPrefManager.getInstance(context).getHeadID());
-            jsonObject.put("subDeptID", SharedPrefManager.getInstance(context).getSubDept().getId());
-            jsonObject.put("userID", SharedPrefManager.getInstance(context).getUser().getUserid());
-            jsonObject.put("consultantName", drId);
-            jsonObject.put("entryDate", entryDate);
-            jsonObject.put("patientDetails", array);
-            Log.v("hitApiArr", String.valueOf(jsonObject));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (! richTextEditor.getHtml().trim().isEmpty()) {
-            AndroidNetworking.post(RetrofitClient.BASE_URL + "Prescription/UpdateProgress")
-                    .addHeaders("accessToken", SharedPrefManager.getInstance(context).getUser().getAccessToken())
-                    .addHeaders("userID", SharedPrefManager.getInstance(context).getUser().getUserid().toString())
-                    .addJSONObjectBody(jsonObject)
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsJSONObject(new JSONObjectRequestListener() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.v("hitApiArrRes", response.toString());
-                            Toast.makeText(context, "Progress Note updated successfully", Toast.LENGTH_SHORT).show();
-                            hitGetProgressHistory(date);
-                        }
-
-                        @Override
-                        public void onError(ANError error) {
-                            if (error.getErrorCode() != 0) {
-                                //loader.cancel();
-                                Log.d("onError errorCode ", "onError errorCode : " + error.getErrorCode());
-                                Log.d("onError errorBody", "onError errorBody : " + error.getErrorBody());
-                                Log.d("onError errorDetail", "onError errorDetail : " + error.getErrorDetail());
-                            } else {
-                                Log.d("onError errorDetail", "onError errorDetail : " + error.getErrorDetail());
-                            }
-                            Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } else Toast.makeText(context, "Empty progress note!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void deleteProgressReport() {
-        Log.v("hitApi:", RetrofitClient.BASE_URL + "Prescription/DeleteProgress");
-
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("id", detailId);
-            jsonObject.put("PID", SharedPrefManager.getInstance(context).getPid());
-            jsonObject.put("ipNo", SharedPrefManager.getInstance(context).getIpNo());
-            jsonObject.put("headID", SharedPrefManager.getInstance(context).getHeadID());
-            jsonObject.put("subDeptID", SharedPrefManager.getInstance(context).getSubDept().getId());
-            jsonObject.put("userID", SharedPrefManager.getInstance(context).getUser().getUserid());
-
-            Log.v("hitApiArr", String.valueOf(jsonObject));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        AndroidNetworking.post(RetrofitClient.BASE_URL + "Prescription/DeleteProgress")
-                .addHeaders("accessToken", SharedPrefManager.getInstance(context).getUser().getAccessToken())
-                .addHeaders("userID", SharedPrefManager.getInstance(context).getUser().getUserid().toString())
-                .addJSONObjectBody(jsonObject)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.v("hitApiArrRes", response.toString());
-                        Toast.makeText(context, "Progress Note Deleted Successfully", Toast.LENGTH_SHORT).show();
-                        hitGetProgressHistory(date);
+    private void saveReport(){
+        if(!tvPID.getText().toString().isEmpty()){
+            Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveAngioResult(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getHeadID()), SharedPrefManager.getInstance(mActivity).getUser().getUserid(), tvBillNo.getText().toString(), test, richTextEditor.getHtml().trim(), edtImpression.getText().toString().trim(), edtCathId.getText().toString().trim(), tvPatientType.getText().toString());
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if(response.isSuccessful()){
+                        getAngioReport();
+                        Toast.makeText(AngioReportActivity.this, "Saved Successfully!", Toast.LENGTH_SHORT).show();
                     }
+                }
 
-                    @Override
-                    public void onError(ANError error) {
-                        if (error.getErrorCode() != 0) {
-                            //loader.cancel();
-                            Log.d("onError errorCode ", "onError errorCode : " + error.getErrorCode());
-                            Log.d("onError errorBody", "onError errorBody : " + error.getErrorBody());
-                            Log.d("onError errorDetail", "onError errorDetail : " + error.getErrorDetail());
-                        } else {
-                            Log.d("onError errorDetail", "onError errorDetail : " + error.getErrorDetail());
-                        }
-                        Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
 
+                }
+            });
+        }else Toast.makeText(mActivity, "Invalid Bill No.!", Toast.LENGTH_SHORT).show();
     }
-*/
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnSave:
-
                 if (SharedPrefManager.getInstance(context).getUser().getDesigid() == 1) {
-                    //saveProgressReport(SharedPrefManager.getInstance(context).getUser().getUserid());
                 } else if (SharedPrefManager.getInstance(context).getUser().getDesigid() != 1 && spnConsultant.getSelectedItemPosition() != 0) {
-                    // saveProgressReport(SharedPrefManager.getInstance(context).getConsultantList().get(spnConsultant.getSelectedItemPosition()).getUserid());
+                    saveReport();
                 } else
                     Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
 
@@ -395,12 +261,13 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                         testListAngioAdp = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, testListAngio);
                         spnTest.setAdapter(testListAngioAdp);
                         tvPID.setText(String.valueOf(response.body().getPatientDetails().get(0).getPid()));
-                        tvBillDate.setText(String.valueOf(response.body().getPatientDetails().get(0).getPid()));
-                        tvAgeGender.setText(String.valueOf(response.body().getPatientDetails().get(0).getPid()));
-                        tvCrNo.setText(String.valueOf(response.body().getPatientDetails().get(0).getPid()));
-                        tvIPNo.setText(String.valueOf(response.body().getPatientDetails().get(0).getPid()));
-                        tvName.setText(String.valueOf(response.body().getPatientDetails().get(0).getPid()));
-                        tvPatientType.setText(String.valueOf(response.body().getPatientDetails().get(0).getPid()));
+                        tvBillDate.setText(String.valueOf(response.body().getPatientDetails().get(0).getBillDate()));
+                        tvAgeGender.setText(String.valueOf(response.body().getPatientDetails().get(0).getGender()));
+                        tvCrNo.setText(String.valueOf(response.body().getPatientDetails().get(0).getCrNo()));
+                        tvIPNo.setText(String.valueOf(response.body().getPatientDetails().get(0).getIpNo()));
+                        tvName.setText(String.valueOf(response.body().getPatientDetails().get(0).getPatientName()));
+                        tvBillNo.setText(String.valueOf(response.body().getPatientDetails().get(0).getBillNo()));
+                        tvPatientType.setText(String.valueOf(response.body().getPatientDetails().get(0).getIsOpd()));
                     }
                     Utils.hideDialog();
                 }
@@ -444,6 +311,9 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
             public void onResponse(Call<AngioReportResp> call, Response<AngioReportResp> response) {
                 if (response.isSuccessful()) {
                     Utils.hideDialog();
+                    if (response.body() != null) {
+                        recyclerView.setAdapter(new ProgressHistoryAdapter(response.body().getAngioReportList()));
+                    }
                 }
             }
 
@@ -456,18 +326,16 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
 
     public class ProgressHistoryAdapter extends RecyclerView.Adapter<ProgressHistoryAdapter.RecyclerViewHolder> {
-        private Context mCtx;
-        private List<ProgressList> progressList;
+        private List<AngioReportList> angioReportLists;
 
-        public ProgressHistoryAdapter(Context mCtx, List<ProgressList> progressList) {
-            this.mCtx = mCtx;
-            this.progressList = progressList;
+        ProgressHistoryAdapter(List<AngioReportList> angioReportLists) {
+            this.angioReportLists = angioReportLists;
         }
 
         @NonNull
         @Override
         public ProgressHistoryAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            @SuppressLint("InflateParams") View view = LayoutInflater.from(mCtx).inflate(R.layout.inflate_progress_note, null);
+            @SuppressLint("InflateParams") View view = LayoutInflater.from(mActivity).inflate(R.layout.inner_angio_report, null);
             RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(lp);
             return new RecyclerViewHolder(view);
@@ -475,27 +343,20 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
         @Override
         public void onBindViewHolder(@NonNull ProgressHistoryAdapter.RecyclerViewHolder holder, int i) {
-
-            holder.tvDate.setText(progressList.get(i).getCreatedDate());
-            holder.tvTime.setText(progressList.get(i).getTime());
-            holder.tvConsultant.setText(progressList.get(i).getConsultant());
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                holder.tvProgressNote.setText(Html.fromHtml(progressList.get(i).getDetails().trim(), Html.FROM_HTML_MODE_COMPACT));
-            } else {
-                holder.tvProgressNote.setText(Html.fromHtml(progressList.get(i).getDetails().trim()));
-            }
+            holder.tvTestName.setText(angioReportLists.get(i).getItemName());
+            holder.tvDate.setText(angioReportLists.get(i).getBillDate());
+            holder.tvCathId.setText(angioReportLists.get(i).getCathID());
+            holder.tvImpression.setText(Html.fromHtml(angioReportLists.get(i).getImpression()));
+            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                holder.tvImpression.setText(Html.fromHtml(progressList.get(i).getDetails().trim(), Html.FROM_HTML_MODE_COMPACT));
+            } else {*/
 
             holder.ivEdit.setOnClickListener(view -> {
-                detailId = String.valueOf(progressList.get(i).getId());
-                entryDate = progressList.get(i).getCreatedDate() + " " + progressList.get(i).getTime();
-                //  edtProgress.setText(holder.tvProgressNote.getText().toString().trim());
-
+                //detailId = String.valueOf(progressList.get(i).getId());
             });
 
             holder.ivRemove.setOnClickListener(view -> {
-                detailId = String.valueOf(progressList.get(i).getId());
-                // deleteProgressReport();
+                //detailId = String.valueOf(progressList.get(i).getId());
             });
 
 
@@ -503,20 +364,19 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
         @Override
         public int getItemCount() {
-            return progressList.size();
+            return angioReportLists.size();
         }
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-            TextView tvDate, tvTime, tvProgressNote, tvConsultant;
-
+            TextView tvTestName, tvDate, tvCathId, tvImpression;
             ImageView ivEdit, ivRemove;
 
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
+                tvTestName = itemView.findViewById(R.id.tvTestName);
                 tvDate = itemView.findViewById(R.id.tvDate);
-                tvTime = itemView.findViewById(R.id.tvTime);
-                tvProgressNote = itemView.findViewById(R.id.tvProgressNote);
-                tvConsultant = itemView.findViewById(R.id.tvConsultant);
+                tvCathId = itemView.findViewById(R.id.tvCathId);
+                tvImpression = itemView.findViewById(R.id.tvImpression);
                 ivEdit = itemView.findViewById(R.id.ivEdit);
                 ivRemove = itemView.findViewById(R.id.ivRemove);
             }

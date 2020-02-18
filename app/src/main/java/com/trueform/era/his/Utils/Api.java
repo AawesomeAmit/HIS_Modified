@@ -433,6 +433,10 @@ public interface Api {
     Call<GetQuestionnaireList> GetQuestionnaireInputReport(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("date") String date, @Field("pid") Integer pid, @Field("setID") Integer setID);
 
     @FormUrlEncoded
+    @POST("Radiology/SaveAngioResult")
+    Call<ResponseBody> saveAngioResult(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("headID") String headID, @Field("userID") Integer userID1, @Field("billNo") String billNo, @Field("itemID") String itemID, @Field("resultRemark") String resultRemark, @Field("result") String result, @Field("cathID") String cathID, @Field("patientType") String patientType);
+
+    @FormUrlEncoded
     @POST("Prescription/getIPDCurrentHistory")
     Call<PrescribedMedResp> getCurrentPrescripttionHistory(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("headID") Integer headID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
 
