@@ -4,18 +4,22 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.trueform.era.his.Model.AngioReportList;
 import com.trueform.era.his.Model.ConsultantName;
-import com.trueform.era.his.Model.ProgressList;
+import com.trueform.era.his.Model.PatientDetailAngio;
 import com.trueform.era.his.Model.TestListAngio;
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.AngioPatientDetailResp;
@@ -61,7 +65,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
     EditText edtCathId, edtImpression;
     Spinner spnTest;
     List<ConsultantName> consultantNameList;
-    RecyclerView recyclerView;
+    RecyclerView rvAngioReport;
 
     Calendar c;
 
@@ -91,6 +95,8 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
         txtDrName = findViewById(R.id.txtDrName);
         tvBillDate = findViewById(R.id.tvBillDate);
+        edtCathId = findViewById(R.id.edtCathId);
+        edtImpression = findViewById(R.id.edtImpression);
         tvBillNo = findViewById(R.id.tvBillNo);
         tvPatientType = findViewById(R.id.tvPatientType);
         tvCrNo = findViewById(R.id.tvCrNo);
@@ -109,12 +115,12 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         btnUpdate = findViewById(R.id.btnUpdate);
         btnUpdate.setOnClickListener(this);
         context = mActivity;
-        recyclerView = findViewById(R.id.recyclerView);
+        rvAngioReport = findViewById(R.id.recyclerView);
 
         llProcedureNote = findViewById(R.id.llProcedureNote);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setNestedScrollingEnabled(false);
+        rvAngioReport.setLayoutManager(new LinearLayoutManager(mActivity));
+        rvAngioReport.setNestedScrollingEnabled(false);
 
         txtDrName.setText(SharedPrefManager.getInstance(this).getUser().getDisplayName());
         txtDept.setText(SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName());
@@ -128,7 +134,6 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
         date = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
         testListAngio=new ArrayList<>();
-        testListAngio.add(new TestListAngio(0, "Select Test"));
         txtDate.setText((date));
         findViewById(R.id.ivSearch).setOnClickListener(view -> getPatientDetail());
         txtDate.setOnClickListener(view1 -> {
@@ -146,30 +151,32 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         spnTest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                test=String.valueOf(testListAngio.get(i).getId());
-                Call<AngioplastyResp> call=RetrofitClient.getInstance().getApi().getAngioTemplate(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getHeadID(), Integer.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString()), String.valueOf(testListAngio.get(i).getId()));
-                call.enqueue(new Callback<AngioplastyResp>() {
-                    @Override
-                    public void onResponse(Call<AngioplastyResp> call, Response<AngioplastyResp> response) {
-                        if(response.isSuccessful()){
-                            if (response.body() != null) {
-                                if(!response.body().getTable().isEmpty()) {
-                                    richTextEditor.setHtml(response.body().getTable().get(0).getTemplate().trim());
+                if(i!=0) {
+                    test = String.valueOf(testListAngio.get(i).getId());
+                    Call<AngioplastyResp> call = RetrofitClient.getInstance().getApi().getAngioTemplate(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getHeadID(), Integer.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString()), String.valueOf(testListAngio.get(i).getId()));
+                    call.enqueue(new Callback<AngioplastyResp>() {
+                        @Override
+                        public void onResponse(Call<AngioplastyResp> call, Response<AngioplastyResp> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body() != null) {
+                                    if (!response.body().getTable().isEmpty()) {
+                                        richTextEditor.setHtml(response.body().getTable().get(0).getTemplate().trim());
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<AngioplastyResp> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<AngioplastyResp> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                }else richTextEditor.setHtml("");
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                
+
             }
         });
         getAngioReport();
@@ -184,7 +191,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onResponse(Call<ControlBySubDeptResp> call, Response<ControlBySubDeptResp> response) {
                 if (response.isSuccessful()) {
-                    consultantNameList.addAll(1, response.body().getConsultantName());
+                    if (response.body() != null) consultantNameList.addAll(1, response.body().getConsultantName());
                     SharedPrefManager.getInstance(mActivity).setConsultantList(consultantNameList);
                 }
                 consltantAdp = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, consultantNameList);
@@ -199,24 +206,26 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         });
 
     }
-    private void saveReport(){
-        if(!tvPID.getText().toString().isEmpty()){
-            Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveAngioResult(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getHeadID()), SharedPrefManager.getInstance(mActivity).getUser().getUserid(), tvBillNo.getText().toString(), test, richTextEditor.getHtml().trim(), edtImpression.getText().toString().trim(), edtCathId.getText().toString().trim(), tvPatientType.getText().toString());
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if(response.isSuccessful()){
-                        getAngioReport();
-                        Toast.makeText(AngioReportActivity.this, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+    private void saveReport() {
+        if (!tvPID.getText().toString().isEmpty()) {
+            if(spnTest.getSelectedItemPosition()!=0) {
+                Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveAngioResult(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getHeadID()), SharedPrefManager.getInstance(mActivity).getUser().getUserid(), tvBillNo.getText().toString(), test, richTextEditor.getHtml().trim(), edtImpression.getText().toString().trim(), edtCathId.getText().toString().trim(), tvPatientType.getText().toString());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            getAngioReport();
+                            Toast.makeText(AngioReportActivity.this, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                }
-            });
-        }else Toast.makeText(mActivity, "Invalid Bill No.!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else Toast.makeText(mActivity, "Please select a test!", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(mActivity, "Invalid Bill No.!", Toast.LENGTH_SHORT).show();
     }
     @Override
     public void onClick(View view) {
@@ -245,6 +254,8 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void getPatientDetail() {
+        testListAngio.clear();
+        testListAngio.add(new TestListAngio(0, "Select Test"));
         Utils.showRequestDialog(mActivity);
         Call<AngioPatientDetailResp> call = RetrofitClient.getInstance().getApi().getPatientDetails(
                 SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
@@ -253,21 +264,23 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                 etSearchBillNo.getText().toString().trim(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid());
         call.enqueue(new Callback<AngioPatientDetailResp>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<AngioPatientDetailResp> call, Response<AngioPatientDetailResp> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         testListAngio.addAll(1,response.body().getTestList());
+                        PatientDetailAngio patientDetail=response.body().getPatientDetails().get(0);
                         testListAngioAdp = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, testListAngio);
                         spnTest.setAdapter(testListAngioAdp);
-                        tvPID.setText(String.valueOf(response.body().getPatientDetails().get(0).getPid()));
-                        tvBillDate.setText(String.valueOf(response.body().getPatientDetails().get(0).getBillDate()));
-                        tvAgeGender.setText(String.valueOf(response.body().getPatientDetails().get(0).getGender()));
-                        tvCrNo.setText(String.valueOf(response.body().getPatientDetails().get(0).getCrNo()));
-                        tvIPNo.setText(String.valueOf(response.body().getPatientDetails().get(0).getIpNo()));
-                        tvName.setText(String.valueOf(response.body().getPatientDetails().get(0).getPatientName()));
-                        tvBillNo.setText(String.valueOf(response.body().getPatientDetails().get(0).getBillNo()));
-                        tvPatientType.setText(String.valueOf(response.body().getPatientDetails().get(0).getIsOpd()));
+                        tvPID.setText(String.valueOf(patientDetail.getPid()));
+                        tvBillDate.setText(String.valueOf(patientDetail.getBillDate()));
+                        tvAgeGender.setText(patientDetail.getAge()+"/"+patientDetail.getGender());
+                        tvCrNo.setText(String.valueOf(patientDetail.getCrNo()));
+                        tvIPNo.setText(String.valueOf(patientDetail.getIpNo()));
+                        tvName.setText(String.valueOf(patientDetail.getPatientName()));
+                        tvBillNo.setText(String.valueOf(patientDetail.getBillNo()));
+                        tvPatientType.setText(String.valueOf(patientDetail.getIsOpd()));
                     }
                     Utils.hideDialog();
                 }
@@ -289,30 +302,13 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                 SharedPrefManager.getInstance(mActivity).getHeadID(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid()
         );
-        /*call.enqueue(new Callback<ViewProgressResp>() {
-            @Override
-            public void onResponse(Call<ViewProgressResp> call, Response<ViewProgressResp> response) {
-                if (response.body() != null) {
-                    if (response.isSuccessful()) {
-                        recyclerView.setAdapter(new ProgressHistoryAdapter(context, response.body().getProgressList()));
-                    }
-                }
-                Utils.hideDialog();
-            }
-
-            @Override
-            public void onFailure(Call<ViewProgressResp> call, Throwable t) {
-                Utils.hideDialog();
-                Toast.makeText(mActivity,t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });*/
         call.enqueue(new Callback<AngioReportResp>() {
             @Override
             public void onResponse(Call<AngioReportResp> call, Response<AngioReportResp> response) {
                 if (response.isSuccessful()) {
                     Utils.hideDialog();
                     if (response.body() != null) {
-                        recyclerView.setAdapter(new ProgressHistoryAdapter(response.body().getAngioReportList()));
+                        rvAngioReport.setAdapter(new ProgressHistoryAdapter(response.body().getAngioReportList()));
                     }
                 }
             }
@@ -324,7 +320,19 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-
+    private void showPopup(String reportText) {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_angio_report, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        TextView tvAngioReport = popupView.findViewById(R.id.tvAngioReport);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            tvAngioReport.setText(Html.fromHtml(reportText, Html.FROM_HTML_MODE_COMPACT));
+        } else tvAngioReport.setText(Html.fromHtml(reportText));
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        rvAngioReport.getLocationOnScreen(location);
+        popupWindow.showAtLocation(rvAngioReport, Gravity.CENTER, 0, 0);
+    }
     public class ProgressHistoryAdapter extends RecyclerView.Adapter<ProgressHistoryAdapter.RecyclerViewHolder> {
         private List<AngioReportList> angioReportLists;
 
@@ -347,12 +355,20 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
             holder.tvDate.setText(angioReportLists.get(i).getBillDate());
             holder.tvCathId.setText(angioReportLists.get(i).getCathID());
             holder.tvImpression.setText(Html.fromHtml(angioReportLists.get(i).getImpression()));
-            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                holder.tvImpression.setText(Html.fromHtml(progressList.get(i).getDetails().trim(), Html.FROM_HTML_MODE_COMPACT));
-            } else {*/
-
+            holder.ivView.setOnClickListener(view -> showPopup(angioReportLists.get(i).getResultRemark()));
             holder.ivEdit.setOnClickListener(view -> {
-                //detailId = String.valueOf(progressList.get(i).getId());
+                tvBillNo.setText(angioReportLists.get(i).getBillNo());
+                tvBillDate.setText(angioReportLists.get(i).getBillDate());
+                tvCrNo.setText(angioReportLists.get(i).getCrNo());
+                tvIPNo.setText(angioReportLists.get(i).getIpNo());
+                tvPID.setText(String.valueOf(angioReportLists.get(i).getPid()));
+                edtCathId.setText(angioReportLists.get(i).getCathID());
+                edtImpression.setText(angioReportLists.get(i).getImpression());
+                for (int j = 0; j < testListAngio.size(); j++) {
+                    if(angioReportLists.get(i).getItemID().equals(testListAngio.get(j).getId()))
+                        spnTest.setSelection(j, true);
+                }
+                richTextEditor.setHtml(angioReportLists.get(i).getResultRemark());
             });
 
             holder.ivRemove.setOnClickListener(view -> {
@@ -369,7 +385,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView tvTestName, tvDate, tvCathId, tvImpression;
-            ImageView ivEdit, ivRemove;
+            ImageView ivEdit, ivRemove,ivView;
 
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -378,6 +394,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                 tvCathId = itemView.findViewById(R.id.tvCathId);
                 tvImpression = itemView.findViewById(R.id.tvImpression);
                 ivEdit = itemView.findViewById(R.id.ivEdit);
+                ivView = itemView.findViewById(R.id.ivView);
                 ivRemove = itemView.findViewById(R.id.ivRemove);
             }
         }

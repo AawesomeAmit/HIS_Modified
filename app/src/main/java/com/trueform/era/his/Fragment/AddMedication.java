@@ -803,7 +803,8 @@ public class AddMedication extends Fragment {
 
                 getIcdCodeModelListMain.remove(position);
                 notifyItemRemoved(position);
-                notifyItemRangeChanged(position, getIcdCodeModelListMain.size());
+                notifyItemRangeChanged(position, getIcdCodeModelListMain.size());//Minor bug fixed
+                //Security enhancement
 
             });
 
