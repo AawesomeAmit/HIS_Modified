@@ -54,14 +54,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProblemInput.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ProblemInput#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProblemInput extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

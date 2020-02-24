@@ -55,6 +55,7 @@ import com.trueform.era.his.Response.InvestigationResultNotificationResp;
 import com.trueform.era.his.Response.IpdPatientListResp;
 import com.trueform.era.his.Response.LoginResp;
 import com.trueform.era.his.Response.MealResp;
+import com.trueform.era.his.Response.MedicineListResp;
 import com.trueform.era.his.Response.MedicineSearchResp;
 import com.trueform.era.his.Response.MemberIdResp;
 import com.trueform.era.his.Response.NotificationCountResp;
@@ -451,6 +452,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("Prescription/updateMedication")
     Call<ResponseBody> updateMedication(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("id") Integer id, @Field("isStop") Integer isStop, @Field("status") Integer status);
+
+    @FormUrlEncoded
+    @POST("MedicationPackageMaster/GetMedicationList")
+    Call<MedicineListResp> getMedicationList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("diseaseId") Integer diseaseId, @Field("subDeptId") Integer subDeptId, @Field("userId") Integer userId, @Field("packageName") String packageName);
 
     @FormUrlEncoded
     @POST("Investigation/GetGraphByTestId")

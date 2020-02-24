@@ -3,6 +3,8 @@ package com.trueform.era.his.Fragment;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,20 +12,25 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,12 +47,14 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.trueform.era.his.Adapter.AddMedicationAdp;
 import com.trueform.era.his.Model.GetIcdCodeModel;
+import com.trueform.era.his.Model.MedicineList;
 import com.trueform.era.his.Model.MedicineSearch;
 import com.trueform.era.his.Model.PatientHistory;
 import com.trueform.era.his.Model.Prescription;
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.FreqUnitResp;
 import com.trueform.era.his.Response.GetIcdCodeResp;
+import com.trueform.era.his.Response.MedicineListResp;
 import com.trueform.era.his.Response.MedicineSearchResp;
 import com.trueform.era.his.Response.PrescribedMedResp;
 import com.trueform.era.his.Utils.ConnectivityChecker;
@@ -86,6 +95,7 @@ public class AddMedication extends Fragment {
     private List<String> formList;
     private List<String> freqList;
     private List<String> unitList;
+    List<MedicineList> medicineList;
     private static ArrayAdapter<String> arrayAdapter12;
     private static ArrayAdapter<String> arrayAdapter22;
     private static ArrayAdapter<String> arrayAdapter32;
@@ -317,19 +327,16 @@ public class AddMedication extends Fragment {
         tvTime.setOnClickListener(view1 -> {
 
             TimePickerDialog picker = new TimePickerDialog(context,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                    (tp, sHour, sMinute) -> {
 
-                            tvTime.setText(Utils.formatTime(sHour, sMinute));
-                            //   tvTime.setText(sHour + ":" + sMinute);
+                        tvTime.setText(Utils.formatTime(sHour, sMinute));
+                        //   tvTime.setText(sHour + ":" + sMinute);
 
-                            hour = String.valueOf(sHour);
-                            minutes = String.valueOf(sMinute);
-                            //amPm =
-                            time = Utils.formatTime(sHour, sMinute);
+                        hour = String.valueOf(sHour);
+                        minutes = String.valueOf(sMinute);
+                        //amPm =
+                        time = Utils.formatTime(sHour, sMinute);
 
-                        }
                     }, Integer.parseInt(hour), Integer.parseInt(minutes), false);
 
 
@@ -683,6 +690,58 @@ public class AddMedication extends Fragment {
             Toast.makeText(context, "Please add atleast 1 medication", Toast.LENGTH_SHORT).show();
     }
 
+    private void bindMed(int diseaseId, String packageName){
+        Call<MedicineListResp> call = RetrofitClient.getInstance().getApi().getMedicationList(
+                SharedPrefManager.getInstance(context).getUser().getAccessToken(),
+                SharedPrefManager.getInstance(context).getUser().getUserid().toString(),
+                diseaseId,SharedPrefManager.getInstance(context).getSubDept().getId(),SharedPrefManager.getInstance(context).getUser().getUserid(),
+                packageName);
+        call.enqueue(new Callback<MedicineListResp>() {
+            @Override
+            public void onResponse(Call<MedicineListResp> call, Response<MedicineListResp> response) {
+                if(response.isSuccessful()){
+                    if (response.body() != null) {
+                        if(!response.body().getMedicineList().isEmpty()) {
+                            medicineList=response.body().getMedicineList();
+                            showPopup();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MedicineListResp> call, Throwable t) {
+
+            }
+        });
+    }
+    private void showPopup() {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_diagnosis_add_medication, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        RecyclerView rvMedList = popupView.findViewById(R.id.rvMedList);
+        TextView btnAdd = popupView.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(view ->{
+            for (int i = 0; i < medicineList.size(); i++) {
+                if(medicineList.get(i).getSelected()){
+                    medicineSearches.add(new Prescription(medicineList.get(i).getDrugID(), medicineList.get(i).getDrugName(),
+                            medicineList.get(i).getDosageForm(), medicineList.get(i).getDoseStrength(), medicineList.get(i).getDoseUnit(),
+                            medicineList.get(i).getDoseFrequency(), "",
+                            "", 2));
+                    medicineSearchResp1.getPrescription().add(medicineSearches.get(medicineSearches.size() - 1));
+                }
+            }
+            AddMedicationAdp adp = new AddMedicationAdp(context, medicineSearchResp1);
+            rvMedication.setAdapter(adp);
+            popupWindow.dismiss();
+        });
+        rvMedList.setLayoutManager(new LinearLayoutManager(context));
+        rvMedList.setAdapter(new MedListAdp());
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        recyclerViewDiagnosis.getLocationOnScreen(location);
+        popupWindow.showAtLocation(recyclerViewDiagnosis, Gravity.CENTER, 0, 0);
+    }
     private void hitGetICDCode(String searchText) {
 
         // Utils.showRequestDialog(getActivity());
@@ -706,44 +765,36 @@ public class AddMedication extends Fragment {
                         //arrayAdapter.setDropDownViewResource(R.layout.inflate_auto_complete_text);
                         etConsultant.setAdapter(arrayAdapter);
 
-                        etConsultant.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                                try {
-
-                                    if (!containsDetail(getIcdCodeModelListMain, getIcdCodeModelList.get(position).getDetailID().toString())) {
-
-                                        getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
-                                        getIcdCodeModelListMain.get(0).setDetailID(getIcdCodeModelList.get(position).getDetailID()); // get item
-                                        getIcdCodeModelListMain.get(0).setDetails(getIcdCodeModelList.get(position).getDetails());
-                                        getIcdCodeModelListMain.get(0).setPdmID(getIcdCodeModelList.get(position).getPdmID());
-                                        //getNutrientByPrefixTextModelListMain.get(0).setSelected(true);
-
-                                        etConsultant.setText("");
-
-                                        if (adapterNutrient != null) {
-                                            adapterNutrient.notifyItemInserted(0);
-                                            // adapterNutrient.smoothScrollToPosition(0);
-                                        } else {
-                                            adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
-                                            recyclerViewDiagnosis.setAdapter(adapterNutrient);
-                                        }
-
+                        etConsultant.setOnItemClickListener((parent, view, position, id) -> {
+                            try {
+                                if (!containsDetail(getIcdCodeModelListMain, getIcdCodeModelList.get(position).getDetailID().toString())) {
+                                    getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
+                                    getIcdCodeModelListMain.get(0).setDetailID(getIcdCodeModelList.get(position).getDetailID()); // get item
+                                    getIcdCodeModelListMain.get(0).setDetails(getIcdCodeModelList.get(position).getDetails());
+                                    getIcdCodeModelListMain.get(0).setPdmID(getIcdCodeModelList.get(position).getPdmID());
+                                    //getNutrientByPrefixTextModelListMain.get(0).setSelected(true);
+                                    bindMed(getIcdCodeModelList.get(position).getDetailID(), searchText/*getIcdCodeModelList.get(position).getDetails()*/);
+                                    etConsultant.setText("");
+                                    if (adapterNutrient != null) {
+                                        adapterNutrient.notifyItemInserted(0);
+                                        // adapterNutrient.smoothScrollToPosition(0);
                                     } else {
-                                        //AppUtils.hideSoftKeyboard(mActivity);
-
-                                        Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
-
-                                        etConsultant.setText("");
+                                        adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
+                                        recyclerViewDiagnosis.setAdapter(adapterNutrient);
                                     }
+                                } else {
+                                    //AppUtils.hideSoftKeyboard(mActivity);
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                    Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+
+                                    etConsultant.setText("");
                                 }
 
-
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
+
+
                         });
 
                     }
@@ -762,6 +813,56 @@ public class AddMedication extends Fragment {
         });
     }
 
+    public class MedListAdp extends RecyclerView.Adapter<MedListAdp.RecyclerViewHolder> {
+        MedListAdp() {}
+
+        @NonNull
+        @Override
+        public MedListAdp.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            @SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.inner_diagnosis_med_list, null);
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            view.setLayoutParams(lp);
+            return new RecyclerViewHolder(view);
+        }
+
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onBindViewHolder(@NonNull MedListAdp.RecyclerViewHolder holder, int i) {
+            holder.tvMedName.setText(medicineList.get(i).getDrugName());
+            holder.tvStrength.setText(medicineList.get(i).getDoseStrength() + " " + medicineList.get(i).getDoseUnit());
+            holder.tvForm.setText(medicineList.get(i).getDosageForm());
+            holder.tvSFreq.setText(medicineList.get(i).getDoseFrequency());
+            if (medicineList.get(i).getSelected()) holder.rowLayout.setBackgroundColor(getResources().getColor(R.color.blue_selected));
+            else holder.rowLayout.setBackgroundColor(getResources().getColor(R.color.white));
+            holder.rowLayout.setOnClickListener(view -> {
+                if (medicineList.get(i).getSelected()) {
+                    medicineList.get(i).setSelected(false);
+                    holder.rowLayout.setBackgroundColor(getResources().getColor(R.color.white));
+                } else {
+                    medicineList.get(i).setSelected(true);
+                    holder.rowLayout.setBackgroundColor(getResources().getColor(R.color.blue_selected));
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return medicineList.size();
+        }
+
+        public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+            TextView tvMedName, tvStrength, tvForm, tvSFreq;
+            LinearLayout rowLayout;
+            public RecyclerViewHolder(@NonNull View itemView) {
+                super(itemView);
+                tvMedName = itemView.findViewById(R.id.tvMedName);
+                tvStrength = itemView.findViewById(R.id.tvStrength);
+                tvForm = itemView.findViewById(R.id.tvForm);
+                tvSFreq = itemView.findViewById(R.id.tvSFreq);
+                rowLayout = itemView.findViewById(R.id.rowLayout);
+            }
+        }
+    }
     boolean containsDetail(List<GetIcdCodeModel> list, String name) {
 
         for (GetIcdCodeModel item : list) {
@@ -800,11 +901,9 @@ public class AddMedication extends Fragment {
             }
 
             holder.ivRemove.setOnClickListener(view -> {
-
                 getIcdCodeModelListMain.remove(position);
                 notifyItemRemoved(position);
-                notifyItemRangeChanged(position, getIcdCodeModelListMain.size());//Minor bug fixed
-                //Security enhancement
+                notifyItemRangeChanged(position, getIcdCodeModelListMain.size());
 
             });
 

@@ -37,6 +37,7 @@ public class Prescription {
     @SerializedName("isShow")
     @Expose
     public Integer isShow;
+
     public Prescription(Integer drugID, String drugName, String dosageForm, String doseStrength, String doseUnit, String doseFrequency, String duration, String remark, Integer isShow) {
         this.drugID = drugID;
         this.drugName = drugName;

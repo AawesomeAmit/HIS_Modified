@@ -22,6 +22,7 @@
     <color name="texthintcolor">#acabab</color>
     <color name="blue_text">#10207A</color>
     <color name="blue_light">#579AD3</color>
+    <color name="blue_selected">#99B3D1FA</color>
     <color name="blue_heading">#0A64AD</color>
     <color name="red">#FF3B14</color>
     <color name="deficiencyRed">#df3400</color>
