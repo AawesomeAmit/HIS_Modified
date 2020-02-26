@@ -9,16 +9,13 @@
     app:cardBackgroundColor="@color/gryText"
     app:cardElevation="@dimen/_3sdp"
     app:cardCornerRadius="@dimen/_2sdp">
-
     <LinearLayout
         android:id="@+id/llHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="horizontal"
         android:paddingTop="@dimen/_5sdp"
         android:weightSum="6">
-
         <TextView
             android:id="@+id/tvTestName"
             android:layout_width="0dp"
@@ -28,18 +25,16 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_9sdp"
             tools:ignore="HardcodedText" />
-
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_2sdp"
-            android:layout_weight="0.8"
+            android:layout_weight="1.2"
             android:text="Date"
             android:textColor="@color/black"
             android:textSize="@dimen/_9sdp"
             tools:ignore="HardcodedText" />
-
         <TextView
             android:id="@+id/tvCathId"
             android:layout_width="0dp"
@@ -49,7 +44,6 @@
             android:text="@string/cath_id_no"
             android:textColor="@color/black"
             android:textSize="@dimen/_9sdp" />
-
         <TextView
             android:id="@+id/tvImpression"
             android:layout_width="0dp"
@@ -59,7 +53,6 @@
             android:text="@string/impression"
             android:textColor="@color/black"
             android:textSize="@dimen/_9sdp" />
-
         <ImageView
             android:id="@+id/ivView"
             android:layout_width="0dp"
@@ -74,17 +67,13 @@
             android:layout_weight="0.4"
             app:srcCompat="@android:drawable/ic_menu_edit"
             tools:ignore="ContentDescription" />
-
-        <ImageView
-            android:id="@+id/ivRemove"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_15sdp"
-            android:layout_weight="0.4"
-            app:srcCompat="@drawable/ic_remove"
-            tools:ignore="ContentDescription" />
-
-
-        <!--
+        <!--<ImageView
+                android:id="@+id/ivRemove"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_weight="0.4"
+                app:srcCompat="@drawable/ic_remove"
+                tools:ignore="ContentDescription" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -96,8 +85,6 @@
                     android:layout_gravity="center_vertical"
                     android:textSize="@dimen/_11sdp"
                     android:visibility="gone"
-                    android:id="@+id/txtAct"/>
-        -->
-
+                    android:id="@+id/txtAct"/>-->
     </LinearLayout>
 </androidx.cardview.widget.CardView>

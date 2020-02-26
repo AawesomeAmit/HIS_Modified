@@ -758,13 +758,10 @@ public class AddMedication extends Fragment {
 
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-
                         List<GetIcdCodeModel> getIcdCodeModelList = response.body().getIcdList();
-
                         ArrayAdapter arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_layout_new, getIcdCodeModelList);
                         //arrayAdapter.setDropDownViewResource(R.layout.inflate_auto_complete_text);
                         etConsultant.setAdapter(arrayAdapter);
-
                         etConsultant.setOnItemClickListener((parent, view, position, id) -> {
                             try {
                                 if (!containsDetail(getIcdCodeModelListMain, getIcdCodeModelList.get(position).getDetailID().toString())) {

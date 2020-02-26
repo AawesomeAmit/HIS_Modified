@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.trueform.era.his.Model.AngioBillList;
 import com.trueform.era.his.Model.AngioReportList;
 import com.trueform.era.his.Model.ConsultantName;
 import com.trueform.era.his.Model.PatientDetailAngio;
@@ -59,11 +60,11 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
     private TextView btnUpdate;
     private TextView btnSave;
     TextView txtDrName, txtDept;
-    private Spinner spnConsultant;
+    //private Spinner spnConsultant;
     Context context;
     String test="";
     EditText edtCathId, edtImpression;
-    Spinner spnTest;
+    Spinner spnTest, spnBillNo;
     List<ConsultantName> consultantNameList;
     RecyclerView rvAngioReport;
 
@@ -73,7 +74,9 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
     int mYear = 0, mMonth = 0, mDay = 0;
     List<TestListAngio> testListAngio;
+    List<AngioBillList> angioBillList;
     ArrayAdapter<TestListAngio> testListAngioAdp;
+    ArrayAdapter<AngioBillList> angioBillAdp;
     String detailId, entryDate;
     public ArrayAdapter<ConsultantName> consltantAdp;
     EditText etSearchBillNo;
@@ -96,6 +99,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         txtDrName = findViewById(R.id.txtDrName);
         tvBillDate = findViewById(R.id.tvBillDate);
         edtCathId = findViewById(R.id.edtCathId);
+        spnBillNo = findViewById(R.id.spnBillNo);
         edtImpression = findViewById(R.id.edtImpression);
         tvBillNo = findViewById(R.id.tvBillNo);
         tvPatientType = findViewById(R.id.tvPatientType);
@@ -105,11 +109,10 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         tvIPNo = findViewById(R.id.tvIPNo);
         tvPID = findViewById(R.id.tvPID);
         spnTest = findViewById(R.id.spnTest);
-        etSearchBillNo = findViewById(R.id.etSearchBillNo);
+        //etSearchBillNo = findViewById(R.id.etSearchBillNo);
         txtDept = findViewById(R.id.txtDept);
         txtDate = findViewById(R.id.txtDate);
         //edtProgress = findViewById(R.id.edtProgress);
-        spnConsultant = findViewById(R.id.spnConsultant);
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(this);
         btnUpdate = findViewById(R.id.btnUpdate);
@@ -134,8 +137,9 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
         date = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
         testListAngio=new ArrayList<>();
+        angioBillList=new ArrayList<>();
         txtDate.setText((date));
-        findViewById(R.id.ivSearch).setOnClickListener(view -> getPatientDetail());
+        //findViewById(R.id.ivSearch).setOnClickListener(view -> getPatientDetail());
         txtDate.setOnClickListener(view1 -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(mActivity), R.style.DialogTheme,
                     (view2, year, monthOfYear, dayOfMonth) -> {
@@ -147,6 +151,19 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        });
+        spnBillNo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i!=0){
+                    getPatientDetail();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
         });
         spnTest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -180,11 +197,11 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
             }
         });
         getAngioReport();
-        getConsultantName();
+        //getConsultantName();
 
     }
 
-    private void getConsultantName() {
+    /*private void getConsultantName() {
         consultantNameList.add(0, new ConsultantName(0, 0, "Select Consultant", 0));
         Call<ControlBySubDeptResp> call = RetrofitClient.getInstance().getApi().getControlsBySubDept(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getSubDept().getId(), SharedPrefManager.getInstance(mActivity).getHeadID(), SharedPrefManager.getInstance(mActivity).getUser().getUserid());
         call.enqueue(new Callback<ControlBySubDeptResp>() {
@@ -205,7 +222,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-    }
+    }*/
     private void saveReport() {
         if (!tvPID.getText().toString().isEmpty()) {
             if(spnTest.getSelectedItemPosition()!=0) {
@@ -229,24 +246,28 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
     }
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnSave:
-                if (SharedPrefManager.getInstance(context).getUser().getDesigid() == 1) {
+        if (view.getId() == R.id.btnSave) {
+            /*if (SharedPrefManager.getInstance(context).getUser().getDesigid() == 1) {
+                    saveReport();
                 } else if (SharedPrefManager.getInstance(context).getUser().getDesigid() != 1 && spnConsultant.getSelectedItemPosition() != 0) {
                     saveReport();
-                } else
+                } else {
                     Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
-
-                break;
-            case R.id.btnUpdate:
-                if (SharedPrefManager.getInstance(context).getUser().getDesigid() != 1 && spnConsultant.getSelectedItemPosition() != 0) {
-                    //   updateProgressReport(SharedPrefManager.getInstance(context).getConsultantList().get(spnConsultant.getSelectedItemPosition()).getUserid());
-                } else
-                    Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
-
-                break;
+                }*/
+            if (spnTest.getSelectedItemPosition() != 0) {
+                if (!edtCathId.getText().toString().isEmpty()) {
+                    if (!edtImpression.getText().toString().isEmpty()) {
+                        saveReport();
+                    } else {
+                        edtImpression.setError("Please enter expression");
+                        Toast.makeText(mActivity, "Please enter expression!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    edtCathId.setError("Please enter cathId");
+                    Toast.makeText(mActivity, "Please enter cathId!", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
-
     }
 
     public interface OnFragmentInteractionListener {
@@ -261,7 +282,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                 SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid(),
                 SharedPrefManager.getInstance(mActivity).getHeadID(),
-                etSearchBillNo.getText().toString().trim(),
+                angioBillList.get(spnBillNo.getSelectedItemPosition()).getBillNo(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid());
         call.enqueue(new Callback<AngioPatientDetailResp>() {
             @SuppressLint("SetTextI18n")
@@ -295,6 +316,8 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
     private void getAngioReport() {
         Utils.showRequestDialog(mActivity);
+        angioBillList.clear();
+        angioBillList.add(new AngioBillList("Select Bill No."));
         Call<AngioReportResp> call = RetrofitClient.getInstance().getApi().getAngioReportList(
                 SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid(),
@@ -308,7 +331,10 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                 if (response.isSuccessful()) {
                     Utils.hideDialog();
                     if (response.body() != null) {
+                        angioBillList.addAll(1, response.body().getAngioBillList());
                         rvAngioReport.setAdapter(new ProgressHistoryAdapter(response.body().getAngioReportList()));
+                        angioBillAdp = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, angioBillList);
+                        spnBillNo.setAdapter(angioBillAdp);
                     }
                 }
             }
@@ -370,12 +396,6 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                 }
                 richTextEditor.setHtml(angioReportLists.get(i).getResultRemark());
             });
-
-            holder.ivRemove.setOnClickListener(view -> {
-                //detailId = String.valueOf(progressList.get(i).getId());
-            });
-
-
         }
 
         @Override
@@ -395,49 +415,28 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
                 tvImpression = itemView.findViewById(R.id.tvImpression);
                 ivEdit = itemView.findViewById(R.id.ivEdit);
                 ivView = itemView.findViewById(R.id.ivView);
-                ivRemove = itemView.findViewById(R.id.ivRemove);
+                //ivRemove = itemView.findViewById(R.id.ivRemove);
             }
         }
     }
-
     private void setupTextEditor() {
-
-        richTextEditor.setPadding((int) getResources().getDimension(R.dimen._5sdp),
-                (int) getResources().getDimension(R.dimen._5sdp),
-                (int) getResources().getDimension(R.dimen._5sdp),
-                (int) getResources().getDimension(R.dimen._5sdp));
-
+        richTextEditor.setPadding((int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp));
         findViewById(R.id.action_undo).setOnClickListener(v -> richTextEditor.undo());
-
         findViewById(R.id.action_redo).setOnClickListener(v -> richTextEditor.redo());
-
         findViewById(R.id.action_bold).setOnClickListener(v -> richTextEditor.setBold());
-
         findViewById(R.id.action_italic).setOnClickListener(v -> richTextEditor.setItalic());
-
         findViewById(R.id.action_subscript).setOnClickListener(v -> richTextEditor.setSubscript());
-
         findViewById(R.id.action_superscript).setOnClickListener(v -> richTextEditor.setSuperscript());
-
         findViewById(R.id.action_strikethrough).setOnClickListener(v -> richTextEditor.setStrikeThrough());
-
         findViewById(R.id.action_underline).setOnClickListener(v -> richTextEditor.setUnderline());
-
         findViewById(R.id.action_heading1).setOnClickListener(v -> richTextEditor.setHeading(1));
-
         findViewById(R.id.action_heading2).setOnClickListener(v -> richTextEditor.setHeading(2));
-
         findViewById(R.id.action_heading3).setOnClickListener(v -> richTextEditor.setHeading(3));
-
         findViewById(R.id.action_heading4).setOnClickListener(v -> richTextEditor.setHeading(4));
-
         findViewById(R.id.action_heading5).setOnClickListener(v -> richTextEditor.setHeading(5));
-
         findViewById(R.id.action_heading6).setOnClickListener(v -> richTextEditor.setHeading(6));
-
         findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
             private boolean isChanged;
-
             @Override
             public void onClick(View v) {
                 richTextEditor.setTextColor(isChanged ? Color.BLACK : Color.RED);
@@ -447,35 +446,22 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
 
         findViewById(R.id.action_bg_color).setOnClickListener(new View.OnClickListener() {
             private boolean isChanged;
-
             @Override
             public void onClick(View v) {
                 richTextEditor.setTextBackgroundColor(isChanged ? Color.TRANSPARENT : Color.YELLOW);
                 isChanged = !isChanged;
             }
         });
-
         findViewById(R.id.action_indent).setOnClickListener(v -> richTextEditor.setIndent());
-
         findViewById(R.id.action_outdent).setOnClickListener(v -> richTextEditor.setOutdent());
-
         findViewById(R.id.action_align_left).setOnClickListener(v -> richTextEditor.setAlignLeft());
-
         findViewById(R.id.action_align_center).setOnClickListener(v -> richTextEditor.setAlignCenter());
-
         findViewById(R.id.action_align_right).setOnClickListener(v -> richTextEditor.setAlignRight());
-
         findViewById(R.id.action_blockquote).setOnClickListener(v -> richTextEditor.setBlockquote());
-
         findViewById(R.id.action_insert_bullets).setOnClickListener(v -> richTextEditor.setBullets());
-
         findViewById(R.id.action_insert_numbers).setOnClickListener(v -> richTextEditor.setNumbers());
-
         findViewById(R.id.action_insert_image).setVisibility(View.GONE);
-        findViewById(R.id.action_insert_image).setOnClickListener(v -> richTextEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
-                "dachshund"));
-
-
+        findViewById(R.id.action_insert_image).setOnClickListener(v -> richTextEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG", "dachshund"));
         findViewById(R.id.action_insert_link).setVisibility(View.GONE);
         findViewById(R.id.action_insert_link).setOnClickListener(v -> richTextEditor.insertLink("https://github.com/wasabeef", "wasabeef"));
         findViewById(R.id.action_insert_checkbox).setOnClickListener(v -> richTextEditor.insertTodo());

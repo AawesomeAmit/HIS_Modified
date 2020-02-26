@@ -19,10 +19,12 @@ import com.trueform.era.his.Response.CalciumWardListResp;
 import com.trueform.era.his.Response.CalculatorResp;
 import com.trueform.era.his.Response.CheckPidResp;
 import com.trueform.era.his.Response.ControlBySubDeptResp;
+import com.trueform.era.his.Response.DepartmentResp;
 import com.trueform.era.his.Response.DieteticsPatientResp;
 import com.trueform.era.his.Response.DischargeTypeResp;
 import com.trueform.era.his.Response.DiseaseListResp;
 import com.trueform.era.his.Response.DiseasePatientListResp;
+import com.trueform.era.his.Response.EmployeeShiftResp;
 import com.trueform.era.his.Response.FluidListResp;
 import com.trueform.era.his.Response.FoodDetailResp;
 import com.trueform.era.his.Response.FoodListRes;
@@ -558,6 +560,13 @@ public interface Api {
     @POST("UserNotification/GetNotificationList")
     Call<List<ViewNotificationResp>> getNotificationList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("userID") Integer userID);
 
+    @POST("EmployeeShiftInfo/GetDepartmentList")
+    Call<DepartmentResp> getDepartmentList(@Header("accessToken") String accessToken, @Header("userID") String userID);
+
+    @FormUrlEncoded
+    @POST("EmployeeShiftInfo/GetEmployeeList")
+    Call<DepartmentResp> getDepartmentList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("deptID ") String deptID , @Field("DeptName") String DeptName);
+
     @FormUrlEncoded
     @POST("UserNotification/GetUnReadNotificationCount")
     Call<List<NotificationCountResp>> getUnReadNotificationCount(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("userID") Integer userID);
@@ -585,6 +594,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("UserNotification/GetChangedRDANotificationDetail")
     Call<List<PatientDetailRDA>> getChangedRDANotificationDetail(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("notificationID") Integer notificationID, @Field("userID") String userID1);
+
+    @FormUrlEncoded
+    @POST("EmployeeShiftInfo/GetEmployeeList")
+    Call<EmployeeShiftResp> getEmployeeList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("deptID") Integer deptID, @Field("deptName") String deptName);
 
     @FormUrlEncoded
     @POST("UserNotification/ChangeRDAThroughNotification")

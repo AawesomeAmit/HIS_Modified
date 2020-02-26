@@ -23,6 +23,7 @@ import com.trueform.era.his.Fragment.ActivityProblemInput;
 import com.trueform.era.his.Fragment.CalciumPatientReport;
 import com.trueform.era.his.Fragment.CalciumReportDynamic;
 import com.trueform.era.his.Fragment.Calculator;
+import com.trueform.era.his.Fragment.EmployeeDetail;
 import com.trueform.era.his.Fragment.InputVital;
 import com.trueform.era.his.Fragment.Intake;
 import com.trueform.era.his.Fragment.IntakeInput;
@@ -134,6 +135,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         if(SharedPrefManager.getInstance(this).getHeadID() == 10) {
             menu.findItem(R.id.nav_cal_patient).setVisible(true);
             menu.findItem(R.id.nav_patient_dashboard).setVisible(true);
+            menu.findItem(R.id.nav_employee).setVisible(true);
             menu.findItem(R.id.nav_cal_dynamic).setVisible(true);
             menu.findItem(R.id.nav_vital_graph).setVisible(false);
             menu.findItem(R.id.nav_detail_graph).setVisible(false);
@@ -258,7 +260,10 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_questionnaire) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new Questionnaire();
-        } else if (id == R.id.nav_detail_graph) {
+        }  else if (id == R.id.nav_employee) {
+            spnConsultant.setVisibility(View.GONE);
+            fragment = new EmployeeDetail();
+        }else if (id == R.id.nav_detail_graph) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new PatientDetailGraph();
         } else if (id == R.id.nav_view_medication) {

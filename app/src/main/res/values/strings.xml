@@ -310,4 +310,5 @@
     <string name="calcium_hourly_report">Calcium Hourly Report</string>
     <string name="edit">Edit</string>
     <string name="medicines">Medicines</string>
+    <string name="employee_shift">Employee Shift</string>
 </resources>
