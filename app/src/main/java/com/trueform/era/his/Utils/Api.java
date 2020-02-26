@@ -210,7 +210,6 @@ public interface Api {
     Call<PatientDetailFoodNutrientResp> getNutriAnalyserValuesByFoodTimeIdPID(@Header("Token") String accessToken, @Field("PID") Integer PID, @Field("foodTimeID") String foodTimeID, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("nutrientList") String nutrientList, @Field("userLoginID") Integer userLoginID);
 
     @POST("UserIntake.asmx/GetNutriAnalyserFoodListByFoodTimeId")
-
     @FormUrlEncoded
     Call<FoodListRes> getFoodListFoodTimeId(
             @Header("token") String token,
@@ -218,7 +217,6 @@ public interface Api {
             @Field("foodTimeId") String foodTimeId,
             @Field("intakeDate") String intakeDate,
             @Field("userLoginId") String userLoginId
-
     );
 
     @FormUrlEncoded
@@ -565,7 +563,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("EmployeeShiftInfo/GetEmployeeList")
-    Call<DepartmentResp> getDepartmentList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("deptID ") String deptID , @Field("DeptName") String DeptName);
+    Call<EmployeeShiftResp> getEmployeeList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("deptID") Integer deptID , @Field("DeptName") String DeptName);
 
     @FormUrlEncoded
     @POST("UserNotification/GetUnReadNotificationCount")
@@ -594,10 +592,6 @@ public interface Api {
     @FormUrlEncoded
     @POST("UserNotification/GetChangedRDANotificationDetail")
     Call<List<PatientDetailRDA>> getChangedRDANotificationDetail(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("notificationID") Integer notificationID, @Field("userID") String userID1);
-
-    @FormUrlEncoded
-    @POST("EmployeeShiftInfo/GetEmployeeList")
-    Call<EmployeeShiftResp> getEmployeeList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("deptID") Integer deptID, @Field("deptName") String deptName);
 
     @FormUrlEncoded
     @POST("UserNotification/ChangeRDAThroughNotification")

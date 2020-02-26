@@ -118,7 +118,7 @@ public class AngioReportActivity extends BaseActivity implements View.OnClickLis
         btnUpdate = findViewById(R.id.btnUpdate);
         btnUpdate.setOnClickListener(this);
         context = mActivity;
-        rvAngioReport = findViewById(R.id.recyclerView);
+        rvAngioReport = findViewById(R.id.rvAngioReport);
 
         llProcedureNote = findViewById(R.id.llProcedureNote);
 

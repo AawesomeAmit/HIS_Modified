@@ -743,19 +743,10 @@ public class AddMedication extends Fragment {
         popupWindow.showAtLocation(recyclerViewDiagnosis, Gravity.CENTER, 0, 0);
     }
     private void hitGetICDCode(String searchText) {
-
-        // Utils.showRequestDialog(getActivity());
-
-        Call<GetIcdCodeResp> call = RetrofitClient.getInstance().getApi().getICDCode(
-                SharedPrefManager.getInstance(context).getUser().getAccessToken(),
-                SharedPrefManager.getInstance(context).getUser().getUserid().toString(),
-                searchText,
-                SharedPrefManager.getInstance(context).getUser().getUserid().toString());
-
+        Call<GetIcdCodeResp> call = RetrofitClient.getInstance().getApi().getICDCode(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), searchText, SharedPrefManager.getInstance(context).getUser().getUserid().toString());
         call.enqueue(new Callback<GetIcdCodeResp>() {
             @Override
             public void onResponse(Call<GetIcdCodeResp> call, Response<GetIcdCodeResp> response) {
-
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         List<GetIcdCodeModel> getIcdCodeModelList = response.body().getIcdList();
@@ -770,28 +761,23 @@ public class AddMedication extends Fragment {
                                     getIcdCodeModelListMain.get(0).setDetails(getIcdCodeModelList.get(position).getDetails());
                                     getIcdCodeModelListMain.get(0).setPdmID(getIcdCodeModelList.get(position).getPdmID());
                                     //getNutrientByPrefixTextModelListMain.get(0).setSelected(true);
-                                    bindMed(getIcdCodeModelList.get(position).getDetailID(), searchText/*getIcdCodeModelList.get(position).getDetails()*/);
+                                    bindMed(getIcdCodeModelList.get(position).getDetailID(), getIcdCodeModelList.get(position).getDetails());
                                     etConsultant.setText("");
                                     if (adapterNutrient != null) {
                                         adapterNutrient.notifyItemInserted(0);
-                                        // adapterNutrient.smoothScrollToPosition(0);
+                                        //adapterNutrient.smoothScrollToPosition(0);
                                     } else {
                                         adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
                                         recyclerViewDiagnosis.setAdapter(adapterNutrient);
                                     }
                                 } else {
                                     //AppUtils.hideSoftKeyboard(mActivity);
-
                                     Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
-
                                     etConsultant.setText("");
                                 }
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
-
                         });
 
                     }

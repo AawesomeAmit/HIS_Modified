@@ -124,7 +124,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 spnConsultant.setVisibility(View.GONE);
             }
         } else{
-            fragment = new PatientDashboard();
+            fragment = new CalciumPatientReport();
             llHeader.setVisibility(View.GONE);
         }
         if (savedInstanceState == null) {

@@ -10,15 +10,13 @@ import java.util.List;
 public class AngioReportResp {
     @SerializedName("angioBillList")
     @Expose
-    public List<AngioBillList> angioBillList = null;
-
+    private List<AngioBillList> angioBillList = null;
     public List<AngioBillList> getAngioBillList() {
         return angioBillList;
     }
-
     @SerializedName("angioReportList")
     @Expose
-    public List<AngioReportList> angioReportList = null;
+    private List<AngioReportList> angioReportList = null;
 
     public List<AngioReportList> getAngioReportList() {
         return angioReportList;

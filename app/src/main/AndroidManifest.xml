@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.trueform.era.his">
 
     <supports-screens
@@ -14,6 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permision.CALL_PHONE"/>
 
     <application
         android:name=".database.MyApplication"
@@ -26,26 +28,34 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".Activity.AchievedNutrientGraphActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".Activity.GuardPostPatientListActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Activity.GuardPostActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Activity.NotificationDetail"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".Activity.DiseasePatientList"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Fragment.DiseaseList"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Fragment.NutritiAnalyzer"
             android:label="@string/title_activity_nutriti_analyzer"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Fragment.IntakeOutputVitalRange"
             android:label="@string/title_activity_intake_output_vital_range"
             android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
         <!--
 
@@ -58,19 +68,23 @@
         <activity
             android:name=".Fragment.NutriAnalyserFragment"
             android:configChanges="keyboardHidden|orientation"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".Activity.AverageNutrientReportActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.IdealNutrientIntakeActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Fragment.ActivityProblemInput"
             android:label="@string/title_activity_problem_input"
             android:parentActivityName=".Activity.Dashboard"
             android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -78,6 +92,7 @@
         </activity>
         <activity
             android:name=".Activity.PatientDashboard"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="landscape" />
 
         <activity
@@ -86,20 +101,25 @@
             android:label="@string/title_activity_intake_input"
             android:parentActivityName=".Activity.Dashboard"
             android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.trueform.era.his.Activity.Dashboard" />
         </activity>
         <activity android:name=".Activity.EnterPID"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.ShowPatientAnalyzingGraph"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".Activity.NotificationList"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
@@ -109,10 +129,12 @@
         <activity
             android:name=".Activity.PatientList"
             android:configChanges="keyboardHidden|orientation"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Fragment.MedicineSidePathway"
             android:configChanges="keyboardHidden|orientation"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <!--
 <activity
@@ -123,6 +145,7 @@
         <activity
             android:name=".Activity.PreDashboard"
             android:configChanges="keyboardHidden|orientation"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.Dashboard"
@@ -130,11 +153,13 @@
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".Activity.StartActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -143,17 +168,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.ProgressNoteActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.ComplaintActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.PatientHistoryActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.PhysicalExaminationActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.ProcedureNoteActivity"
+            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.AngioReportActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <service
             android:name=".Utils.MyFirebaseMessagingService"
