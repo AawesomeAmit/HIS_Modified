@@ -23,6 +23,7 @@ import com.trueform.era.his.Fragment.ActivityProblemInput;
 import com.trueform.era.his.Fragment.CalciumPatientReport;
 import com.trueform.era.his.Fragment.CalciumReportDynamic;
 import com.trueform.era.his.Fragment.Calculator;
+import com.trueform.era.his.Fragment.CombinedGraph;
 import com.trueform.era.his.Fragment.EmployeeDetail;
 import com.trueform.era.his.Fragment.InputVital;
 import com.trueform.era.his.Fragment.Intake;
@@ -172,7 +173,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onResponse(Call<ControlBySubDeptResp> call, Response<ControlBySubDeptResp> response) {
                 if (response.isSuccessful()) {
-                    consultantNameList.addAll(1, response.body().getConsultantName());
+                    if (response.body() != null) {
+                        consultantNameList.addAll(1, response.body().getConsultantName());
+                    }
                     SharedPrefManager.getInstance(Dashboard.this).setConsultantList(consultantNameList);
                 }
                 consltantAdp = new ArrayAdapter<>(Dashboard.this, R.layout.spinner_layout, consultantNameList);
@@ -233,8 +236,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             startActivity(intent);
         } else if (id == R.id.nav_observation) {
             spnConsultant.setVisibility(View.GONE);
-            //fragment = new CombinedGraph();
-            fragment = new ObservationGraph();
+            fragment = new CombinedGraph();
+            //fragment = new ObservationGraph();
         } else if (id == R.id.nav_prescription) {
             //if (SharedPrefManager.getInstance(Dashboard.this).getHeadID() != 1)
             {

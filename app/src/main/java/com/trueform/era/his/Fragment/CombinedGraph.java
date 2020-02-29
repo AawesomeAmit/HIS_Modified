@@ -43,25 +43,22 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CombinedGraph extends Fragment implements View.OnClickListener {
-    Context context;
+    private Context context;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    View view;
-    Calendar c;
-    Spinner spnHour;
-    List<String> hourList=new ArrayList<>();
+    private Spinner spnHour;
+    private List<String> hourList = new ArrayList<>();
     ArrayAdapter<VitalList> adapter;
-    ArrayAdapter<String> hourAdp;
-    private List<VitalAnalysisModel> vitalLists=new ArrayList<>();
+    private List<VitalAnalysisModel> vitalLists = new ArrayList<>();
     private RecyclerView rvVital, rvNutrient;
     private ChipsInput chpVital, chpNutrient;
-    SimpleDateFormat format2;
-    private int mYear = 0, mMonth = 0, mDay = 0, mHour=0, mMinute=0;
-    Date today = new Date();
+    private SimpleDateFormat format2;
+    private int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
+    private Date today = new Date();
     private TextView txtFrmDate;
     private TextView txtFrmTime;
     private static String fromDate = "";
-    private List<Nutrition> nutritionList=new ArrayList<>();
+    private List<Nutrition> nutritionList = new ArrayList<>();
     private ArrayList<String> selectedMembersList = new ArrayList<>();
     private ArrayList<String> selectedVitalList = new ArrayList<>();
     private String mParam1;
@@ -93,29 +90,28 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
 
     @SuppressLint("SimpleDateFormat")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_combined_graph, container, false);
-        context=view.getContext();
-        rvVital= view.findViewById(R.id.rvVital);
-        spnHour= view.findViewById(R.id.spnHour);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_combined_graph, container, false);
+        context = view.getContext();
+        rvVital = view.findViewById(R.id.rvVital);
+        spnHour = view.findViewById(R.id.spnHour);
         rvVital.setLayoutManager(new LinearLayoutManager(context));
         rvVital.setNestedScrollingEnabled(false);
-        rvNutrient= view.findViewById(R.id.rvNutrient);
+        rvNutrient = view.findViewById(R.id.rvNutrient);
         rvNutrient.setLayoutManager(new LinearLayoutManager(context));
         rvNutrient.setNestedScrollingEnabled(false);
-        chpVital= view.findViewById(R.id.chpVital);
+        chpVital = view.findViewById(R.id.chpVital);
         chpVital.setChipHasAvatarIcon(true);
         chpVital.setChipDeletable(true);
         chpVital.setShowChipDetailed(false);
-        chpNutrient= view.findViewById(R.id.chpNutrient);
+        chpNutrient = view.findViewById(R.id.chpNutrient);
         chpNutrient.setChipHasAvatarIcon(true);
         chpNutrient.setChipDeletable(true);
         chpNutrient.setShowChipDetailed(false);
-        txtFrmTime=view.findViewById(R.id.txtFrmTime);
-        txtFrmDate=view.findViewById(R.id.txtFrmDate);
+        txtFrmTime = view.findViewById(R.id.txtFrmTime);
+        txtFrmDate = view.findViewById(R.id.txtFrmDate);
         TextView btnShow = view.findViewById(R.id.btnShow);
-        c = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -131,7 +127,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             public void onChipAdded(ChipInterface chip, int newSize) {
                 selectedVitalList.add(String.valueOf(chip.getId()));
                 vitalLists.clear();
-                VitalChipAdp vitalChipAdp=new VitalChipAdp(vitalLists);
+                VitalChipAdp vitalChipAdp = new VitalChipAdp(vitalLists);
                 rvVital.setAdapter(vitalChipAdp);
                 vitalChipAdp.notifyDataSetChanged();
             }
@@ -144,7 +140,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence text) {
                 bindVitals(String.valueOf(text));
-                VitalChipAdp vitalChipAdp=new VitalChipAdp(vitalLists);
+                VitalChipAdp vitalChipAdp = new VitalChipAdp(vitalLists);
                 rvVital.setAdapter(vitalChipAdp);
                 vitalChipAdp.notifyDataSetChanged();
             }
@@ -154,7 +150,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             public void onChipAdded(ChipInterface chip, int newSize) {
                 selectedMembersList.add(String.valueOf(chip.getId()));
                 nutritionList.clear();
-                NutrientChipAdp nutrientChipAdp=new NutrientChipAdp(nutritionList);
+                NutrientChipAdp nutrientChipAdp = new NutrientChipAdp(nutritionList);
                 rvNutrient.setAdapter(nutrientChipAdp);
                 nutrientChipAdp.notifyDataSetChanged();
             }
@@ -167,19 +163,20 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence text) {
                 bindNutrientList(String.valueOf(text));
-                NutrientChipAdp nutrientChipAdp=new NutrientChipAdp(nutritionList);
+                NutrientChipAdp nutrientChipAdp = new NutrientChipAdp(nutritionList);
                 rvNutrient.setAdapter(nutrientChipAdp);
                 nutrientChipAdp.notifyDataSetChanged();
             }
         });
         for (int i = 0; i < 24; i++) {
-           hourList.add(i, (i + 1) +" Hour");
+            hourList.add(i, (i + 1) + " Hour");
         }
-        hourAdp = new ArrayAdapter<>(context, R.layout.spinner_layout, hourList);
+        ArrayAdapter<String> hourAdp = new ArrayAdapter<>(context, R.layout.spinner_layout, hourList);
         spnHour.setAdapter(hourAdp);
         spnHour.setSelection(23);
         return view;
     }
+
     private void bindVitals(String text) {
         Call<VitalAutoCompleteResp> call = RetrofitClient.getInstance().getApi().getAutoCompleteVital(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), text);
         call.enqueue(new Callback<VitalAutoCompleteResp>() {
@@ -200,12 +197,13 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             }
         });
     }
-    private void bindNutrientList(String text){
-        Call<NutrientBindRes> call= RetrofitClient.getInstance().getApi().getAutoCompleteNutrition(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), text);
+
+    private void bindNutrientList(String text) {
+        Call<NutrientBindRes> call = RetrofitClient.getInstance().getApi().getAutoCompleteNutrition(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), text);
         call.enqueue(new Callback<NutrientBindRes>() {
             @Override
             public void onResponse(Call<NutrientBindRes> call, Response<NutrientBindRes> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     nutritionList.clear();
                     if (response.body() != null) {
                         nutritionList.addAll(0, response.body().getNutrition());
@@ -219,8 +217,10 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             }
         });
     }
+
     public class NutrientChipAdp extends RecyclerView.Adapter<NutrientChipAdp.RecyclerViewHolder> {
         List<Nutrition> nutritionList;
+
         NutrientChipAdp(List<Nutrition> nutritionList) {
             this.nutritionList = nutritionList;
         }
@@ -252,14 +252,17 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView txtNutrient;
+
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
-                txtNutrient =itemView.findViewById(R.id.txtNutrient);
+                txtNutrient = itemView.findViewById(R.id.txtNutrient);
             }
         }
     }
+
     public class VitalChipAdp extends RecyclerView.Adapter<VitalChipAdp.RecyclerViewHolder> {
         List<VitalAnalysisModel> vitalLists;
+
         VitalChipAdp(List<VitalAnalysisModel> vitalLists) {
             this.vitalLists = vitalLists;
         }
@@ -288,14 +291,17 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
         public int getItemCount() {
             return vitalLists.size();
         }
+
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView txtVital;
+
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
-                txtVital =itemView.findViewById(R.id.txtVital);
+                txtVital = itemView.findViewById(R.id.txtVital);
             }
         }
     }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -339,28 +345,29 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             }, mHour, mMinute, false);
             timePickerDialog.updateTime(today.getHours(), today.getMinutes());
             timePickerDialog.show();
-        } else if(view.getId()==R.id.btnShow){
+        } else if (view.getId() == R.id.btnShow) {
             @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
             @SuppressLint("SimpleDateFormat") SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
             @SuppressLint("SimpleDateFormat") SimpleDateFormat format2 = new SimpleDateFormat("hh:mm a");
-            StringBuilder vital=new StringBuilder();
-            for (int i = 0; i <chpVital.getSelectedChipList().size() ; i++) {
+            StringBuilder vital = new StringBuilder();
+            for (int i = 0; i < chpVital.getSelectedChipList().size(); i++) {
                 vital.append(chpVital.getSelectedChipList().get(i).getId()).append(",");
             }
-            StringBuilder nutrient=new StringBuilder();
-            for (int i = 0; i <chpNutrient.getSelectedChipList().size() ; i++) {
+            StringBuilder nutrient = new StringBuilder();
+            for (int i = 0; i < chpNutrient.getSelectedChipList().size(); i++) {
                 nutrient.append(chpNutrient.getSelectedChipList().get(i).getId()).append(",");
             }
-            Intent intent=new Intent(context, ShowPatientAnalyzingGraph.class);
+            Intent intent = new Intent(context, ShowPatientAnalyzingGraph.class);
             intent.putExtra("from", format.format(today));
             intent.putExtra("fromDate", format1.format(today));
             intent.putExtra("fromTime", format2.format(today));
             intent.putExtra("vital", vital.toString());
             intent.putExtra("nutrient", nutrient.toString());
-            intent.putExtra("hour", String.valueOf(spnHour.getSelectedItemId()+1));
+            intent.putExtra("hour", String.valueOf(spnHour.getSelectedItemId() + 1));
             startActivity(intent);
         }
     }
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }

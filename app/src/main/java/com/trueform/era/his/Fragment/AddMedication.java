@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -81,7 +82,6 @@ public class AddMedication extends Fragment {
     private TextView txtDate;
     private static RecyclerView rvMedication;
     private ArrayAdapter<MedicineSearch> arrayAdapter;
-    private MedicineSearch medicineSearch;
     private Spinner spnConsultant;
     private MedicineSearchResp medicineSearchResp2;
     @SuppressLint("StaticFieldLeak")
@@ -95,13 +95,13 @@ public class AddMedication extends Fragment {
     private List<String> formList;
     private List<String> freqList;
     private List<String> unitList;
-    List<MedicineList> medicineList;
+    private List<MedicineList> medicineList;
     private static ArrayAdapter<String> arrayAdapter12;
     private static ArrayAdapter<String> arrayAdapter22;
     private static ArrayAdapter<String> arrayAdapter32;
     private JSONArray notification, notificationForSave, notificationForSave1;
     private TextView txtNotification, btnHistory;
-    ScrollView scrollNoti;
+    private ScrollView scrollNoti;
     private FreqUnitResp freqResponse;
     private String notificationShow = "";
     private boolean selected = false;
@@ -117,14 +117,15 @@ public class AddMedication extends Fragment {
     private String mParam1;
     private String mParam2;
     private OnFragmentInteractionListener mListener;
+    private LinearLayout rlConsultantDiagnosis;
+    private RelativeLayout rlRecordDate;
+    private List<GetIcdCodeModel> getIcdCodeModelListMain = new ArrayList<>();
 
-    List<GetIcdCodeModel> getIcdCodeModelListMain = new ArrayList<>();
+    private RecyclerView recyclerViewDiagnosis;
 
-    RecyclerView recyclerViewDiagnosis;
+    private AdapterNutrient adapterNutrient;
 
-    AdapterNutrient adapterNutrient;
-
-    Calendar c;
+    private Calendar c;
 
     public AddMedication() {
 
@@ -156,6 +157,8 @@ public class AddMedication extends Fragment {
         String pHistory = "patientHistoryList";
         Toolbar toolbar = Objects.requireNonNull(getActivity()).findViewById(R.id.toolbar);
         spnConsultant = toolbar.findViewById(R.id.spnConsultant);
+        rlConsultantDiagnosis = view.findViewById(R.id.rlConsultantDiagnosis);
+        rlRecordDate = view.findViewById(R.id.rlRecordDate);
         txtDate = view.findViewById(R.id.txtDate);
         //TextView btnAdd = view.findViewById(R.id.btnAdd);
         TextView txtAction = view.findViewById(R.id.txtAction);
@@ -227,12 +230,8 @@ public class AddMedication extends Fragment {
                         spnForm.setSelection(0);
                         spnFreq.setAdapter(arrayAdapter22);
                         spnFreq.setSelection(0);
-
                         etUnit.setAdapter(arrayAdapter32);
                         etUnit.setThreshold(0);
-
-//                        spnUnit.setAdapter(arrayAdapter32);
-//                        spnUnit.setSelection(0);
                     }
                 }
                 Utils.hideDialog();
@@ -299,7 +298,83 @@ public class AddMedication extends Fragment {
 
             }
         });
-
+        rlConsultantDiagnosis.setOnClickListener(view1 -> {
+            try {
+                if(!etConsultant.getText().toString().isEmpty()) {
+                    if (!containsDetail(getIcdCodeModelListMain, etConsultant.getText().toString().trim())) {
+                        getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
+                        getIcdCodeModelListMain.get(0).setDetailID(0);
+                        getIcdCodeModelListMain.get(0).setDetails(etConsultant.getText().toString().trim());
+                        getIcdCodeModelListMain.get(0).setPdmID(0);
+                        bindMed(0, etConsultant.getText().toString().trim());
+                        etConsultant.setText("");
+                        if (adapterNutrient != null) {
+                            adapterNutrient.notifyItemInserted(0);
+                        } else {
+                            adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
+                            recyclerViewDiagnosis.setAdapter(adapterNutrient);
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+                        etConsultant.setText("");
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        rlRecordDate.setOnClickListener(view1 -> {
+            try {
+                if(!etConsultant.getText().toString().isEmpty()) {
+                    if (!containsDetail(getIcdCodeModelListMain, etConsultant.getText().toString().trim())) {
+                        getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
+                        getIcdCodeModelListMain.get(0).setDetailID(0);
+                        getIcdCodeModelListMain.get(0).setDetails(etConsultant.getText().toString().trim());
+                        getIcdCodeModelListMain.get(0).setPdmID(0);
+                        bindMed(0, etConsultant.getText().toString().trim());
+                        etConsultant.setText("");
+                        if (adapterNutrient != null) {
+                            adapterNutrient.notifyItemInserted(0);
+                        } else {
+                            adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
+                            recyclerViewDiagnosis.setAdapter(adapterNutrient);
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+                        etConsultant.setText("");
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        etConsultant.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                try {
+                    if(!etConsultant.getText().toString().isEmpty()) {
+                        if (!containsDetail(getIcdCodeModelListMain, etConsultant.getText().toString().trim())) {
+                            getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
+                            getIcdCodeModelListMain.get(0).setDetailID(0);
+                            getIcdCodeModelListMain.get(0).setDetails(etConsultant.getText().toString().trim());
+                            getIcdCodeModelListMain.get(0).setPdmID(0);
+                            bindMed(0, etConsultant.getText().toString().trim());
+                            etConsultant.setText("");
+                            if (adapterNutrient != null) {
+                                adapterNutrient.notifyItemInserted(0);
+                            } else {
+                                adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
+                                recyclerViewDiagnosis.setAdapter(adapterNutrient);
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+                            etConsultant.setText("");
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         etConsultant.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -421,8 +496,6 @@ public class AddMedication extends Fragment {
                                 //getNutrientByPrefixTextModelListMain.get(0).setSelected(true);
                             }
                         }
-
-
                         adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
                         recyclerViewDiagnosis.setAdapter(adapterNutrient);
 
@@ -440,7 +513,7 @@ public class AddMedication extends Fragment {
     }
 
     public void edit(Integer drugID, String drugName, String dosageForm, String doseStrength, String doseUnit, String doseFrequency, String duration, String remark) {
-        medicineSearch = new MedicineSearch(drugID, drugName, dosageForm, doseStrength, doseUnit, doseFrequency, duration, remark);
+        MedicineSearch medicineSearch = new MedicineSearch(drugID, drugName, dosageForm, doseStrength, doseUnit, doseFrequency, duration, remark);
         edtMedName.setText(drugName);
         edtMedName.setEnabled(false);
         spnForm.setSelection(arrayAdapter12.getPosition(dosageForm));
@@ -750,36 +823,37 @@ public class AddMedication extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         List<GetIcdCodeModel> getIcdCodeModelList = response.body().getIcdList();
-                        ArrayAdapter arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_layout_new, getIcdCodeModelList);
-                        //arrayAdapter.setDropDownViewResource(R.layout.inflate_auto_complete_text);
-                        etConsultant.setAdapter(arrayAdapter);
-                        etConsultant.setOnItemClickListener((parent, view, position, id) -> {
-                            try {
-                                if (!containsDetail(getIcdCodeModelListMain, getIcdCodeModelList.get(position).getDetailID().toString())) {
-                                    getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
-                                    getIcdCodeModelListMain.get(0).setDetailID(getIcdCodeModelList.get(position).getDetailID()); // get item
-                                    getIcdCodeModelListMain.get(0).setDetails(getIcdCodeModelList.get(position).getDetails());
-                                    getIcdCodeModelListMain.get(0).setPdmID(getIcdCodeModelList.get(position).getPdmID());
-                                    //getNutrientByPrefixTextModelListMain.get(0).setSelected(true);
-                                    bindMed(getIcdCodeModelList.get(position).getDetailID(), getIcdCodeModelList.get(position).getDetails());
-                                    etConsultant.setText("");
-                                    if (adapterNutrient != null) {
-                                        adapterNutrient.notifyItemInserted(0);
-                                        //adapterNutrient.smoothScrollToPosition(0);
+                        if(!getIcdCodeModelList.isEmpty()) {
+                            ArrayAdapter arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_layout_new, getIcdCodeModelList);
+                            //arrayAdapter.setDropDownViewResource(R.layout.inflate_auto_complete_text);
+                            etConsultant.setAdapter(arrayAdapter);
+                            etConsultant.setOnItemClickListener((parent, view, position, id) -> {
+                                try {
+                                    if (!containsDetail(getIcdCodeModelListMain, getIcdCodeModelList.get(position).getDetails())) {
+                                        getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
+                                        getIcdCodeModelListMain.get(0).setDetailID(getIcdCodeModelList.get(position).getDetailID()); // get item
+                                        getIcdCodeModelListMain.get(0).setDetails(getIcdCodeModelList.get(position).getDetails());
+                                        getIcdCodeModelListMain.get(0).setPdmID(getIcdCodeModelList.get(position).getPdmID());
+                                        //getNutrientByPrefixTextModelListMain.get(0).setSelected(true);
+                                        bindMed(getIcdCodeModelList.get(position).getDetailID(), getIcdCodeModelList.get(position).getDetails());
+                                        etConsultant.setText("");
+                                        if (adapterNutrient != null) {
+                                            adapterNutrient.notifyItemInserted(0);
+                                            //adapterNutrient.smoothScrollToPosition(0);
+                                        } else {
+                                            adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
+                                            recyclerViewDiagnosis.setAdapter(adapterNutrient);
+                                        }
                                     } else {
-                                        adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
-                                        recyclerViewDiagnosis.setAdapter(adapterNutrient);
+                                        //AppUtils.hideSoftKeyboard(mActivity);
+                                        Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+                                        etConsultant.setText("");
                                     }
-                                } else {
-                                    //AppUtils.hideSoftKeyboard(mActivity);
-                                    Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
-                                    etConsultant.setText("");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-
+                            });
+                        }
                     }
                 }
                 Utils.hideDialog();
@@ -846,10 +920,10 @@ public class AddMedication extends Fragment {
             }
         }
     }
-    boolean containsDetail(List<GetIcdCodeModel> list, String name) {
+    private boolean containsDetail(List<GetIcdCodeModel> list, String name) {
 
         for (GetIcdCodeModel item : list) {
-            if (item.getDetailID().toString().equals(name)) {
+            if (item.getDetails().equals(name)) {
 
                 return true;
             }
@@ -933,12 +1007,6 @@ public class AddMedication extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
     }
 
     @Override

@@ -12,19 +12,12 @@ public class AnalyzingGraphResp {
     @SerializedName("vitalList")
     @Expose
     public List<VitalAutoCompleteModel> vitalList = null;
-    @SerializedName("observationList")
-    @Expose
-    public List<ObservationList> observationList = null;
     @SerializedName("nutrientList")
     @Expose
     public List<NutrientListAnalyzingGraph> nutrientList = null;
 
     public List<VitalAutoCompleteModel> getVitalList() {
         return vitalList;
-    }
-
-    public List<ObservationList> getObservationList() {
-        return observationList;
     }
 
     public List<NutrientListAnalyzingGraph> getNutrientList() {

@@ -107,7 +107,7 @@ public class EmployeeDetail extends BaseFragment {
     public class EmployeeListAdp extends RecyclerView.Adapter<EmployeeListAdp.RecyclerViewHolder> {
         List<EmployeeList> employeeList;
 
-        public EmployeeListAdp(List<EmployeeList> employeeList) {
+        EmployeeListAdp(List<EmployeeList> employeeList) {
             this.employeeList = employeeList;
         }
 
@@ -131,7 +131,7 @@ public class EmployeeDetail extends BaseFragment {
                 alertDialog.setMessage("Do you want to Call?");
                 alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
                 alertDialog.setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", employeeList.get(i).getMobileno(), null))));
-            alertDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
+            alertDialog.setNeutralButton("No", (dialog, which) -> dialog.cancel());
             alertDialog.show();
             });
         }
