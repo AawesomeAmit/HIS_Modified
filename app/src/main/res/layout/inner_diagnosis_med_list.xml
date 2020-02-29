@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:text="Name"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="HardcodedText" />
 
             <TextView
@@ -37,7 +37,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:text="Date"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
 
@@ -53,7 +53,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:text="Date"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="HardcodedText" />
 
             <TextView
@@ -63,7 +63,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:text="Date"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
     </LinearLayout>

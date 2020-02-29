@@ -101,9 +101,7 @@
                     android:paddingLeft="@dimen/_5sdp"
                     android:paddingRight="@dimen/_5sdp"
                     tools:ignore="LabelFor" />
-
             </RelativeLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewDiagnosis"
                 android:layout_width="match_parent"
@@ -111,10 +109,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@drawable/edt_bor" />
-
-
         </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -251,12 +246,8 @@
                                                         android:textColor="@color/black"
                                                         android:textSize="@dimen/_13sdp" />
                             -->
-
                         </LinearLayout>
-
                     </LinearLayout>
-
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -285,7 +276,6 @@
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_13sdp" />
                         </LinearLayout>
-
                         <!-- <EditText
                              android:id="@+id/txtStr"
                              android:layout_width="0dp"
@@ -340,9 +330,8 @@
                                                          android:textSize="@dimen/_13sdp" />
                              &ndash;&gt;
 
-                         </LinearLayout>-->
-
-                        <!--<EditText
+                         </LinearLayout>
+                         <EditText
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_30sdp"
                             android:textColor="@color/black"
@@ -357,7 +346,6 @@
                             android:layout_gravity="center_vertical"
                             android:textSize="@dimen/_13sdp"
                             android:id="@+id/txtTime"/>-->
-
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_30sdp"
@@ -486,10 +474,7 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/_13sdp"
                             tools:ignore="Autofill,TextFields" />
-
-
                     </LinearLayout>
-
                     <TextView
                         android:id="@+id/txtAction"
                         android:layout_width="match_parent"

@@ -452,7 +452,6 @@ public class AddMedication extends Fragment {
                     edtStr.setText("");
                     etUnit.setText("");
                     tvTime.setText("");
-
                     edtMedName.setEnabled(true);
                 }
                /* else {
@@ -483,11 +482,8 @@ public class AddMedication extends Fragment {
                             txtDate.setText(medicineSearchResp1.getPrescription().get(0).getPrescribedDated());
                         AddMedicationAdp adp = new AddMedicationAdp(context, medicineSearchResp1);
                         rvMedication.setAdapter(adp);
-
                         getIcdCodeModelListMain.clear();
-
                         for (int i = 0; i < medicineSearchResp1.getPatientHistory().size(); i++) {
-
                             if (medicineSearchResp1.getPatientHistory().get(i).getPdmId() == 4) {
                                 getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
                                 getIcdCodeModelListMain.get(0).setDetailID(medicineSearchResp1.getPatientHistory().get(i).getDetailID()); // get item
