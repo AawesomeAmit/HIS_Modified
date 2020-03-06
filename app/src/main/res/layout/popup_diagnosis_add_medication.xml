@@ -62,6 +62,7 @@
             tools:listitem="@layout/inner_diagnosis_med_list"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:background="@drawable/edt_bor" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -278,8 +278,8 @@ public class ViewInvestigation extends Fragment implements View.OnClickListener 
         else if(SharedPrefManager.getInstance(context).getHeadID()==3 || SharedPrefManager.getInstance(context).getHeadID()==4)
             gender=SharedPrefManager.getInstance(context).getIcuAdmitPatient().getGender();*/
         txtDate.setText(patientBillResp.getGetPatientBills().get(index).getBillDate());
-        if(patientBillResp.getGetPatientBills().get(index).getCategoryID().contains(",")){
-            String[] catId=patientBillResp.getGetPatientBills().get(index).getCategoryID().split(",");
+        if (patientBillResp.getGetPatientBills().get(index).getCategoryID().contains(",")) {
+            String[] catId = patientBillResp.getGetPatientBills().get(index).getCategoryID().split(",");
             for (String s : catId) {
                 Call<BillDetailsResp> call = RetrofitClient.getInstance().getApi().viewBillDetails(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), patientBillResp.getGetPatientBills().get(index).getBillMasterID().toString(), SharedPrefManager.getInstance(context).getPid(), s, SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
                 call.enqueue(new Callback<BillDetailsResp>() {
@@ -303,7 +303,7 @@ public class ViewInvestigation extends Fragment implements View.OnClickListener 
                     }
                 });
             }
-        }else {
+        } else {
             Call<BillDetailsResp> call = RetrofitClient.getInstance().getApi().viewBillDetails(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), patientBillResp.getGetPatientBills().get(index).getBillMasterID().toString(), SharedPrefManager.getInstance(context).getPid(), patientBillResp.getGetPatientBills().get(index).getCategoryID(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
             call.enqueue(new Callback<BillDetailsResp>() {
                 @Override

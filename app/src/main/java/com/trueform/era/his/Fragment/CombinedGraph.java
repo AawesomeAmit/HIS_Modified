@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -58,6 +59,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
     private TextView txtFrmDate;
     private TextView txtFrmTime;
     private static String fromDate = "";
+    CheckBox chkFood, chkInvestigation, chkActivity, chkProb, chkIntakeOut, chkMedIntake;
     private List<Nutrition> nutritionList = new ArrayList<>();
     private ArrayList<String> selectedMembersList = new ArrayList<>();
     private ArrayList<String> selectedVitalList = new ArrayList<>();
@@ -95,6 +97,12 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
         context = view.getContext();
         rvVital = view.findViewById(R.id.rvVital);
         spnHour = view.findViewById(R.id.spnHour);
+        chkFood = view.findViewById(R.id.chkFood);
+        chkInvestigation = view.findViewById(R.id.chkInvestigation);
+        chkActivity = view.findViewById(R.id.chkActivity);
+        chkProb = view.findViewById(R.id.chkProb);
+        chkIntakeOut = view.findViewById(R.id.chkIntakeOut);
+        chkMedIntake = view.findViewById(R.id.chkMedIntake);
         rvVital.setLayoutManager(new LinearLayoutManager(context));
         rvVital.setNestedScrollingEnabled(false);
         rvNutrient = view.findViewById(R.id.rvNutrient);
@@ -118,10 +126,19 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
         format2 = new SimpleDateFormat("hh:mm a");
         fromDate = mYear + "/" + (mMonth + 1) + "/" + mDay;
         txtFrmDate.setText(Utils.formatDate(fromDate));
+        today.setHours(8);
+        today.setMinutes(0);
         txtFrmTime.setText(format2.format(today));
         txtFrmDate.setOnClickListener(this);
         txtFrmTime.setOnClickListener(this);
         btnShow.setOnClickListener(this);
+        chpVital.addChip(74, (Uri) null, "heartRate", "");
+        chpVital.addChip(3, (Uri) null, "Pulse", "");
+        chpVital.addChip(56, (Uri) null, "spo2", "");
+        chpVital.addChip(5, (Uri) null, "Temperature", "");
+        chpVital.addChip(4, (Uri) null, "BP_Sys", "");
+        chpVital.addChip(6, (Uri) null, "BP_Dias", "");
+        chpVital.addChip(7, (Uri) null, "respRate", "");
         chpVital.addChipsListener(new ChipsInput.ChipsListener() {
             @Override
             public void onChipAdded(ChipInterface chip, int newSize) {
@@ -363,6 +380,12 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             intent.putExtra("fromTime", format2.format(today));
             intent.putExtra("vital", vital.toString());
             intent.putExtra("nutrient", nutrient.toString());
+            intent.putExtra("isFoodIntake", String.valueOf(chkFood.isChecked()));
+            intent.putExtra("isInvestigation", String.valueOf(chkInvestigation.isChecked()));
+            intent.putExtra("isActivity", String.valueOf(chkActivity.isChecked()));
+            intent.putExtra("isProblem", String.valueOf(chkProb.isChecked()));
+            intent.putExtra("isIO", String.valueOf(chkIntakeOut.isChecked()));
+            intent.putExtra("isIntakeMedicine", String.valueOf(chkMedIntake.isChecked()));
             intent.putExtra("hour", String.valueOf(spnHour.getSelectedItemId() + 1));
             startActivity(intent);
         }

@@ -311,4 +311,5 @@
     <string name="edit">Edit</string>
     <string name="medicines">Medicines</string>
     <string name="employee_shift">Employee Shift</string>
+    <string name="medicine_intake">Medicine Intake</string>
 </resources>

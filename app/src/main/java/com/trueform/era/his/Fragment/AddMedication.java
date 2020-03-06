@@ -305,7 +305,7 @@ public class AddMedication extends Fragment {
                         getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
                         getIcdCodeModelListMain.get(0).setDetailID(0);
                         getIcdCodeModelListMain.get(0).setDetails(etConsultant.getText().toString().trim());
-                        getIcdCodeModelListMain.get(0).setPdmID(0);
+                        getIcdCodeModelListMain.get(0).setPdmID(4);
                         bindMed(0, etConsultant.getText().toString().trim());
                         etConsultant.setText("");
                         if (adapterNutrient != null) {
@@ -330,7 +330,7 @@ public class AddMedication extends Fragment {
                         getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
                         getIcdCodeModelListMain.get(0).setDetailID(0);
                         getIcdCodeModelListMain.get(0).setDetails(etConsultant.getText().toString().trim());
-                        getIcdCodeModelListMain.get(0).setPdmID(0);
+                        getIcdCodeModelListMain.get(0).setPdmID(4);
                         bindMed(0, etConsultant.getText().toString().trim());
                         etConsultant.setText("");
                         if (adapterNutrient != null) {
@@ -356,7 +356,7 @@ public class AddMedication extends Fragment {
                             getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
                             getIcdCodeModelListMain.get(0).setDetailID(0);
                             getIcdCodeModelListMain.get(0).setDetails(etConsultant.getText().toString().trim());
-                            getIcdCodeModelListMain.get(0).setPdmID(0);
+                            getIcdCodeModelListMain.get(0).setPdmID(4);
                             bindMed(0, etConsultant.getText().toString().trim());
                             etConsultant.setText("");
                             if (adapterNutrient != null) {
@@ -420,16 +420,7 @@ public class AddMedication extends Fragment {
 
         txtAction.setOnClickListener(view12 -> {
             if (!edtMedName.getText().toString().isEmpty()) {
-                //if (((edtHour.getText().toString().isEmpty() && edtMinute.getText().toString().isEmpty() && txtTime.getText().toString().isEmpty()) || ((!edtHour.getText().toString().isEmpty() && !edtMinute.getText().toString().isEmpty() && !txtTime.getText().toString().isEmpty()) && ((Integer.parseInt(edtHour.getText().toString())<=12) && (Integer.parseInt(edtMinute.getText().toString())<60)))))
-                {
-
-                    //  String time = edtHour.getText().toString().trim() + ":" + edtMinute.getText().toString().trim() + " " + txtTime.getText().toString().trim();
-//                    String time = hour + ":" + minutes + " " + amPm;
-
-                    if (tvTime.getText().toString().isEmpty()) {
-                        time = "";
-                    }
-
+                    if (tvTime.getText().toString().isEmpty()) time = "";
                     if (selected)
                         medicineSearches.add(new Prescription(drugID, drugName, spnForm.getSelectedItem().toString().trim(),
                                 //edtStr.getText().toString().trim(), spnUnit.getSelectedItem()==null?"":spnUnit.getSelectedItem().toString(),
@@ -453,10 +444,6 @@ public class AddMedication extends Fragment {
                     etUnit.setText("");
                     tvTime.setText("");
                     edtMedName.setEnabled(true);
-                }
-               /* else {
-                    Toast.makeText(context, "Please enter proper time", Toast.LENGTH_LONG).show();
-                }*/
             } else Toast.makeText(context, "Please enter medicine", Toast.LENGTH_LONG).show();
         });
         btnSave.setOnClickListener(view13 -> {

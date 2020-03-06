@@ -11,6 +11,11 @@ public class VitalAnalysisModel {
     @Expose
     public String vitalName;
 
+    public VitalAnalysisModel(Integer id, String vitalName) {
+        this.id = id;
+        this.vitalName = vitalName;
+    }
+
     public Integer getId() {
         return id;
     }
