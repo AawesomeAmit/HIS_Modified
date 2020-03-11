@@ -74,18 +74,21 @@
         <com.google.android.material.checkbox.MaterialCheckBox
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:checked="true"
             android:layout_height="wrap_content"
             android:id="@+id/chkFood"
             android:text="@string/food_intake"/>
         <com.google.android.material.checkbox.MaterialCheckBox
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:checked="true"
             android:id="@+id/chkInvestigation"
             android:layout_height="wrap_content"
             android:text="@string/investigation"/>
         <com.google.android.material.checkbox.MaterialCheckBox
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:checked="true"
             android:id="@+id/chkActivity"
             android:layout_height="wrap_content"
             android:text="@string/activity"/>
@@ -99,17 +102,20 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:id="@+id/chkProb"
+            android:checked="true"
             android:layout_height="wrap_content"
             android:text="@string/tab_problem"/>
         <com.google.android.material.checkbox.MaterialCheckBox
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:checked="true"
             android:id="@+id/chkIntakeOut"
             android:layout_height="wrap_content"
             android:text="@string/intake_output"/>
         <com.google.android.material.checkbox.MaterialCheckBox
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:checked="true"
             android:id="@+id/chkMedIntake"
             android:layout_height="wrap_content"
             android:text="@string/medicine_intake"/>

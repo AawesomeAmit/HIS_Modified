@@ -176,6 +176,10 @@ public interface Api {
     Call<PatientDetailGraphResp> getPatientDetailGraph(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("date") String date, @Field("PID") Integer PID, @Field("subDeptID") Integer subDeptID);
 
     @FormUrlEncoded
+    @POST("Graph/GetPatientAnalyzingGraphDrilled")
+    Call<AnalyzingGraphResp> getPatientAnalyzingGraphDrilled(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("userID") String userID, @Field("vitalIdSearch") String vitalIdSearch, @Field("date") String date, @Field("subDeptID") Integer subDeptID, @Field("timeFrom") String timeFrom, @Field("toHour") Integer toHour, @Field("nutrientIDSearch") String nutrientIDSearch, @Field("queryType") String queryType, @Field("isFoodIntake") String isFoodIntake, @Field("isInvestigation") String isInvestigation, @Field("isActivity") String isActivity, @Field("isProblem") String isProblem, @Field("isIO") String isIO, @Field("isIntakeMedicine") String isIntakeMedicine);
+
+    @FormUrlEncoded
     @POST("PatientPhysicalActivity/GetProblemAttribute")
     Call<ProbAttribResp> getProblemAttribute(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("problemID") Integer problemID);
 

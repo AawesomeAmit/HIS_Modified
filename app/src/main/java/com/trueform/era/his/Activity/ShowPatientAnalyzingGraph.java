@@ -61,7 +61,7 @@ import retrofit2.Response;
 public class ShowPatientAnalyzingGraph extends AppCompatActivity {
     Context context;
     TextView txtDateTime;
-    int n=0;
+    int n = 0;
     Gson g = new Gson();
     private HIChartView hcView;
     private HIOptions options;
@@ -78,7 +78,7 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
         HIChart chart = new HIChart();
         chart.setType("column");
         options.setChart(chart);
-        txtDateTime.setText("Graph for "+getIntent().getStringExtra("hour") +"hours from "+getIntent().getStringExtra("from"));
+        txtDateTime.setText("Graph for " + getIntent().getStringExtra("hour") + "hours from " + getIntent().getStringExtra("from"));
         HITitle title = new HITitle();
         title.setText("");
         options.setTitle(title);
@@ -119,7 +119,9 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                         ArrayList<HashMap<String, Object>> list1 = null;
                         HISeries hiSeries;
                         List<HISeries> hiSeriesList = new ArrayList<>();
-                        //List<HIColumn> hiColumnSeriesList = new ArrayList<>();
+                        for (int i = 0; i < analyzingGraphResp.getVitalList().size(); i++) {
+                            category.add(analyzingGraphResp.getVitalList().get(i).getValueTime());
+                        }
                         if (analyzingGraphResp.getNutrientTableList().size() > 0) {
                             for (int i = 0; i < analyzingGraphResp.getNutrientTableList().size(); i++) {
                                 Type type = new TypeToken<List<NutrientSubListAnalysingGraph>>() {
@@ -144,30 +146,32 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                                 hiSeries = new HIArea();
                                 hiSeries.setData(list1);
                                 hiSeries.setName(String.valueOf(list1.get(i).get("name")));
+                                hiSeries.setId(String.valueOf(list1.get(i).get("name")));
                                 hiSeriesList.add(hiSeries);
                             }
-                            if (analyzingGraphResp.getVitalList().size() > 0) {
-                                for (int i = 0; i < analyzingGraphResp.getVitalTableList().size(); i++) {
-                                    Type type = new TypeToken<List<VitalSubListAnalysingGraph>>() {
-                                    }.getType();
-                                    List<VitalSubListAnalysingGraph> p = g.fromJson(analyzingGraphResp.getVitalTableList().get(i).getVitalValue(), type);
-                                    if (p != null) {
-                                        list1 = new ArrayList<>();
-                                        for (int j = 0; j < p.size(); j++) {
-                                            HashMap<String, Object> map1 = new HashMap<>();
-                                            map1.put("name", analyzingGraphResp.getVitalTableList().get(i).getVitalName());
-                                            map1.put("y", p.get(j).getVmValue());
-                                            map1.put("drilldown", analyzingGraphResp.getVitalTableList().get(i).getVitalName());
-                                            list1.add(map1);
-                                        }
+                        }
+                        if (analyzingGraphResp.getVitalList().size() > 0) {
+                            for (int i = 0; i < analyzingGraphResp.getVitalTableList().size(); i++) {
+                                Type type = new TypeToken<List<VitalSubListAnalysingGraph>>() {
+                                }.getType();
+                                List<VitalSubListAnalysingGraph> p = g.fromJson(analyzingGraphResp.getVitalTableList().get(i).getVitalValue(), type);
+                                if (p != null) {
+                                    list1 = new ArrayList<>();
+                                    for (int j = 0; j < p.size(); j++) {
+                                        HashMap<String, Object> map1 = new HashMap<>();
+                                        map1.put("name", analyzingGraphResp.getVitalTableList().get(i).getVitalName());
+                                        map1.put("y", p.get(j).getVmValue());
+                                        map1.put("drilldown", analyzingGraphResp.getVitalTableList().get(i).getVitalName());
+                                        list1.add(map1);
                                     }
-                                    category.add(analyzingGraphResp.getVitalList().get(i).getValueTime());
-                                    hiSeries = new HIColumn();
-                                    hiSeries.setData(list1);
-                                    hiSeries.setName(String.valueOf(list1.get(i).get("name")));
-                                    hiSeriesList.add(hiSeries);
                                 }
+                                hiSeries = new HILine();
+                                hiSeries.setData(list1);
+                                hiSeries.setName(String.valueOf(list1.get(i).get("name")));
+                                hiSeries.setId(String.valueOf(list1.get(i).get("name")));
+                                hiSeriesList.add(hiSeries);
                             }
+                        }
                             /*if (analyzingGraphResp.getObservationList().size() > 0) {
                                 for (int i = 0; i < analyzingGraphResp.getObservationList().size(); i++) {
                                 HashMap<String, Object> map1 = new HashMap<>();
@@ -178,28 +182,28 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                                         category.add(analyzingGraphResp.getObservationList().get(i).getValueTime());
                                 }
                             }*/
-                            HITooltip tooltip = new HITooltip();
-                            tooltip.setHeaderFormat("<span style=\"font-size:11px\">{series.name}</span><br>");
-                            tooltip.setPointFormat("<span style=\"color:{point.color}\">{point.name}</span>: <b>{point.y:.2f}%</b><br/>");
-                            tooltip.setShared(true);
-                            options.setTooltip(tooltip);
+                        HITooltip tooltip = new HITooltip();
+                        tooltip.setHeaderFormat("<span style=\"font-size:11px\">{series.name}</span><br>");
+                        tooltip.setPointFormat("<span style=\"color:{point.color}\">{point.name}</span>: <b>{point.y:.2f}%</b><br/>");
+                        tooltip.setShared(true);
+                        options.setTooltip(tooltip);
 
 
-                            HIPlotOptions plotOptions = new HIPlotOptions();
-                            plotOptions.setSeries(new HISeries());
-                            plotOptions.getSeries().setDataLabels(new HIDataLabels());
-                            plotOptions.getSeries().getDataLabels().setEnabled(true);
-                            plotOptions.getSeries().getDataLabels().setFormat("{point.y:.1f}%");
-                            final HIXAxis hixAxis = new HIXAxis();
-                            hixAxis.setTitle(new HITitle());
-                            hixAxis.getTitle().setText("");
-                            hixAxis.setCategories(category);
-                            options.setXAxis(new ArrayList<HIXAxis>() {{
-                                add(hixAxis);
-                            }});
-                            plotOptions.getSeries().setPointInterval(1.0);
-                            Log.v("name1", String.valueOf(list1.get(0).get("name")));
-                            Log.v("name2", String.valueOf(list1.get(0).containsValue("name")));
+                        HIPlotOptions plotOptions = new HIPlotOptions();
+                        plotOptions.setSeries(new HISeries());
+                        plotOptions.getSeries().setDataLabels(new HIDataLabels());
+                        plotOptions.getSeries().getDataLabels().setEnabled(true);
+                        plotOptions.getSeries().getDataLabels().setFormat("{point.y:.1f}%");
+                        final HIXAxis hixAxis = new HIXAxis();
+                        hixAxis.setTitle(new HITitle());
+                        hixAxis.getTitle().setText("");
+                        hixAxis.setCategories(category);
+                        options.setXAxis(new ArrayList<HIXAxis>() {{
+                            add(hixAxis);
+                        }});
+                        plotOptions.getSeries().setPointInterval(1.0);
+                        Log.v("name1", String.valueOf(list1.get(0).get("name")));
+                        Log.v("name2", String.valueOf(list1.get(0).containsValue("name")));
                             /*ArrayList<HashMap<String, Object>> lists = new ArrayList<>();
                             for (int i = 0; i < list1.size(); i++) {
                                 if (i < list1.size() - 1) {
@@ -235,29 +239,107 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                                 }
                                 }
                             }*/
-                            HIRules rules1 = new HIRules();
-                            rules1.setCondition(new HICondition());
-                            rules1.getCondition().setMaxWidth(500);
-                            HashMap<String, HashMap> chartLegend = new HashMap<>();
-                            HashMap<String, String> legendOptions = new HashMap<>();
-                            legendOptions.put("layout", "horizontal");
-                            legendOptions.put("align", "center");
-                            legendOptions.put("verticalAlign", "bottom");
-                            chartLegend.put("legend", legendOptions);
-                            rules1.setChartOptions(chartLegend);
-                            responsive.setRules(new ArrayList<>(Collections.singletonList(rules1)));
-                            options.setResponsive(responsive);
-                            plotOptions.setLine(new HILine());
-                            plotOptions.getLine().setDataLabels(new HIDataLabels());
-                            plotOptions.getLine().getDataLabels().setEnabled(true);
-                            plotOptions.getLine().setEnableMouseTracking(true);
-                            options.setPlotOptions(plotOptions);
-                            options.setSeries(new ArrayList<>(hiSeriesList));
+                        HIRules rules1 = new HIRules();
+                        rules1.setCondition(new HICondition());
+                        rules1.getCondition().setMaxWidth(500);
+                        HashMap<String, HashMap> chartLegend = new HashMap<>();
+                        HashMap<String, String> legendOptions = new HashMap<>();
+                        legendOptions.put("layout", "horizontal");
+                        legendOptions.put("align", "center");
+                        legendOptions.put("verticalAlign", "bottom");
+                        chartLegend.put("legend", legendOptions);
+                        rules1.setChartOptions(chartLegend);
+                        responsive.setRules(new ArrayList<>(Collections.singletonList(rules1)));
+                        options.setResponsive(responsive);
+                        plotOptions.setLine(new HILine());
+                        plotOptions.getLine().setDataLabels(new HIDataLabels());
+                        plotOptions.getLine().getDataLabels().setEnabled(true);
+                        plotOptions.getLine().setEnableMouseTracking(true);
+                        options.setPlotOptions(plotOptions);
+                        options.setSeries(new ArrayList<>(hiSeriesList));
 
 
-                            HILine series2 = new HILine();
-                            series2.setName("Pulse");
-                            series2.setId("Pulse");
+                            /*HIDrilldown drillDown = new HIDrilldown();
+                            drillDown.setSeries(new ArrayList<>(hiSeriesList));
+                            options.setDrilldown(drillDown);*/
+                        Call<AnalyzingGraphResp> call1 = RetrofitClient.getInstance().getApi().getPatientAnalyzingGraph(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), getIntent().getStringExtra("vital"), getIntent().getStringExtra("fromDate"), SharedPrefManager.getInstance(context).getSubDept().getId(), getIntent().getStringExtra("fromTime"), Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("hour"))), getIntent().getStringExtra("nutrient"), "MINUTE", getIntent().getStringExtra("isFoodIntake"), getIntent().getStringExtra("isInvestigation"), getIntent().getStringExtra("isActivity"), getIntent().getStringExtra("isProblem"), getIntent().getStringExtra("isIO"), getIntent().getStringExtra("isIntakeMedicine"));
+                        call1.enqueue(new Callback<AnalyzingGraphResp>() {
+                            @Override
+                            public void onResponse(Call<AnalyzingGraphResp> call, Response<AnalyzingGraphResp> response) {
+                                Utils.showRequestDialog(ShowPatientAnalyzingGraph.this);
+                                if (response.isSuccessful()) {
+                                    AnalyzingGraphResp drilledResp = response.body();
+
+                                    HISeries hiSeries;
+                                    List<HISeries> hiSeriesListDrilled = new ArrayList<>();
+                                    ArrayList<HashMap<String, Object>> list1 = null;
+
+
+                                    if (drilledResp.getNutrientTableList().size() > 0) {
+                                        for (int i = 0; i < drilledResp.getNutrientTableList().size(); i++) {
+                                            Type type = new TypeToken<List<NutrientSubListAnalysingGraph>>() {
+                                            }.getType();
+                                            List<NutrientSubListAnalysingGraph> p = g.fromJson(drilledResp.getNutrientTableList().get(i).getNutrient(), type);
+                                            /*try {
+                                                JSONArray array=new JSONArray(analyzingGraphResp.getNutrientList().get(i).getNutrient());
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }*/
+                                            if (p != null) {
+                                                list1 = new ArrayList<>();
+                                                for (int j = 0; j < p.size(); j++) {
+                                                    HashMap<String, Object> map1 = new HashMap<>();
+                                                    map1.put("name", p.get(j).getNutrientName());
+                                                    map1.put("y", p.get(j).getNutrientValueP());
+                                                    map1.put("drilldown", p.get(j).getNutrientName());
+                                                    list1.add(map1);
+                                                }
+                                            }
+                                            hiSeries = new HIArea();
+                                            hiSeries.setData(list1);
+                                            hiSeries.setName(String.valueOf(list1.get(i).get("name")));
+                                            hiSeries.setId(String.valueOf(list1.get(i).get("name")));
+                                            hiSeriesListDrilled.add(hiSeries);
+                                        }
+                                    }
+                                    if (drilledResp.getVitalList().size() > 0) {
+                                        for (int i = 0; i < drilledResp.getVitalTableList().size(); i++) {
+                                            Type type = new TypeToken<List<VitalSubListAnalysingGraph>>() {
+                                            }.getType();
+                                            List<VitalSubListAnalysingGraph> p = g.fromJson(drilledResp.getVitalTableList().get(i).getVitalValue(), type);
+                                            if (p != null) {
+                                                list1 = new ArrayList<>();
+                                                for (int j = 0; j < p.size(); j++) {
+                                                    HashMap<String, Object> map1 = new HashMap<>();
+                                                    map1.put("name", drilledResp.getVitalTableList().get(i).getVitalName());
+                                                    map1.put("y", p.get(j).getVmValue());
+                                                    map1.put("drilldown", drilledResp.getVitalTableList().get(i).getVitalName());
+                                                    list1.add(map1);
+                                                }
+                                            }
+                                            hiSeries = new HILine();
+                                            hiSeries.setData(list1);
+                                            hiSeries.setName(String.valueOf(list1.get(i).get("name")));
+                                            hiSeries.setId(String.valueOf(list1.get(i).get("name")));
+                                            hiSeriesListDrilled.add(hiSeries);
+                                        }
+                                    }
+                                    HIDrilldown drillDown1 = new HIDrilldown();
+                                    drillDown1.setSeries(new ArrayList<>(hiSeriesListDrilled));
+                                    options.setDrilldown(drillDown1);
+                                    hcView.setOptions(options);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<AnalyzingGraphResp> call, Throwable t) {
+
+                            }
+                        });
+                            /*HILine series2 = new HILine();
+                            series2.setName("Calcium");
+                            series2.setId("Calcium");
                             Object[] object1 = new Object[]{"v11.0", 24.13};
                             Object[] object2 = new Object[]{"v8.0", 17.2};
                             Object[] object3 = new Object[]{"v9.0", 8.11};
@@ -266,19 +348,18 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                             Object[] object6 = new Object[]{"v7.0", 0.5};
                             series2.setData(new ArrayList<>(Arrays.asList(object1, object2, object3, object4, object5, object6)));
                             HILine series = new HILine();
-                            series.setData(new ArrayList<>(Arrays.asList(hiSeriesList, hiSeriesList)));
-                            HIDrilldown drillDown = new HIDrilldown();
-                            drillDown.setSeries(new ArrayList<>(hiSeriesList));
-                            options.setDrilldown(drillDown);
+                            series.setData(new ArrayList<>(Collections.singletonList(series2)));
+                            HIDrilldown drillDown1 = new HIDrilldown();
+                            drillDown1.setSeries(new ArrayList<>(hiSeriesList));
+                            options.setDrilldown(drillDown1);*/
 
 
-                            hcView.setOptions(options);
-                            hcView.reload();
-                            hcView.setVisibility(View.VISIBLE);
-                            hcView.invalidate();
-                            //view.invalidate();
-                        } else
-                            Toast.makeText(ShowPatientAnalyzingGraph.this, "No data found!", Toast.LENGTH_SHORT).show();
+                        hcView.setOptions(options);
+                        hcView.reload();
+                        hcView.setVisibility(View.VISIBLE);
+                        hcView.invalidate();
+                        //} else
+                        //Toast.makeText(ShowPatientAnalyzingGraph.this, "No data found!", Toast.LENGTH_SHORT).show();
                     }
                 }
                 Utils.hideDialog();
