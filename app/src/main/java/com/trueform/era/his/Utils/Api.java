@@ -177,7 +177,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("Graph/GetPatientAnalyzingGraphDrilled")
-    Call<AnalyzingGraphResp> getPatientAnalyzingGraphDrilled(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("userID") String userID, @Field("vitalIdSearch") String vitalIdSearch, @Field("date") String date, @Field("subDeptID") Integer subDeptID, @Field("timeFrom") String timeFrom, @Field("toHour") Integer toHour, @Field("nutrientIDSearch") String nutrientIDSearch, @Field("queryType") String queryType, @Field("isFoodIntake") String isFoodIntake, @Field("isInvestigation") String isInvestigation, @Field("isActivity") String isActivity, @Field("isProblem") String isProblem, @Field("isIO") String isIO, @Field("isIntakeMedicine") String isIntakeMedicine);
+    Call<AnalyzingGraphResp> getPatientAnalyzingGraphDrilled(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("userID") String userID, @Field("vitalIdSearch") String vitalIdSearch, @Field("date") String date, @Field("subDeptID") Integer subDeptID, @Field("timeFrom") String timeFrom, @Field("toHour") Integer toHour, @Field("nutrientIDSearch") String nutrientIDSearch, @Field("queryType") String queryType, @Field("isFoodIntake") String isFoodIntake, @Field("isInvestigation") String isInvestigation, @Field("isActivity") String isActivity, @Field("isProblem") String isProblem, @Field("isIO") String isIO, @Field("isIntakeMedicine") String isIntakeMedicine, @Field("resultTime") String resultTime);
 
     @FormUrlEncoded
     @POST("PatientPhysicalActivity/GetProblemAttribute")
