@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.EventLog;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,21 +16,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.highsoft.highcharts.common.HIColor;
 import com.highsoft.highcharts.common.hichartsclasses.HIArea;
 import com.highsoft.highcharts.common.hichartsclasses.HIArearange;
 import com.highsoft.highcharts.common.hichartsclasses.HIBar;
+import com.highsoft.highcharts.common.hichartsclasses.HICSSObject;
 import com.highsoft.highcharts.common.hichartsclasses.HIChart;
 import com.highsoft.highcharts.common.hichartsclasses.HIColumn;
 import com.highsoft.highcharts.common.hichartsclasses.HICondition;
 import com.highsoft.highcharts.common.hichartsclasses.HICredits;
+import com.highsoft.highcharts.common.hichartsclasses.HICrosshair;
 import com.highsoft.highcharts.common.hichartsclasses.HIDataLabels;
 import com.highsoft.highcharts.common.hichartsclasses.HIDrilldown;
 import com.highsoft.highcharts.common.hichartsclasses.HIEvents;
 import com.highsoft.highcharts.common.hichartsclasses.HIExporting;
 import com.highsoft.highcharts.common.hichartsclasses.HILabel;
+import com.highsoft.highcharts.common.hichartsclasses.HILabels;
 import com.highsoft.highcharts.common.hichartsclasses.HILegend;
 import com.highsoft.highcharts.common.hichartsclasses.HILine;
 import com.highsoft.highcharts.common.hichartsclasses.HIOptions;
+import com.highsoft.highcharts.common.hichartsclasses.HIPlotBands;
 import com.highsoft.highcharts.common.hichartsclasses.HIPlotOptions;
 import com.highsoft.highcharts.common.hichartsclasses.HIPoint;
 import com.highsoft.highcharts.common.hichartsclasses.HIResponsive;
@@ -69,6 +75,9 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
     Context context;
     TextView txtDateTime;
     int n = 0;
+    HIPlotBands hiPlotBands;
+    HIPlotBands hiPlotBands1;
+    HIXAxis hixAxis;
     HISeries hiSeries;
     Gson g = new Gson();
     private HIChartView hcView;
@@ -127,12 +136,24 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                         ArrayList<String> category = new ArrayList<>();
                         ArrayList<HashMap<String, Object>> list1 = null;
                         ArrayList<HashMap<String, Object>> list2 = null;
+                        ArrayList<HashMap<String, Object>> list3 = null;
+                        ArrayList<HashMap<String, Object>> list4 = null;
+                        ArrayList<HashMap<String, Object>> list5 = null;
+                        ArrayList<HashMap<String, Object>> list6 = null;
+                        ArrayList<HashMap<String, Object>> list7 = null;
+                        ArrayList<HashMap<String, Object>> list8 = null;
                         List<HISeries> hiSeriesList = new ArrayList<>();
                         for (int i = 0; i < analyzingGraphResp.getVitalList().size(); i++) {
                             category.add(analyzingGraphResp.getVitalList().get(i).getValueTime());
                             if (i == 0) {
                                 list1 = new ArrayList<>();
                                 list2 = new ArrayList<>();
+                                list3 = new ArrayList<>();
+                                list4 = new ArrayList<>();
+                                list5 = new ArrayList<>();
+                                list6 = new ArrayList<>();
+                                list7 = new ArrayList<>();
+                                list8 = new ArrayList<>();
                             }
                             HashMap<String, Object> map1 = new HashMap<>();
                             map1.put("name", "Intake");
@@ -144,16 +165,96 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                             map2.put("y", analyzingGraphResp.getVitalList().get(i).getIntakeQty());
                             map2.put("drilldown", "Output");
                             list2.add(map2);
+                                HashMap<String, Object> map3 = new HashMap<>();
+                            if(analyzingGraphResp.getVitalList().get(i).getFoodIntake()!=null) {
+                                map3.put("name", analyzingGraphResp.getVitalList().get(i).getFoodIntake());
+                                map3.put("y", 170);
+                                map3.put("drilldown", analyzingGraphResp.getVitalList().get(i).getFoodIntake());
+                            }
+                                list3.add(map3);
+                                HashMap<String, Object> map4 = new HashMap<>();
+                            if(analyzingGraphResp.getVitalList().get(i).getProblem()!=null) {
+                                map4.put("name", "Problem");
+                                map4.put("y", 140);
+                                map4.put("drilldown", "Problem");
+                            }
+                                list4.add(map4);
+                                HashMap<String, Object> map5 = new HashMap<>();
+                            if(analyzingGraphResp.getVitalList().get(i).getActivity()!=null) {
+                                map5.put("name", "Activity");
+                                map5.put("y", 160);
+                                map5.put("drilldown", "Activity");
+                            }
+                                list5.add(map5);
+                                HashMap<String, Object> map6 = new HashMap<>();
+                            if(analyzingGraphResp.getVitalList().get(i).getExercise()!=null) {
+                                map6.put("name", "Exercise");
+                                map6.put("y", 150);
+                                map6.put("drilldown", "Exercise");
+                            }
+                                list6.add(map6);
+                                HashMap<String, Object> map7 = new HashMap<>();
+                            if(analyzingGraphResp.getVitalList().get(i).getExercise()!=null) {
+                                map7.put("name", "Intake Medicine");
+                                map7.put("y", 130);
+                                map7.put("drilldown", "Intake Medicine");
+                            }
+                                list7.add(map7);
+                                HashMap<String, Object> map8 = new HashMap<>();
+                            if(analyzingGraphResp.getVitalList().get(i).getExercise()!=null) {
+                                map8.put("name", "Investigation");
+                                map8.put("y", 120);
+                                map8.put("drilldown", "Investigation");
+                            }
+                                list8.add(map8);
                         }
-                        hiSeries = new HIBar();
+                        hiSeries = new HIColumn();
                         hiSeries.setData(list1);
                         hiSeries.setName("Intake");
                         hiSeries.setId("Intake");
+                        if(Boolean.parseBoolean(getIntent().getStringExtra("isIO")))
                         hiSeriesList.add(hiSeries);
-                        hiSeries = new HIBar();
+                        hiSeries = new HIColumn();
                         hiSeries.setData(list2);
                         hiSeries.setName("Output");
                         hiSeries.setId("Output");
+                        if(Boolean.parseBoolean(getIntent().getStringExtra("isIO")))
+                        hiSeriesList.add(hiSeries);
+                        hiSeries = new HILine();
+                        hiSeries.setData(list3);
+                        hiSeries.setName("Food Intake");
+                        hiSeries.setId("Food Intake");
+                        if(Boolean.parseBoolean(getIntent().getStringExtra("isFoodIntake")))
+                        hiSeriesList.add(hiSeries);
+                        hiSeries = new HILine();
+                        hiSeries.setData(list4);
+                        hiSeries.setName("Problem");
+                        hiSeries.setId("Problem");
+                        if(Boolean.parseBoolean(getIntent().getStringExtra("isProblem")))
+                        hiSeriesList.add(hiSeries);
+                        hiSeries = new HILine();
+                        hiSeries.setData(list5);
+                        hiSeries.setName("Activity");
+                        hiSeries.setId("Activity");
+                        if(Boolean.parseBoolean(getIntent().getStringExtra("isActivity")))
+                        hiSeriesList.add(hiSeries);
+                        hiSeries = new HILine();
+                        hiSeries.setData(list6);
+                        hiSeries.setName("Exercise");
+                        hiSeries.setId("Exercise");
+                        if(Boolean.parseBoolean(getIntent().getStringExtra("isIO")))
+                        hiSeriesList.add(hiSeries);
+                        hiSeries = new HILine();
+                        hiSeries.setData(list7);
+                        hiSeries.setName("Intake Medicine");
+                        hiSeries.setId("Intake Medicine");
+                        if(Boolean.parseBoolean(getIntent().getStringExtra("isIntakeMedicine")))
+                        hiSeriesList.add(hiSeries);
+                        hiSeries = new HILine();
+                        hiSeries.setData(list8);
+                        hiSeries.setName("Investigation");
+                        hiSeries.setId("Investigation");
+                        if(Boolean.parseBoolean(getIntent().getStringExtra("isInvestigation")))
                         hiSeriesList.add(hiSeries);
                         if (analyzingGraphResp.getNutrientTableList().size() > 0) {
                             for (int i = 0; i < analyzingGraphResp.getNutrientTableList().size(); i++) {
@@ -181,13 +282,11 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                                 hiSeries.setName(String.valueOf(list1.get(i).get("name")));
                                 hiSeries.setId(String.valueOf(list1.get(i).get("name")));
                                 hiSeries.setEvents(new HIEvents());
-                                /*HIPoint hiPoint=new HIPoint();
-                                hiPoint.setXAxis(list1);
-                                hiSeries.setPoint(hiPoint);*/
-                                hiSeries.getEvents().setClick(new HIFunction(() -> {
-                                    Log.v("name2", String.valueOf(hiSeries.getXAxis()));
+                                /*hiSeries.getEvents().setClick(new HIFunction(() -> {
+                                    Log.v("name2", String.valueOf(hixAxis.getCategories().get(0)));
+                                    Log.v("name3", String.valueOf(hiSeries.getData().get(0)));
                                     drildown(String.valueOf(hiSeries.getPoint().getYAxis()));
-                                }));
+                                }));*/
                                 hiSeriesList.add(hiSeries);
                             }
                         }
@@ -224,9 +323,10 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                                 }
                             }*/
                         HITooltip tooltip = new HITooltip();
-                        tooltip.setHeaderFormat("<span style=\"font-size:11px\">{series.name}</span><br>");
+//                        tooltip.setHeaderFormat("<span style=\"font-size:11px\">{series.name}</span><br>");
                         tooltip.setPointFormat("<span style=\"color:{point.color}\">{point.name}</span>: <b>{point.y:.2f}%</b><br/>");
                         tooltip.setShared(true);
+                        tooltip.setUseHTML(true);
                         options.setTooltip(tooltip);
 
 
@@ -235,21 +335,38 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                         plotOptions.getSeries().setDataLabels(new HIDataLabels());
                         plotOptions.getSeries().getDataLabels().setEnabled(true);
                         plotOptions.getSeries().getDataLabels().setFormat("{point.y:.1f}%");
-                        plotOptions.getSeries().setEvents(new HIEvents());
-                        /*plotOptions.getSeries().getEvents().setClick(new HIFunction(() -> {
-                            Log.v("name2", plotOptions.getSeries().getYAxis().toString());
-                            drildown(plotOptions.getSeries().getYAxis().toString()); }));*/
-                        final HIXAxis hixAxis = new HIXAxis();
+                        hixAxis = new HIXAxis();
                         hixAxis.setTitle(new HITitle());
                         hixAxis.getTitle().setText("");
                         hixAxis.setCategories(category);
+                        hixAxis.setLabels(new HILabels());
+                        hixAxis.getLabels().setOverflow("justify");
+                        hixAxis.setEvents(new HIEvents());
+                        hiPlotBands=new HIPlotBands();
+                        hiPlotBands.setFrom(category.indexOf("8:00AM"));
+                        hiPlotBands.setColor(HIColor.initWithRGB(159,212,243));
+                        hiPlotBands.setTo(category.indexOf("8:00PM"));
+                        hiPlotBands1=new HIPlotBands();
+                        hiPlotBands1.setFrom(category.indexOf("8:00PM"));
+                        hiPlotBands1.setColor(HIColor.initWithRGB(37,41,49));
+                        hiPlotBands1.setTo(category.indexOf("7:30AM"));
+                        HILabel hiLabel=new HILabel();
+                        hiLabel.setText("<img src='http://developer.android.com/assets/images/dac_logo.png'>");
+                        HICSSObject hicssObject=new HICSSObject();
+                        hiLabel.setStyle(hicssObject);
+                        hiLabel.setUseHTML(true);
+                        //hiPlotBands1.setLabel(hiLabel);
+                        //hiPlotBands.setLabel(hiLabel);
+                        HIPlotBands[] plotBandsList = new HIPlotBands[] { hiPlotBands, hiPlotBands1};
+                        hixAxis.setPlotBands(new ArrayList<>(Arrays.asList(plotBandsList)));
+                        hixAxis.setCrosshair(new HICrosshair());
                         options.setXAxis(new ArrayList<HIXAxis>() {{
                             add(hixAxis);
                         }});
                         plotOptions.getSeries().setPointInterval(1.0);
                         Log.v("name1", String.valueOf(list1.get(0).get("name")));
                         Log.v("name2", String.valueOf(list1.get(0).containsValue("name")));
-                            /*ArrayList<HashMap<String, Object>> lists = new ArrayList<>();
+                        /*ArrayList<HashMap<String, Object>> lists = new ArrayList<>();
                             for (int i = 0; i < list1.size(); i++) {
                                 if (i < list1.size() - 1) {
                                     if (!String.valueOf(list1.get(i).get("name")).equals(String.valueOf(list1.get(i + 1).get("name")))) {

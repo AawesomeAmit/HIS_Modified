@@ -39,7 +39,7 @@
     </androidx.cardview.widget.CardView>
     <com.highsoft.highcharts.core.HIChartView
         android:id="@+id/hcView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/_10sdp"
         android:layout_height="@dimen/_400sdp" />
 </LinearLayout>
