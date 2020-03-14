@@ -236,6 +236,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             startActivity(intent);
         } else if (id == R.id.nav_observation) {
             spnConsultant.setVisibility(View.GONE);
+            fragment = new ObservationGraph();
+        } else if (id == R.id.nav_analysing) {
+            spnConsultant.setVisibility(View.GONE);
             fragment = new CombinedGraph();
             //fragment = new ObservationGraph();
         } else if (id == R.id.nav_prescription) {

@@ -174,7 +174,7 @@ public class PriscriptionOverviewPopup extends BaseActivity {
 
     private void bindData(){
         Utils.showRequestDialog(mActivity);
-        Call<PrescribedMedResp> call1= RetrofitClient.getInstance().getApi().getCurrentPrescripttionHistory(SharedPrefManager.getInstance(getApplicationContext()).getUser().getAccessToken(), SharedPrefManager.getInstance(getApplicationContext()).getUser().getUserid().toString(), SharedPrefManager.getInstance(getApplicationContext()).getPid(), SharedPrefManager.getInstance(getApplicationContext()).getHeadID(), SharedPrefManager.getInstance(getApplicationContext()).getSubDept().getId(), SharedPrefManager.getInstance(getApplicationContext()).getUser().getUserid());
+        Call<PrescribedMedResp> call1= RetrofitClient.getInstance().getApi().getCurrentPrescripttionHistory(SharedPrefManager.getInstance(getApplicationContext()).getUser().getAccessToken(), SharedPrefManager.getInstance(getApplicationContext()).getUser().getUserid().toString(), SharedPrefManager.getInstance(getApplicationContext()).getPid(), SharedPrefManager.getInstance(getApplicationContext()).getHeadID(), SharedPrefManager.getInstance(getApplicationContext()).getSubDept().getId(), SharedPrefManager.getInstance(getApplicationContext()).getUser().getUserid(), null);
         call1.enqueue(new Callback<PrescribedMedResp>() {
             @Override
             public void onResponse(Call<PrescribedMedResp> call1, Response<PrescribedMedResp> response) {

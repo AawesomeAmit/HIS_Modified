@@ -83,6 +83,8 @@ public class AddMedication extends Fragment {
     private static RecyclerView rvMedication;
     private ArrayAdapter<MedicineSearch> arrayAdapter;
     private Spinner spnConsultant;
+    String prescriptionType="CP";
+    List<String> prescriptionTypeList;
     private MedicineSearchResp medicineSearchResp2;
     @SuppressLint("StaticFieldLeak")
     private static AutoCompleteTextView edtMedName;
@@ -91,7 +93,7 @@ public class AddMedication extends Fragment {
     private static TextView tvTime;
     private String hour = "", minutes = "", amPm = "", time = "";
     @SuppressLint("StaticFieldLeak")
-    private static Spinner spnFreq, spnForm; //,spnUnit
+    private static Spinner spnFreq, spnForm, spnPrescriptionType; //,spnUnit
     private List<String> formList;
     private List<String> freqList;
     private List<String> unitList;
@@ -159,6 +161,7 @@ public class AddMedication extends Fragment {
         spnConsultant = toolbar.findViewById(R.id.spnConsultant);
         rlConsultantDiagnosis = view.findViewById(R.id.rlConsultantDiagnosis);
         rlRecordDate = view.findViewById(R.id.rlRecordDate);
+        spnPrescriptionType = view.findViewById(R.id.spnPrescriptionType);
         txtDate = view.findViewById(R.id.txtDate);
         //TextView btnAdd = view.findViewById(R.id.btnAdd);
         TextView txtAction = view.findViewById(R.id.txtAction);
@@ -174,9 +177,29 @@ public class AddMedication extends Fragment {
         //  spnUnit=view.findViewById(R.id.txtUnit);
         etUnit = view.findViewById(R.id.etUnit);
         etConsultant = view.findViewById(R.id.etConsultant);
-
+        prescriptionTypeList=new ArrayList<>();
+        prescriptionTypeList.add(0, "Current Prescription");
+        prescriptionTypeList.add(1, "Prescription Load");
+        prescriptionTypeList.add(2, "Sedation");
+        ArrayAdapter<String> presTypeAdp = new ArrayAdapter<>(context, R.layout.spinner_layout, prescriptionTypeList);
+        spnPrescriptionType.setAdapter(presTypeAdp);
         recyclerViewDiagnosis = view.findViewById(R.id.recyclerViewDiagnosis);
+        spnPrescriptionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(spnPrescriptionType.getSelectedItemPosition()==0)
+                    prescriptionType="CP";
+                else if(spnPrescriptionType.getSelectedItemPosition()==1)
+                    prescriptionType="PO";
+                else prescriptionType="SE";
+                bindData(prescriptionType);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);
@@ -242,7 +265,7 @@ public class AddMedication extends Fragment {
                 Utils.hideDialog();
             }
         });
-        bindData();
+        bindData(prescriptionType);
         edtMedName.setOnItemClickListener((adapterView, view1, i, l) -> {
             drugID = medicineSearchResp2.getMedicineSearches().get(i).getDrugID();
             drugName = medicineSearchResp2.getMedicineSearches().get(i).getDrugName();
@@ -315,7 +338,7 @@ public class AddMedication extends Fragment {
                             recyclerViewDiagnosis.setAdapter(adapterNutrient);
                         }
                     } else {
-                        Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Diagnosis already added", Toast.LENGTH_SHORT).show();
                         etConsultant.setText("");
                     }
                 }
@@ -340,7 +363,7 @@ public class AddMedication extends Fragment {
                             recyclerViewDiagnosis.setAdapter(adapterNutrient);
                         }
                     } else {
-                        Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Diagnosis already added", Toast.LENGTH_SHORT).show();
                         etConsultant.setText("");
                     }
                 }
@@ -366,7 +389,7 @@ public class AddMedication extends Fragment {
                                 recyclerViewDiagnosis.setAdapter(adapterNutrient);
                             }
                         } else {
-                            Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Diagnosis already added", Toast.LENGTH_SHORT).show();
                             etConsultant.setText("");
                         }
                     }
@@ -384,10 +407,10 @@ public class AddMedication extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 1) {
-                    if (ConnectivityChecker.checker(getActivity())) {
+                    if (ConnectivityChecker.checker(context)) {
                         hitGetICDCode(s.toString());
                     } else {
-                        Toast.makeText(getActivity(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -456,8 +479,9 @@ public class AddMedication extends Fragment {
         return view;
     }
 
-    private void bindData() {
-        Call<PrescribedMedResp> call1 = RetrofitClient.getInstance().getApi().getCurrentPrescripttionHistory(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getHeadID(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
+    private void bindData(String prescriptionType) {
+        Utils.showRequestDialog(context);
+        Call<PrescribedMedResp> call1 = RetrofitClient.getInstance().getApi().getCurrentPrescripttionHistory(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getHeadID(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid(), prescriptionType);
         call1.enqueue(new Callback<PrescribedMedResp>() {
             @Override
             public void onResponse(Call<PrescribedMedResp> call1, Response<PrescribedMedResp> response) {
@@ -473,10 +497,9 @@ public class AddMedication extends Fragment {
                         for (int i = 0; i < medicineSearchResp1.getPatientHistory().size(); i++) {
                             if (medicineSearchResp1.getPatientHistory().get(i).getPdmId() == 4) {
                                 getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
-                                getIcdCodeModelListMain.get(0).setDetailID(medicineSearchResp1.getPatientHistory().get(i).getDetailID()); // get item
+                                getIcdCodeModelListMain.get(0).setDetailID(medicineSearchResp1.getPatientHistory().get(i).getDetailID());
                                 getIcdCodeModelListMain.get(0).setDetails(medicineSearchResp1.getPatientHistory().get(i).getDetails());
                                 getIcdCodeModelListMain.get(0).setPdmID(medicineSearchResp1.getPatientHistory().get(i).getPdmId());
-                                //getNutrientByPrefixTextModelListMain.get(0).setSelected(true);
                             }
                         }
                         adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
@@ -727,7 +750,7 @@ public class AddMedication extends Fragment {
                         @Override
                         public void onResponse(JSONObject response) {
                             Toast.makeText(context, "Prescription saved successfully", Toast.LENGTH_SHORT).show();
-                            bindData();
+                            bindData(prescriptionType);
                         }
 
                         @Override
@@ -807,7 +830,7 @@ public class AddMedication extends Fragment {
                     if (response.body() != null) {
                         List<GetIcdCodeModel> getIcdCodeModelList = response.body().getIcdList();
                         if(!getIcdCodeModelList.isEmpty()) {
-                            ArrayAdapter arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_layout_new, getIcdCodeModelList);
+                            ArrayAdapter arrayAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout_new, getIcdCodeModelList);
                             //arrayAdapter.setDropDownViewResource(R.layout.inflate_auto_complete_text);
                             etConsultant.setAdapter(arrayAdapter);
                             etConsultant.setOnItemClickListener((parent, view, position, id) -> {
@@ -829,7 +852,7 @@ public class AddMedication extends Fragment {
                                         }
                                     } else {
                                         //AppUtils.hideSoftKeyboard(mActivity);
-                                        Toast.makeText(getActivity(), "Diagnosis already added", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Diagnosis already added", Toast.LENGTH_SHORT).show();
                                         etConsultant.setText("");
                                     }
                                 } catch (Exception e) {
@@ -846,7 +869,7 @@ public class AddMedication extends Fragment {
             public void onFailure(Call<GetIcdCodeResp> call, Throwable t) {
                 Log.e("onFailure:", t.getMessage());
 
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
 
                 Utils.hideDialog();
             }

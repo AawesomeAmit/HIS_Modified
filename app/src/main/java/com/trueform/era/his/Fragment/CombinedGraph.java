@@ -47,9 +47,10 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
     private Context context;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private Spinner spnHour;
+    private Spinner spnHour, spnIntakeType;
     private List<String> hourList = new ArrayList<>();
     ArrayAdapter<VitalList> adapter;
+    List<String> intakeTypeList;
     private List<VitalAnalysisModel> vitalLists = new ArrayList<>();
     private RecyclerView rvVital, rvNutrient;
     private ChipsInput chpVital, chpNutrient;
@@ -97,6 +98,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
         context = view.getContext();
         rvVital = view.findViewById(R.id.rvVital);
         spnHour = view.findViewById(R.id.spnHour);
+        spnIntakeType = view.findViewById(R.id.spnIntakeType);
         chkFood = view.findViewById(R.id.chkFood);
         chkInvestigation = view.findViewById(R.id.chkInvestigation);
         chkActivity = view.findViewById(R.id.chkActivity);
@@ -132,6 +134,13 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
         txtFrmDate.setOnClickListener(this);
         txtFrmTime.setOnClickListener(this);
         btnShow.setOnClickListener(this);
+        intakeTypeList=new ArrayList<>();
+        intakeTypeList.add(0, "All");
+        intakeTypeList.add(1, "Food");
+        intakeTypeList.add(2, "Supplement");
+        intakeTypeList.add(3, "Medicine");
+        ArrayAdapter<String> intakeTypeAdp = new ArrayAdapter<>(context, R.layout.spinner_layout, intakeTypeList);
+        spnIntakeType.setAdapter(intakeTypeAdp);
         chpVital.addChip(74, (Uri) null, "heartRate", "");
         chpVital.addChip(3, (Uri) null, "Pulse", "");
         chpVital.addChip(56, (Uri) null, "spo2", "");
@@ -386,6 +395,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
             intent.putExtra("isProblem", String.valueOf(chkProb.isChecked()));
             intent.putExtra("isIO", String.valueOf(chkIntakeOut.isChecked()));
             intent.putExtra("isIntakeMedicine", String.valueOf(chkMedIntake.isChecked()));
+            intent.putExtra("intakeType", intakeTypeList.get(spnIntakeType.getSelectedItemPosition()).equals("All") ? null : intakeTypeList.get(spnIntakeType.getSelectedItemPosition()));
             intent.putExtra("hour", String.valueOf(spnHour.getSelectedItemId() + 1));
             startActivity(intent);
         }

@@ -312,4 +312,7 @@
     <string name="medicines">Medicines</string>
     <string name="employee_shift">Employee Shift</string>
     <string name="medicine_intake">Medicine Intake</string>
+    <string name="analysing_graph">Analysing Graph</string>
+    <string name="intake_type">Intake Type</string>
+    <string name="prescription_type">Prescription Type</string>
 </resources>

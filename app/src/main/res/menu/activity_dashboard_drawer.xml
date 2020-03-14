@@ -19,6 +19,10 @@
             android:icon="@drawable/ic_observationgraph"
             android:title="@string/observation_graph" />
         <item
+            android:id="@+id/nav_analysing"
+            android:icon="@drawable/ic_observationgraph"
+            android:title="@string/analysing_graph" />
+        <item
             android:id="@+id/nav_vital_graph"
             android:icon="@drawable/ic_observationgraph"
             android:visible="false"

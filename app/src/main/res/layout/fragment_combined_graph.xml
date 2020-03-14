@@ -22,6 +22,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="10"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
         android:gravity="center_vertical"
         tools:ignore="RelativeOverlap">
         <TextView
@@ -55,6 +57,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="3"
+            android:layout_marginStart="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_1sdp"
             android:background="@drawable/edt_bor"
             android:layout_height="@dimen/_30sdp">
@@ -68,7 +71,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="@string/intake_type"
+            android:textSize="@dimen/_14sdp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/_1sdp"
+            android:background="@drawable/edt_bor"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_height="@dimen/_30sdp">
+            <Spinner
+                android:id="@+id/spnIntakeType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_3sdp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:weightSum="3"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:orientation="horizontal">
         <com.google.android.material.checkbox.MaterialCheckBox
@@ -97,6 +130,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="3"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
         android:orientation="horizontal">
         <com.google.android.material.checkbox.MaterialCheckBox
             android:layout_width="0dp"

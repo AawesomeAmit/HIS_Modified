@@ -165,7 +165,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("Graph/GetPatientAnalyzingGraph")
-    Call<AnalyzingGraphResp> getPatientAnalyzingGraph(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("userID") String userID, @Field("vitalIdSearch") String vitalIdSearch, @Field("date") String date, @Field("subDeptID") Integer subDeptID, @Field("timeFrom") String timeFrom, @Field("toHour") Integer toHour, @Field("nutrientIDSearch") String nutrientIDSearch, @Field("queryType") String queryType, @Field("isFoodIntake") String isFoodIntake, @Field("isInvestigation") String isInvestigation, @Field("isActivity") String isActivity, @Field("isProblem") String isProblem, @Field("isIO") String isIO, @Field("isIntakeMedicine") String isIntakeMedicine);
+    Call<AnalyzingGraphResp> getPatientAnalyzingGraph(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("userID") String userID, @Field("vitalIdSearch") String vitalIdSearch, @Field("date") String date, @Field("subDeptID") Integer subDeptID, @Field("timeFrom") String timeFrom, @Field("toHour") Integer toHour, @Field("nutrientIDSearch") String nutrientIDSearch, @Field("queryType") String queryType, @Field("isFoodIntake") String isFoodIntake, @Field("isInvestigation") String isInvestigation, @Field("isActivity") String isActivity, @Field("isProblem") String isProblem, @Field("isIO") String isIO, @Field("isIntakeMedicine") String isIntakeMedicine, @Field("intakeType") String intakeType);
 
     @FormUrlEncoded
     @POST("PatientPhysicalActivity/GetPatientComplainList")
@@ -441,7 +441,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("Prescription/getIPDCurrentHistory")
-    Call<PrescribedMedResp> getCurrentPrescripttionHistory(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("headID") Integer headID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
+    Call<PrescribedMedResp> getCurrentPrescripttionHistory(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("headID") Integer headID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID, @Field("Status1") String Status1);
 
     @FormUrlEncoded
     @POST("IntakePrescription/GetgetintakeList")
