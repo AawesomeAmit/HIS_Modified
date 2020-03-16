@@ -294,7 +294,7 @@ public class CalciumReportDynamic extends BaseFragment implements View.OnClickLi
                                     resultListForAndroidList.add(resultListForAndroid);
                                 }
                                 rvReport.setAdapter(new CalciumReportAdp(resultListForAndroidList));
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             Utils.hideDialog();

@@ -165,48 +165,48 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                             map2.put("y", analyzingGraphResp.getVitalList().get(i).getIntakeQty());
                             map2.put("drilldown", "Output");
                             list2.add(map2);
-                                HashMap<String, Object> map3 = new HashMap<>();
-                            if(analyzingGraphResp.getVitalList().get(i).getFoodIntake()!=null) {
+                            HashMap<String, Object> map3 = new HashMap<>();
+                            if (analyzingGraphResp.getVitalList().get(i).getFoodIntake() != null) {
                                 map3.put("name", analyzingGraphResp.getVitalList().get(i).getFoodIntake());
                                 map3.put("y", 170);
                                 map3.put("drilldown", analyzingGraphResp.getVitalList().get(i).getFoodIntake());
                             }
-                                list3.add(map3);
-                                HashMap<String, Object> map4 = new HashMap<>();
-                            if(analyzingGraphResp.getVitalList().get(i).getProblem()!=null) {
+                            list3.add(map3);
+                            HashMap<String, Object> map4 = new HashMap<>();
+                            if (analyzingGraphResp.getVitalList().get(i).getProblem() != null) {
                                 map4.put("name", "Problem");
                                 map4.put("y", 140);
                                 map4.put("drilldown", "Problem");
                             }
-                                list4.add(map4);
-                                HashMap<String, Object> map5 = new HashMap<>();
-                            if(analyzingGraphResp.getVitalList().get(i).getActivity()!=null) {
+                            list4.add(map4);
+                            HashMap<String, Object> map5 = new HashMap<>();
+                            if (analyzingGraphResp.getVitalList().get(i).getActivity() != null) {
                                 map5.put("name", "Activity");
                                 map5.put("y", 160);
                                 map5.put("drilldown", "Activity");
                             }
-                                list5.add(map5);
-                                HashMap<String, Object> map6 = new HashMap<>();
-                            if(analyzingGraphResp.getVitalList().get(i).getExercise()!=null) {
+                            list5.add(map5);
+                            HashMap<String, Object> map6 = new HashMap<>();
+                            if (analyzingGraphResp.getVitalList().get(i).getExercise() != null) {
                                 map6.put("name", "Exercise");
                                 map6.put("y", 150);
                                 map6.put("drilldown", "Exercise");
                             }
-                                list6.add(map6);
-                                HashMap<String, Object> map7 = new HashMap<>();
-                            if(analyzingGraphResp.getVitalList().get(i).getExercise()!=null) {
+                            list6.add(map6);
+                            HashMap<String, Object> map7 = new HashMap<>();
+                            if (analyzingGraphResp.getVitalList().get(i).getIntakeMedicine() != null) {
                                 map7.put("name", "Intake Medicine");
                                 map7.put("y", 130);
                                 map7.put("drilldown", "Intake Medicine");
                             }
-                                list7.add(map7);
-                                HashMap<String, Object> map8 = new HashMap<>();
-                            if(analyzingGraphResp.getVitalList().get(i).getExercise()!=null) {
+                            list7.add(map7);
+                            HashMap<String, Object> map8 = new HashMap<>();
+                            if (analyzingGraphResp.getVitalList().get(i).getInvestigation() != null) {
                                 map8.put("name", "Investigation");
                                 map8.put("y", 120);
                                 map8.put("drilldown", "Investigation");
                             }
-                                list8.add(map8);
+                            list8.add(map8);
                         }
                         hiSeries = new HIColumn();
                         hiSeries.setData(list1);
