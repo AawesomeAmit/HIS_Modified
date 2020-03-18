@@ -57,14 +57,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
-        <!--
-
-<activity
-            android:name=".Activity.PatientRange"
-            android:label="@string/title_activity_patient_range"
-            android:theme="@style/AppTheme.NoActionBar" />
-        -->
-
         <activity
             android:name=".Fragment.NutriAnalyserFragment"
             android:configChanges="keyboardHidden|orientation"
@@ -94,7 +86,6 @@
             android:name=".Activity.PatientDashboard"
             tools:ignore="LockedOrientationActivity"
             android:screenOrientation="landscape" />
-
         <activity
             android:name=".Fragment.IntakeInput"
             android:configChanges="orientation|screenSize"
@@ -110,9 +101,7 @@
         <activity android:name=".Activity.EnterPID"
             tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.ShowPatientAnalyzingGraph"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.ShowPatientAnalyzingGraph" />
         <activity android:name=".Activity.NotificationList"
             tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
@@ -136,12 +125,6 @@
             android:configChanges="keyboardHidden|orientation"
             tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait" />
-        <!--
-<activity
-            android:name=".Activity.SubHeadList"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@style/AppTheme.myDialog" />
-        -->
         <activity
             android:name=".Activity.PreDashboard"
             android:configChanges="keyboardHidden|orientation"
@@ -163,7 +146,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -185,7 +167,6 @@
         <activity android:name=".Activity.AngioReportActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-
         <service
             android:name=".Utils.MyFirebaseMessagingService"
             android:exported="false">

@@ -281,10 +281,18 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                                 hiSeries.setData(list1);
                                 hiSeries.setName(String.valueOf(list1.get(i).get("name")));
                                 hiSeries.setId(String.valueOf(list1.get(i).get("name")));
-                                hiSeries.setEvents(new HIEvents());
+                                HIEvents events=new HIEvents();
+                                hiSeries.setEvents(events);
+                                events.setDrilldown(new HIFunction(() -> {
+                                    Log.v("name2", String.valueOf(hiSeries.getEvents().getClick()));
+                                    Log.v("name3", String.valueOf(hixAxis.getCategories().get(1)));
+                                    Log.v("name4", String.valueOf(hiSeries.getData().get(0)));
+                                    drildown(String.valueOf(hiSeries.getPoint().getYAxis()));
+                                }));
                                 /*hiSeries.getEvents().setClick(new HIFunction(() -> {
-                                    Log.v("name2", String.valueOf(hixAxis.getCategories().get(0)));
-                                    Log.v("name3", String.valueOf(hiSeries.getData().get(0)));
+                                    Log.v("name2", String.valueOf(hiSeries.getEvents().getClick()));
+                                    Log.v("name3", String.valueOf(hixAxis.getCategories().get(1)));
+                                    Log.v("name4", String.valueOf(hiSeries.getData().get(0)));
                                     drildown(String.valueOf(hiSeries.getPoint().getYAxis()));
                                 }));*/
                                 hiSeriesList.add(hiSeries);
@@ -328,8 +336,6 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                         tooltip.setShared(true);
                         tooltip.setUseHTML(true);
                         options.setTooltip(tooltip);
-
-
                         HIPlotOptions plotOptions = new HIPlotOptions();
                         plotOptions.setSeries(new HISeries());
                         plotOptions.getSeries().setDataLabels(new HIDataLabels());
@@ -351,12 +357,18 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                         hiPlotBands1.setColor(HIColor.initWithRGB(37,41,49));
                         hiPlotBands1.setTo(category.indexOf("7:30AM"));
                         HILabel hiLabel=new HILabel();
-                        hiLabel.setText("<img src='http://developer.android.com/assets/images/dac_logo.png'>");
+                        hiLabel.setText("<img src='http://182.156.200.179:127/assets/images/day.png' height='60px' style='margin-left:-35px'>");
+                        hiLabel.setAlign("left");
                         HICSSObject hicssObject=new HICSSObject();
                         hiLabel.setStyle(hicssObject);
                         hiLabel.setUseHTML(true);
-                        //hiPlotBands1.setLabel(hiLabel);
-                        //hiPlotBands.setLabel(hiLabel);
+                        HILabel hiLabel1=new HILabel();
+                        hiLabel1.setText("<img src='http://182.156.200.179:127/assets/images/night.png' height='60px' style='margin-left:-35px'>");
+                        hiLabel1.setAlign("left");
+                        hiLabel1.setStyle(hicssObject);
+                        hiLabel1.setUseHTML(true);
+                        hiPlotBands1.setLabel(hiLabel1);
+                        hiPlotBands.setLabel(hiLabel);
                         HIPlotBands[] plotBandsList = new HIPlotBands[] { hiPlotBands, hiPlotBands1};
                         hixAxis.setPlotBands(new ArrayList<>(Arrays.asList(plotBandsList)));
                         hixAxis.setCrosshair(new HICrosshair());
@@ -364,8 +376,8 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                             add(hixAxis);
                         }});
                         plotOptions.getSeries().setPointInterval(1.0);
-                        Log.v("name1", String.valueOf(list1.get(0).get("name")));
-                        Log.v("name2", String.valueOf(list1.get(0).containsValue("name")));
+                        //Log.v("name1", String.valueOf(list1.get(0).get("name")));
+                        //Log.v("name2", String.valueOf(list1.get(0).containsValue("name")));
                         /*ArrayList<HashMap<String, Object>> lists = new ArrayList<>();
                             for (int i = 0; i < list1.size(); i++) {
                                 if (i < list1.size() - 1) {
@@ -419,13 +431,10 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                         plotOptions.getLine().setEnableMouseTracking(true);
                         options.setPlotOptions(plotOptions);
                         options.setSeries(new ArrayList<>(hiSeriesList));
-
-
-                            /*HIDrilldown drillDown = new HIDrilldown();
+                        /*HIDrilldown drillDown = new HIDrilldown();
                             drillDown.setSeries(new ArrayList<>(hiSeriesList));
                             options.setDrilldown(drillDown);*/
-
-                            /*HILine series2 = new HILine();
+                        /*HILine series2 = new HILine();
                             series2.setName("Calcium");
                             series2.setId("Calcium");
                             Object[] object1 = new Object[]{"v11.0", 24.13};
@@ -440,8 +449,6 @@ public class ShowPatientAnalyzingGraph extends AppCompatActivity {
                             HIDrilldown drillDown1 = new HIDrilldown();
                             drillDown1.setSeries(new ArrayList<>(hiSeriesList));
                             options.setDrilldown(drillDown1);*/
-
-
                         hcView.setOptions(options);
                         hcView.reload();
                         hcView.setVisibility(View.VISIBLE);

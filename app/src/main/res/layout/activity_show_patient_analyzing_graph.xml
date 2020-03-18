@@ -41,5 +41,5 @@
         android:id="@+id/hcView"
         android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_height="@dimen/_400sdp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

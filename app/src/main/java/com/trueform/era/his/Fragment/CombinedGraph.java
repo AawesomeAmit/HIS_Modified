@@ -50,7 +50,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
     private Spinner spnHour, spnIntakeType;
     private List<String> hourList = new ArrayList<>();
     ArrayAdapter<VitalList> adapter;
-    List<String> intakeTypeList;
+    private List<String> intakeTypeList;
     private List<VitalAnalysisModel> vitalLists = new ArrayList<>();
     private RecyclerView rvVital, rvNutrient;
     private ChipsInput chpVital, chpNutrient;
@@ -60,7 +60,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
     private TextView txtFrmDate;
     private TextView txtFrmTime;
     private static String fromDate = "";
-    CheckBox chkFood, chkInvestigation, chkActivity, chkProb, chkIntakeOut, chkMedIntake;
+    private CheckBox chkFood, chkInvestigation, chkActivity, chkProb, chkIntakeOut, chkMedIntake;
     private List<Nutrition> nutritionList = new ArrayList<>();
     private ArrayList<String> selectedMembersList = new ArrayList<>();
     private ArrayList<String> selectedVitalList = new ArrayList<>();
@@ -348,7 +348,7 @@ public class CombinedGraph extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.txtFrmDate) {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme,
+            DatePickerDialog datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme,
                     (view12, year, monthOfYear, dayOfMonth) -> {
                         mYear = year;
                         mMonth = monthOfYear;
