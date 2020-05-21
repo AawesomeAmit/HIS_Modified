@@ -47,6 +47,11 @@
             android:visible="false"
             android:title="@string/calcium_hourly_report" />
         <item
+            android:id="@+id/nav_ventilator"
+            android:icon="@drawable/ic_observationgraph"
+            android:visible="false"
+            android:title="Ventilator Setting" />
+        <item
             android:id="@+id/nav_employee"
             android:icon="@drawable/ic_observationgraph"
             android:visible="false"

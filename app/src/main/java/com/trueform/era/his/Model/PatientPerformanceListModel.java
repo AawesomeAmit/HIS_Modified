@@ -55,8 +55,14 @@ public class PatientPerformanceListModel {
     @SerializedName("outputDetail")
     @Expose
     private String outputDetail;
+    @SerializedName("toDo")
+    @Expose
+    private Integer toDo;
 
-   /* @SerializedName("pulse")
+    public Integer getToDo() {
+        return toDo;
+    }
+/* @SerializedName("pulse")
     @Expose
     private String pulse;
     @SerializedName("bP_Sys")

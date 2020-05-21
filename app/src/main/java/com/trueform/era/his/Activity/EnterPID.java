@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.CheckPidResp;
+import com.trueform.era.his.Utils.ConnectivityChecker;
 import com.trueform.era.his.Utils.RetrofitClient;
 import com.trueform.era.his.Utils.SharedPrefManager;
 
@@ -21,7 +22,7 @@ import retrofit2.Response;
 
 public class EnterPID extends AppCompatActivity {
     EditText edtPid;
-    TextView btnGo, txtDrName, txtDept, btnNotAvailable, tvPatientList;
+    TextView btnGo, txtDrName, txtDept, btnNotAvailable, tvPatientList, txtCovid;
     ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +30,14 @@ public class EnterPID extends AppCompatActivity {
         setContentView(R.layout.activity_enter_pid);
         edtPid = findViewById(R.id.edtPid);
         btnGo = findViewById(R.id.btnGo);
+        txtCovid = findViewById(R.id.txtCovid);
         btnNotAvailable = findViewById(R.id.btnNotAvailable);
         tvPatientList = findViewById(R.id.tvPatientList);
         txtDrName = findViewById(R.id.txtDrName);
         txtDept = findViewById(R.id.txtDept);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         txtDrName.setText(SharedPrefManager.getInstance(this).getUser().getDisplayName());
         txtDept.setText(SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName());
 
@@ -51,6 +53,7 @@ public class EnterPID extends AppCompatActivity {
         btnGo.setOnClickListener(view -> {
             try {
                 if (!edtPid.getText().toString().isEmpty()) {
+                    if (ConnectivityChecker.checker(EnterPID.this)) {
                     progressDialog.show();
                     Call<CheckPidResp> call = RetrofitClient.getInstance().getApi().checkCRNo(SharedPrefManager.getInstance(EnterPID.this).getUser().getAccessToken(), SharedPrefManager.getInstance(EnterPID.this).getUser().getUserid().toString(), Integer.valueOf(edtPid.getText().toString().trim()), SharedPrefManager.getInstance(EnterPID.this).getSubDept().getId(), SharedPrefManager.getInstance(EnterPID.this).getUser().getUserid());
                     call.enqueue(new Callback<CheckPidResp>() {
@@ -83,6 +86,7 @@ public class EnterPID extends AppCompatActivity {
                             progressDialog.dismiss();
                         }
                     });
+                    } else Toast.makeText(EnterPID.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(this, "Enter PID", Toast.LENGTH_SHORT).show();
                 }
@@ -93,13 +97,12 @@ public class EnterPID extends AppCompatActivity {
 
 
         });
-
-        btnNotAvailable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPrefManager.getInstance(EnterPID.this).setPid(0);
-                startActivity(new Intent(EnterPID.this, GuardPostActivity.class));
-            }
+        txtCovid.setOnClickListener(view -> {
+            startActivity(new Intent(EnterPID.this, PatientList.class));
+        });
+        btnNotAvailable.setOnClickListener(view -> {
+            SharedPrefManager.getInstance(EnterPID.this).setPid(0);
+            startActivity(new Intent(EnterPID.this, GuardPostActivity.class));
         });
 
         tvPatientList.setOnClickListener(new View.OnClickListener() {

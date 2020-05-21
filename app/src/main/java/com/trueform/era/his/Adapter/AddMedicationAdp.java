@@ -47,14 +47,16 @@ public class AddMedicationAdp extends RecyclerView.Adapter<AddMedicationAdp.Recy
         if(medicineSearch.getDoseFrequency().length()>2)
         holder.txtDuration.setText(medicineSearch.getDoseFrequency().substring(0,3));
         else holder.txtDuration.setText(medicineSearch.getDoseFrequency());
-        if(medicineSearch.getIsShow()==1){
-            holder.txtEdit.setVisibility(View.VISIBLE);
-            holder.txtDelete.setVisibility(View.VISIBLE);
-        } else if(medicineSearch.getIsShow()==0) {
+        if(medicineSearch.getIsShow()!=null) {
+            if (medicineSearch.getIsShow() == 1) {
+                holder.txtEdit.setVisibility(View.VISIBLE);
+                holder.txtDelete.setVisibility(View.VISIBLE);
+            } else if (medicineSearch.getIsShow() == 0) {
 
-        }else {
-            holder.txtAction.setVisibility(View.VISIBLE);
-            holder.txtStop.setVisibility(View.GONE);
+            } else {
+                holder.txtAction.setVisibility(View.VISIBLE);
+                holder.txtStop.setVisibility(View.GONE);
+            }
         }
         holder.txtAction.setOnClickListener(view -> medication.removeRow(i));
         holder.txtStop.setOnClickListener(view -> new AlertDialog.Builder(mCtx).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")

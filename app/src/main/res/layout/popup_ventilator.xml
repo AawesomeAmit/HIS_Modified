@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/gryText"
+    app:cardElevation="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_2sdp">
+    <LinearLayout
+        android:layout_width="@dimen/_280sdp"
+        android:layout_height="wrap_content"
+        android:id="@+id/lLayout"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#322C66"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="start"
+                android:background="#171338"
+                android:gravity="start"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_4sdp"
+                android:text="Ventilator Data"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvVentilatorData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/inflate_popup_ventilator"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:background="#322C66" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

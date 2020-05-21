@@ -3,6 +3,7 @@ package com.trueform.era.his.Response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.trueform.era.his.Model.Diagnosi;
+import com.trueform.era.his.Model.Dietary;
 import com.trueform.era.his.Model.Patient;
 import com.trueform.era.his.Model.PatientHistory;
 import com.trueform.era.his.Model.Prescription;
@@ -12,6 +13,9 @@ public class PrescribedMedResp {
     @SerializedName("patient")
     @Expose
     public List<Patient> patient = null;
+    @SerializedName("dietary")
+    @Expose
+    public List<Dietary> dietaryList = null;
     @SerializedName("diagnosis")
     @Expose
     public List<Diagnosi> diagnosis = null;
@@ -27,6 +31,10 @@ public class PrescribedMedResp {
     }
 
     public PrescribedMedResp() {
+    }
+
+    public List<Dietary> getDietaryList() {
+        return dietaryList;
     }
 
     public List<Patient> getPatient() {

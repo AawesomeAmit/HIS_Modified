@@ -45,6 +45,20 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/btnCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="end"
+            android:background="@drawable/ic_call"
+            android:layout_toStartOf="@id/btnPresOverview"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+        <TextView
             android:id="@+id/btnPresOverview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -94,6 +94,95 @@
             android:textSize="@dimen/_10sdp"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/llCovid"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/grey_heading"
+                android:paddingStart="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:text="From Date"
+                android:paddingEnd="@dimen/_2sdp"
+                android:gravity="start"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"
+                android:layout_height="@dimen/_20sdp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:id="@+id/txtFrmDate"
+                android:paddingStart="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:layout_weight="4"
+                android:drawableEnd="@drawable/ic_date"
+                android:paddingEnd="@dimen/_2sdp"
+                android:gravity="center"
+                android:background="@drawable/edt_bor"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                android:layout_height="@dimen/_30sdp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/grey_heading"
+                android:paddingStart="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:text="To Date"
+                android:paddingEnd="@dimen/_2sdp"
+                android:gravity="start"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"
+                android:layout_height="@dimen/_20sdp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:id="@+id/txtToDate"
+                android:paddingStart="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:layout_weight="4"
+                android:drawableEnd="@drawable/ic_date"
+                android:paddingEnd="@dimen/_2sdp"
+                android:gravity="center"
+                android:background="@drawable/edt_bor"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
+                android:layout_height="@dimen/_30sdp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btnCovid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/btn_investigation"
+            android:gravity="end"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:text="@string/go"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

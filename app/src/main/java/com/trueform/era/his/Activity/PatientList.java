@@ -1,5 +1,6 @@
 package com.trueform.era.his.Activity;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.trueform.era.his.Adapter.CovidPatientListAdp;
 import com.trueform.era.his.Adapter.DieteticsPatientListAdp;
 import com.trueform.era.his.Adapter.IcuPatientListAdp;
 import com.trueform.era.his.Adapter.PatientListAdp;
@@ -29,6 +32,7 @@ import com.trueform.era.his.Model.AdmittedPatientICU;
 import com.trueform.era.his.Model.DieteticsPatientList;
 import com.trueform.era.his.Model.PhysioPatientList;
 import com.trueform.era.his.R;
+import com.trueform.era.his.Response.CovidPatientResp;
 import com.trueform.era.his.Response.DieteticsPatientResp;
 import com.trueform.era.his.Response.IcuPatientListResp;
 import com.trueform.era.his.Response.IpdPatientListResp;
@@ -42,8 +46,12 @@ import com.trueform.era.his.database.DatabaseController;
 import com.trueform.era.his.database.TableICUAdmittedPatientList;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -55,7 +63,7 @@ import static com.trueform.era.his.Fragment.NutriAnalyserFragment.NUTRI_TOKEN;
 
 public class PatientList extends AppCompatActivity implements View.OnClickListener {
 
-    TextView txtDept, txtDeptT, txtDrName, txtSubDept, img, btnGo;
+    TextView txtDept, txtDeptT, txtDrName, txtSubDept, img, btnGo, txtFrmDate, txtToDate, btnCovid;
     static RecyclerView rView;
     static Spinner spnSearch;
     EditText edtPid;
@@ -63,50 +71,74 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
     static Context context;
     RelativeLayout spnLayout;
     static RelativeLayout pidLayout;
+    LinearLayout llCovid;
+    private Date fToday = new Date();
+    private Date tToday = new Date();
+    private int fYear = 0, fMonth = 0, fDay = 0, tYear = 0, tMonth = 0, tDay = 0;
     ArrayAdapter<AdmittedPatient> ipdArrayAdapter;
+    ArrayAdapter<com.trueform.era.his.Model.PatientList> covidArrayAdp;
     ArrayAdapter<AdmittedPatientICU> icuArrayAdapter;
     List<AdmittedPatient> admittedPatientList;
+    List<com.trueform.era.his.Model.PatientList> covidPAtientList;
     List<AdmittedPatientICU> icuPatientList;
     List<AdmittedPatient> admittedPatientList1;
     static List<PhysioPatientList> physioPatientLists;
     static List<DieteticsPatientList> dieteticsPatientLists;
     List<AdmittedPatientICU> icuPatientList1;
     IpdPatientListResp ipdPatientListResp;
+    CovidPatientResp covidPatientResp;
     IcuPatientListResp icuPatientListResp;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_list);
-        txtDept=findViewById(R.id.txtDept);
-        txtSubDept=findViewById(R.id.txtSubDept);
-        txtDeptT=findViewById(R.id.txtDeptT);
-        txtDrName=findViewById(R.id.txtDrName);
-        edtPid=findViewById(R.id.edtPid);
-        btnGo=findViewById(R.id.btnGo);
-        spnSearch=findViewById(R.id.spnSearch);
+        txtDept = findViewById(R.id.txtDept);
+        txtSubDept = findViewById(R.id.txtSubDept);
+        txtDeptT = findViewById(R.id.txtDeptT);
+        txtToDate = findViewById(R.id.txtToDate);
+        txtFrmDate = findViewById(R.id.txtFrmDate);
+        btnCovid = findViewById(R.id.btnCovid);
+        txtDrName = findViewById(R.id.txtDrName);
+        edtPid = findViewById(R.id.edtPid);
+        btnGo = findViewById(R.id.btnGo);
+        llCovid = findViewById(R.id.llCovid);
+        spnSearch = findViewById(R.id.spnSearch);
         img = findViewById(R.id.img);
-        spnLayout=findViewById(R.id.spnLayout);
-        pidLayout=findViewById(R.id.pidLayout);
-        admittedPatientList=new ArrayList<>();
-        admittedPatientList1=new ArrayList<>();
-        physioPatientLists=new ArrayList<>();
-        context= PatientList.this;
-        icuPatientList=new ArrayList<>();
-        icuPatientList1=new ArrayList<>();
-        rView=findViewById(R.id.rView);
+        spnLayout = findViewById(R.id.spnLayout);
+        pidLayout = findViewById(R.id.pidLayout);
+        admittedPatientList = new ArrayList<>();
+        admittedPatientList1 = new ArrayList<>();
+        physioPatientLists = new ArrayList<>();
+        dieteticsPatientLists = new ArrayList<>();
+        covidPAtientList = new ArrayList<>();
+        context = PatientList.this;
+        icuPatientList = new ArrayList<>();
+        icuPatientList1 = new ArrayList<>();
+        rView = findViewById(R.id.rView);
         btnGo.setOnClickListener(this);
+        btnCovid.setOnClickListener(this);
+        txtFrmDate.setOnClickListener(this);
+        txtToDate.setOnClickListener(this);
+        Calendar c = Calendar.getInstance();
+        fYear = c.get(Calendar.YEAR);
+        fMonth = c.get(Calendar.MONTH);
+        fDay = c.get(Calendar.DAY_OF_MONTH);
+        tYear = c.get(Calendar.YEAR);
+        tMonth = c.get(Calendar.MONTH);
+        tDay = c.get(Calendar.DAY_OF_MONTH);
+        txtFrmDate.setText(Utils.formatDate(fYear + "/" + (fMonth + 1) + "/" + fDay));
+        txtToDate.setText(Utils.formatDate(tYear + "/" + (tMonth + 1) + "/" + tDay));
         txtDrName.setText(SharedPrefManager.getInstance(this).getUser().getDisplayName());
-        String dept=SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName()+" Department";
-        String subDept=SharedPrefManager.getInstance(this).getHead().getHeadName()+" Patient List";
+        String dept = SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName() + " Department";
+        String subDept = SharedPrefManager.getInstance(this).getHead().getHeadName() + " Patient List";
         txtSubDept.setText(subDept);
         txtDept.setText(dept);
         txtDeptT.setText(SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName());
         rView.setLayoutManager(new LinearLayoutManager(this));
 
-        if(SharedPrefManager.getInstance(this).getHeadID() == 2) {
-
-            if (ConnectivityChecker.checker(context)){
+        if (SharedPrefManager.getInstance(this).getHeadID() == 2) {
+            if (ConnectivityChecker.checker(context)) {
                 Utils.showRequestDialog(context);
                 Call<IpdPatientListResp> call = RetrofitClient.getInstance().getApi().getIPDPatientList(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(), SharedPrefManager.getInstance(PatientList.this).getUser().getUserid());
                 call.enqueue(new Callback<IpdPatientListResp>() {
@@ -124,7 +156,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                                 admittedPatientList1 = ipdPatientListResp.getAdmittedPatient();
                                 rView.setAdapter(new PatientListAdp(PatientList.this, admittedPatientList));
                             }
-                        } else{
+                        } else {
                             Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
                         }
                         Utils.hideDialog();
@@ -136,19 +168,22 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                         Utils.hideDialog();
                     }
                 });
-            }else {
+            } else {
                 Toast.makeText(context, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
             }
 
-        }else if(SharedPrefManager.getInstance(this).getHeadID()==7){
+        } else if (SharedPrefManager.getInstance(this).getHeadID() == 7) {
             bindDieteticsPatient();
-        }else if(SharedPrefManager.getInstance(this).getHeadID()==9){
+        } else if (SharedPrefManager.getInstance(this).getHeadID() == 1) {
+            llCovid.setVisibility(View.VISIBLE);
+            bindCovidPatient();
+        } else if (SharedPrefManager.getInstance(this).getHeadID() == 9) {
             bindPhysioList();
-        } else if(SharedPrefManager.getInstance(this).getHeadID()==3 || SharedPrefManager.getInstance(this).getHeadID()==4){
+        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4) {
             int wardId;
-            if(SharedPrefManager.getInstance(this).getHeadID()==3)
-                wardId=39;
-            else wardId=36;
+            if (SharedPrefManager.getInstance(this).getHeadID() == 3)
+                wardId = 39;
+            else wardId = 36;
             hitGetICUPatientList(wardId);
         }
         spnSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -156,21 +191,21 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     try {
-                        if(admittedPatientList.size()>0) {
-                            admittedPatientList1=Collections.singletonList(admittedPatientList.get(i));
+                        if (admittedPatientList.size() > 0) {
+                            admittedPatientList1 = Collections.singletonList(admittedPatientList.get(i));
                             rView.setAdapter(new PatientListAdp(PatientList.this, admittedPatientList1));
-                        }
-                        else if(icuPatientList.size()>0) {
-                            icuPatientList1=Collections.singletonList(icuPatientList.get(i));
+                        } else if (icuPatientList.size() > 0) {
+                            icuPatientList1 = Collections.singletonList(icuPatientList.get(i));
                             rView.setAdapter(new IcuPatientListAdp(PatientList.this, icuPatientList1));
-                        }
-                        else if(physioPatientLists.size()>0) {
-                            physioPatientLists=Collections.singletonList(physioPatientLists.get(i));
+                        } else if (physioPatientLists.size() > 0) {
+                            physioPatientLists = Collections.singletonList(physioPatientLists.get(i));
                             rView.setAdapter(new PhysioPatientListAdp(PatientList.this, physioPatientLists));
-                        }
-                        else if(dieteticsPatientLists.size()>0) {
-                            dieteticsPatientLists=Collections.singletonList(dieteticsPatientLists.get(i));
+                        } else if (dieteticsPatientLists.size() > 0) {
+                            dieteticsPatientLists = Collections.singletonList(dieteticsPatientLists.get(i));
                             rView.setAdapter(new DieteticsPatientListAdp(PatientList.this, dieteticsPatientLists));
+                        } else if (covidPAtientList.size() > 0) {
+                            covidPAtientList = Collections.singletonList(covidPAtientList.get(i));
+                            rView.setAdapter(new CovidPatientListAdp(PatientList.this, covidPAtientList));
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -188,26 +223,28 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             PopupMenu menu = new PopupMenu(PatientList.this, img);
             menu.getMenuInflater().inflate(R.menu.popup_menu, menu.getMenu());
             menu.setOnMenuItemClickListener(item -> {
-                Call<ResponseBody> call = RetrofitClient.getInstance().getApi().logOut(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(PatientList.this).getUser().getUserid().toString(), SharedPrefManager.getInstance(PatientList.this).getFCMToken(), String.valueOf(SharedPrefManager.getInstance(PatientList.this).getUser().getUserid()));
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        Utils.showRequestDialog(PatientList.this);
-                        if (response.isSuccessful()) {
-                            Toast.makeText(PatientList.this, "Logged out successfully!", Toast.LENGTH_SHORT).show();
-                            SharedPrefManager.getInstance(PatientList.this).clear();
-                            Intent intent = new Intent(PatientList.this, MainActivity.class);
-                            startActivity(intent);
+                if (ConnectivityChecker.checker(getApplicationContext())) {
+                    Call<ResponseBody> call = RetrofitClient.getInstance().getApi().logOut(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(PatientList.this).getUser().getUserid().toString(), SharedPrefManager.getInstance(PatientList.this).getFCMToken(), String.valueOf(SharedPrefManager.getInstance(PatientList.this).getUser().getUserid()));
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            Utils.showRequestDialog(PatientList.this);
+                            if (response.isSuccessful()) {
+                                Toast.makeText(PatientList.this, "Logged out successfully!", Toast.LENGTH_SHORT).show();
+                                SharedPrefManager.getInstance(PatientList.this).clear();
+                                Intent intent = new Intent(PatientList.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            Utils.hideDialog();
                         }
-                        Utils.hideDialog();
-                    }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Toast.makeText(PatientList.this, "Network problem!", Toast.LENGTH_SHORT).show();
-                        Utils.hideDialog();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(PatientList.this, "Network problem!", Toast.LENGTH_SHORT).show();
+                            Utils.hideDialog();
+                        }
+                    });
+                } else Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                 return true;
             });
             menu.show();
@@ -235,63 +272,99 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             }
         }));*/
     }
-    public void bindDieteticsPatient(){
-        Utils.showRequestDialog(context);
-        Call<DieteticsPatientResp> call= RetrofitClient1.getInstance().getApi().getNutritionalPanelPatientList(
-                NUTRI_TOKEN,
-                SharedPrefManager.getInstance(context).getUser().getUserid().toString());
-        call.enqueue(new Callback<DieteticsPatientResp>() {
-            @Override
-            public void onResponse(Call<DieteticsPatientResp> call, Response<DieteticsPatientResp> response) {
-                if(response.isSuccessful()) {
-                    if (response.body() != null && response.body().getResponseCode() == 1) {
-                        dieteticsPatientResp = response.body();
-                        if (dieteticsPatientResp != null && dieteticsPatientResp.getResponseValue().size() > 0) {
-                            ArrayAdapter<DieteticsPatientList> dieteticsAdapter = new ArrayAdapter<>(context, R.layout.spinner_item_text_size, dieteticsPatientResp.getResponseValue());
-                            dieteticsAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
-                            spnSearch.setAdapter(dieteticsAdapter);
-                            spnSearch.setSelection(-1);
-                            dieteticsPatientLists = dieteticsPatientResp.getResponseValue();
-                            rView.setAdapter(new DieteticsPatientListAdp(context, dieteticsPatientLists));
+    public void bindDieteticsPatient() {
+        if (ConnectivityChecker.checker(getApplicationContext())) {
+            Utils.showRequestDialog(context);
+            Call<DieteticsPatientResp> call = RetrofitClient1.getInstance().getApi().getNutritionalPanelPatientList(
+                    NUTRI_TOKEN,
+                    SharedPrefManager.getInstance(context).getUser().getUserid().toString());
+            call.enqueue(new Callback<DieteticsPatientResp>() {
+                @Override
+                public void onResponse(Call<DieteticsPatientResp> call, Response<DieteticsPatientResp> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null && response.body().getResponseCode() == 1) {
+                            dieteticsPatientResp = response.body();
+                            if (dieteticsPatientResp != null && dieteticsPatientResp.getResponseValue().size() > 0) {
+                                ArrayAdapter<DieteticsPatientList> dieteticsAdapter = new ArrayAdapter<>(context, R.layout.spinner_item_text_size, dieteticsPatientResp.getResponseValue());
+                                dieteticsAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
+                                spnSearch.setAdapter(dieteticsAdapter);
+                                spnSearch.setSelection(-1);
+                                dieteticsPatientLists = dieteticsPatientResp.getResponseValue();
+                                rView.setAdapter(new DieteticsPatientListAdp(context, dieteticsPatientLists));
+                            }
                         }
                     }
+                    Utils.hideDialog();
                 }
-                Utils.hideDialog();
-            }
 
-            @Override
-            public void onFailure(Call<DieteticsPatientResp> call, Throwable t) {
-                Utils.hideDialog();
-            }
-        });
+                @Override
+                public void onFailure(Call<DieteticsPatientResp> call, Throwable t) {
+                    Utils.hideDialog();
+                }
+            });
+        } else Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
-    public void bindPhysioList(){
-        Utils.showRequestDialog(context);
-        pidLayout.setVisibility(View.VISIBLE);
-        Call<PhysioPatientListResp> call = RetrofitClient.getInstance().getApi().getPhysiotherapyPatientList(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(), SharedPrefManager.getInstance(PatientList.this).getUser().getUserid());
-        call.enqueue(new Callback<PhysioPatientListResp>() {
-            @Override
-            public void onResponse(Call<PhysioPatientListResp> call, Response<PhysioPatientListResp> response) {
-                if (response.isSuccessful()) {
-                    PhysioPatientListResp physioPatientListResp = response.body();
-                    if (physioPatientListResp != null && physioPatientListResp.getPhysioPatientList().size() > 0) {
-                        ArrayAdapter<PhysioPatientList> physioAdapter = new ArrayAdapter<>(context, R.layout.spinner_item_text_size, physioPatientListResp.getPhysioPatientList());
-                        physioAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
-                        spnSearch.setAdapter(physioAdapter);
-                        spnSearch.setSelection(-1);
-                        physioPatientLists = physioPatientListResp.getPhysioPatientList();
-                        rView.setAdapter(new PhysioPatientListAdp(context, physioPatientListResp.getPhysioPatientList()));
+    private void bindCovidPatient() {
+        if (ConnectivityChecker.checker(getApplicationContext())) {
+            Utils.showRequestDialog(context);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Call<CovidPatientResp> call = RetrofitClient.getInstance().getApi().getPatientDetailCovid19(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), format.format(fToday), format.format(tToday));
+            call.enqueue(new Callback<CovidPatientResp>() {
+                @Override
+                public void onResponse(Call<CovidPatientResp> call, Response<CovidPatientResp> response) {
+                    if (response.isSuccessful()) {
+                        covidPatientResp = response.body();
+                        if (covidPatientResp != null) {
+                            covidArrayAdp = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, covidPatientResp.getPatientList());
+                            covidArrayAdp.setDropDownViewResource(R.layout.spinner_item_text_size);
+                            spnSearch.setAdapter(covidArrayAdp);
+                            spnSearch.setSelection(-1);
+                            covidPAtientList = covidPatientResp.getPatientList();
+                            rView.setAdapter(new CovidPatientListAdp(PatientList.this, covidPAtientList));
+                        }
+                    } else {
+                        Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
                     }
-                } else
-                    Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
-                Utils.hideDialog();
-            }
+                    Utils.hideDialog();
+                }
 
-            @Override
-            public void onFailure(Call<PhysioPatientListResp> call, Throwable t) {
-                Utils.hideDialog();
-            }
-        });
+                @Override
+                public void onFailure(Call<CovidPatientResp> call, Throwable t) {
+                    Utils.hideDialog();
+                }
+            });
+        } else
+            Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+    }
+    public void bindPhysioList() {
+        if (ConnectivityChecker.checker(getApplicationContext())) {
+            Utils.showRequestDialog(context);
+            pidLayout.setVisibility(View.VISIBLE);
+            Call<PhysioPatientListResp> call = RetrofitClient.getInstance().getApi().getPhysiotherapyPatientList(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(), SharedPrefManager.getInstance(PatientList.this).getUser().getUserid());
+            call.enqueue(new Callback<PhysioPatientListResp>() {
+                @Override
+                public void onResponse(Call<PhysioPatientListResp> call, Response<PhysioPatientListResp> response) {
+                    if (response.isSuccessful()) {
+                        PhysioPatientListResp physioPatientListResp = response.body();
+                        if (physioPatientListResp != null && physioPatientListResp.getPhysioPatientList().size() > 0) {
+                            ArrayAdapter<PhysioPatientList> physioAdapter = new ArrayAdapter<>(context, R.layout.spinner_item_text_size, physioPatientListResp.getPhysioPatientList());
+                            physioAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
+                            spnSearch.setAdapter(physioAdapter);
+                            spnSearch.setSelection(-1);
+                            physioPatientLists = physioPatientListResp.getPhysioPatientList();
+                            rView.setAdapter(new PhysioPatientListAdp(context, physioPatientListResp.getPhysioPatientList()));
+                        }
+                    } else
+                        Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
+                    Utils.hideDialog();
+                }
+
+                @Override
+                public void onFailure(Call<PhysioPatientListResp> call, Throwable t) {
+                    Utils.hideDialog();
+                }
+            });
+        } else Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
     @Override
     public void onBackPressed() {
@@ -327,6 +400,36 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     }
                 });
             } else Toast.makeText(this, "Please enter PID!", Toast.LENGTH_SHORT).show();
+        } else if(view.getId()==R.id.txtFrmDate){
+            DatePickerDialog datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme,
+                    (view12, year, monthOfYear, dayOfMonth) -> {
+                        fYear = year;
+                        fMonth = monthOfYear;
+                        fDay = dayOfMonth;
+                        //fromDate = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                        fToday.setDate(dayOfMonth);
+                        fToday.setMonth(monthOfYear);
+                        fToday.setYear(year - 1900);
+                        txtFrmDate.setText(Utils.formatDate(fYear + "/" + (fMonth + 1) + "/" + fDay));
+                    }, fYear, fMonth, fDay);
+            datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        } else if(view.getId()==R.id.txtToDate){
+            DatePickerDialog datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme,
+                    (view12, year, monthOfYear, dayOfMonth) -> {
+                        tYear = year;
+                        tMonth = monthOfYear;
+                        tDay = dayOfMonth;
+                        //fromDate = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                        tToday.setDate(dayOfMonth);
+                        tToday.setMonth(monthOfYear);
+                        tToday.setYear(year - 1900);
+                        txtToDate.setText(Utils.formatDate(tYear + "/" + (tMonth + 1) + "/" + tDay));
+                    }, tYear, tMonth, tDay);
+            datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        } else if(view.getId()==R.id.btnCovid){
+            bindCovidPatient();
         }
     }
 

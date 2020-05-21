@@ -59,7 +59,7 @@
 
         <TextView
             android:id="@+id/tvName"
-            android:layout_width="@dimen/_120sdp"
+            android:layout_width="@dimen/_90sdp"
             android:layout_height="wrap_content"
             android:text="Name"
             android:textColor="@color/textBrown"
@@ -150,7 +150,7 @@
 
         <ImageView
             android:id="@+id/tvHbBox"
-            android:layout_width="@dimen/_30sdp"
+            android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
@@ -166,7 +166,7 @@
 
         <ImageView
             android:id="@+id/tvPulseBox"
-            android:layout_width="@dimen/_30sdp"
+            android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
@@ -182,7 +182,7 @@
 
         <ImageView
             android:id="@+id/tvElectrolyte"
-            android:layout_width="@dimen/_30sdp"
+            android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
@@ -199,7 +199,7 @@
 
         <ImageView
             android:id="@+id/tvIntakeBox"
-            android:layout_width="@dimen/_30sdp"
+            android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
@@ -215,7 +215,7 @@
 
         <ImageView
             android:id="@+id/tvOutputBox"
-            android:layout_width="@dimen/_30sdp"
+            android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"

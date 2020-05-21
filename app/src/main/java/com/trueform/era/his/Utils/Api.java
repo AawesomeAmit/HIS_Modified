@@ -1,103 +1,9 @@
 package com.trueform.era.his.Utils;
 
 import com.trueform.era.his.Model.PatientDetailRDA;
+import com.trueform.era.his.Model.VentilatorSettingResp;
 import com.trueform.era.his.Model.VitalChart;
-import com.trueform.era.his.Response.ActivityDataResp;
-import com.trueform.era.his.Response.ActivityResp;
-import com.trueform.era.his.Response.AddInvestigationResp;
-import com.trueform.era.his.Response.AnalyzingGraphResp;
-import com.trueform.era.his.Response.AngioPatientDetailResp;
-import com.trueform.era.his.Response.AngioReportResp;
-import com.trueform.era.his.Response.AngioplastyResp;
-import com.trueform.era.his.Response.AttribValueResp;
-import com.trueform.era.his.Response.BillDetailsResp;
-import com.trueform.era.his.Response.CalciumDynamicReportResp;
-import com.trueform.era.his.Response.CalciumPatientDataResp;
-import com.trueform.era.his.Response.CalciumWardListResp;
-import com.trueform.era.his.Response.CalculatorResp;
-import com.trueform.era.his.Response.CheckPidResp;
-import com.trueform.era.his.Response.ControlBySubDeptResp;
-import com.trueform.era.his.Response.DepartmentResp;
-import com.trueform.era.his.Response.DieteticsPatientResp;
-import com.trueform.era.his.Response.DischargeTypeResp;
-import com.trueform.era.his.Response.DiseaseListResp;
-import com.trueform.era.his.Response.DiseasePatientListResp;
-import com.trueform.era.his.Response.EmployeeShiftResp;
-import com.trueform.era.his.Response.FluidListResp;
-import com.trueform.era.his.Response.FoodDetailResp;
-import com.trueform.era.his.Response.FoodListRes;
-import com.trueform.era.his.Response.FreqUnitResp;
-import com.trueform.era.his.Response.GetAllMedicineByAlphabetRes;
-import com.trueform.era.his.Response.GetAllSuggestedProblemRes;
-import com.trueform.era.his.Response.GetAllSymptomsRes;
-import com.trueform.era.his.Response.GetAttributeResp;
-import com.trueform.era.his.Response.GetBodyOrganRegionRes;
-import com.trueform.era.his.Response.GetCalculatorListResp;
-import com.trueform.era.his.Response.GetIcdCodeResp;
-import com.trueform.era.his.Response.GetIdealNutrientIntakeResp;
-import com.trueform.era.his.Response.GetIntakeOuttakeResp;
-import com.trueform.era.his.Response.GetNutrientAverageDeficiencyResp;
-import com.trueform.era.his.Response.GetNutrientByPrefixTextResp;
-import com.trueform.era.his.Response.GetNutrientInBodyResp;
-import com.trueform.era.his.Response.GetNutrientLevelImmediateEffectByFoodTimeIdResp;
-import com.trueform.era.his.Response.GetNutrientSearchListResp;
-import com.trueform.era.his.Response.GetPatientDetailsByPidResp;
-import com.trueform.era.his.Response.GetPatientListResp;
-import com.trueform.era.his.Response.GetPrescriptionResponse;
-import com.trueform.era.his.Response.GetQuestionnaireList;
-import com.trueform.era.his.Response.GetRequiredSupplementByFoodTimeIdResp;
-import com.trueform.era.his.Response.GraphColorcodeRes;
-import com.trueform.era.his.Response.IcuPatientListResp;
-import com.trueform.era.his.Response.InsertResponse;
-import com.trueform.era.his.Response.IntakePrescriptionResp;
-import com.trueform.era.his.Response.InvestigationChartResp;
-import com.trueform.era.his.Response.InvestigationResultNotificationResp;
-import com.trueform.era.his.Response.IpdPatientListResp;
-import com.trueform.era.his.Response.LoginResp;
-import com.trueform.era.his.Response.MealResp;
-import com.trueform.era.his.Response.MedicineListResp;
-import com.trueform.era.his.Response.MedicineSearchResp;
-import com.trueform.era.his.Response.MemberIdResp;
-import com.trueform.era.his.Response.NotificationCountResp;
-import com.trueform.era.his.Response.NutriAnalyzerResp;
-import com.trueform.era.his.Response.NutriAnlzrFoodListDtlRes;
-import com.trueform.era.his.Response.NutrientBindRes;
-import com.trueform.era.his.Response.NutrientResponseValue;
-import com.trueform.era.his.Response.ObservationGraphResp;
-import com.trueform.era.his.Response.ParameterScoreResp;
-import com.trueform.era.his.Response.PatientBillResp;
-import com.trueform.era.his.Response.PatientDetailFoodNutrientResp;
-import com.trueform.era.his.Response.PatientDetailGraphResp;
-import com.trueform.era.his.Response.PatientDiagnosisDetailsByPID;
-import com.trueform.era.his.Response.PatientDiagnosisResultResp;
-import com.trueform.era.his.Response.PatientNutrientGraphResp;
-import com.trueform.era.his.Response.PatientPerformanceListResp;
-import com.trueform.era.his.Response.PhysioPatientListResp;
-import com.trueform.era.his.Response.PrescribedMedResp;
-import com.trueform.era.his.Response.ProbAttribResp;
-import com.trueform.era.his.Response.ProblemDataResp;
-import com.trueform.era.his.Response.ProblemListResp;
-import com.trueform.era.his.Response.QuestionnaireResp;
-import com.trueform.era.his.Response.RangeHistoryResp;
-import com.trueform.era.his.Response.RangeMasterResp;
-import com.trueform.era.his.Response.RdaNotificationResp;
-import com.trueform.era.his.Response.ResearchDiseaseNotificationResp;
-import com.trueform.era.his.Response.SetIDResp;
-import com.trueform.era.his.Response.SubDeptCalReportResp;
-import com.trueform.era.his.Response.SubHeadIDResp;
-import com.trueform.era.his.Response.SupplementDetailResp;
-import com.trueform.era.his.Response.SupplementListResp;
-import com.trueform.era.his.Response.UnitResp;
-import com.trueform.era.his.Response.UpdatePatientPidResp;
-import com.trueform.era.his.Response.UserMedicationReportResp;
-import com.trueform.era.his.Response.VersionCheckResp;
-import com.trueform.era.his.Response.ViewIntkAllPriortyNutriRes;
-import com.trueform.era.his.Response.ViewNotificationResp;
-import com.trueform.era.his.Response.ViewProgressResp;
-import com.trueform.era.his.Response.VitalAutoCompleteResp;
-import com.trueform.era.his.Response.VitalList;
-import com.trueform.era.his.Response.VitalListResp;
-import com.trueform.era.his.Response.VitalRangeHistoryResp;
+import com.trueform.era.his.Response.*;
 
 import org.json.JSONArray;
 
@@ -444,6 +350,10 @@ public interface Api {
     Call<PrescribedMedResp> getCurrentPrescripttionHistory(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("headID") Integer headID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID, @Field("Status1") String Status1);
 
     @FormUrlEncoded
+    @POST("Prescription/GetDiagnosisByPID")
+    Call<PrescribedMedResp> getDiagnosisByPID1(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("headID") Integer headID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
+
+    @FormUrlEncoded
     @POST("IntakePrescription/GetgetintakeList")
     Call<IntakePrescriptionResp> getgetintakeList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("headID") Integer headID, @Field("ipNo") String ipNo, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
 
@@ -603,6 +513,10 @@ public interface Api {
     Call<PatientPerformanceListResp> getPatientPerformanceList(@Header("accessToken") String accessToken, @Header("userID") String userID);
 
     @FormUrlEncoded
+    @POST("ClinicalNotification/GetClinicalNotification")
+    Call<ClinicalNotificationResp> getClinicalNotification(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("PID") Integer PID);
+
+    @FormUrlEncoded
     @POST("Prescription/GetICDCode")
     Call<GetIcdCodeResp> getICDCode(
             @Header("accessToken") String accessToken,
@@ -610,6 +524,52 @@ public interface Api {
             @Field("searchKey") String searchKey,
             @Field("who") String who
 
+    );
+    @FormUrlEncoded
+    @POST("VentilatorSetting/GetVentilatorList")
+    Call<VentilatorListResp> getVentilatorList(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("userID") String userID1
+    );
+    @FormUrlEncoded
+    @POST("VentilatorSetting/GetVentilatorSetting")
+    Call<VentilatorSettingResp> getVentilatorSetting(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("userID") String userID1
+    );
+    @FormUrlEncoded
+    @POST("VentilatorSetting/GetVentilatorSettingByMachineID")
+    Call<VentilatorSettingDetailResp> getVentilatorSettingByMachineID(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("machineID") String machineID
+    );
+    @FormUrlEncoded
+    @POST("VentilatorSetting/GetVentilatorData")
+    Call<VentilatorDataResp> getVentilatorData(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("machineID") String machineID
+    );
+    @FormUrlEncoded
+    @POST("VentilatorSetting/SaveVentilatorSetting")
+    Call<ResponseBody> saveVentilatorSetting(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("machineID") String machineID,
+            @Field("pressure") String pressure,
+            @Field("volume") String volume,
+            @Field("breathRate") String breathRate,
+            @Field("userID") String userID1
+    );
+    @FormUrlEncoded
+    @POST("Prescription/GetSymptomsSearch")
+    Call<GetSymptomResp> getSymptomsSearch(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("searchKey") String searchKey
     );
 
     @FormUrlEncoded
@@ -637,6 +597,14 @@ public interface Api {
             @Field("foodTimeId") String foodTimeId,
             @Field("intakeDate") String intakeDate,
             @Field("userLoginId") String userLoginId
+    );
+    @POST("Covid19/GetPatientDetailCovid19")
+    @FormUrlEncoded
+    Call<CovidPatientResp> getPatientDetailCovid19(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("fromDate") String fromDate,
+            @Field("toDate") String toDate
     );
 
     // Api use to View Intake All Prority Nutrients
@@ -690,6 +658,16 @@ public interface Api {
             @Part("gender") RequestBody gender,
             @Part("problem") RequestBody problem,
             @Part MultipartBody.Part[] patientImage
+    );
+    @Multipart
+    @POST("patientAudioVitalData.ashx")
+    Call<String> patientAudioVitalData(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Part MultipartBody.Part[] voiceData,
+            @Part("userID") RequestBody userID1,
+            @Part("PID") RequestBody PID,
+            @Part("formName") RequestBody formName
     );
 
     @FormUrlEncoded

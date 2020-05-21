@@ -1,15 +1,26 @@
 package com.trueform.era.his.Activity;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,12 +32,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.trueform.era.his.Model.AlertInput;
+import com.trueform.era.his.Model.AlertToDo;
+import com.trueform.era.his.Model.ClinicalNotification;
 import com.trueform.era.his.Model.PatientDiagnosisVitalListModel;
 import com.trueform.era.his.Model.PatientPerformanceListModel;
 import com.trueform.era.his.R;
+import com.trueform.era.his.Response.ClinicalNotificationResp;
 import com.trueform.era.his.Response.GetNutrientInBodyResp;
 import com.trueform.era.his.Response.PatientDiagnosisResultResp;
 import com.trueform.era.his.Response.PatientPerformanceListResp;
+import com.trueform.era.his.Utils.ConnectivityChecker;
 import com.trueform.era.his.Utils.RetrofitClient;
 import com.trueform.era.his.Utils.SharedPrefManager;
 import com.trueform.era.his.Utils.Utils;
@@ -35,6 +53,7 @@ import com.trueform.era.his.view.BaseFragment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,155 +100,167 @@ public class PatientDashboard extends BaseFragment {
     }
 
     private void hitGetPatientPerformanceList() {
+        if(ConnectivityChecker.checker(getActivity())) {
         mSwipeRefreshLayout.setRefreshing(true);
-        Call<PatientPerformanceListResp> call = RetrofitClient.getInstance().getApi().getPatientPerformanceList(SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(), SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString());
-        call.enqueue(new Callback<PatientPerformanceListResp>() {
-            @Override
-            public void onResponse(Call<PatientPerformanceListResp> call, Response<PatientPerformanceListResp> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        patientList = response.body().getPerformanceList();
-                        diseasePatientListAdp = new DiseasePatientListAdp(getActivity());
-                        recyclerViewPatient.setAdapter(diseasePatientListAdp);
+            Call<PatientPerformanceListResp> call = RetrofitClient.getInstance().getApi().getPatientPerformanceList(SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(), SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString());
+            call.enqueue(new Callback<PatientPerformanceListResp>() {
+                @Override
+                public void onResponse(Call<PatientPerformanceListResp> call, Response<PatientPerformanceListResp> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            patientList = response.body().getPerformanceList();
+                            diseasePatientListAdp = new DiseasePatientListAdp(getActivity());
+                            recyclerViewPatient.setAdapter(diseasePatientListAdp);
+                        }
                     }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    Utils.hideDialog();
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
-                Utils.hideDialog();
-            }
 
-            @Override
-            public void onFailure(Call<PatientPerformanceListResp> call, Throwable t) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                Utils.hideDialog();
-            }
-        });
+                @Override
+                public void onFailure(Call<PatientPerformanceListResp> call, Throwable t) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    Utils.hideDialog();
+                }
+            });
+        } else Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
 
     private void hitGetPatientDiagnosisResult(String pmID, String pId, int pos) {
-        Utils.showRequestDialog(getActivity());
-        Call<PatientDiagnosisResultResp> call = RetrofitClient.getInstance().getApi().getPatientDiagnosisResult(
-                SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(),
-                SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString(),
-                pmID);
-        call.enqueue(new Callback<PatientDiagnosisResultResp>() {
-            @Override
-            public void onResponse(Call<PatientDiagnosisResultResp> call, Response<PatientDiagnosisResultResp> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
+        if (ConnectivityChecker.checker(getActivity())) {
+            Utils.showRequestDialog(getActivity());
+            Call<PatientDiagnosisResultResp> call = RetrofitClient.getInstance().getApi().getPatientDiagnosisResult(
+                    SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(),
+                    SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString(),
+                    pmID);
+            call.enqueue(new Callback<PatientDiagnosisResultResp>() {
+                @Override
+                public void onResponse(Call<PatientDiagnosisResultResp> call, Response<PatientDiagnosisResultResp> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
 
-                        vitalList = response.body().getVitalList();
+                            vitalList = response.body().getVitalList();
 
-                        if (vitalList.size() == 0) {
-                            tvNoDataVital.setVisibility(View.VISIBLE);
+                            if (vitalList.size() == 0) {
+                                tvNoDataVital.setVisibility(View.VISIBLE);
+                            }
+
+                            if (response.body().getIntakeList().size() == 0 && response.body().getOutputList().size() == 0) {
+                                tvNoDataIpOp.setVisibility(View.VISIBLE);
+                            } else {
+                                tvNoDataIpOp.setVisibility(View.GONE);
+                            }
+
+                            String name = "", value = "", date = "", range = "";
+
+                            for (int i = 0; i < vitalList.size(); i++) {
+
+                                if (vitalList.get(i).getVitalName() != null)
+                                    name = name + (vitalList.get(i).getVitalName()) + "\n";
+
+                                if (vitalList.get(i).getVmValue() != null)
+                                    value = value + (vitalList.get(i).getVmValue()) + "\n";
+
+                                if (vitalList.get(i).getLastVitalDate() != null)
+                                    date = date + (vitalList.get(i).getLastVitalDate()) + "\n";
+
+                                if (vitalList.get(i).getNormalRange() != null)
+                                    range = range + (vitalList.get(i).getNormalRange()) + "\n";
+
+                            }
+
+                            tvVitalName.setText(name);
+                            tvVitalValue.setText(value);
+                            tvVitalDate.setText(date);
+                            tvVitalRange.setText(range);
+                            String quantity = "", dateIpOp = "", intQuantity = "", maxIntakeDate = "", outQuantity = "", maxOutputDate = "";
+                            // for (int i = 0; i < response.body().getIntakeList().size(); i++)
+                            if (response.body().getIntakeList().size() > 0) {
+                                if (response.body().getIntakeList().get(0).getMaxIntakeDate() != null)
+                                    intQuantity = response.body().getIntakeList().get(0).getQuantity().toString();
+                                if (response.body().getIntakeList().get(0).getQuantity() != null)
+                                    maxIntakeDate = response.body().getIntakeList().get(0).getMaxIntakeDate();
+                            }
+                            // for (int i = 0; i < response.body().getOutputList().size(); i++)
+                            if (response.body().getOutputList().size() > 0) {
+                                if (response.body().getOutputList().get(0).getMaxOutputDate() != null)
+                                    outQuantity = response.body().getOutputList().get(0).getQuantity().toString();
+                                if (response.body().getOutputList().get(0).getQuantity() != null)
+                                    maxOutputDate = response.body().getOutputList().get(0).getMaxOutputDate();
+                            }
+                            quantity = intQuantity + "/" + outQuantity;
+                            dateIpOp = maxIntakeDate + "/" + maxOutputDate;
+                            tvIpOpQuantity.setText(quantity);
+                            tvIpOpDate.setText(dateIpOp);
+                            //diseasePatientListAdp.notifyItemChanged(pos);
+                            hitGetNutrientInBody(pId, pos);
                         }
-
-                        if (response.body().getIntakeList().size() == 0 && response.body().getOutputList().size() == 0) {
-                            tvNoDataIpOp.setVisibility(View.VISIBLE);
-                        } else {
-                            tvNoDataIpOp.setVisibility(View.GONE);
-                        }
-
-                        String name = "", value = "", date = "", range = "";
-
-                        for (int i = 0; i < vitalList.size(); i++) {
-
-                            if (vitalList.get(i).getVitalName() != null)
-                                name = name + (vitalList.get(i).getVitalName()) + "\n";
-
-                            if (vitalList.get(i).getVmValue() != null)
-                                value = value + (vitalList.get(i).getVmValue()) + "\n";
-
-                            if (vitalList.get(i).getLastVitalDate() != null)
-                                date = date + (vitalList.get(i).getLastVitalDate()) + "\n";
-
-                            if (vitalList.get(i).getNormalRange() != null)
-                                range = range + (vitalList.get(i).getNormalRange()) + "\n";
-
-                        }
-
-                        tvVitalName.setText(name);
-                        tvVitalValue.setText(value);
-                        tvVitalDate.setText(date);
-                        tvVitalRange.setText(range);
-                        String quantity = "", dateIpOp = "", intQuantity = "", maxIntakeDate = "", outQuantity = "", maxOutputDate = "";
-                        // for (int i = 0; i < response.body().getIntakeList().size(); i++)
-                        if (response.body().getIntakeList().size() > 0) {
-                            if (response.body().getIntakeList().get(0).getMaxIntakeDate() != null)
-                                intQuantity = response.body().getIntakeList().get(0).getQuantity().toString();
-                            if (response.body().getIntakeList().get(0).getQuantity() != null)
-                                maxIntakeDate = response.body().getIntakeList().get(0).getMaxIntakeDate();
-                        }
-                        // for (int i = 0; i < response.body().getOutputList().size(); i++)
-                        if (response.body().getOutputList().size() > 0) {
-                            if (response.body().getOutputList().get(0).getMaxOutputDate() != null)
-                                outQuantity = response.body().getOutputList().get(0).getQuantity().toString();
-                            if (response.body().getOutputList().get(0).getQuantity() != null)
-                                maxOutputDate = response.body().getOutputList().get(0).getMaxOutputDate();
-                        }
-                        quantity = intQuantity + "/" + outQuantity;
-                        dateIpOp = maxIntakeDate + "/" + maxOutputDate;
-                        tvIpOpQuantity.setText(quantity);
-                        tvIpOpDate.setText(dateIpOp);
-                        //diseasePatientListAdp.notifyItemChanged(pos);
-                        hitGetNutrientInBody(pId, pos);
                     }
+                    Utils.hideDialog();
                 }
-                Utils.hideDialog();
-            }
 
-            @Override
-            public void onFailure(Call<PatientDiagnosisResultResp> call, Throwable t) {
-                Utils.hideDialog();
-            }
-        });
+                @Override
+                public void onFailure(Call<PatientDiagnosisResultResp> call, Throwable t) {
+                    Utils.hideDialog();
+                }
+            });
+        } else Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
 
     private void hitGetNutrientInBody(String pId, int pos) {
-        Utils.showRequestDialog(getActivity());
+        if (ConnectivityChecker.checker(getActivity())) {
+            Utils.showRequestDialog(getActivity());
+            Call<GetNutrientInBodyResp> call = RetrofitClient.getInstance().getApi().getNutrientInBody(
+                    SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(),
+                    SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString(),
+                    pId);
+            call.enqueue(new Callback<GetNutrientInBodyResp>() {
+                @Override
+                public void onResponse(Call<GetNutrientInBodyResp> call, Response<GetNutrientInBodyResp> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            if (response.body().getResultList().size() == 0) {
+                                tvNoDataNutrient.setVisibility(View.VISIBLE);
+                            } else {
+                                tvNoDataNutrient.setVisibility(View.GONE);
+                            }
+                            //recyclerViewPatient.setAdapter(new DiseasePatientListAdp(PatientDashboard.this));
+                            String name = "", value = "", date = "", rda = "";
+                            for (int i = 0; i < response.body().getResultList().size(); i++) {
+                                if (response.body().getResultList().get(i).getNutrientName() != null)
+                                    name = name + (response.body().getResultList().get(i).getNutrientName()) + "\n";
+                                if (response.body().getResultList().get(i).getNutrientValue() != null)
+                                    value = value + (response.body().getResultList().get(i).getNutrientValue()) + "\n";
+                                if (response.body().getResultList().get(i).getValueDateTime() != null)
+                                    date = date + (response.body().getResultList().get(i).getValueDateTime()) + "\n";
+                                if (response.body().getResultList().get(i).getNutrientRDA() != null)
+                                    rda = rda + (response.body().getResultList().get(i).getNutrientRDA()) + "\n";
+                            }
 
-        Call<GetNutrientInBodyResp> call = RetrofitClient.getInstance().getApi().getNutrientInBody(
-                SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(),
-                SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString(),
-                pId);
-        call.enqueue(new Callback<GetNutrientInBodyResp>() {
-            @Override
-            public void onResponse(Call<GetNutrientInBodyResp> call, Response<GetNutrientInBodyResp> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().getResultList().size() == 0) {
-                            tvNoDataNutrient.setVisibility(View.VISIBLE);
-                        } else {
-                            tvNoDataNutrient.setVisibility(View.GONE);
+                            tvNutrientName.setText(name);
+                            tvNutrientValue.setText(value);
+                            tvNutrientDate.setText(date);
+                            tvNutrientRda.setText(rda);
+                            //diseasePatientListAdp.notifyItemChanged(pos);
                         }
-                        //recyclerViewPatient.setAdapter(new DiseasePatientListAdp(PatientDashboard.this));
-                        String name = "", value = "", date = "", rda = "";
-                        for (int i = 0; i < response.body().getResultList().size(); i++) {
-                            if (response.body().getResultList().get(i).getNutrientName() != null)
-                                name = name + (response.body().getResultList().get(i).getNutrientName()) + "\n";
-                            if (response.body().getResultList().get(i).getNutrientValue() != null)
-                                value = value + (response.body().getResultList().get(i).getNutrientValue()) + "\n";
-                            if (response.body().getResultList().get(i).getValueDateTime() != null)
-                                date = date + (response.body().getResultList().get(i).getValueDateTime()) + "\n";
-                            if (response.body().getResultList().get(i).getNutrientRDA() != null)
-                                rda = rda + (response.body().getResultList().get(i).getNutrientRDA()) + "\n";
-                        }
-
-                        tvNutrientName.setText(name);
-                        tvNutrientValue.setText(value);
-                        tvNutrientDate.setText(date);
-                        tvNutrientRda.setText(rda);
-                        //diseasePatientListAdp.notifyItemChanged(pos);
                     }
+                    Utils.hideDialog();
                 }
-                Utils.hideDialog();
-            }
-            @Override
-            public void onFailure(Call<GetNutrientInBodyResp> call, Throwable t) {
-                Utils.hideDialog();
-            }
-        });
-    }
 
+                @Override
+                public void onFailure(Call<GetNutrientInBodyResp> call, Throwable t) {
+                    Utils.hideDialog();
+                }
+            });
+        } else Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+    }
+    private void blink(ImageView txt){
+        ObjectAnimator anim=ObjectAnimator.ofInt(txt, "BackgroundColor", Color.WHITE, Color.RED, Color.WHITE);
+        anim.setDuration(800).setEvaluator(new ArgbEvaluator());
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(ValueAnimator.INFINITE);
+        anim.start();
+    }
     public class DiseasePatientListAdp extends RecyclerView.Adapter<DiseasePatientListAdp.RecyclerViewHolder> {
         private Context mCtx;
         DiseasePatientListAdp(Context mCtx) {
@@ -255,7 +286,7 @@ public class PatientDashboard extends BaseFragment {
                 holder.clSub.setVisibility(View.GONE);
                 holder.ivArrow.animate().setDuration(200).rotation(0);
             }
-            holder.clMain.setOnClickListener(view -> {
+            holder.tvPid.setOnClickListener(view -> {
                 if (mExpandedPosition >= 0) {
                     int prev = mExpandedPosition;
                     notifyItemChanged(prev);
@@ -272,10 +303,250 @@ public class PatientDashboard extends BaseFragment {
                 notifyItemChanged(mExpandedPosition);
             });
 
+
+            holder.tvName.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.tvWard.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.tvBpBox.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.tvTempBox.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.tvRespBox.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.tvHbBox.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.tvPulseBox.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.ivElectrolyte.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.ivIntakeBox.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+
+
+            holder.ivOutputBox.setOnClickListener(view -> {
+                if (mExpandedPosition >= 0) {
+                    int prev = mExpandedPosition;
+                    notifyItemChanged(prev);
+                }
+                mExpandedPosition = i;
+                if (holder.clSub.isShown()) {
+                    patientList.get(holder.getLayoutPosition()).setSelected(false);
+                } else {
+                    patientList.get(holder.getLayoutPosition()).setSelected(true);
+                    changeStateOfItemsInLayout(holder.getLayoutPosition());
+                    hitGetPatientDiagnosisResult(patientList.get(mExpandedPosition).getPmID().toString(),
+                            patientList.get(mExpandedPosition).getPid().toString(), mExpandedPosition);
+                }
+                notifyItemChanged(mExpandedPosition);
+            });
+            holder.tvUserStatusBox.setOnClickListener(view -> {
+                View popupView = getLayoutInflater().inflate(R.layout.popup_alert_patient_dashboard, null);
+                final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+                LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
+                RecyclerView rvInputDetails = popupView.findViewById(R.id.rvInputDetails);
+                RecyclerView rvToDoDetails = popupView.findViewById(R.id.rvToDoDetails);
+                RecyclerView rvNotToDoDetails = popupView.findViewById(R.id.rvNotToDoDetails);
+                rvInputDetails.setLayoutManager(new LinearLayoutManager(mActivity));
+                rvToDoDetails.setLayoutManager(new LinearLayoutManager(mActivity));
+                rvNotToDoDetails.setLayoutManager(new LinearLayoutManager(mActivity));
+                if(ConnectivityChecker.checker(mActivity)) {
+                    Call<ClinicalNotificationResp> call = RetrofitClient.getInstance().getApi().getClinicalNotification(
+                            SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(),
+                            SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString(), patientList.get(i).getPid());
+                    call.enqueue(new Callback<ClinicalNotificationResp>() {
+                        @Override
+                        public void onResponse(Call<ClinicalNotificationResp> call, Response<ClinicalNotificationResp> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body() != null) {
+                                    List<ClinicalNotification> clinicalNotificationList = response.body().getClinicalNotification();
+                                    try {
+                                        for (int i = 0; i < clinicalNotificationList.size(); i++) {
+                                            Gson gson = new Gson();
+                                            Type type = new TypeToken<List<AlertInput>>() {
+                                            }.getType();
+                                            List<AlertInput> alertInputList = gson.fromJson(clinicalNotificationList.get(i).getInput(), type);
+                                            Gson gson1 = new Gson();
+                                            Type type1 = new TypeToken<List<AlertToDo>>() {
+                                            }.getType();
+                                            List<AlertToDo> alertToDoList = gson1.fromJson(clinicalNotificationList.get(i).getToDo(), type1);
+                                            Gson gson2 = new Gson();
+                                            Type type2 = new TypeToken<List<AlertToDo>>() {
+                                            }.getType();
+                                            List<AlertToDo> alertNotToDoList = gson2.fromJson(clinicalNotificationList.get(i).getNotToDo(), type2);
+                                            if(alertInputList!=null)
+                                            rvInputDetails.setAdapter(new InputAlertAdp(alertInputList));
+                                            if(alertToDoList!=null)
+                                            rvToDoDetails.setAdapter(new ToDoAlertAdp(alertToDoList));
+                                            if(alertNotToDoList!=null)
+                                            rvNotToDoDetails.setAdapter(new ToDoAlertAdp(alertNotToDoList));
+                                        }
+                                        popupWindow.setFocusable(true);
+                                        popupWindow.setBackgroundDrawable(new ColorDrawable());
+                                        int[] location = new int[2];
+                                        lLayout.getLocationOnScreen(location);
+                                        popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ClinicalNotificationResp> call, Throwable t) {
+                            Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+            });
+
             holder.tvPid.setText(patientList.get(i).getPid().toString());
             holder.tvName.setText(patientList.get(i).getPatientName());
             holder.tvWard.setText((patientList.get(i).getWardName()));
-
+            if(patientList.get(i).getToDo()==1)
+                holder.tvUserStatusBox.setVisibility(View.VISIBLE);
             holder.tvIpNo.setText(patientList.get(i).getIpNo());
             holder.tvAgeGender.setText(patientList.get(i).getAge());
             if (patientList.get(i).getGender().equalsIgnoreCase("M")) {
@@ -622,8 +893,8 @@ public class PatientDashboard extends BaseFragment {
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView tvPid, tvName, tvWard, tvIpNo, tvAgeGender, tvAdmitDate, tvCity, tvPhone, tvDiagnosis, tvConsultant,
                     tvVital, tvInvestigation, tvNutrientMinerals, tvComplication, tvInputOutput;
-            TextView tvBpBox, tvTempBox, tvRespBox, tvHbBox, tvPulseBox, tvUserStatusBox;
-            ImageView ivArrow, ivIntakeBox, ivOutputBox;
+            TextView tvBpBox, tvTempBox, tvRespBox, tvHbBox, tvPulseBox;
+            ImageView ivArrow, ivIntakeBox, ivOutputBox, tvUserStatusBox, ivElectrolyte;
             ConstraintLayout clSub, clMain, clVital, clNutrientMinerals, clInputOutput, clInvestigation, clComplication;
 
             NestedScrollView scrollViewVital;
@@ -636,6 +907,7 @@ public class PatientDashboard extends BaseFragment {
                 clSub = itemView.findViewById(R.id.clSub);
                 clMain = itemView.findViewById(R.id.clMain);
                 clVital = itemView.findViewById(R.id.clVital);
+                ivElectrolyte = itemView.findViewById(R.id.ivElectrolyte);
                 clNutrientMinerals = itemView.findViewById(R.id.clNutrientMinerals);
                 clInputOutput = itemView.findViewById(R.id.clInputOutput);
                 clComplication = itemView.findViewById(R.id.clComplication);
@@ -658,7 +930,7 @@ public class PatientDashboard extends BaseFragment {
                 ivOutputBox = itemView.findViewById(R.id.ivOutputBox);
                 tvUserStatusBox = itemView.findViewById(R.id.tvUserStatusBox);
                 ivArrow = itemView.findViewById(R.id.ivArrow);
-
+                blink(tvUserStatusBox);
                 tvIpNo = itemView.findViewById(R.id.tvIpNo);
                 tvAgeGender = itemView.findViewById(R.id.tvAgeGender);
                 tvAdmitDate = itemView.findViewById(R.id.tvAdmitDate);
@@ -671,7 +943,6 @@ public class PatientDashboard extends BaseFragment {
                 tvComplication = itemView.findViewById(R.id.tvComplication);
                 tvInputOutput = itemView.findViewById(R.id.tvInputOutput);
                 tvInvestigation = itemView.findViewById(R.id.tvInvestigation);
-
                 tvVitalName = itemView.findViewById(R.id.tvVitalName);
                 tvVitalValue = itemView.findViewById(R.id.tvVitalValue);
                 tvVitalDate = itemView.findViewById(R.id.tvVitalDate);
@@ -682,7 +953,74 @@ public class PatientDashboard extends BaseFragment {
                 tvNutrientDate = itemView.findViewById(R.id.tvNutrientDate);
                 tvIpOpQuantity = itemView.findViewById(R.id.tvIpOpQuantity);
                 tvIpOpDate = itemView.findViewById(R.id.tvIpOpDate);
+            }
+        }
+    }
 
+    private class InputAlertAdp extends RecyclerView.Adapter<InputAlertAdp.HolderAlert> {
+        List<AlertInput> alertInputList;
+        InputAlertAdp(List<AlertInput> favList) {
+            alertInputList = favList;
+        }
+        public HolderAlert onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new HolderAlert(LayoutInflater.from(parent.getContext()).inflate(R.layout.inflate_input_alert, parent, false));
+        }
+
+        @SuppressLint("SetTextI18n")
+        public void onBindViewHolder(final HolderAlert holder, final int position) {
+            holder.txtRef.setText(alertInputList.get(position).getReference());
+            holder.txtValue.setText(alertInputList.get(position).getValue()+" "+alertInputList.get(position).getUnitName());
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
+        public int getItemCount() {
+            return alertInputList.size();
+        }
+        private class HolderAlert extends RecyclerView.ViewHolder {
+            TextView txtRef, txtValue;
+            HolderAlert(View itemView) {
+                super(itemView);
+                txtRef = itemView.findViewById(R.id.txtRef);
+                txtValue = itemView.findViewById(R.id.txtValue);
+            }
+        }
+    }
+    private class ToDoAlertAdp extends RecyclerView.Adapter<ToDoAlertAdp.HolderAlert> {
+        List<AlertToDo> alertToDoList;
+        ToDoAlertAdp(List<AlertToDo> favList) {
+            alertToDoList = favList;
+        }
+
+        public HolderAlert onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new HolderAlert(LayoutInflater.from(parent.getContext()).inflate(R.layout.inflate_to_do_alert, parent, false));
+        }
+
+        @SuppressLint("SetTextI18n")
+        public void onBindViewHolder(final HolderAlert holder, final int position) {
+            holder.txtRef.setText(alertToDoList.get(position).getReference());
+            holder.txtAdvise.setText(alertToDoList.get(position).getAdvise());
+            holder.txtValue.setText(alertToDoList.get(position).getReferenceValueFrom()+" "+ alertToDoList.get(position).getUnitName()+" - "+ alertToDoList.get(position).getReferenceValueTo()+" "+alertToDoList.get(position).getUnitName());
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
+        public int getItemCount() {
+            return alertToDoList.size();
+        }
+        private class HolderAlert extends RecyclerView.ViewHolder {
+            TextView txtRef, txtAdvise,txtValue;
+            HolderAlert(View itemView) {
+                super(itemView);
+                txtRef = itemView.findViewById(R.id.txtRef);
+                txtAdvise = itemView.findViewById(R.id.txtAdvise);
+                txtValue = itemView.findViewById(R.id.txtValue);
             }
         }
     }

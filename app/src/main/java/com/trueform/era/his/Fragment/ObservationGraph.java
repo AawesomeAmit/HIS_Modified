@@ -2,6 +2,7 @@ package com.trueform.era.his.Fragment;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -78,7 +79,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
     HIChartView hcView;
     HIChartView hcSys;
     HIChartView hcDys;
-    TextView btnPresOverview, txtDate;
+    TextView btnPresOverview, txtDate, btnCall;
     HIExporting exporting;
     LinearLayout llBP;
     String sp;
@@ -137,6 +138,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         hcDys = view.findViewById(R.id.hcDys);
         txtPulse = view.findViewById(R.id.txtPulse);
         spnType = view.findViewById(R.id.spnType);
+        btnCall = view.findViewById(R.id.btnCall);
         llBP = view.findViewById(R.id.llBP);
         txtRR = view.findViewById(R.id.txtRR);
         txtHR = view.findViewById(R.id.txtHR);
@@ -157,6 +159,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         btnPresOverview = view.findViewById(R.id.btnPresOverview);
         btnPresOverview.setOnClickListener(this);
         txtDate.setOnClickListener(this);
+        btnCall.setOnClickListener(this);
         typeSelectorList = new ArrayList<>();
         typeSelectorList.add(0, new TypeSelector(0, "All"));
         typeSelectorList.add(1, new TypeSelector(1, "Manual Data"));
@@ -601,6 +604,13 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        } else if(view.getId()==R.id.btnCall){
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+            alertDialog.setMessage("Do you want to Call?");
+            alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+            alertDialog.setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",SharedPrefManager.getInstance(view.getContext()).getCovidPatient().getMobileNo(), null))));
+            alertDialog.setNeutralButton("No", (dialog, which) -> dialog.cancel());
+            alertDialog.show();
         }
     }
 

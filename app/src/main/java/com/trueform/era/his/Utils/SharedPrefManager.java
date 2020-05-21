@@ -15,6 +15,7 @@ import com.trueform.era.his.Model.GetMemberId;
 import com.trueform.era.his.Model.HeadAssign;
 import com.trueform.era.his.Model.PatientDetail;
 import com.trueform.era.his.Model.PatientHistory;
+import com.trueform.era.his.Model.PatientList;
 import com.trueform.era.his.Model.PhysioPatientList;
 import com.trueform.era.his.Model.SubDept;
 import com.trueform.era.his.Model.UserDetail;
@@ -79,6 +80,14 @@ public class SharedPrefManager {
         editor.apply();
     }
 
+    public void setIsCovid(Boolean isCovid) {
+        this.editor = sharedprefs.edit();
+        editor.putBoolean("covid", isCovid);
+        editor.apply();
+    }
+    public Boolean isCovid() {
+        return sharedprefs.getBoolean("covid", false);
+    }
     public void setIntakeDate(String intakeDate) {
         this.editor = sharedprefs.edit();
         editor.putString("intakeDate", intakeDate);
@@ -138,6 +147,20 @@ public class SharedPrefManager {
         editor.putString("gender", admitPatient.getGender());
         editor.apply();
     }
+    public void setCovidPatient(PatientList admitPatient) {
+        this.editor = sharedprefs.edit();
+        editor.putInt("appointmentId", admitPatient.getAppointmentId());
+        editor.putInt("memberID", admitPatient.getMemberID());
+        editor.putInt("pid", admitPatient.getPid());
+        //editor.putInt("subDeptID", admitPatient.getSubDeptID());
+        editor.putString("pname", admitPatient.getName());
+        editor.putString("age", admitPatient.getAge());
+        //editor.putString("ageUnit", admitPatient.getAgeUnit());
+        //editor.putString("sex", admitPatient.getGender());
+        editor.putString("gender", admitPatient.getGender());
+        editor.putString("mobileNo", admitPatient.getMobileNo());
+        editor.apply();
+    }
 
     public void setIcuAdmitPatient(AdmittedPatientICU admitPatient) {
         this.editor = sharedprefs.edit();
@@ -179,6 +202,11 @@ public class SharedPrefManager {
     }
 
     public void setPid(int pid) {
+        this.editor = sharedprefs.edit();
+        editor.putInt("pid", pid);
+        editor.apply();
+    }
+    public void setfor(int pid) {
         this.editor = sharedprefs.edit();
         editor.putInt("pid", pid);
         editor.apply();
@@ -259,6 +287,17 @@ public class SharedPrefManager {
                 sharedprefs.getString("ageUnit", null),
                 sharedprefs.getString("sex", null),
                 sharedprefs.getString("gender", null)
+        );
+    }
+    public PatientList getCovidPatient() {
+        return new PatientList(
+                sharedprefs.getInt("appointmentId", 0),
+                sharedprefs.getInt("memberID", 0),
+                sharedprefs.getInt("pid", 0),
+                sharedprefs.getString("pname", null),
+                sharedprefs.getString("gender", null),
+                sharedprefs.getString("age", null),
+                sharedprefs.getString("mobileNo", null)
         );
     }
 

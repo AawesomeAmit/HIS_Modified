@@ -72,6 +72,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/llType"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_2sdp"
@@ -98,6 +100,46 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/rlChiefComplaint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvChiefComplaintHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chief Complaint"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@color/white">
+
+                <AutoCompleteTextView
+                    android:id="@+id/etChiefComplaint"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:background="@drawable/edt_bor"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    tools:ignore="LabelFor" />
+            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChiefComplaint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/edt_bor" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/rlConsultantDiagnosis"
             android:layout_width="match_parent"
@@ -520,7 +562,6 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_13sdp"
                         tools:ignore="UnusedAttribute" />
-
                 </LinearLayout>
             </ScrollView>
 
@@ -645,13 +686,108 @@
                 android:id="@+id/rvMedication"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
                 app:layout_constraintTop_toBottomOf="@+id/cvData"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:layout_weight="5.5"
-                app:layout_constraintBottom_toTopOf="@+id/scrollNoti"
+                app:layout_constraintBottom_toTopOf="@+id/llOpd"
                 android:background="#F8F8F8" />
 
+            <LinearLayout
+                android:id="@+id/llOpd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/scrollNoti"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:gravity="start"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:text="Recommended Diet"
+                    android:textColor="@color/grey_heading"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtRecommendDiet"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/edt_bor"
+                    android:hint="Recommended Diet"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:singleLine="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:gravity="start"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:text="Food to be Avoided"
+                    android:textColor="@color/grey_heading"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtFoodAvoided"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/edt_bor"
+                    android:hint="Food to be Avoided"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:singleLine="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:gravity="start"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:text="Other Advice"
+                    android:textColor="@color/grey_heading"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtAdvice"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/edt_bor"
+                    android:hint="Other Advice"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:singleLine="false"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"/>
+            </LinearLayout>
             <ScrollView
                 android:id="@+id/scrollNoti"
                 android:layout_width="match_parent"

@@ -36,6 +36,7 @@ import com.trueform.era.his.Fragment.PatientDetailGraph;
 import com.trueform.era.his.Fragment.PatientInput;
 import com.trueform.era.his.Fragment.ProgressNote;
 import com.trueform.era.his.Fragment.Questionnaire;
+import com.trueform.era.his.Fragment.VentilatorSetting;
 import com.trueform.era.his.Fragment.ViewInvestigation;
 import com.trueform.era.his.Fragment.ViewMedication;
 import com.trueform.era.his.Fragment.VitalGraph;
@@ -138,6 +139,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             menu.findItem(R.id.nav_patient_dashboard).setVisible(true);
             menu.findItem(R.id.nav_employee).setVisible(true);
             menu.findItem(R.id.nav_cal_dynamic).setVisible(true);
+            menu.findItem(R.id.nav_ventilator).setVisible(true);
             menu.findItem(R.id.nav_vital_graph).setVisible(false);
             menu.findItem(R.id.nav_detail_graph).setVisible(false);
             menu.findItem(R.id.nav_prescription).setVisible(false);
@@ -263,6 +265,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             fragment = new Intake();
         } else if (id == R.id.nav_cal_dynamic) {
             fragment = new CalciumReportDynamic();
+        } else if (id == R.id.nav_ventilator) {
+            fragment = new VentilatorSetting();
         } else if (id == R.id.nav_questionnaire) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new Questionnaire();

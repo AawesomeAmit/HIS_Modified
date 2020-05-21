@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/gryText"
+    app:cardElevation="@dimen/_3sdp"
+    app:cardCornerRadius="@dimen/_2sdp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:id="@+id/rowLayout"
+        android:padding="@dimen/_5sdp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ventilator"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:id="@+id/txtVentilator"
+            android:layout_gravity="start"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            tools:ignore="HardcodedText" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pressure"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="start"
+                    android:textColor="@color/grey_heading"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="HardcodedText" />
+                    <TextView
+                        android:id="@+id/txtPressure"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:text="Pressure"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="start"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp"
+                        tools:ignore="HardcodedText" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Volume"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="start"
+                    android:textColor="@color/grey_heading"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/txtVolume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:text="Date"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="start"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Breath Rate"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="start"
+                    android:textColor="@color/grey_heading"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="HardcodedText" />
+                <TextView
+                    android:id="@+id/txtBreath"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:text="Date"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="start"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

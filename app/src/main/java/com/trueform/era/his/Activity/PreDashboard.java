@@ -86,6 +86,7 @@ public class PreDashboard extends AppCompatActivity {
         txtDept.setText(SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName());
         headAssigns = SharedPrefManager.getInstance(PreDashboard.this).getHeadList(head);
         rvGrid.setAdapter(new HeadAdp(PreDashboard.this, headAssigns));
+        SharedPrefManager.getInstance(PreDashboard.this).setIsCovid(false);
         Call<List<NotificationCountResp>> call1 = RetrofitClient.getInstance().getApi().getUnReadNotificationCount(SharedPrefManager.getInstance(this).getUser().getAccessToken(), SharedPrefManager.getInstance(this).getUser().getUserid().toString(), SharedPrefManager.getInstance(this).getUser().getUserid());
         call1.enqueue(new Callback<List<NotificationCountResp>>() {
             @Override
