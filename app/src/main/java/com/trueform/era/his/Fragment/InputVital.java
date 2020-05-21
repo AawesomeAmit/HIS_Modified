@@ -87,19 +87,19 @@ public class InputVital extends Fragment implements View.OnClickListener {
     private static String mFileName = null;
     //ImageView btnAdd;
     @SuppressLint("StaticFieldLeak")
-    static Context context;
+    private static Context context;
     private VitalList vital;
-    Calendar c;
+    private Calendar c;
     private Spinner spnConsultant;
     //static List<VitalList> vitalLists1;
     private SimpleDateFormat format1;
-    SimpleDateFormat format2;
-    static String date = "";
-    Date today = new Date();
-    int mYear = 0, mMonth = 0, mDay = 0, mHour=0, mMinute=0;
+    private SimpleDateFormat format2;
+    private static String date = "";
+    private Date today = new Date();
+    private int mYear = 0, mMonth = 0, mDay = 0, mHour=0, mMinute=0;
     private RecyclerView rvVitalDisplay;
     //static RecyclerView rvAddVital;
-    ArrayAdapter<VitalList> adapter;
+    private ArrayAdapter<VitalList> adapter;
     private List<VitalList> vitalLists;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -250,9 +250,6 @@ public class InputVital extends Fragment implements View.OnClickListener {
         playbtn.setEnabled(false);
         stopplay.setEnabled(false);
         btnSave.setEnabled(false);
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
-        mFileName += "/"+timeStamp+"_VitalRecording.3gp";
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable());
         int[] location = new int[2];
@@ -265,10 +262,13 @@ public class InputVital extends Fragment implements View.OnClickListener {
                 playbtn.setEnabled(false);
                 btnSave.setEnabled(false);
                 stopplay.setEnabled(false);
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+                mFileName += "/"+timeStamp+"_VitalRecording.mp3";
                 mRecorder = new MediaRecorder();
                 mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
                 mRecorder.setOutputFile(mFileName);
                 try {
                     mRecorder.prepare();
@@ -327,11 +327,8 @@ public class InputVital extends Fragment implements View.OnClickListener {
             Log.d("filePath", "File Path: " + mFileName);
             File file = new File(mFileName);
             MediaType mediaType = MediaType.parse(getMimeType(mFileName));
-
             RequestBody fileBody = RequestBody.create(mediaType, file);
-
             fileParts[0] = MultipartBody.Part.createFormData("voiceData", file.getName(), fileBody);
-
             Log.d("filePath", "File Path: " + fileParts);//115741037999
             if(ConnectivityChecker.checker(context)){
                 Call<String> call = RetrofitClientFile.getInstance().getApi().patientAudioVitalData(
