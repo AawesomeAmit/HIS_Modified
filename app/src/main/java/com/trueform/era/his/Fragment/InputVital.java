@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -241,11 +242,12 @@ public class InputVital extends Fragment implements View.OnClickListener {
         View popupView = getLayoutInflater().inflate(R.layout.popup_vital_recording, null);
         final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
         LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
-        Button startbtn = popupView.findViewById(R.id.btnRecord);
-        Button stopbtn = popupView.findViewById(R.id.btnStop);
-        Button playbtn = popupView.findViewById(R.id.btnPlay);
-        Button stopplay = popupView.findViewById(R.id.btnStopPlay);
-        Button btnSave = popupView.findViewById(R.id.btnSave);
+        ImageButton startbtn = popupView.findViewById(R.id.btnRecord);
+        ImageButton stopbtn = popupView.findViewById(R.id.btnStop);
+        ImageButton playbtn = popupView.findViewById(R.id.btnPlay);
+        ImageButton stopplay = popupView.findViewById(R.id.btnStopPlay);
+        TextView btnSave = popupView.findViewById(R.id.btnSave);
+        TextView btnClose = popupView.findViewById(R.id.btnClose);
         stopbtn.setEnabled(false);
         playbtn.setEnabled(false);
         stopplay.setEnabled(false);
@@ -255,6 +257,7 @@ public class InputVital extends Fragment implements View.OnClickListener {
         int[] location = new int[2];
         lLayout.getLocationOnScreen(location);
         popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
+        btnClose.setOnClickListener(view -> popupWindow.dismiss());
         startbtn.setOnClickListener(v -> {
             if(CheckPermissions()) {
                 stopbtn.setEnabled(true);
@@ -262,6 +265,8 @@ public class InputVital extends Fragment implements View.OnClickListener {
                 playbtn.setEnabled(false);
                 btnSave.setEnabled(false);
                 stopplay.setEnabled(false);
+                startbtn.setVisibility(View.GONE);
+                stopbtn.setVisibility(View.VISIBLE);
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                 mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
                 mFileName += "/"+timeStamp+"_VitalRecording.mp3";
@@ -289,6 +294,8 @@ public class InputVital extends Fragment implements View.OnClickListener {
             playbtn.setEnabled(true);
             btnSave.setEnabled(true);
             stopplay.setEnabled(false);
+            startbtn.setVisibility(View.VISIBLE);
+            stopbtn.setVisibility(View.GONE);
             mRecorder.stop();
             mRecorder.release();
             mRecorder = null;
@@ -345,6 +352,7 @@ public class InputVital extends Fragment implements View.OnClickListener {
                         if(response.isSuccessful()){
                             Toast.makeText(context, response.body(), Toast.LENGTH_SHORT).show();
                             btnSave.setEnabled(false);
+                            popupWindow.dismiss();
                         }
                     }
 
