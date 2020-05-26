@@ -122,9 +122,9 @@
     <string name="qty">Qty</string>
     <string name="unit">Unit</string>
     <string name="vital_history_chart">Vital History Chart</string>
-    <string name="fluid_intake">Fluid Intake</string>
-    <string name="meal_intake">Meal Intake</string>
-    <string name="supplement_intake">Supplement Intake</string>
+    <string name="fluid_intake">Fluid</string>
+    <string name="meal_intake">Meal</string>
+    <string name="supplement_intake">Supplement</string>
     <string name="supplement_name">Supplement Name</string>
     <string name="meal_name">Meal Name</string>
     <string name="dash">-</string>

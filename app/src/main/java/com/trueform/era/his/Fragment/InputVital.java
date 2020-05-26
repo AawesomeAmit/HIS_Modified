@@ -115,15 +115,6 @@ public class InputVital extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment InputVital.
-     */
-    // TODO: Rename and change types and number of parameters
     public static InputVital newInstance(String param1, String param2) {
         InputVital fragment = new InputVital();
         Bundle args = new Bundle();
@@ -248,6 +239,8 @@ public class InputVital extends Fragment implements View.OnClickListener {
         ImageButton stopplay = popupView.findViewById(R.id.btnStopPlay);
         TextView btnSave = popupView.findViewById(R.id.btnSave);
         TextView btnClose = popupView.findViewById(R.id.btnClose);
+        TextView txtTitle = popupView.findViewById(R.id.txtTitle);
+        txtTitle.setText("Record Vital");
         stopbtn.setEnabled(false);
         playbtn.setEnabled(false);
         stopplay.setEnabled(false);
@@ -281,7 +274,7 @@ public class InputVital extends Fragment implements View.OnClickListener {
                     Log.e(LOG_TAG, "prepare() failed");
                 }
                 mRecorder.start();
-                Toast.makeText(context, "Recording Started", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Recording Started", Toast.LENGTH_SHORT).show();
             }
             else
             {
@@ -296,10 +289,11 @@ public class InputVital extends Fragment implements View.OnClickListener {
             stopplay.setEnabled(false);
             startbtn.setVisibility(View.VISIBLE);
             stopbtn.setVisibility(View.GONE);
+            playbtn.setVisibility(View.VISIBLE);
             mRecorder.stop();
             mRecorder.release();
             mRecorder = null;
-            Toast.makeText(context, "Recording Stopped", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Recording Stopped", Toast.LENGTH_SHORT).show();
         });
         playbtn.setOnClickListener(v -> {
             stopbtn.setEnabled(false);
@@ -307,12 +301,14 @@ public class InputVital extends Fragment implements View.OnClickListener {
             btnSave.setEnabled(true);
             playbtn.setEnabled(false);
             stopplay.setEnabled(true);
+            stopplay.setVisibility(View.VISIBLE);
             mPlayer = new MediaPlayer();
             try {
                 mPlayer.setDataSource(mFileName);
                 mPlayer.prepare();
                 mPlayer.start();
-                Toast.makeText(context, "Recording Started Playing", Toast.LENGTH_LONG).show();
+                mPlayer.setOnCompletionListener(mediaPlayer -> playbtn.setEnabled(true));
+                Toast.makeText(context, "Recording Started Playing", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 Log.e(LOG_TAG, "prepare() failed");
             }
@@ -350,7 +346,7 @@ public class InputVital extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if(response.isSuccessful()){
-                            Toast.makeText(context, response.body(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, response.body(), Toast.LENGTH_LONG).show();
                             btnSave.setEnabled(false);
                             popupWindow.dismiss();
                         }

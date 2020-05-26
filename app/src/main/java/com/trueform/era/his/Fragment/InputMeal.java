@@ -4,21 +4,35 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,39 +45,41 @@ import com.trueform.era.his.Response.FoodDetailResp;
 import com.trueform.era.his.Response.InsertResponse;
 import com.trueform.era.his.Response.MealResp;
 import com.trueform.era.his.Response.UnitResp;
+import com.trueform.era.his.Utils.ConnectivityChecker;
 import com.trueform.era.his.Utils.RetrofitClient;
 import com.trueform.era.his.Utils.RetrofitClient1;
+import com.trueform.era.his.Utils.RetrofitClientFile;
 import com.trueform.era.his.Utils.SharedPrefManager;
 import com.trueform.era.his.Utils.Utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link InputMeal.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link InputMeal#newInstance} factory method to
- * create an instance of this fragment.
- */
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.trueform.era.his.Fragment.InputVital.REQUEST_AUDIO_PERMISSION_CODE;
+
 public class InputMeal extends Fragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private AutoCompleteTextView edtMeal;
     private EditText edtQty;
     private Spinner spnUnit;
     private RecyclerView rvMeal;
     private TextView txtDate;
-    private TextView txtTime;
+    private TextView txtTime, txtVoice;
     private SimpleDateFormat format1;
     SimpleDateFormat format2;
     private MealResp mealResp;
@@ -79,8 +95,11 @@ public class InputMeal extends Fragment implements View.OnClickListener {
     private ArrayAdapter<UnitList> unitListArrayAdapter;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private MediaRecorder mRecorder;
+    private MediaPlayer mPlayer;
+    private static final String LOG_TAG = "AudioRecording";
+    private static String mFileName = null;
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -119,8 +138,10 @@ public class InputMeal extends Fragment implements View.OnClickListener {
         TextView btnSave = view.findViewById(R.id.btnSave);
         txtDate=view.findViewById(R.id.txtDate);
         txtTime=view.findViewById(R.id.txtTime);
+        txtVoice=view.findViewById(R.id.txtVoice);
         txtDate.setOnClickListener(this);
         txtTime.setOnClickListener(this);
+        txtVoice.setOnClickListener(this);
         context=view.getContext();
         Utils.showRequestDialog(context);
         c = Calendar.getInstance();
@@ -208,6 +229,173 @@ public class InputMeal extends Fragment implements View.OnClickListener {
             });
         });
         return view;
+    }
+
+
+
+    private void recordingPopup(){
+        View popupView = getLayoutInflater().inflate(R.layout.popup_vital_recording, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
+        ImageButton startbtn = popupView.findViewById(R.id.btnRecord);
+        ImageButton stopbtn = popupView.findViewById(R.id.btnStop);
+        ImageButton playbtn = popupView.findViewById(R.id.btnPlay);
+        ImageButton stopplay = popupView.findViewById(R.id.btnStopPlay);
+        TextView btnSave = popupView.findViewById(R.id.btnSave);
+        TextView btnClose = popupView.findViewById(R.id.btnClose);
+        TextView txtTitle = popupView.findViewById(R.id.txtTitle);
+        txtTitle.setText("Record Input");
+        stopbtn.setEnabled(false);
+        playbtn.setEnabled(false);
+        stopplay.setEnabled(false);
+        btnSave.setEnabled(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        lLayout.getLocationOnScreen(location);
+        popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
+        btnClose.setOnClickListener(view -> popupWindow.dismiss());
+        startbtn.setOnClickListener(v -> {
+            if(CheckPermissions()) {
+                stopbtn.setEnabled(true);
+                startbtn.setEnabled(false);
+                playbtn.setEnabled(false);
+                btnSave.setEnabled(false);
+                stopplay.setEnabled(false);
+                startbtn.setVisibility(View.GONE);
+                stopbtn.setVisibility(View.VISIBLE);
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+                mFileName += "/"+timeStamp+"_OutputRecording.mp3";
+                mRecorder = new MediaRecorder();
+                mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                mRecorder.setOutputFile(mFileName);
+                try {
+                    mRecorder.prepare();
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "prepare() failed");
+                }
+                mRecorder.start();
+                Toast.makeText(context, "Recording Started", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                RequestPermissions();
+            }
+        });
+        stopbtn.setOnClickListener(v -> {
+            stopbtn.setEnabled(false);
+            startbtn.setEnabled(true);
+            playbtn.setEnabled(true);
+            btnSave.setEnabled(true);
+            stopplay.setEnabled(false);
+            startbtn.setVisibility(View.VISIBLE);
+            stopbtn.setVisibility(View.GONE);
+            playbtn.setVisibility(View.VISIBLE);
+            mRecorder.stop();
+            mRecorder.release();
+            mRecorder = null;
+            Toast.makeText(context, "Recording Stopped", Toast.LENGTH_SHORT).show();
+        });
+        playbtn.setOnClickListener(v -> {
+            stopbtn.setEnabled(false);
+            startbtn.setEnabled(true);
+            btnSave.setEnabled(true);
+            playbtn.setEnabled(false);
+            stopplay.setEnabled(true);
+            stopplay.setVisibility(View.VISIBLE);
+            mPlayer = new MediaPlayer();
+            try {
+                mPlayer.setDataSource(mFileName);
+                mPlayer.prepare();
+                mPlayer.start();
+                mPlayer.setOnCompletionListener(mediaPlayer -> playbtn.setEnabled(true));
+                Toast.makeText(context, "Recording Started Playing", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "prepare() failed");
+            }
+        });
+        stopplay.setOnClickListener(v -> {
+            if(mPlayer!=null) {
+                mPlayer.release();
+                mPlayer = null;
+                stopbtn.setEnabled(false);
+                startbtn.setEnabled(true);
+                btnSave.setEnabled(true);
+                playbtn.setEnabled(true);
+                stopplay.setEnabled(false);
+                Toast.makeText(context, "Playing Audio Stopped", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnSave.setOnClickListener(view -> {
+            MultipartBody.Part[] fileParts = new MultipartBody.Part[1];
+            Log.d("filePath", "File Path: " + mFileName);
+            File file = new File(mFileName);
+            MediaType mediaType = MediaType.parse(getMimeType(mFileName));
+            RequestBody fileBody = RequestBody.create(mediaType, file);
+            fileParts[0] = MultipartBody.Part.createFormData("voiceData", file.getName(), fileBody);
+            Log.d("filePath", "File Path: " + fileParts);
+            if(ConnectivityChecker.checker(context)){
+                Call<String> call = RetrofitClientFile.getInstance().getApi().patientAudioVitalData(
+                        SharedPrefManager.getInstance(context).getUser().getAccessToken(),
+                        SharedPrefManager.getInstance(context).getUser().getUserid().toString(),
+                        fileParts,
+                        RequestBody.create(MediaType.parse("text/plain"), SharedPrefManager.getInstance(context).getUser().getUserid().toString()),
+                        RequestBody.create(MediaType.parse("text/plain"), String.valueOf(SharedPrefManager.getInstance(context).getPid())),
+                        RequestBody.create(MediaType.parse("text/plain"), "intakeOutput")
+                );
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            Toast.makeText(context, response.body(), Toast.LENGTH_LONG).show();
+                            btnSave.setEnabled(false);
+                            popupWindow.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private static String getMimeType(String url) {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        return type;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_AUDIO_PERMISSION_CODE:
+                if (grantResults.length> 0) {
+                    boolean permissionToRecord = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean permissionToStore = grantResults[1] ==  PackageManager.PERMISSION_GRANTED;
+                    if (permissionToRecord && permissionToStore) {
+                        Toast.makeText(context, "Permission Granted", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context,"Permission Denied",Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+        }
+    }
+    private boolean CheckPermissions() {
+        int result = ContextCompat.checkSelfPermission(context, WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(context, RECORD_AUDIO);
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+    private void RequestPermissions() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
 
     private void bindUnit(int foodId){
@@ -316,6 +504,8 @@ public class InputMeal extends Fragment implements View.OnClickListener {
             },mHour,mMinute,false);
             timePickerDialog.updateTime(today.getHours(), today.getMinutes());
                     timePickerDialog.show();
+        } else if(view.getId()==R.id.txtVoice){
+            recordingPopup();
         }
     }
 

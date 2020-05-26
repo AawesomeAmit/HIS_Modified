@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Record Vital"
+                android:id="@+id/txtTitle"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:paddingTop="@dimen/_3sdp"
                 android:paddingStart="@dimen/_5sdp"
@@ -120,6 +120,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_play"
                 android:text="Play Recording"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btnStop"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -130,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_stop"
                 android:text="Stop Playing"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btnPlay"
                 app:layout_constraintTop_toTopOf="parent" />

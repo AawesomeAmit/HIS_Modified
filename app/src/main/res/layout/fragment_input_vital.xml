@@ -24,11 +24,27 @@
             android:textStyle="bold"
             android:layout_height="@dimen/_30sdp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Voice Record"
+            android:id="@+id/txtVoice"
+            android:paddingTop="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:textStyle="bold"
+            android:layout_toLeftOf="@+id/llDateTime"
+            android:textColor="@color/blue_text"
+            android:background="@color/gryText"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:id="@+id/llDateTime"
             android:layout_alignParentEnd="true">
             <TextView
                 android:layout_width="wrap_content"
@@ -138,16 +154,15 @@
             android:background="@color/gryText"/>-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:background="#E6E6E6"
+            android:background="@color/gryText"
             android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/vital_history_chart"
-            android:layout_marginTop="@dimen/_5sdp"
             android:paddingTop="@dimen/_5sdp"
             android:textSize="@dimen/_13sdp"
+            android:autoSizeTextType="uniform"
             android:layout_marginEnd="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:paddingStart="@dimen/_10sdp"
@@ -155,25 +170,9 @@
             android:textStyle="bold"
             android:layout_alignParentStart="true"
             android:textColor="@color/blue_text"
-            android:layout_gravity="end"
+            android:layout_gravity="start"
             android:gravity="start"
             android:background="@color/gryText"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Voice Record"
-                android:id="@+id/txtVoice"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:textSize="@dimen/_13sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:textStyle="bold"
-                android:textColor="@color/blue_text"
-                android:layout_alignParentEnd="true"
-                android:background="@color/gryText"/>
         </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
