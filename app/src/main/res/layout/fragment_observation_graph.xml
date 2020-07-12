@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F8F8F8"
     android:orientation="vertical"
+    android:id="@+id/llMain"
     tools:context=".Fragment.ObservationGraph">
 
     <RelativeLayout
@@ -15,8 +16,7 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:orientation="horizontal">
-
-        <TextView
+        <!--<TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,8 +25,7 @@
             android:gravity="center_vertical"
             android:text="@string/record_date"
             android:textSize="@dimen/_10sdp"
-            android:textStyle="bold" />
-
+            android:textStyle="bold" />-->
         <TextView
             android:id="@+id/txtDate"
             android:layout_width="wrap_content"
@@ -34,22 +33,74 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_toEndOf="@id/date"
-            android:background="@color/blue_heading"
             android:foregroundGravity="center_vertical"
+            android:background="@drawable/btn_investigation"
+            android:drawableRight="@drawable/calender"
+            android:drawablePadding="@dimen/_5sdp"
             android:gravity="center_vertical"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_2sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_4sdp"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/btnImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/ic_baseline_image"
+            android:layout_toStartOf="@id/btnOxi"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/btnOxi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/ic_bluetooth_oxi"
+            android:layout_toStartOf="@id/btnMic"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/btnMic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/ic_baseline_mic"
+            android:layout_toStartOf="@id/btnCall"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+        <TextView
             android:id="@+id/btnCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:gravity="end"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:background="@drawable/ic_call"
             android:layout_toStartOf="@id/btnPresOverview"
             android:paddingStart="@dimen/_10sdp"
@@ -66,6 +117,7 @@
             android:layout_alignParentEnd="true"
             android:background="@drawable/btn_investigation"
             android:gravity="end"
+            android:textStyle="bold"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_4sdp"
             android:paddingEnd="@dimen/_10sdp"

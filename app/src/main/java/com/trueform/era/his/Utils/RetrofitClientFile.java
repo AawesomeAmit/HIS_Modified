@@ -53,7 +53,7 @@ public class RetrofitClientFile {
                 ).build();
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+//                .addConverterFactory(GsonConverterFactory.create(gson))
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .client(okHttpClient)
                 .build();

@@ -15,8 +15,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            shrinkResources true
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -57,7 +58,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
     implementation 'org.beanshell:bsh:2.0b4'
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
     implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
     implementation 'jp.wasabeef:richeditor-android:1.2.2'
+    implementation 'jp.wasabeef:richeditor-android:1.2.2'
+    implementation 'com.fxn769:pix:1.5.3'
 
 }

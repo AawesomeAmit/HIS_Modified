@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!TextUtils.isEmpty(edtPwd.getText().toString())) {
                 return true;
             } else {
-                edtPwd.setError("Empty username");
+                edtPwd.setError("Empty password");
                 edtPwd.requestFocus();
                 return false;
             }

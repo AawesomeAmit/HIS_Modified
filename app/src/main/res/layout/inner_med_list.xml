@@ -1,11 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <!--<androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_500sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:weightSum="31.5">
+
+            <TextView
+                android:id="@+id/txtMedName"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="16dp" />
+
+            <TextView
+                android:id="@+id/txtDoseForm"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                tools:layout_editor_absoluteX="116dp"
+                tools:layout_editor_absoluteY="16dp" />
+
+            <TextView
+                android:id="@+id/txtDuration"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toStartOf="@+id/txtStr"
+                tools:layout_editor_absoluteY="111dp" />
+
+            <TextView
+                android:id="@+id/txtStr"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toStartOf="@+id/txtNumDays"
+                tools:layout_editor_absoluteY="111dp" />
+
+            <TextView
+                android:id="@+id/txtNumDays"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toStartOf="@+id/txtRemark"
+                tools:layout_editor_absoluteY="111dp" />
+
+            <TextView
+                android:id="@+id/txtRemark"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintEnd_toStartOf="@+id/txtDelete"
+                tools:layout_editor_absoluteY="111dp" />
+
+            <TextView
+                android:id="@+id/txtEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_edit_pres"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:textColor="@color/black"
+                tools:layout_editor_absoluteX="363dp"
+                tools:layout_editor_absoluteY="7dp" />
+
+            <TextView
+                android:id="@+id/txtAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_remove_pres"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/txtEdit"
+                app:layout_constraintStart_toStartOf="@+id/txtEdit"
+                app:layout_constraintTop_toBottomOf="@+id/txtEdit" />
+
+            <TextView
+                android:id="@+id/txtStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_stop"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="@+id/txtAction"
+                app:layout_constraintStart_toStartOf="@+id/txtAction"
+                app:layout_constraintTop_toBottomOf="@+id/txtAction" />
+
+            <TextView
+                android:id="@+id/txtDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_delete"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/txtStop"
+                app:layout_constraintStart_toStartOf="@+id/txtStop"
+                app:layout_constraintTop_toBottomOf="@+id/txtStop" />
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

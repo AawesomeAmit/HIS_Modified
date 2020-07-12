@@ -1,11 +1,16 @@
 package com.trueform.era.his.Activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,10 +25,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.zxing.Result;
 import com.trueform.era.his.Adapter.HeadAdp;
 import com.trueform.era.his.Adapter.RecyclerTouchListener;
 import com.trueform.era.his.Adapter.SubHeadAdp;
@@ -51,29 +59,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.Manifest.permission_group.CAMERA;
+
 public class PreDashboard extends AppCompatActivity {
-    TextView txtDrName, txtDept, img, count;
+    TextView txtDrName, txtDept, img, count, txtScan, btnOxi;
     ImageView imgNotification;
     SubHeadIDResp subHeadIDResp;
     ArrayList<HeadAssign> headAssigns;
     ProgressDialog progressDialog;
     RecyclerView rvGrid;
+    private static final int REQUEST_LOCATION = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_dashboard);
         rvGrid = findViewById(R.id.rvGrid);
+        txtScan = findViewById(R.id.txtScan);
         count = findViewById(R.id.count);
         img = findViewById(R.id.img);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
         imgNotification = findViewById(R.id.imgNotification);
+
+
         String head = "headList";
         GridLayoutManager mGridLayoutManager;
         if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE)
@@ -82,6 +98,7 @@ public class PreDashboard extends AppCompatActivity {
         rvGrid.setLayoutManager(mGridLayoutManager);
         txtDrName = findViewById(R.id.txtDrName);
         txtDept = findViewById(R.id.txtDept);
+        btnOxi = findViewById(R.id.btnOxi);
         txtDrName.setText(SharedPrefManager.getInstance(this).getUser().getDisplayName());
         txtDept.setText(SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName());
         headAssigns = SharedPrefManager.getInstance(PreDashboard.this).getHeadList(head);
@@ -104,6 +121,16 @@ public class PreDashboard extends AppCompatActivity {
             public void onFailure(Call<List<NotificationCountResp>> call, Throwable t) {
                 progressDialog.dismiss();
             }
+        });
+        btnOxi.setOnClickListener(view -> {
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                    if (!checkPermission()) {
+                        requestPermission();
+                    } else {
+                        startActivity(new Intent(PreDashboard.this, DeviceScanActivity.class));
+                    }
+                }
         });
         img.setOnClickListener(view -> {
             PopupMenu menu = new PopupMenu(PreDashboard.this, img);
@@ -133,6 +160,8 @@ public class PreDashboard extends AppCompatActivity {
             });
             menu.show();
         });
+
+
         rvGrid.addOnItemTouchListener(new RecyclerTouchListener(this, rvGrid, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -159,6 +188,11 @@ public class PreDashboard extends AppCompatActivity {
 
             }
         }));
+        txtScan.setOnClickListener(view -> {
+            Intent intent=new Intent(PreDashboard.this, ScannerActivity.class);
+            intent.putExtra("redi", "1");
+            startActivity(intent);
+        });
         imgNotification.setOnClickListener(view -> {
             Intent intent = new Intent(PreDashboard.this, NotificationList.class);
             startActivity(intent);
@@ -425,5 +459,41 @@ public class PreDashboard extends AppCompatActivity {
                 Log.v("showError", t.getMessage());
             }
         });
+    }
+
+    private boolean checkPermission() {
+        return (ContextCompat.checkSelfPermission(PreDashboard.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(PreDashboard.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @androidx.annotation.NonNull String[] permissions, @androidx.annotation.NonNull int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.length > 0) {
+                boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (locationAccepted) {
+                    startActivity(new Intent(PreDashboard.this, DeviceScanActivity.class));
+                    Toast.makeText(PreDashboard.this, "Permission Granted, Now you can access location", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(PreDashboard.this, "Permission Denied, You cannot access location", Toast.LENGTH_LONG).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            showMessageOKCancel((dialog, which) -> requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
+        new androidx.appcompat.app.AlertDialog.Builder(PreDashboard.this)
+                .setMessage("You need to allow access to both the permissions")
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
     }
 }

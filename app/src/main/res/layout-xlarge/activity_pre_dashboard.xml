@@ -58,6 +58,34 @@
             android:gravity="start"
             android:layout_toEndOf="@id/imgNotification"
             android:textColor="#ffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_toStartOf="@id/txtScan"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:foregroundGravity="center"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/black"
+            android:drawablePadding="@dimen/_2sdp"
+            android:background="@drawable/ic_bluetooth_oxi"
+            android:id="@+id/btnOxi"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_toStartOf="@id/ll"
+            android:paddingTop="@dimen/_7sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:foregroundGravity="center"
+            android:textSize="@dimen/_12sdp"
+            android:text="Scan"
+            android:textColor="@color/black"
+            android:drawablePadding="@dimen/_2sdp"
+            android:drawableStart="@drawable/ic_qr_scanner"
+            android:id="@+id/txtScan"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

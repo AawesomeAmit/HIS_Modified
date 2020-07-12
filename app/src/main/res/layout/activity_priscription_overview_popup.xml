@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/llFooter"
         android:layout_below="@+id/tvHeader"
+        android:scrollbars="none"
         android:fillViewport="true">
 
         <LinearLayout
@@ -210,6 +211,150 @@
                     android:visibility="gone" />
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llOTNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/bg_overview"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:drawableStart="@drawable/ic_provisionaldiagnosis"
+                    android:drawableLeft="@drawable/ic_provisionaldiagnosis"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:text="@string/ot_note"
+                    android:textColor="@color/blue_light"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvOTNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llConsultantNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/bg_overview"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:drawableStart="@drawable/ic_provisionaldiagnosis"
+                    android:drawableLeft="@drawable/ic_provisionaldiagnosis"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:text="@string/consultant_note"
+                    android:textColor="@color/blue_light"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvConsultantNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llPatientNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/bg_overview"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:drawableStart="@drawable/ic_provisionaldiagnosis"
+                    android:drawableLeft="@drawable/ic_provisionaldiagnosis"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:text="@string/patient_note"
+                    android:textColor="@color/blue_light"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPatientNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llNursingNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/bg_overview"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:drawableStart="@drawable/ic_provisionaldiagnosis"
+                    android:drawableLeft="@drawable/ic_provisionaldiagnosis"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:text="@string/nursing_note"
+                    android:textColor="@color/blue_light"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNursingNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llAngioReport"
@@ -348,7 +493,7 @@
             android:gravity="center"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
-            android:text="@string/medication"
+            android:text="@string/add_prescription"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp"
             android:textStyle="bold" />

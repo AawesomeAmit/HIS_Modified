@@ -1,29 +1,44 @@
 package com.trueform.era.his.Fragment;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.highsoft.highcharts.common.HIColor;
 import com.highsoft.highcharts.common.hichartsclasses.HIBackground;
@@ -50,7 +65,13 @@ import com.highsoft.highcharts.common.hichartsclasses.HITooltip;
 import com.highsoft.highcharts.common.hichartsclasses.HIXAxis;
 import com.highsoft.highcharts.common.hichartsclasses.HIYAxis;
 import com.highsoft.highcharts.core.HIChartView;
+import com.trueform.era.his.Activity.Dashboard;
+import com.trueform.era.his.Activity.DeviceScanActivity;
+import com.trueform.era.his.Activity.PatientList;
 import com.trueform.era.his.Activity.PriscriptionOverviewPopup;
+import com.trueform.era.his.Activity.UploadMultipleImg.UploadImg;
+import com.trueform.era.his.Adapter.AddInvestigationAdp;
+import com.trueform.era.his.Model.Investigation;
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.ObservationGraphResp;
 import com.trueform.era.his.Response.VitalListResp;
@@ -79,7 +100,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
     HIChartView hcView;
     HIChartView hcSys;
     HIChartView hcDys;
-    TextView btnPresOverview, txtDate, btnCall;
+    TextView btnPresOverview, txtDate, btnCall, btnMic, btnOxi, btnImg;
     HIExporting exporting;
     LinearLayout llBP;
     String sp;
@@ -92,7 +113,9 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
     View view;
     static String date = "";
     HIOptions options;
+    LinearLayout llMain;
     private List<TypeSelector> typeSelectorList;
+    private static final int REQUEST_LOCATION = 1;
     private TextView txtSpo2, txtTemp, txtPulse, txtRR, txtHR, txtWeight, txtHeight;
     ObservationGraphResp observationGraphResp;
     ProgressBar mProgress;
@@ -136,9 +159,13 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         hcView = view.findViewById(R.id.hcView);
         hcSys = view.findViewById(R.id.hcSys);
         hcDys = view.findViewById(R.id.hcDys);
+        llMain = view.findViewById(R.id.llMain);
         txtPulse = view.findViewById(R.id.txtPulse);
         spnType = view.findViewById(R.id.spnType);
         btnCall = view.findViewById(R.id.btnCall);
+        btnMic = view.findViewById(R.id.btnMic);
+        btnOxi = view.findViewById(R.id.btnOxi);
+        btnImg = view.findViewById(R.id.btnImg);
         llBP = view.findViewById(R.id.llBP);
         txtRR = view.findViewById(R.id.txtRR);
         txtHR = view.findViewById(R.id.txtHR);
@@ -160,6 +187,11 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         btnPresOverview.setOnClickListener(this);
         txtDate.setOnClickListener(this);
         btnCall.setOnClickListener(this);
+        btnMic.setOnClickListener(this);
+        btnOxi.setOnClickListener(this);
+        btnImg.setOnClickListener(this);
+        if(SharedPrefManager.getInstance(context).isCovid()) btnCall.setVisibility(View.VISIBLE);
+        else btnCall.setVisibility(View.GONE);
         typeSelectorList = new ArrayList<>();
         typeSelectorList.add(0, new TypeSelector(0, "All"));
         typeSelectorList.add(1, new TypeSelector(1, "Manual Data"));
@@ -587,6 +619,41 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         } else hcView.setVisibility(View.GONE);
     }
 
+    private void showPopup() {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_observation, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        CardView txtVital=popupView.findViewById(R.id.txtVital);
+        CardView txtInput=popupView.findViewById(R.id.txtInput);
+        CardView txtOutput=popupView.findViewById(R.id.txtOutput);
+        final EditText edtRemark=popupView.findViewById(R.id.edtRemark);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        llMain.getLocationOnScreen(location);
+        popupWindow.showAtLocation(llMain, Gravity.CENTER, 0, 0);
+        txtVital.setOnClickListener(view -> {
+            Fragment fragment = new InputVital();
+            FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+            popupWindow.dismiss();
+        });
+        txtInput.setOnClickListener(view -> {
+            Fragment fragment = new IntakeInput();
+            FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+            popupWindow.dismiss();
+        });
+        txtOutput.setOnClickListener(view -> {
+            Fragment fragment = new Output();
+            FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+            popupWindow.dismiss();
+        });
+    }
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnPresOverview)
@@ -608,9 +675,36 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
             alertDialog.setMessage("Do you want to Call?");
             alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
-            alertDialog.setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel",SharedPrefManager.getInstance(view.getContext()).getCovidPatient().getMobileNo(), null))));
+            alertDialog.setPositiveButton("Yes", (dialog, which) -> {
+                Intent intent=new Intent(Intent.ACTION_DIAL,
+                        Uri.fromParts("tel", SharedPrefManager.getInstance(view.getContext()).getCovidPatient().getMobileNo(), null));
+                startActivity(intent);
+            });
             alertDialog.setNeutralButton("No", (dialog, which) -> dialog.cancel());
             alertDialog.show();
+        } else if(view.getId()==R.id.btnMic){
+            showPopup();
+        } else if(view.getId()==R.id.btnOxi){
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                if (!checkPermission()) {
+                    //Toast.makeText(getApplicationContext(), "Permission already granted", Toast.LENGTH_LONG).show();
+                    requestPermission();
+                } else {
+                        startActivity(new Intent(context, DeviceScanActivity.class));
+                }
+            }
+        } else if(view.getId()==R.id.btnImg){
+            /*int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                if (!checkPermission()) {
+                    //Toast.makeText(getApplicationContext(), "Permission already granted", Toast.LENGTH_LONG).show();
+                    requestPermission();
+                } else {
+                        startActivity(new Intent(context, DeviceScanActivity.class));
+                }
+            }*/
+            startActivity(new Intent(context, UploadImg.class));
         }
     }
 
@@ -999,10 +1093,43 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
                     txtPulse.setText(vitalChartList.getVitalList().get(i).getVitalValue());
             }
         }
-
-
     }
 
+    private boolean checkPermission() {
+        return (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @androidx.annotation.NonNull String[] permissions, @androidx.annotation.NonNull int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.length > 0) {
+                boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (locationAccepted) {
+                    startActivity(new Intent(context, DeviceScanActivity.class));
+                    Toast.makeText(context, "Permission Granted, Now you can access location", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "Permission Denied, You cannot access location", Toast.LENGTH_LONG).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            showMessageOKCancel((dialog, which) -> requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void showMessageOKCancel(DialogInterface.OnClickListener okListener) {
+        new androidx.appcompat.app.AlertDialog.Builder(context)
+                .setMessage("You need to allow access to both the permissions")
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
     private class TypeSelector {
         String value;
         int id;

@@ -315,12 +315,14 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     if (response.isSuccessful()) {
                         covidPatientResp = response.body();
                         if (covidPatientResp != null) {
-                            covidArrayAdp = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, covidPatientResp.getPatientList());
-                            covidArrayAdp.setDropDownViewResource(R.layout.spinner_item_text_size);
-                            spnSearch.setAdapter(covidArrayAdp);
-                            spnSearch.setSelection(-1);
-                            covidPAtientList = covidPatientResp.getPatientList();
-                            rView.setAdapter(new CovidPatientListAdp(PatientList.this, covidPAtientList));
+                            if(covidPatientResp.getPatientList().size()>0) {
+                                covidArrayAdp = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, covidPatientResp.getPatientList());
+                                covidArrayAdp.setDropDownViewResource(R.layout.spinner_item_text_size);
+                                spnSearch.setAdapter(covidArrayAdp);
+                                spnSearch.setSelection(-1);
+                                covidPAtientList = covidPatientResp.getPatientList();
+                                rView.setAdapter(new CovidPatientListAdp(PatientList.this, covidPAtientList));
+                            }
                         }
                     } else {
                         Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();

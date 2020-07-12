@@ -457,95 +457,21 @@ public class ProcedureNoteActivity extends BaseActivity implements View.OnClickL
 
     private void setupTextEditor(){
 
-        richTextEditor.setPadding((int) getResources().getDimension(R.dimen._5sdp),
-                (int) getResources().getDimension(R.dimen._5sdp),
-                (int) getResources().getDimension(R.dimen._5sdp),
-                (int) getResources().getDimension(R.dimen._5sdp));
-
-        findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.undo();
-            }
-        });
-
-        findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.redo();
-            }
-        });
-
-        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setBold();
-            }
-        });
-
-        findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setItalic();
-            }
-        });
-
-        findViewById(R.id.action_subscript).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setSubscript();
-            }
-        });
-
-        findViewById(R.id.action_superscript).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setSuperscript();
-            }
-        });
-
-        findViewById(R.id.action_strikethrough).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setStrikeThrough();
-            }
-        });
-
-        findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setUnderline();
-            }
-        });
-
-        findViewById(R.id.action_heading1).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setHeading(1);
-            }
-        });
-
-        findViewById(R.id.action_heading2).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setHeading(2);
-            }
-        });
-
-        findViewById(R.id.action_heading3).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setHeading(3);
-            }
-        });
-
-        findViewById(R.id.action_heading4).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setHeading(4);
-            }
-        });
-
-        findViewById(R.id.action_heading5).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setHeading(5);
-            }
-        });
-
-        findViewById(R.id.action_heading6).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setHeading(6);
-            }
-        });
-
+        richTextEditor.setPadding((int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp));
+        findViewById(R.id.action_undo).setOnClickListener(v -> richTextEditor.undo());
+        findViewById(R.id.action_redo).setOnClickListener(v -> richTextEditor.redo());
+        findViewById(R.id.action_bold).setOnClickListener(v -> richTextEditor.setBold());
+        findViewById(R.id.action_italic).setOnClickListener(v -> richTextEditor.setItalic());
+        findViewById(R.id.action_subscript).setOnClickListener(v -> richTextEditor.setSubscript());
+        findViewById(R.id.action_superscript).setOnClickListener(v -> richTextEditor.setSuperscript());
+        findViewById(R.id.action_strikethrough).setOnClickListener(v -> richTextEditor.setStrikeThrough());
+        findViewById(R.id.action_underline).setOnClickListener(v -> richTextEditor.setUnderline());
+        findViewById(R.id.action_heading1).setOnClickListener(v -> richTextEditor.setHeading(1));
+        findViewById(R.id.action_heading2).setOnClickListener(v -> richTextEditor.setHeading(2));
+        findViewById(R.id.action_heading3).setOnClickListener(v -> richTextEditor.setHeading(3));
+        findViewById(R.id.action_heading4).setOnClickListener(v -> richTextEditor.setHeading(4));
+        findViewById(R.id.action_heading5).setOnClickListener(v -> richTextEditor.setHeading(5));
+        findViewById(R.id.action_heading6).setOnClickListener(v -> richTextEditor.setHeading(6));
         findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
             private boolean isChanged;
 
@@ -564,74 +490,30 @@ public class ProcedureNoteActivity extends BaseActivity implements View.OnClickL
             }
         });
 
-        findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setIndent();
-            }
-        });
+        findViewById(R.id.action_indent).setOnClickListener(v -> richTextEditor.setIndent());
 
-        findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setOutdent();
-            }
-        });
+        findViewById(R.id.action_outdent).setOnClickListener(v -> richTextEditor.setOutdent());
 
-        findViewById(R.id.action_align_left).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setAlignLeft();
-            }
-        });
+        findViewById(R.id.action_align_left).setOnClickListener(v -> richTextEditor.setAlignLeft());
 
-        findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setAlignCenter();
-            }
-        });
+        findViewById(R.id.action_align_center).setOnClickListener(v -> richTextEditor.setAlignCenter());
 
-        findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setAlignRight();
-            }
-        });
+        findViewById(R.id.action_align_right).setOnClickListener(v -> richTextEditor.setAlignRight());
 
-        findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setBlockquote();
-            }
-        });
+        findViewById(R.id.action_blockquote).setOnClickListener(v -> richTextEditor.setBlockquote());
 
-        findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setBullets();
-            }
-        });
+        findViewById(R.id.action_insert_bullets).setOnClickListener(v -> richTextEditor.setBullets());
 
-        findViewById(R.id.action_insert_numbers).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.setNumbers();
-            }
-        });
+        findViewById(R.id.action_insert_numbers).setOnClickListener(v -> richTextEditor.setNumbers());
 
         findViewById(R.id.action_insert_image).setVisibility(View.GONE);
-        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
-                        "dachshund");
-            }
-        });
+        findViewById(R.id.action_insert_image).setOnClickListener(v -> richTextEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
+                "dachshund"));
 
 
         findViewById(R.id.action_insert_link).setVisibility(View.GONE);
-        findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.insertLink("https://github.com/wasabeef", "wasabeef");
-            }
-        });
-        findViewById(R.id.action_insert_checkbox).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                richTextEditor.insertTodo();
-            }
-        });
+        findViewById(R.id.action_insert_link).setOnClickListener(v -> richTextEditor.insertLink("https://github.com/wasabeef", "wasabeef"));
+        findViewById(R.id.action_insert_checkbox).setOnClickListener(v -> richTextEditor.insertTodo());
     }
 
 

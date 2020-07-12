@@ -167,6 +167,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         else if(SharedPrefManager.getInstance(Dashboard.this).getHeadID()==7)
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getDieteticsPatient().getName());
         else txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getOpdPatient().getPname());
+        if(ScannerActivity.patientInfo!=null)
+        txtPName.setText(ScannerActivity.patientInfo.getPatientName());
+        ScannerActivity.patientInfo=null;
         txtPId.setText(String.valueOf(SharedPrefManager.getInstance(this).getPid()));
 
         consultantNameList.add(0, new ConsultantName(0, 0, "Select Consultant", 0));
@@ -235,6 +238,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_dashboard) {
             Intent intent = new Intent(this, PreDashboard.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
             startActivity(intent);
         } else if (id == R.id.nav_observation) {
             spnConsultant.setVisibility(View.GONE);

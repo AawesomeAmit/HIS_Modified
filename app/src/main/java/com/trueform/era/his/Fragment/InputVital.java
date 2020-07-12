@@ -511,7 +511,6 @@ public class InputVital extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-
         if (view.getId() == R.id.txtDate) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DialogTheme,
                     (view1, year, monthOfYear, dayOfMonth) -> {

@@ -35,7 +35,7 @@ public class PriscriptionOverviewPopup extends BaseActivity {
     ProgressDialog progressDialog;
     PatientDiagnosisDetailsByPID diagnosisDetailsByPID;
 
-    LinearLayout llProgressNote, llComplaint, llPatientHistory, llPhysicalExamination, llProcedureNote, llProvisionalDiagnosis, llAngioReport;
+    LinearLayout llProgressNote, llComplaint, llPatientHistory, llPhysicalExamination, llProcedureNote, llProvisionalDiagnosis, llAngioReport, llOTNote, llConsultantNote, llPatientNote, llNursingNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,6 @@ public class PriscriptionOverviewPopup extends BaseActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
         progressDialog.setCancelable(false);
-        //progressDialog.show();
         btnMedication = findViewById(R.id.btnMedication);
         btnViewMedication = findViewById(R.id.btnViewMedication);
         btnViewInvestigation = findViewById(R.id.btnViewInvestigation);
@@ -66,6 +65,10 @@ public class PriscriptionOverviewPopup extends BaseActivity {
         llPhysicalExamination = findViewById(R.id.llPhysicalExamination);
         llProvisionalDiagnosis = findViewById(R.id.llProvisionalDiagnosis);
         llProcedureNote = findViewById(R.id.llProcedureNote);
+        llOTNote = findViewById(R.id.llOTNote);
+        llConsultantNote = findViewById(R.id.llConsultantNote);
+        llPatientNote = findViewById(R.id.llPatientNote);
+        llNursingNote = findViewById(R.id.llNursingNote);
         llAngioReport = findViewById(R.id.llAngioReport);
 
         llComplaint.setOnClickListener(view -> {
@@ -92,15 +95,33 @@ public class PriscriptionOverviewPopup extends BaseActivity {
 
         });
 
+        llOTNote.setOnClickListener(view -> {
+            startActivity(new Intent(PriscriptionOverviewPopup.this,OTNote.class));
+
+        });
+
+        llConsultantNote.setOnClickListener(view -> {
+            startActivity(new Intent(PriscriptionOverviewPopup.this,ConsultantNote.class));
+
+        });
+
+        llPatientNote.setOnClickListener(view -> {
+            startActivity(new Intent(PriscriptionOverviewPopup.this,PatientNote.class));
+
+        });
+
+        llNursingNote.setOnClickListener(view -> {
+            startActivity(new Intent(PriscriptionOverviewPopup.this,NursingNote.class));
+
+        });
+
         llAngioReport.setOnClickListener(view -> {
             startActivity(new Intent(PriscriptionOverviewPopup.this,AngioReportActivity.class));
 
         });
 
 
-        if (SharedPrefManager.getInstance(this).getHeadID() == 1)
-        {
-
+        if (SharedPrefManager.getInstance(this).getHeadID() == 1) {
             Utils.showRequestDialog(mActivity);
             Call<PatientDiagnosisDetailsByPID> call = RetrofitClient.getInstance().getApi().getDiagnosisByPID(SharedPrefManager.getInstance(this).getUser().getAccessToken(), SharedPrefManager.getInstance(this).getUser().getUserid().toString(), SharedPrefManager.getInstance(this).getPid(), SharedPrefManager.getInstance(this).getHeadID(), SharedPrefManager.getInstance(this).getSubDept().getId(), SharedPrefManager.getInstance(this).getUser().getUserid());
             call.enqueue(new Callback<PatientDiagnosisDetailsByPID>() {
@@ -131,12 +152,10 @@ public class PriscriptionOverviewPopup extends BaseActivity {
                         }
                     }
                     Utils.hideDialog();
-                   // progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<PatientDiagnosisDetailsByPID> call, Throwable t) {
-                  //  progressDialog.dismiss();
                     Utils.hideDialog();
                 }
             });
@@ -144,32 +163,10 @@ public class PriscriptionOverviewPopup extends BaseActivity {
             bindData();
             hitGetIntakeOutputData();
         }
-        btnMedication.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "1"));
-            }
-        });
-        btnObservation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "2"));
-            }
-        });
-
-        btnViewMedication.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "4"));
-            }
-        });
-
-        btnViewInvestigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "5"));
-            }
-        });
+        btnMedication.setOnClickListener(view -> startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "1")));
+        btnObservation.setOnClickListener(view -> startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "2")));
+        btnViewMedication.setOnClickListener(view -> startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "4")));
+        btnViewInvestigation.setOnClickListener(view -> startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "5")));
     }
 
     private void bindData(){
@@ -178,38 +175,11 @@ public class PriscriptionOverviewPopup extends BaseActivity {
         call1.enqueue(new Callback<PrescribedMedResp>() {
             @Override
             public void onResponse(Call<PrescribedMedResp> call1, Response<PrescribedMedResp> response) {
-
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-
-                       /* medicineSearchResp1=response.body();
-                        if(medicineSearchResp1.getPrescription().size()>0)
-                            txtDate.setText(medicineSearchResp1.getPrescription().get(0).getPrescribedDated());
-                        AddMedicationAdp adp = new AddMedicationAdp(context, medicineSearchResp1);
-                        rvMedication.setAdapter(adp);
-
-                        getIcdCodeModelListMain.clear();
-
-                        for (int i = 0; i < medicineSearchResp1.getPatientHistory().size(); i++) {
-
-
-                            getIcdCodeModelListMain.add(0, new GetIcdCodeModel());
-                            getIcdCodeModelListMain.get(0).setDetailID(medicineSearchResp1.getPatientHistory().get(i).getDetailID()); // get item
-                            getIcdCodeModelListMain.get(0).setDetails(medicineSearchResp1.getPatientHistory().get(i).getDetails());
-                            getIcdCodeModelListMain.get(0).setPdmID(medicineSearchResp1.getPatientHistory().get(i).getPmID());
-                            //getNutrientByPrefixTextModelListMain.get(0).setSelected(true);
-                        }
-
-
-                        adapterNutrient = new AdapterNutrient(getIcdCodeModelListMain);
-                        recyclerViewDiagnosis.setAdapter(adapterNutrient);*/
-
                         String text = "";
-
                         for (int i = 0; i < response.body().getPatientHistory().size(); i++) {
-
                             if (response.body().getPatientHistory().get(i).getPdmId() == 4){
-
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     text = text + "\u2022 " + Html.fromHtml(response.body().getPatientHistory().get(i).getDetails().trim(), Html.FROM_HTML_MODE_COMPACT) + "\n";
                                 } else {
@@ -218,12 +188,10 @@ public class PriscriptionOverviewPopup extends BaseActivity {
                             }
 
                         }
-
                         if (response.body().getPatientHistory().size()>0){
                             txtPDiagnosis.setVisibility(View.VISIBLE);
                             txtPDiagnosis.setText(text);
                         }
-
                     }
                 }
                 Utils.hideDialog();

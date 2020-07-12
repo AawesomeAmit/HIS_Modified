@@ -377,6 +377,10 @@ public interface Api {
     Call<GetCalculatorListResp> getCalculatorList(@Header("accessToken") String accessToken, @Header("userID") String userID);
 
     @FormUrlEncoded
+    @POST("prescription/GetPatientDetailByBarcode")
+    Call<PatientBarcodeResp> getPatientDetailByBarcode(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("PID") String PID);
+
+    @FormUrlEncoded
     @POST("Calculator/GetCalculatorFormula")
     Call<CalculatorResp> getCalculatorFormula(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("PID") Integer PID, @Field("id") Integer id);
 
@@ -722,6 +726,5 @@ public interface Api {
             @Field("userLoginID") String userLoginID,
             @Field("searchText") String searchText
     );
-
 
 }

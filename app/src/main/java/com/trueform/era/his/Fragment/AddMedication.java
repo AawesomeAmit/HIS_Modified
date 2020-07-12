@@ -508,11 +508,8 @@ public class AddMedication extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 1) {
-                    if (ConnectivityChecker.checker(context)) {
-                        hitGetICDCode(s.toString());
-                    } else {
-                        Toast.makeText(context, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
-                    }
+                    if (ConnectivityChecker.checker(context)) hitGetICDCode(s.toString());
+                    else Toast.makeText(context, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -530,11 +527,8 @@ public class AddMedication extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 1) {
-                    if (ConnectivityChecker.checker(context)) {
-                        hitGetICDCode1(s.toString());
-                    } else {
-                        Toast.makeText(context, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
-                    }
+                    if (ConnectivityChecker.checker(context)) hitGetICDCode1(s.toString());
+                    else Toast.makeText(context, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -11,14 +11,29 @@
         android:smallScreens="true"
         android:xlargeScreens="true" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permision.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.STORAGE"/>
+    <uses-permission android:name="android.permision.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.STORAGE" />
 
     <application
         android:name=".database.MyApplication"
@@ -30,146 +45,177 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.AchievedNutrientGraphActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.GuardPostPatientListActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".Activity.GuardPostActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".Activity.NotificationDetail"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.DiseasePatientList"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Fragment.DiseaseList"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".Activity.DeviceControlActivity"
+            android:theme="@android:style/Theme.Holo.Light"/>
+        <activity android:name=".Activity.DeviceScanActivity"
+            android:theme="@android:style/Theme.Holo.Light"/>
+        <activity android:name=".Activity.NursingNote" />
+        <activity android:name=".Activity.PatientNote" />
+        <activity android:name=".Activity.ConsultantNote" />
+        <activity android:name=".Activity.OTNote" />
+        <activity android:name=".Activity.ScannerActivity" />
+        <activity android:name=".Activity.UploadMultipleImg.FragmentSampleActivity" />
+        <activity android:name=".Activity.UploadMultipleImg.UploadImg" />
+        <activity
+            android:name=".Activity.AchievedNutrientGraphActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.GuardPostPatientListActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.GuardPostActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.NotificationDetail"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.DiseasePatientList"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Fragment.DiseaseList"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Fragment.NutritiAnalyzer"
             android:label="@string/title_activity_nutriti_analyzer"
-            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Fragment.IntakeOutputVitalRange"
             android:label="@string/title_activity_intake_output_vital_range"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Fragment.NutriAnalyserFragment"
             android:configChanges="keyboardHidden|orientation"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activity.AverageNutrientReportActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activity.IdealNutrientIntakeActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Fragment.ActivityProblemInput"
             android:label="@string/title_activity_problem_input"
             android:parentActivityName=".Activity.Dashboard"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait">
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.trueform.era.his.Activity.Dashboard" />
         </activity>
         <activity
             android:name=".Activity.PatientDashboard"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Fragment.IntakeInput"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_intake_input"
             android:parentActivityName=".Activity.Dashboard"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait">
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.trueform.era.his.Activity.Dashboard" />
         </activity>
-        <activity android:name=".Activity.EnterPID"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Activity.EnterPID"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".Activity.ShowPatientAnalyzingGraph" />
-        <activity android:name=".Activity.NotificationList"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.NotificationList"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
-            tools:ignore="LockedOrientationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activity.PriscriptionOverviewPopup"
             android:configChanges="keyboardHidden|orientation"
-            android:theme="@style/AppTheme.CustomTheme"/>
+            android:theme="@style/AppTheme.CustomTheme" />
         <activity
             android:name=".Activity.PatientList"
             android:configChanges="keyboardHidden|orientation"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Fragment.MedicineSidePathway"
             android:configChanges="keyboardHidden|orientation"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activity.PreDashboard"
             android:configChanges="keyboardHidden|orientation"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activity.Dashboard"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Activity.StartActivity"
             android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.ProgressNoteActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.ComplaintActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.PatientHistoryActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.PhysicalExaminationActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.ProcedureNoteActivity"
-            tools:ignore="LockedOrientationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Activity.AngioReportActivity"
+
+        <service
+            android:name=".Activity.BluetoothLeService"
+            android:enabled="true"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity
+            android:name=".Activity.ProgressNoteActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.ComplaintActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.PatientHistoryActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.PhysicalExaminationActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.ProcedureNoteActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.AngioReportActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <service
             android:name=".Utils.MyFirebaseMessagingService"
             android:exported="false">
@@ -177,6 +223,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -186,7 +233,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
     </application>
 
 </manifest>
