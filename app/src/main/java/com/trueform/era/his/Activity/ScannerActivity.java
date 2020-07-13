@@ -14,6 +14,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
+import com.trueform.era.his.Activity.BP.Initial;
+import com.trueform.era.his.Activity.BP.TerminalFragment;
 import com.trueform.era.his.Model.PatientInfoBarcode;
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.PatientBarcodeResp;
@@ -21,6 +23,8 @@ import com.trueform.era.his.Utils.ConnectivityChecker;
 import com.trueform.era.his.Utils.RetrofitClient;
 import com.trueform.era.his.Utils.SharedPrefManager;
 import com.trueform.era.his.Utils.Utils;
+
+import java.util.Objects;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import retrofit2.Call;
@@ -65,12 +69,16 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                             SharedPrefManager.getInstance(ScannerActivity.this).setPid(patientInfo.getPid());
                             SharedPrefManager.getInstance(ScannerActivity.this).setIpNo(patientInfo.getIpNo());
                             SharedPrefManager.getInstance(ScannerActivity.this).setPmId(patientInfo.getPmID());
+                            SharedPrefManager.getInstance(ScannerActivity.this).setSubdeptID(patientInfo.getAdmitSubDepartmentID());
                             SharedPrefManager.getInstance(ScannerActivity.this).setHeadID(patientInfo.getHeadId(), "", "");
-                            Intent intent;
-                            if(getIntent().getStringExtra("redi").equals(1))
+                            Intent intent = null;
+                            if(Objects.equals(getIntent().getStringExtra("redi"), "1"))
                             intent = new Intent(ScannerActivity.this, Dashboard.class);
-                            else {
+                            else if(Objects.equals(getIntent().getStringExtra("redi"), "2")) {
                                 intent = new Intent(ScannerActivity.this, DeviceControlActivity.class);
+                                intent.putExtra("status", "");
+                            }else if(Objects.equals(getIntent().getStringExtra("redi"), "3")) {
+                                intent = new Intent(ScannerActivity.this, Initial.class);
                                 intent.putExtra("status", "");
                             }
                             //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);

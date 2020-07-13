@@ -123,6 +123,14 @@ public class SharedPrefManager {
         editor.putString("color", color);
         editor.apply();
     }
+    public void setSubdeptID(Integer subDeptId) {
+        this.editor = sharedprefs.edit();
+        editor.putInt("subDepartmentID", subDeptId);
+        editor.apply();
+    }
+    public Integer getSubdeptID() {
+        return sharedprefs.getInt("subDepartmentID", 0);
+    }
 
     public Integer getHeadID() {
         return sharedprefs.getInt("headID", 0);

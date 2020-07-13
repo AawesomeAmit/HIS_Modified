@@ -39,10 +39,8 @@ public class UploadImg extends BaseActivity {
     Options options;
     ArrayList<String> returnValue = new ArrayList<>();
     Button btnSubmit;
-
     String dateString;
     Calendar calendar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +48,14 @@ public class UploadImg extends BaseActivity {
         setContentView(R.layout.activity_upload_img);
         btnSubmit = findViewById(R.id.btnSubmit);
 
-        btnSubmit.setOnClickListener(view -> {
-            try {
-                hitUploadImg();
-            } catch (Exception e) {
-                e.printStackTrace();
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    hitUploadImg();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -106,6 +107,7 @@ public class UploadImg extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Pix.start(UploadImg.this, options);
                 } else {
@@ -143,20 +145,23 @@ public class UploadImg extends BaseActivity {
                 RequestBody.create(MediaType.parse("text/plain"), "1000000"),
                 RequestBody.create(MediaType.parse("text/plain"), "1234567"),
                 RequestBody.create(MediaType.parse("text/plain"), dateString)
+
         );
 
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+
                 if (response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                     onBackPressed();
                     finish();
+
                 } else {
-                    switch (response.code()) {
-                        case 401:
-                            Toast.makeText(getApplicationContext(), "Unauthorized User", Toast.LENGTH_SHORT).show();
-                            break;
+                        switch (response.code()) {
+                            case 401:
+                                Toast.makeText(getApplicationContext(), "Unauthorized User", Toast.LENGTH_SHORT).show();
+                                break;
                         case 500:
                             Toast.makeText(getApplicationContext(), "Internal Server Error", Toast.LENGTH_SHORT).show();
                             break;

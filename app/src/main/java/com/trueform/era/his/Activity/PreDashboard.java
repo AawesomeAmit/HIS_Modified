@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.zxing.Result;
+import com.trueform.era.his.Activity.BP.Initial;
 import com.trueform.era.his.Adapter.HeadAdp;
 import com.trueform.era.his.Adapter.RecyclerTouchListener;
 import com.trueform.era.his.Adapter.SubHeadAdp;
@@ -68,7 +69,7 @@ import retrofit2.Response;
 import static android.Manifest.permission_group.CAMERA;
 
 public class PreDashboard extends AppCompatActivity {
-    TextView txtDrName, txtDept, img, count, txtScan, btnOxi;
+    TextView txtDrName, txtDept, img, count, txtScan, btnOxi, btnBp;
     ImageView imgNotification;
     SubHeadIDResp subHeadIDResp;
     ArrayList<HeadAssign> headAssigns;
@@ -99,6 +100,7 @@ public class PreDashboard extends AppCompatActivity {
         txtDrName = findViewById(R.id.txtDrName);
         txtDept = findViewById(R.id.txtDept);
         btnOxi = findViewById(R.id.btnOxi);
+        btnBp = findViewById(R.id.btnBp);
         txtDrName.setText(SharedPrefManager.getInstance(this).getUser().getDisplayName());
         txtDept.setText(SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName());
         headAssigns = SharedPrefManager.getInstance(PreDashboard.this).getHeadList(head);
@@ -121,6 +123,16 @@ public class PreDashboard extends AppCompatActivity {
             public void onFailure(Call<List<NotificationCountResp>> call, Throwable t) {
                 progressDialog.dismiss();
             }
+        });
+        btnBp.setOnClickListener(view -> {
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                    if (!checkPermission()) {
+                        requestPermission();
+                    } else {
+                        startActivity(new Intent(PreDashboard.this, Initial.class));
+                    }
+                }
         });
         btnOxi.setOnClickListener(view -> {
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;

@@ -336,4 +336,6 @@
     <string name="connected">Connected</string>
     <string name="menu_connect">Connect</string>
     <string name="menu_disconnect">Disconnect</string>
+    <string name="devices">Bluetooth Devices</string>
+    <string name="back_slash">\\</string>
 </resources>

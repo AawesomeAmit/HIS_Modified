@@ -29,6 +29,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.trueform.era.his.Activity.BP.Initial;
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.CommonResp;
 import com.trueform.era.his.Utils.ConnectivityChecker;
@@ -210,17 +211,16 @@ public class DeviceControlActivity extends Activity {
         Utils.showRequestDialog(DeviceControlActivity.this);
         Log.v("hitApi:", "http://182.156.200.179:201/api/Prescription/saveVitals");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
-        JSONArray array = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("PID", SharedPrefManager.getInstance(DeviceControlActivity.this).getPid());
             jsonObject.put("headID", SharedPrefManager.getInstance(DeviceControlActivity.this).getHeadID());
             jsonObject.put("entryDate", format.format(today));
-            jsonObject.put("subDeptID", SharedPrefManager.getInstance(DeviceControlActivity.this).getSubDept().getId());
+            jsonObject.put("subDeptID", SharedPrefManager.getInstance(DeviceControlActivity.this).getSubdeptID());
             jsonObject.put("isFinalDiagnosis", false);
             jsonObject.put("ipNo", SharedPrefManager.getInstance(DeviceControlActivity.this).getIpNo());
             jsonObject.put("userID", SharedPrefManager.getInstance(DeviceControlActivity.this).getUser().getUserid());
-            jsonObject.put("consultantName", "");
+            jsonObject.put("consultantName", SharedPrefManager.getInstance(DeviceControlActivity.this).getUser().getUserid());
             jsonObject.put("vitals", dt);
             Log.v("hitApiArr", String.valueOf(jsonObject));
         } catch (Exception e) {

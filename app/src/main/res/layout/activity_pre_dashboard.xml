@@ -43,6 +43,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:layout_toStartOf="@id/btnOxi"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:foregroundGravity="center"
+            android:drawablePadding="@dimen/_2sdp"
+            android:background="@drawable/ic_bp_chart"
+            android:textColor="@color/black"
+            android:id="@+id/btnBp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:layout_toStartOf="@id/txtScan"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
