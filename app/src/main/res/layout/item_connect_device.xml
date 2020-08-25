@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_40sdp"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingRight="@dimen/_10sdp"
+    android:layoutDirection="ltr">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical"
+>
+
+        <TextView
+            android:id="@+id/ble_list_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
+            android:id="@+id/ble_list_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:layout_marginTop="2dp"
+            android:text="no:123456789"
+            android:alpha="0.7"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10ssp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ble_list_rssi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.7"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="-85"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp" />
+
+</RelativeLayout>

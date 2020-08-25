@@ -70,6 +70,7 @@ import com.trueform.era.his.Activity.DeviceScanActivity;
 import com.trueform.era.his.Activity.PatientList;
 import com.trueform.era.his.Activity.PriscriptionOverviewPopup;
 import com.trueform.era.his.Activity.UploadMultipleImg.UploadImg;
+import com.trueform.era.his.Activity.UploadMultipleImg.ViewPatientDoc;
 import com.trueform.era.his.Adapter.AddInvestigationAdp;
 import com.trueform.era.his.Model.Investigation;
 import com.trueform.era.his.R;
@@ -100,7 +101,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
     HIChartView hcView;
     HIChartView hcSys;
     HIChartView hcDys;
-    TextView btnPresOverview, txtDate, btnCall, btnMic, btnOxi, btnImg;
+    TextView btnPresOverview, txtDate, btnCall, btnMic, btnOxi, btnImg,tvViewdoc;
     HIExporting exporting;
     LinearLayout llBP;
     String sp;
@@ -166,6 +167,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         btnMic = view.findViewById(R.id.btnMic);
         btnOxi = view.findViewById(R.id.btnOxi);
         btnImg = view.findViewById(R.id.btnImg);
+        tvViewdoc = view.findViewById(R.id.tvViewdoc);
         llBP = view.findViewById(R.id.llBP);
         txtRR = view.findViewById(R.id.txtRR);
         txtHR = view.findViewById(R.id.txtHR);
@@ -190,6 +192,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         btnMic.setOnClickListener(this);
         btnOxi.setOnClickListener(this);
         btnImg.setOnClickListener(this);
+        tvViewdoc.setOnClickListener(view -> startActivity(new Intent(context, ViewPatientDoc.class)));
         if(SharedPrefManager.getInstance(context).isCovid()) btnCall.setVisibility(View.VISIBLE);
         else btnCall.setVisibility(View.GONE);
         typeSelectorList = new ArrayList<>();

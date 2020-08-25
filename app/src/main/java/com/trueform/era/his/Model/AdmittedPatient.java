@@ -60,6 +60,9 @@ public class AdmittedPatient {
     @SerializedName("wardName")
     @Expose
     private String wardName;
+    @SerializedName("isRead")
+    @Expose
+    public Boolean isRead;
     @NonNull
     @Override
     public String toString() {
@@ -146,5 +149,9 @@ public class AdmittedPatient {
 
     public String getWardName() {
         return wardName;
+    }
+
+    public Boolean getRead() {
+        return isRead;
     }
 }

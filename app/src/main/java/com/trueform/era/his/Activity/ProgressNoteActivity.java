@@ -67,6 +67,7 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
     private TextView btnUpdate;
     private TextView btnSave;
     TextView txtDrName, txtDept;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private VitalListResp vitalChartList;
@@ -75,7 +76,7 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
  //   private EditText edtProgress;
     private String mParam1;
     private String mParam2;
-
+    private int subDeptID;
     List<ConsultantName> consultantNameList;
 
     RecyclerView recyclerView;
@@ -141,7 +142,6 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
         date = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
 
         txtDate.setText((date));
-
         txtDate.setOnClickListener(view1 -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(Objects.requireNonNull(mActivity), R.style.DialogTheme,
                     (view2, year, monthOfYear, dayOfMonth) -> {
@@ -407,9 +407,11 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
 
                 break;
             case R.id.btnUpdate:
-                if (SharedPrefManager.getInstance(context).getUser().getDesigid() !=1 && spnConsultant.getSelectedItemPosition() != 0) {
-                    updateProgressReport(
-                            SharedPrefManager.getInstance(context).getConsultantList().get(spnConsultant.getSelectedItemPosition()).getUserid());
+                if (SharedPrefManager.getInstance(context).getUser().getDesigid() == 1) {
+                    updateProgressReport(SharedPrefManager.getInstance(context).getUser().getUserid());
+                }
+                else if (SharedPrefManager.getInstance(context).getUser().getDesigid() !=1 && spnConsultant.getSelectedItemPosition() != 0) {
+                    updateProgressReport(SharedPrefManager.getInstance(context).getConsultantList().get(spnConsultant.getSelectedItemPosition()).getUserid());
                 } else Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
 
                 break;
@@ -494,6 +496,8 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
                 entryDate = progressList.get(i).getCreatedDate() +" "+progressList.get(i).getTime();
                 //edtProgress.setText(holder.tvProgressNote.getText().toString().trim());
                 richTextEditor.setHtml(progressList.get(i).getDetails().trim());
+                btnUpdate.setVisibility(View.VISIBLE);
+                btnSave.setVisibility(View.GONE);
             });
 
             holder.ivRemove.setOnClickListener(view -> {

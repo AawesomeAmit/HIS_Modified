@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/lay_scanlist_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnStartScan"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/rectangle_btn"
+            android:text="@string/scan"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp" />
+
+        <Button
+            android:id="@+id/btnStopScan"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:visibility="gone"
+            android:background="@drawable/rectangle_btn"
+            android:text="@string/stop_scan"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lay_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@+id/ivScan"
+        app:layout_constraintBottom_toTopOf="@+id/lay_scanlist_scan" />
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/_10sdp"
+        android:visibility="gone"
+        android:src="@drawable/ic_back"/>
+
+    <ImageView
+        android:id="@+id/ivScan"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:tint="@color/black"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_barcode"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

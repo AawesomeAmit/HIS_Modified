@@ -213,7 +213,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llProcedureNote"
+                android:id="@+id/llOTNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
@@ -250,7 +250,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llProcedureNote"
+                android:id="@+id/llConsultantNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
@@ -287,7 +287,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llProcedureNote"
+                android:id="@+id/llPatientNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
@@ -324,7 +324,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llProcedureNote"
+                android:id="@+id/llNursingNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"

@@ -219,8 +219,16 @@ public interface Api {
     Call<MealResp> getFoodListByPrefixText(@Header("accessToken") String accessToken, @Field("memberId") Integer memberId, @Field("prefixText") String prefixText, @Field("userLoginID") Integer userLoginID);
 
     @FormUrlEncoded
+    @POST("RecipeMaster.asmx/GetIntakeListByPrefixText")
+    Call<MealResp> getIntakeListByPrefixText(@Header("accessToken") String accessToken, @Field("memberId") Integer memberId, @Field("prefixText") String prefixText, @Field("userLoginID") Integer userLoginID);
+
+    @FormUrlEncoded
     @POST("Universal.asmx/GetFoodUnitByFoodId")
     Call<UnitResp> getFoodUnitByFoodId(@Header("accessToken") String accessToken, @Field("foodId") Integer foodId);
+
+    @FormUrlEncoded
+    @POST("Universal.asmx/GetIntakeUnitByIntakeId")
+    Call<IntekeUnitResp> getIntakeUnitByIntakeId(@Header("accessToken") String accessToken, @Field("intakeID") Integer intakeID, @Field("textID") Integer textID, @Field("isSupplement") Integer isSupplement, @Field("isSynonym") Integer isSynonym);
 
     @FormUrlEncoded
     @POST("Graph/GetAutoCompleteNutrition")
@@ -276,7 +284,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("autoVisitRevisit/checkCRNo")
-    Call<CheckPidResp> checkCRNo(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
+    Call<CheckPidResp> checkCRNo(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") String PID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
 
     @FormUrlEncoded
     @POST("Investigation/GetPatientBill")
@@ -663,6 +671,26 @@ public interface Api {
             @Part("problem") RequestBody problem,
             @Part MultipartBody.Part[] patientImage
     );
+
+    @Multipart
+    @POST("CasualityRegistration.ashx")
+    Call<String> SaveCasualityPatient(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID_,
+            @Part("userID") RequestBody userID,
+            @Part("PID") RequestBody PID,
+            @Part("patientName") RequestBody patientName,
+            @Part("age") RequestBody age,
+            @Part("ageUnit") RequestBody ageUnit,
+            @Part("gender") RequestBody gender,
+            @Part("problem") RequestBody problem,
+            @Part("vmValueBPSys") RequestBody bpSys,
+            @Part("vmValueBPDias") RequestBody bpDias,
+            @Part("vmValuePulse") RequestBody pulse,
+            @Part("vmValueSPO2") RequestBody spo2,
+            @Part("vmValueTemperature") RequestBody temperature,
+            @Part MultipartBody.Part[] patientImage
+    );
     @Multipart
     @POST("patientAudioVitalData.ashx")
     Call<String> patientAudioVitalData(
@@ -725,6 +753,144 @@ public interface Api {
             @Field("memberId") String memberId,
             @Field("userLoginID") String userLoginID,
             @Field("searchText") String searchText
+    );
+
+    @FormUrlEncoded
+    @POST("UserIntake.asmx/UpdateIntakeConsumption")
+    Call<UnitResp> UpdateIntakeConsumption(
+            @Header("token") String token,
+            @Field("intakeConsumption") JSONArray intakeConsumption,
+            @Field("memberId") String memberId,
+            @Field("userLoginID") String userLoginID
+    );
+    @FormUrlEncoded
+    @POST("MedicineIntake.asmx/UpdateConsumptionPercentage")
+    Call<UnitResp> UpdateConsumptionPercentage(
+            @Header("token") String token,
+            @Field("consumptionPercentage") String consumptionPercentage,
+            @Field("entryUserID") String entryUserID,
+            @Field("memberId") String memberId,
+            @Field("userLoginID") String userLoginID,
+            @Field("userMedicationID") String userMedicationID
+    );
+
+    @FormUrlEncoded
+    @POST("IntakePrescription/SaveIntakePrescription")
+    Call<ResponseBody> saveIntakePrescription(
+            @Header("accessToken") String token,
+            @Header("userId") String userId,
+            @Field("comment") String comment,
+            @Field("pmID") Integer pmID,
+            @Field("prescriptionID") Integer prescriptionID,
+            @Field("status") Integer status,
+            @Field("userId") String userId1
+    );
+    @POST("PatientRegistration/GetPatientRegistrationList")
+    Call<PatientRegistrationListResp> getPatientRegistrationList(
+            @Header("accessToken") String token,
+            @Header("userId") String userId
+    );
+
+    @FormUrlEncoded
+    @POST("PatientRegistration/GetDoctorList")
+    Call<DoctorOPDScheduleResp> getDoctorList(
+            @Header("accessToken") String token,
+            @Header("userId") String userId,
+            @Field("subDepartmentID") Integer subDepartmentID
+    );
+
+    @FormUrlEncoded
+    @POST("IPDRegistration/getWardDoctors")
+    Call<DoctorWardResp> getWardDoctors(
+            @Header("accessToken") String token,
+            @Header("userId") String userId,
+            @Field("admitSubDepartmentID") Integer admitSubDepartmentID
+    );
+
+    @FormUrlEncoded
+    @POST("PatientRegistration/GetDistrictList")
+    Call<DistrictMasterResp> getDistrictList(
+            @Header("accessToken") String token,
+            @Header("userId") String userId,
+            @Field("stateID") Integer stateID
+    );
+
+    @FormUrlEncoded
+    @POST("PatientRegistration/SavePatientRegistration")
+    Call<PatientRegistrationResp> savePatientRegistration(
+            @Header("accessToken") String token,
+            @Header("userId") String userId,
+            @Field("patientName") String patientName,
+            @Field("guardianRelationID") String guardianRelationID,
+            @Field("guardianName") String guardianName,
+            @Field("gender") String gender,
+            @Field("dob") String dob,
+            @Field("mobileNo") String mobileNo,
+            @Field("stateID") String stateID,
+            @Field("districtID") String districtID,
+            @Field("address") String address,
+            @Field("patientCategoryID") String patientCategoryID,
+            @Field("identityTypeID") String identityTypeID,
+            @Field("identityNumber") String identityNumber,
+            @Field("occupationID") String occupationID,
+            @Field("maritalStatusID") String maritalStatusID,
+            @Field("patientProblem") String patientProblem,
+            @Field("subDepartmentID") String subDepartmentID,
+            @Field("doctorID") String doctorID,
+            @Field("roomID") String roomID,
+            @Field("userID") String userID,
+            @Field("counterID") String counterID,
+            @Field("staffHeadID") String staffHeadID,
+            @Field("visitCharge") String visitCharge,
+            @Field("discountedBy") String discountedBy,
+            @Field("fileCharge") String fileCharge,
+            @Field("headID") String headID,
+            @Field("paidAmount") String paidAmount,
+            @Field("isChecked") String isChecked,
+            @Field("vmValueBPSys") String vmValueBPSys,
+            @Field("vmValueBPDias") String vmValueBPDias,
+            @Field("vmValuePulse") String vmValuePulse,
+            @Field("vmValueTemperature") String vmValueTemperature,
+            @Field("cardImage") String cardImage,
+            @Field("guardianMobileNo") String guardianMobileNo,
+            @Field("educationalID") String educationalID,
+            @Field("vmValueSPO2") String vmValueSPO2,
+            @Field("vmValueRBS") String vmValueRBS
+    );
+
+    @FormUrlEncoded
+    @POST("PatientRegistration/InsertIPDRegistration")
+    Call<ResponseBody> insertIPDRegistration(
+            @Header("accessToken") String token,
+            @Header("userId") String userId,
+            @Field("pid") String pid,
+            @Field("subDepartmentID") String subDepartmentID,
+            @Field("doctorID") String doctorID,
+            @Field("wardID") String wardID,
+            @Field("userID") String userID,
+            @Field("coQ10") String coQ10,
+            @Field("multiVitamin") String multiVitamin,
+            @Field("greenTea") String greenTea,
+            @Field("broccoli") String broccoli,
+            @Field("cinnamon") String cinnamon,
+            @Field("counterID") String counterID,
+            @Field("staffHeadID") String staffHeadID,
+            @Field("bloodSample") String bloodSample,
+            @Field("aadhaarCard") String aadhaarCard,
+            @Field("vmValueBPSys") String vmValueBPSys,
+            @Field("vmValueBPDias") String vmValueBPDias,
+            @Field("vmValueSPO2") String vmValueSPO2,
+            @Field("vmValuePulse") String vmValuePulse,
+            @Field("vmValueTemperature") String vmValueTemperature,
+            @Field("isCovid") String isCovid,
+            @Field("ERCCaseID") String ERCCaseID,
+            @Field("isBPL") String isBPL,
+            @Field("isXray") String isXray,
+            @Field("isSampleInvestigation") String isSampleInvestigation,
+            @Field("historyCoMorbidities") String historyCoMorbidities,
+            @Field("presentSymptoms") String presentSymptoms,
+            @Field("admitDateTime") String admitDateTime,
+            @Field("vmValueRBS") String vmValueRBS
     );
 
 }

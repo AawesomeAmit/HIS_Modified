@@ -13,9 +13,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.getmedcheck.lib.model.BleDevice;
 import com.google.zxing.Result;
+import com.inuker.bluetooth.library.Code;
+import com.inuker.bluetooth.library.Constants;
 import com.trueform.era.his.Activity.BP.Initial;
+import com.trueform.era.his.Activity.BP.Medcheck.DeviceConnectionActivity;
 import com.trueform.era.his.Activity.BP.TerminalFragment;
+import com.trueform.era.his.Activity.ViaOximeter.DataActivity;
 import com.trueform.era.his.Model.PatientInfoBarcode;
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.PatientBarcodeResp;
@@ -23,17 +28,24 @@ import com.trueform.era.his.Utils.ConnectivityChecker;
 import com.trueform.era.his.Utils.RetrofitClient;
 import com.trueform.era.his.Utils.SharedPrefManager;
 import com.trueform.era.his.Utils.Utils;
+import com.vphealthy.oximetersdk.OxiOprateManager;
+import com.vphealthy.oximetersdk.listener.base.IABleConnectStatusListener;
 
 import java.util.Objects;
+import java.util.Scanner;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.trueform.era.his.Activity.BP.BLE.DeviceControlActivity.EXTRAS_DEVICE_ADDRESS;
+import static com.trueform.era.his.Activity.BP.BLE.DeviceControlActivity.EXTRAS_DEVICE_NAME;
+
 public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
+    private String TAG = "FragmentActivity";
     public static PatientInfoBarcode patientInfo=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,25 +77,47 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                 public void onResponse(Call<PatientBarcodeResp> call, Response<PatientBarcodeResp> response) {
                     if (response.isSuccessful()) {
                         if (response.body() != null && !response.body().getPatientInfo().isEmpty()) {
-                            patientInfo = response.body().getPatientInfo().get(0);
-                            SharedPrefManager.getInstance(ScannerActivity.this).setPid(patientInfo.getPid());
-                            SharedPrefManager.getInstance(ScannerActivity.this).setIpNo(patientInfo.getIpNo());
-                            SharedPrefManager.getInstance(ScannerActivity.this).setPmId(patientInfo.getPmID());
-                            SharedPrefManager.getInstance(ScannerActivity.this).setSubdeptID(patientInfo.getAdmitSubDepartmentID());
-                            SharedPrefManager.getInstance(ScannerActivity.this).setHeadID(patientInfo.getHeadId(), "", "");
-                            Intent intent = null;
-                            if(Objects.equals(getIntent().getStringExtra("redi"), "1"))
-                            intent = new Intent(ScannerActivity.this, Dashboard.class);
-                            else if(Objects.equals(getIntent().getStringExtra("redi"), "2")) {
-                                intent = new Intent(ScannerActivity.this, DeviceControlActivity.class);
-                                intent.putExtra("status", "");
-                            }else if(Objects.equals(getIntent().getStringExtra("redi"), "3")) {
-                                intent = new Intent(ScannerActivity.this, Initial.class);
-                                intent.putExtra("status", "");
-                            }
-                            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
-                            finish();
-                            startActivity(intent);
+                                patientInfo = response.body().getPatientInfo().get(0);
+                                SharedPrefManager.getInstance(ScannerActivity.this).setPid(patientInfo.getPid());
+                                SharedPrefManager.getInstance(ScannerActivity.this).setIpNo(patientInfo.getIpNo());
+                                SharedPrefManager.getInstance(ScannerActivity.this).setPmId(patientInfo.getPmID());
+                                SharedPrefManager.getInstance(ScannerActivity.this).setPtName(patientInfo.getPatientName());
+                                SharedPrefManager.getInstance(ScannerActivity.this).setCr(patientInfo.getCrNo());
+                                SharedPrefManager.getInstance(ScannerActivity.this).setSubdeptID(patientInfo.getAdmitSubDepartmentID());
+                                SharedPrefManager.getInstance(ScannerActivity.this).setHeadID(patientInfo.getHeadId(), "", "");
+                                Intent intent = null;
+                                if (Objects.equals(getIntent().getStringExtra("redi"), "1")) {
+                                    intent = new Intent(ScannerActivity.this, Dashboard.class);
+                                    intent.putExtra("status", "");
+                                } else if (Objects.equals(getIntent().getStringExtra("redi"), "2")) {
+                                    intent = new Intent(ScannerActivity.this, DeviceControlActivity.class);
+                                    intent.putExtra("status", "");
+                                } else if (Objects.equals(getIntent().getStringExtra("redi"), "3")) {
+                                    intent = new Intent(ScannerActivity.this, Initial.class);
+                                    intent.putExtra("status", "");
+                                } else if (Objects.equals(getIntent().getStringExtra("redi"), "4")) {
+                                    intent = new Intent(ScannerActivity.this, ScanSelector.class);
+                                    intent.putExtra("status", "");
+                                } else if (Objects.equals(getIntent().getStringExtra("redi"), "5")) {
+                                    intent = new Intent(ScannerActivity.this, com.trueform.era.his.Activity.BP.BLE.DeviceControlActivity.class);
+                                    intent.putExtra(EXTRAS_DEVICE_NAME, getIntent().getStringExtra(EXTRAS_DEVICE_NAME));
+                                    intent.putExtra(EXTRAS_DEVICE_ADDRESS,getIntent().getStringExtra(EXTRAS_DEVICE_ADDRESS));
+                                    intent.putExtra("status", "");
+                                } else if (Objects.equals(getIntent().getStringExtra("redi"), "6")) {
+                                    intent = new Intent(ScannerActivity.this, DeviceConnectionActivity.class);
+                                    intent.putExtra("DATA", (BleDevice) getIntent().getParcelableExtra("DATA"));
+                                    intent.putExtra("status", "");
+                                } else if (Objects.equals(getIntent().getStringExtra("redi"), "7")) {
+//                                    connect(getIntent().getStringExtra("mac"), getIntent().getStringExtra("mac"));
+                                    intent = new Intent(ScannerActivity.this, DataActivity.class);
+                                    intent.putExtra("mac", getIntent().getStringExtra("mac"));
+                                    intent.putExtra("show", getIntent().getStringExtra("show"));
+                                }
+                                finish();
+                                startActivity(intent);
+                            } else {
+                            Toast.makeText(ScannerActivity.this, "Patient not admitted!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(ScannerActivity.this, PreDashboard.class));
                         }
                     }
                     Utils.hideDialog();
@@ -116,6 +150,49 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         alert1.show();*/
     }
 
+    private void connect(String macAddress, String deviceName) {
+        Log.d(TAG, "connect:address: "+macAddress);
+        Log.d(TAG, "connect:name: "+deviceName);
+
+        OxiOprateManager.getMangerInstance(getApplicationContext()).registerConnectStatusListener(macAddress, new IABleConnectStatusListener() {
+            @Override
+            public void onConnectStatusChanged(String mac, int code) {
+                if (code == Constants.STATUS_CONNECTED) {
+                    String connectStr = getString(R.string.connected);
+                    Log.i(TAG, connectStr);
+//                    binding.connectionState.setText(connectStr);
+                } else {
+                    String unConnectStr = getString(R.string.disconnected);
+                    Log.i(TAG, unConnectStr);
+                }
+            }
+        });
+
+        OxiOprateManager.getMangerInstance(getApplicationContext()).connectDevice(macAddress, deviceName, (code, bleGattProfile, isUpdateModel) -> {
+            if (code == Code.REQUEST_SUCCESS) {
+                //蓝牙与设备的连接状态
+                Log.i(TAG, "Connection Success");
+            } else {
+                Toast.makeText(ScannerActivity.this, "Connection Failure", Toast.LENGTH_SHORT).show();
+                mScannerView.resumeCameraPreview(ScannerActivity.this);
+                Log.i(TAG, "Connection Failure");
+            }
+        }, state -> {
+            if (state == Code.REQUEST_SUCCESS) {
+                Log.i(TAG, "Notify Success");
+                Intent intent = new Intent(ScannerActivity.this, DataActivity.class);
+                intent.putExtra("mac", macAddress);
+                intent.putExtra("show", getIntent().getStringExtra("show"));
+                startActivity(intent);
+            } else {
+                Toast.makeText(ScannerActivity.this, "Connection Failure", Toast.LENGTH_SHORT).show();
+                mScannerView.resumeCameraPreview(ScannerActivity.this);
+                Log.i(TAG, "Notify Fail");
+            }
+        });
+
+
+    }
     private boolean checkPermission() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
     }

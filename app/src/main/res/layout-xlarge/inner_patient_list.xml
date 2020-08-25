@@ -38,6 +38,20 @@
                     android:textSize="@dimen/_8sdp"
                     android:background="@drawable/pid_bg"
                     android:id="@+id/txtPId"/>
+
+                <TextView
+                    android:id="@+id/txtNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:background="@drawable/pid_bg"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:text="New"
+                    android:visibility="gone"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_10sdp" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

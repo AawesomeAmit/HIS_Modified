@@ -32,7 +32,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.zxing.Result;
+import com.trueform.era.his.Activity.BP.BLE.DeviceControlActivity;
 import com.trueform.era.his.Activity.BP.Initial;
+import com.trueform.era.his.Activity.ViaOximeter.ViaOximeterScanActivity;
 import com.trueform.era.his.Adapter.HeadAdp;
 import com.trueform.era.his.Adapter.RecyclerTouchListener;
 import com.trueform.era.his.Adapter.SubHeadAdp;
@@ -69,7 +71,7 @@ import retrofit2.Response;
 import static android.Manifest.permission_group.CAMERA;
 
 public class PreDashboard extends AppCompatActivity {
-    TextView txtDrName, txtDept, img, count, txtScan, btnOxi, btnBp;
+    TextView txtDrName, txtDept, img, count, txtScan, btnOxi, btnBp, txtBp, txtSpo2, txtScans, txtCovidRegistration;
     ImageView imgNotification;
     SubHeadIDResp subHeadIDResp;
     ArrayList<HeadAssign> headAssigns;
@@ -84,13 +86,51 @@ public class PreDashboard extends AppCompatActivity {
         setContentView(R.layout.activity_pre_dashboard);
         rvGrid = findViewById(R.id.rvGrid);
         txtScan = findViewById(R.id.txtScan);
+        txtBp = findViewById(R.id.txtBp);
+        txtSpo2 = findViewById(R.id.txtSpo2);
+        txtScans = findViewById(R.id.txtScans);
+        txtCovidRegistration = findViewById(R.id.txtCovidRegistration);
         count = findViewById(R.id.count);
         img = findViewById(R.id.img);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
         imgNotification = findViewById(R.id.imgNotification);
-
-
+        if (SharedPrefManager.getInstance(this).getUser().getDesigid()==3 || SharedPrefManager.getInstance(this).getUser().getDesigid()==4 ||
+                SharedPrefManager.getInstance(this).getUser().getDesigid()==5 || SharedPrefManager.getInstance(this).getUser().getDesigid()==21 ||
+                SharedPrefManager.getInstance(this).getUser().getDesigid()==22 || SharedPrefManager.getInstance(this).getUser().getDesigid()==11)
+            txtCovidRegistration.setVisibility(View.VISIBLE);
+        else txtCovidRegistration.setVisibility(View.GONE);
+        txtBp.setOnClickListener(view -> {
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                if (!checkPermission()) {
+                    requestPermission();
+                } else {
+                    if(SharedPrefManager.getInstance(PreDashboard.this).getBpMachine()==0){
+                        startActivity(new Intent(PreDashboard.this, com.trueform.era.his.Activity.BP.Medcheck.MainActivity.class));
+                    } else if(SharedPrefManager.getInstance(PreDashboard.this).getBpMachine()==1){
+                        startActivity(new Intent(PreDashboard.this, Initial.class));
+                    } else if(SharedPrefManager.getInstance(PreDashboard.this).getBpMachine()==2){
+                        startActivity(new Intent(PreDashboard.this, com.trueform.era.his.Activity.BP.BLE.DeviceScanActivity.class));
+                    }
+                }
+            }
+        });
+        txtCovidRegistration.setOnClickListener(view -> startActivity(new Intent(PreDashboard.this, ChecklistCovidPatient.class)));
+        txtSpo2.setOnClickListener(view -> {
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                if (!checkPermission()) {
+                    requestPermission();
+                } else {
+                    if(SharedPrefManager.getInstance(PreDashboard.this).getOximeter()==0){
+                        startActivity(new Intent(PreDashboard.this, DeviceScanActivity.class));
+                    } else if(SharedPrefManager.getInstance(PreDashboard.this).getOximeter()==1){
+                        startActivity(new Intent(PreDashboard.this, ViaOximeterScanActivity.class));
+                    }
+                }
+            }
+        });
         String head = "headList";
         GridLayoutManager mGridLayoutManager;
         if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE)
@@ -147,7 +187,11 @@ public class PreDashboard extends AppCompatActivity {
         img.setOnClickListener(view -> {
             PopupMenu menu = new PopupMenu(PreDashboard.this, img);
             menu.getMenuInflater().inflate(R.menu.popup_menu, menu.getMenu());
-            menu.setOnMenuItemClickListener(item -> {
+            menu.getMenu().findItem(R.id.setting).setOnMenuItemClickListener(menuItem -> {
+                startActivity(new Intent(PreDashboard.this, DevicesSelection.class));
+                return true;
+            });
+            menu.getMenu().findItem(R.id.one).setOnMenuItemClickListener(item -> {
                 Call<ResponseBody> call = RetrofitClient.getInstance().getApi().logOut(SharedPrefManager.getInstance(PreDashboard.this).getUser().getAccessToken(), SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid().toString(), SharedPrefManager.getInstance(PreDashboard.this).getFCMToken(), String.valueOf(SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid()));
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -180,10 +224,12 @@ public class PreDashboard extends AppCompatActivity {
                 //if((headAssigns.get(position).getHeadID()==2) || (headAssigns.get(position).getHeadID()==3)||(headAssigns.get(position).getHeadID()==4)) {
                 //Intent intent = new Intent(PreDashboard.this, SubHeadList.class);
                 SharedPrefManager.getInstance(PreDashboard.this).setHeadID(headAssigns.get(position).getHeadID(), headAssigns.get(position).getHeadName(), headAssigns.get(position).getColor());
+                if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 31)
+                    startActivity(new Intent(PreDashboard.this, CasualtyRegistration.class));
                 //startActivity(intent);
                 try {
                     showPopup(view);
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     Log.v("error", Objects.requireNonNull(ex.getMessage()));
                     ex.printStackTrace();
                 }
@@ -192,7 +238,6 @@ public class PreDashboard extends AppCompatActivity {
                     SharedPrefManager.getInstance(PreDashboard.this).setHeadID(headAssigns.get(position).getHeadID(), headAssigns.get(position).getHeadName());
                     startActivity(intent);
                 }*/
-
             }
 
             @Override
@@ -203,6 +248,11 @@ public class PreDashboard extends AppCompatActivity {
         txtScan.setOnClickListener(view -> {
             Intent intent=new Intent(PreDashboard.this, ScannerActivity.class);
             intent.putExtra("redi", "1");
+            startActivity(intent);
+        });
+        txtScans.setOnClickListener(view -> {
+            Intent intent=new Intent(PreDashboard.this, ScannerActivity.class);
+            intent.putExtra("redi", "4");
             startActivity(intent);
         });
         imgNotification.setOnClickListener(view -> {
@@ -290,31 +340,35 @@ public class PreDashboard extends AppCompatActivity {
                             }
 
                         } else {
-                            if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7))) {//
-                                Intent intent = new Intent(PreDashboard.this, PatientList.class);
-                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
-                                startActivity(intent);
-                            } else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 10) {
-                                Intent intent = new Intent(PreDashboard.this, Dashboard.class);
-                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
-                                startActivity(intent);
-                            }  else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 26) {
-                                Intent intent = new Intent(PreDashboard.this, EnterPID.class);
-                                //Intent intent = new Intent(PreDashboard.this, MedicineSidePathway.class);
+                            try {
+                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7))) {//
+                                    Intent intent = new Intent(PreDashboard.this, PatientList.class);
+                                    SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                    startActivity(intent);
+                                } else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 10) {
+                                    Intent intent = new Intent(PreDashboard.this, Dashboard.class);
+                                    SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                    startActivity(intent);
+                                } else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 26) {
+                                    Intent intent = new Intent(PreDashboard.this, EnterPID.class);
+                                    //Intent intent = new Intent(PreDashboard.this, MedicineSidePathway.class);
 //                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
-                                //SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
-                                startActivity(intent);
-                            } /*else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) {
+                                    //SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                    startActivity(intent);
+                                } /*else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) {
                                 Intent intent = new Intent(PreDashboard.this, NutriAnalyserFragment.class);
                                 //Intent intent = new Intent(PreDashboard.this, MedicineSidePathway.class);
 //                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
                                 //SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
                                 startActivity(intent);
                             }*/ else {
-                                Intent intent = new Intent(PreDashboard.this, EnterPID.class);
-                                SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
-                                SharedPrefManager.getInstance(PreDashboard.this).setHeadID(SharedPrefManager.getInstance(PreDashboard.this).getHeadID(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getHeadName(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getColor());
-                                startActivity(intent);
+                                    Intent intent = new Intent(PreDashboard.this, EnterPID.class);
+                                    SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
+                                    SharedPrefManager.getInstance(PreDashboard.this).setHeadID(SharedPrefManager.getInstance(PreDashboard.this).getHeadID(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getHeadName(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getColor());
+                                    startActivity(intent);
+                                }
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
                             }
                         }
                     } else

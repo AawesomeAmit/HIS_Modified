@@ -93,6 +93,7 @@ public class BluetoothLeService extends Service {
 
     private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
+        Log.v("daataaaa", String.valueOf(characteristic));
         if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
             int flag = characteristic.getProperties();
             int format = -1;

@@ -75,6 +75,7 @@
         <item
             android:id="@+id/nav_input_intake"
             android:icon="@drawable/ic_viewinvestigation"
+            android:visible="true"
             android:title="@string/input_intake" />
         <item
             android:id="@+id/nav_output"
@@ -115,5 +116,13 @@
             android:id="@+id/nav_questionnaire"
             android:icon="@drawable/ic_questionnaire"
             android:title="@string/questionnaire" />
+        <item
+            android:id="@+id/nav_emp_on_duty"
+            android:icon="@drawable/ic_questionnaire"
+            android:title="@string/emponduty" />
+        <item
+            android:id="@+id/nav_discharge_patient"
+            android:icon="@drawable/dischargepatient"
+            android:title="@string/discharge" />
     </group>
 </menu>

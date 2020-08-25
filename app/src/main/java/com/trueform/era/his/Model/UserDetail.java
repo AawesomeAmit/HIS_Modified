@@ -20,13 +20,17 @@ public class UserDetail {
     @SerializedName("desigid")
     @Expose
     private Integer desigid;
+    @SerializedName("userTypeID")
+    @Expose
+    private Integer userTypeID;
 
-    public UserDetail(Integer userid, String username, String displayName, String accessToken, Integer desigid) {
+    public UserDetail(Integer userid, String username, String displayName, String accessToken, Integer desigid, Integer userTypeID) {
         this.userid = userid;
         this.username = username;
         this.displayName = displayName;
         this.accessToken = accessToken;
         this.desigid = desigid;
+        this.userTypeID = userTypeID;
     }
 
     public Integer getUserid() {
@@ -47,5 +51,9 @@ public class UserDetail {
 
     public Integer getDesigid() {
         return desigid;
+    }
+
+    public Integer getUserTypeID() {
+        return userTypeID;
     }
 }

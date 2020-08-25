@@ -70,7 +70,7 @@ public class InputSupplement extends Fragment implements View.OnClickListener {
     private TextView txtUnit;
     private SupplementList supplementList;
     private EditText edtVal;
-    Context context;
+    private static Context context;
     private SimpleDateFormat format1;
     SimpleDateFormat format2;
     private TextView txtDate;
@@ -79,7 +79,7 @@ public class InputSupplement extends Fragment implements View.OnClickListener {
     int  mYear = 0, mMonth = 0, mDay = 0, mHour=0, mMinute=0;
     Date today = new Date();
     Calendar c;
-    private RecyclerView rvSupp;
+    private static RecyclerView rvSupp;
     private AutoCompleteTextView edtSupp;
     private ArrayAdapter<SupplementList> supplementListArrayAdapter;
     private SupplementListResp supplementListResp;
@@ -389,7 +389,7 @@ public class InputSupplement extends Fragment implements View.OnClickListener {
             mListener.onFragmentInteraction(uri);
         }
     }
-    private void bind(){
+    public void bind(){
         Utils.showRequestDialog(context);
         Call<SupplementDetailResp> call= RetrofitClient.getInstance().getApi().getIntakeSupplimentData(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
         call.enqueue(new Callback<SupplementDetailResp>() {

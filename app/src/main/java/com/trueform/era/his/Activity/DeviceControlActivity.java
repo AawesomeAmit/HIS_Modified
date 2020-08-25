@@ -60,7 +60,6 @@ public class DeviceControlActivity extends Activity {
     private TextView mConnectionState;
     private TextView mDataField1, mDataField2, btnGetData, btnSaveData, txtPid, btnScan;
     private String mDeviceName;
-    private Date today = new Date();
     private String mDeviceAddress;
     private ExpandableListView mGattServicesList;
     private BluetoothLeService mBluetoothLeService;
@@ -147,7 +146,7 @@ public class DeviceControlActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device_control);
+        setContentView(R.layout.activity_device_control_oxi);
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
@@ -163,6 +162,18 @@ public class DeviceControlActivity extends Activity {
         txtPid = (TextView) findViewById(R.id.txtPid);
         btnScan = (TextView) findViewById(R.id.btnScan);
         mGattServicesList.setVisibility(View.GONE);
+
+        if(getIntent().getStringExtra("status1")!=null) {
+            btnScan.setVisibility(View.GONE);
+            btnSaveData.setVisibility(View.VISIBLE);
+            btnSaveData.setText("OK");
+            txtPid.setVisibility(View.GONE);
+//            txtPid.setText(String.valueOf(SharedPrefManager.getInstance(DeviceControlActivity.this).getPid()));
+        }else {
+            btnScan.setVisibility(View.VISIBLE);
+            btnSaveData.setVisibility(View.VISIBLE);
+            txtPid.setVisibility(View.VISIBLE);
+        }
         if(getIntent().getStringExtra("status")!=null){
             txtPid.setText(String.valueOf(SharedPrefManager.getInstance(DeviceControlActivity.this).getPid()));
             mDataField1.setText(spo21);
@@ -184,39 +195,49 @@ public class DeviceControlActivity extends Activity {
         });
         btnSaveData.setOnClickListener(view -> {
 //            displayData(spo2, pulse);
-            JSONArray dtTableArray = new JSONArray();
-            try {
-                JSONObject jsonObject1 = new JSONObject();
-                jsonObject1.put("vitalId", "3");
-                jsonObject1.put("vitalValue", pulse1);
-                dtTableArray.put(jsonObject1);
-                JSONObject jsonObject2 = new JSONObject();
-                jsonObject2.put("vitalId", "56");
-                jsonObject2.put("vitalValue", spo21);
-                dtTableArray.put(jsonObject2);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (dtTableArray.length() != 0) {
-                if (ConnectivityChecker.checker(DeviceControlActivity.this)) {
-                    saveBluetoothVital(dtTableArray.toString());
-                } else {
-                    Toast.makeText(DeviceControlActivity.this, "Network connection not found!", Toast.LENGTH_SHORT).show();
-                }
+
+            if(getIntent().getStringExtra("status1")!=null) {
+                onBackPressed();
+            }else {
+                if ((!pulse1.equalsIgnoreCase("No data")) && (!spo21.equalsIgnoreCase("No data"))) {
+                    JSONArray dtTableArray = new JSONArray();
+                    try {
+                        JSONObject jsonObject1 = new JSONObject();
+                        jsonObject1.put("vmID", 3);
+                        jsonObject1.put("vmValue", pulse1);
+                        dtTableArray.put(jsonObject1);
+                        JSONObject jsonObject2 = new JSONObject();
+                        jsonObject2.put("vmID", 56);
+                        jsonObject2.put("vmValue", spo21);
+                        dtTableArray.put(jsonObject2);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (dtTableArray.length() != 0) {
+                        if (ConnectivityChecker.checker(DeviceControlActivity.this)) {
+                            saveBluetoothVital(dtTableArray);
+                        } else {
+                            Toast.makeText(DeviceControlActivity.this, "Network connection not found!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else
+                    Toast.makeText(DeviceControlActivity.this, "Error in data.\nPlease retest", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
-    public void saveBluetoothVital(String dt) {
+    public void saveBluetoothVital(JSONArray dt) {
         Utils.showRequestDialog(DeviceControlActivity.this);
         Log.v("hitApi:", "http://182.156.200.179:201/api/Prescription/saveVitals");
+        Date today = new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("PID", SharedPrefManager.getInstance(DeviceControlActivity.this).getPid());
-            jsonObject.put("headID", SharedPrefManager.getInstance(DeviceControlActivity.this).getHeadID());
+            jsonObject.put("headID", SharedPrefManager.getInstance(DeviceControlActivity.this).getHeadID().toString());
             jsonObject.put("entryDate", format.format(today));
-            jsonObject.put("subDeptID", SharedPrefManager.getInstance(DeviceControlActivity.this).getSubdeptID());
+            jsonObject.put("subDeptID", SharedPrefManager.getInstance(DeviceControlActivity.this).getSubdeptID().toString());
             jsonObject.put("isFinalDiagnosis", false);
             jsonObject.put("ipNo", SharedPrefManager.getInstance(DeviceControlActivity.this).getIpNo());
             jsonObject.put("userID", SharedPrefManager.getInstance(DeviceControlActivity.this).getUser().getUserid());
@@ -393,5 +414,22 @@ public class DeviceControlActivity extends Activity {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         return intentFilter;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if(getIntent().getStringExtra("status1")==null) {
+
+            Intent intent = new Intent(DeviceControlActivity.this, PreDashboard.class);
+            finish();
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(DeviceControlActivity.this, CasualtyRegistration.class);
+            intent.putExtra("status2", "1");
+            finish();
+            startActivity(intent);
+        }
     }
 }

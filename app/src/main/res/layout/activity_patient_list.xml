@@ -64,6 +64,12 @@
             android:background="@drawable/user"
             android:textSize="@dimen/_10sdp"
             android:layout_alignParentEnd="true" />
+        <TextView
+        android:id="@+id/tvTransferPt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Transfer Patient" />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"

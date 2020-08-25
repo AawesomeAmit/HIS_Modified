@@ -5,12 +5,16 @@
     <color name="colorAccent">#D81B60</color>
     <color name="white">#ffffff</color>
     <color name="gryText">#ebebeb</color>
+    <color name="orange_dark">#F26522</color>
     <color name="viewlinecolor">#dcdada</color>
     <color name="transparent">#00000000</color>
+    <color name="greyline">#B3B3B3</color>
+    <color name="blue_button">#0E6FC1</color>
     <color name="black">#000000</color>
     <color name="backgroundcolor">#eaeaea</color>
     <color name="grey_heading">#838383</color>
     <color name="grey">#EDFFFFFF</color>
+    <color name="green_bp">#7ACCC8</color>
     <color name="grey_light">#EDC0BCBC</color>
     <color name="green">#ED72B843</color>
     <color name="textbrown">#432B06</color>

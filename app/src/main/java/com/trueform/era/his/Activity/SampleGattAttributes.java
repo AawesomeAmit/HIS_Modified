@@ -24,13 +24,13 @@ import java.util.HashMap;
 public class SampleGattAttributes {
     private static HashMap<String, String> attributes = new HashMap();
     public static String HEART_RATE_MEASUREMENT = "00002a37-0000-1000-8000-00805f9b34fb";
-    public static String NOTIFY = "49535343-1e4d-4bd9-ba61-23c647249616";
+    public static String NOTIFY = "49535343-1e4d-4bd9-ba61-23c647249616";//CheracteristicID
     public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
     static {
         attributes.put("0000180d-0000-1000-8000-00805f9b34fb", "Heart Rate Service");
         attributes.put("0000180a-0000-1000-8000-00805f9b34fb", "Device Information Service");
-        attributes.put("49535343-fe7d4ae5-8fa9-9fafd205e455", "Notify");
+        attributes.put("49535343-fe7d4ae5-8fa9-9fafd205e455", "Notify");//serviceID
         attributes.put("49535343-1e4d-4bd9-ba61-23c647249616", "Notify");
         attributes.put(HEART_RATE_MEASUREMENT, "Heart Rate Measurement");
         attributes.put("00002a29-0000-1000-8000-00805f9b34fb", "Manufacturer Name String");

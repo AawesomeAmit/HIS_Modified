@@ -9,7 +9,8 @@ public class ApiUtilsForFile {
      * */
 
     //Live Url
-   public static final String BASE_URL = "http://182.156.200.178:229/";
+   //public static final String BASE_URL = "http://182.156.200.178:229/";
+   public static final String BASE_URL = "http://182.156.200.179:201/";
 
 
     //Testing Url

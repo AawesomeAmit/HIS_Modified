@@ -36,7 +36,7 @@ public class IntakeMedicationAdp extends RecyclerView.Adapter<IntakeMedicationAd
     public void onBindViewHolder(@NonNull IntakeMedicationAdp.RecyclerViewHolder holder, int i) {
         IntakeList intakeLists =intakeList.get(i);
         if (i != 0) {
-            if(intakeLists.getCreatedDate().equalsIgnoreCase(intakeList.get(i-1).getCreatedDate())){
+            if(intakeLists.getIntakeDate().equalsIgnoreCase(intakeList.get(i-1).getIntakeDate())){
                 holder.txtDate.setVisibility(View.GONE);
             } else {
                 holder.txtDate.setText(intakeLists.getIntakeDate());

@@ -55,7 +55,7 @@ public class EnterPID extends AppCompatActivity {
                 if (!edtPid.getText().toString().isEmpty()) {
                     if (ConnectivityChecker.checker(EnterPID.this)) {
                     progressDialog.show();
-                    Call<CheckPidResp> call = RetrofitClient.getInstance().getApi().checkCRNo(SharedPrefManager.getInstance(EnterPID.this).getUser().getAccessToken(), SharedPrefManager.getInstance(EnterPID.this).getUser().getUserid().toString(), Integer.valueOf(edtPid.getText().toString().trim()), SharedPrefManager.getInstance(EnterPID.this).getSubDept().getId(), SharedPrefManager.getInstance(EnterPID.this).getUser().getUserid());
+                    Call<CheckPidResp> call = RetrofitClient.getInstance().getApi().checkCRNo(SharedPrefManager.getInstance(EnterPID.this).getUser().getAccessToken(), SharedPrefManager.getInstance(EnterPID.this).getUser().getUserid().toString(), edtPid.getText().toString().trim(), SharedPrefManager.getInstance(EnterPID.this).getSubDept().getId(), SharedPrefManager.getInstance(EnterPID.this).getUser().getUserid());
                     call.enqueue(new Callback<CheckPidResp>() {
                         @Override
                         public void onResponse(Call<CheckPidResp> call, Response<CheckPidResp> response) {

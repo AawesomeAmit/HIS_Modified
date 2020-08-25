@@ -211,7 +211,7 @@ public class FoodSupplementIntake extends Fragment implements View.OnClickListen
         edtMeal.setOnItemClickListener((adapterView, view1, i, l) -> {
             unitMealLists.clear();
             unitMealLists.add(0, new UnitList(0,"-Select-"));
-            mealId=mealResp.getResponseValue().get(i).getId();
+            mealId=mealResp.getResponseValue().get(i).getIntakeID();
             bindMealUnit(mealId);
         });
         bindSupplement();

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.trueform.era.his.Activity.DeviceConnectScanActivity;
 import com.trueform.era.his.R;
 
 import java.util.ArrayList;
@@ -56,12 +58,12 @@ public class DevicesFragment extends ListFragment {
         setListAdapter(null);
         View header = getActivity().getLayoutInflater().inflate(R.layout.device_list_header, null, false);
 
-
+        FloatingActionButton fabBarcode=header.findViewById(R.id.fabBarcode);
         getListView().addHeaderView(header, null, false);
         setEmptyText("initializing...");
         ((TextView) getListView().getEmptyView()).setTextSize(18);
         setListAdapter(listAdapter);
-
+        fabBarcode.setOnClickListener(view -> startActivity(new Intent(getActivity(), DeviceConnectScanActivity.class).putExtra("type", "BP")));
     }
 
     /*@Override

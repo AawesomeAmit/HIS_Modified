@@ -4,23 +4,44 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class MealList {
-    @SerializedName("id")
+    @SerializedName("intakeID")
     @Expose
-    public Integer id;
-    @SerializedName("foodName")
+    public Integer intakeID;
+    @SerializedName("intakeName")
     @Expose
-    public String foodName;
+    public String intakeName;
+    @SerializedName("textID")
+    @Expose
+    public Integer textID;
+    @SerializedName("isSupplement")
+    @Expose
+    public Integer isSupplement;
+    @SerializedName("isSynonym")
+    @Expose
+    public Integer isSynonym;
+
+    public Integer getTextID() {
+        return textID;
+    }
+
+    public Integer getIsSupplement() {
+        return isSupplement;
+    }
+
+    public Integer getIsSynonym() {
+        return isSynonym;
+    }
 
     @Override
     public String toString() {
-        return foodName;
+        return intakeName;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIntakeID() {
+        return intakeID;
     }
 
-    public String getFoodName() {
-        return foodName;
+    public String getIntakeName() {
+        return intakeName;
     }
 }

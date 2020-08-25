@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?android:attr/listDivider"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -18,8 +17,8 @@
             android:layout_alignParentTop="true">
             <TextView
                 android:id="@+id/btnScan"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
                 android:background="@drawable/rectangle_grey"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:backgroundTint="@color/red"
@@ -28,30 +27,51 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:text="Scan PID"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/txtPid"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:backgroundTint="@color/red"
+                android:backgroundTint="@color/white"
+                android:layout_below="@id/btnScan"
+                android:background="@color/white"
                 android:gravity="center"
                 android:layout_alignParentEnd="true"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:hint="PID"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>
-    <TextView
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
         android:gravity="center"
+        android:background="?android:attr/listDivider"
         android:text="@string/devices"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />-->
+    <!--<TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:gravity="end"
+        app:srcCompat="@drawable/ic_barcode"
+        android:text="@string/scan"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBarcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/_5sdp"
+        android:tint="@color/white"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_barcode"/>
 
 </LinearLayout>

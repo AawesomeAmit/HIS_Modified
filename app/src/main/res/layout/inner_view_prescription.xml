@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,117 +16,224 @@
             android:layout_height="wrap_content"
             android:background="@color/viewlinecolor"
             android:gravity="start"
-            android:paddingStart="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:padding="@dimen/_3sdp"
             android:textColor="@color/blue_light"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_14sdp"
             android:textStyle="bold" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/llMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_2sdp"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/_10sdp"
+            android:background="@drawable/edt_bor"
+            android:orientation="vertical"
             android:paddingTop="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:weightSum="14">
-
+            android:paddingBottom="@dimen/_5sdp">
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">-->
             <TextView
                 android:id="@+id/txtMed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="2.5"
-                android:drawablePadding="@dimen/_2sdp"
+                android:paddingStart="@dimen/_2sdp"
+                android:text="@string/fluid_intake"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp"
-                android:textStyle="normal" />
+                android:textSize="@dimen/_11ssp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toStartOf="@+id/txtDosage"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtDosage"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_weight="2"
-                android:drawablePadding="@dimen/_2sdp"
                 android:paddingStart="@dimen/_2sdp"
                 android:paddingEnd="@dimen/_2sdp"
+                android:text="@string/fluid_intake"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toStartOf="@+id/txtStr"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@+id/txtMed"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtStr"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_weight="1.5"
-                android:drawablePadding="@dimen/_2sdp"
-                android:paddingStart="@dimen/_2sdp"
-                android:paddingEnd="@dimen/_2sdp"
-                android:textColor="#E29797"
-                android:textSize="@dimen/_8sdp" />
-
-            <TextView
-                android:id="@+id/txtFreq"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_weight="1.5"
-                android:drawablePadding="@dimen/_2sdp"
                 android:paddingStart="@dimen/_2sdp"
                 android:paddingEnd="@dimen/_2sdp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toStartOf="@+id/txtFreq"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/txtDosage"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtFreq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@string/fluid_intake"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@+id/txtStr"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--            </LinearLayout>-->
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">-->
+            <TextView
+                android:id="@+id/remark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:drawablePadding="@dimen/_2sdp"
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_2sdp"
+                android:text="@string/remark"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toStartOf="@+id/givenTime"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtMed" />
+
+            <TextView
+                android:id="@+id/givenTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:drawablePadding="@dimen/_2sdp"
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_2sdp"
+                android:text="@string/given_time"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toStartOf="@+id/givenBy"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/remark"
+                app:layout_constraintTop_toBottomOf="@id/txtMed" />
+
+            <TextView
+                android:id="@+id/givenBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:drawablePadding="@dimen/_2sdp"
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_2sdp"
+                android:text="@string/given_by"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toEndOf="@+id/givenTime"
+                app:layout_constraintTop_toBottomOf="@id/txtMed" />
 
             <TextView
                 android:id="@+id/txtRemark"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_weight="3"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:drawablePadding="@dimen/_2sdp"
                 android:paddingStart="@dimen/_2sdp"
                 android:paddingEnd="@dimen/_2sdp"
+                android:text="@string/fluid_intake"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="@+id/remark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/remark" />
 
             <TextView
                 android:id="@+id/tvGivenTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_weight="1.5"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:drawablePadding="@dimen/_2sdp"
                 android:paddingStart="@dimen/_2sdp"
                 android:paddingEnd="@dimen/_2sdp"
+                android:text="@string/fluid_intake"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="@+id/givenTime"
+                app:layout_constraintStart_toStartOf="@+id/givenTime"
+                app:layout_constraintTop_toBottomOf="@id/remark" />
 
             <TextView
                 android:id="@+id/tvGivenBy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_weight="2"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:drawablePadding="@dimen/_2sdp"
                 android:paddingStart="@dimen/_2sdp"
                 android:paddingEnd="@dimen/_2sdp"
+                android:text="@string/fluid_intake"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_8sdp" />
-        </LinearLayout>
-        <!--<View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/gryText"/>-->
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="@+id/givenBy"
+                app:layout_constraintStart_toStartOf="@+id/givenBy"
+                app:layout_constraintTop_toBottomOf="@id/remark" />
+
+            <TextView
+                android:id="@+id/txtComment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/ic_comment"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/txtGive"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/givenBy"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toBottomOf="@+id/txtFreq" />
+
+            <TextView
+                android:id="@+id/txtGive"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/ic_check_blue"
+                android:layout_marginEnd="@dimen/_2sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/txtComment"
+                app:layout_constraintTop_toBottomOf="@+id/txtFreq" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_percent="0.73"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--            </LinearLayout>-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

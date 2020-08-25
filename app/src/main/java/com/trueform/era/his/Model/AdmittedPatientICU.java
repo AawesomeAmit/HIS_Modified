@@ -129,6 +129,10 @@ public class AdmittedPatientICU {
     @SerializedName("previousWardName")
     @Expose
     public String previousWardName;
+
+    @SerializedName("isRead")
+    @Expose
+    public Boolean isRead;
     @NonNull
     @Override
     public String toString() {
@@ -142,6 +146,10 @@ public class AdmittedPatientICU {
         this.age = age;
         this.ageUnit = ageUnit;
         this.subDeptID=subDeptID;
+    }
+
+    public Boolean getRead() {
+        return isRead;
     }
 
     public Integer getPmid() {

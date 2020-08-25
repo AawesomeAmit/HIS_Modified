@@ -25,10 +25,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
+import id.zelory.compressor.Compressor;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<String> list = new ArrayList<>();
     private Context context;
     private ImageCompress mImageCompress;
+    Bitmap bitmap;
 
     public MyAdapter(Context context) {
         this.context = context;
@@ -53,20 +59,43 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         String mImageCompress=new ImageCompress(context).compressImage(list.get(position));
 
         File f = new File(mImageCompress);
-        Bitmap bitmap;
+       // Bitmap bitmap;
         if (f.getAbsolutePath().endsWith("mp4")) {
             ((Holder) holder).play.setVisibility(View.VISIBLE);
             bitmap = ThumbnailUtils.createVideoThumbnail(f.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
         } else {
-            ((Holder) holder).play.setVisibility(View.GONE);
-            bitmap = new BitmapDrawable(context.getResources(), f.getAbsolutePath()).getBitmap();
+            Compressor.getDefault(context)
+                    .compressToFileAsObservable(f)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<File>() {
+                        @Override
+                        public void call(File file) {
+                            //Bitmap bitmap;
+                            ((Holder) holder).play.setVisibility(View.GONE);
+                            bitmap = new BitmapDrawable(context.getResources(), file.getAbsolutePath()).getBitmap();
+                            RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), bitmap);
+                            final float roundPx = (float) bitmap.getWidth() * 0.06f;
+                            roundedBitmapDrawable.setCornerRadius(roundPx);
+                            ((Holder) holder).iv.setImageDrawable(roundedBitmapDrawable);
+
+
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                        }
+                    });
+            //((Holder) holder).play.setVisibility(View.GONE);
+            //bitmap = new BitmapDrawable(context.getResources(), f.getAbsolutePath()).getBitmap();
         }
-        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), bitmap);
+      /*  RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), bitmap);
         final float roundPx = (float) bitmap.getWidth() * 0.06f;
-        roundedBitmapDrawable.setCornerRadius(roundPx);
+        roundedBitmapDrawable.setCornerRadius(roundPx);*/
 
 
-        ((Holder) holder).iv.setImageDrawable(roundedBitmapDrawable);
+
+       // ((Holder) holder).iv.setImageDrawable(roundedBitmapDrawable);
         ((Holder) holder).iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,5 +133,4 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         }
     }
-
 }

@@ -76,6 +76,12 @@ public class ShowVitalAdp extends RecyclerView.Adapter<ShowVitalAdp.RecyclerView
             holder.txtWeightQty.setText(vitalList.getWeight());
             holder.llWeight.setVisibility(View.VISIBLE);
         }
+        if(vitalList.getSpo2()!=null)
+        if(!vitalList.getSpo2().equalsIgnoreCase("")) {
+            holder.txtWeightQty.setText(vitalList.getSpo2());
+            holder.txtWeight.setText("SPO2");
+            holder.llWeight.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

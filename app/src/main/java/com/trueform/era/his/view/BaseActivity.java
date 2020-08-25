@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 public class BaseActivity extends AppCompatActivity {
     protected Activity mActivity;
     private boolean noAnimation = true;
-
+    protected static final String TAG = BaseActivity.class.getName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

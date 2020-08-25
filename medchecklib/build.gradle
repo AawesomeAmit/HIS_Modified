@@ -1,0 +1,86 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+
+android {
+    compileSdkVersion 29
+
+
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+
+def packageName = 'com.letsnurture'
+def libraryVersion = '1.0.0'
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId packageName
+            version = libraryVersion
+            artifactId project.getName()
+            // output path
+            artifact("$buildDir/outputs/aar/${project.getName()}-${version}-release.aar")
+            //generate pom nodes for dependencies
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.compile.allDependencies.each { dependency ->
+                    if (dependency.group != null && dependency.name != null && dependency.version != null) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dependency.group)
+                        dependencyNode.appendNode('artifactId', dependency.name)
+                        dependencyNode.appendNode('version', dependency.version)
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "../repo"
+        }
+    }
+}
+
+
+def nordicScannerVersion = '1.0.0'
+def eventbusVersion = '3.0.0'
+def rxJava2Version = '2.2.18'
+def rxAndroidVersion = '2.1.1'
+def PLAY_SERVICES_VERSION = "17.0.0"
+def gsonVersion = '2.6.4'
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    // ble scanner
+    implementation "no.nordicsemi.android.support.v18:scanner:$nordicScannerVersion"
+    // event bus
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+    // rx java
+    implementation "io.reactivex.rxjava2:rxjava:$rxJava2Version"
+    // rx android
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+    implementation "com.google.android.gms:play-services-location:$PLAY_SERVICES_VERSION"
+
+    implementation "com.squareup.retrofit2:converter-gson:$gsonVersion"
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

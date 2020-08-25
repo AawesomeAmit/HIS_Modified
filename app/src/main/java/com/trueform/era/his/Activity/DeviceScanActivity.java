@@ -24,7 +24,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.trueform.era.his.Activity.BP.Initial;
 import com.trueform.era.his.R;
+import com.trueform.era.his.Utils.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -48,7 +51,6 @@ public class DeviceScanActivity extends ListActivity {
         }
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
-
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
             finish();
@@ -79,6 +81,9 @@ public class DeviceScanActivity extends ListActivity {
                 break;
             case R.id.menu_stop:
                 scanLeDevice(false);
+                break;
+            case R.id.scan:
+                startActivity(new Intent(getApplicationContext(), DeviceConnectScanActivity.class).putExtra("type", "Oximeter"));
                 break;
         }
         return true;
@@ -119,6 +124,8 @@ public class DeviceScanActivity extends ListActivity {
         final Intent intent = new Intent(this, DeviceControlActivity.class);
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+        if(getIntent().getStringExtra("status1")!=null)
+        intent.putExtra("status1", getIntent().getStringExtra("status1"));
         if (mScanning) {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;
@@ -128,13 +135,10 @@ public class DeviceScanActivity extends ListActivity {
 
     private void scanLeDevice(final boolean enable) {
         if (enable) {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScanning = false;
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                    invalidateOptionsMenu();
-                }
+            mHandler.postDelayed(() -> {
+                mScanning = false;
+                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                invalidateOptionsMenu();
             }, SCAN_PERIOD);
 
             mScanning = true;
@@ -211,12 +215,9 @@ public class DeviceScanActivity extends ListActivity {
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mLeDeviceListAdapter.addDevice(device);
-                    mLeDeviceListAdapter.notifyDataSetChanged();
-                }
+            runOnUiThread(() -> {
+                mLeDeviceListAdapter.addDevice(device);
+                mLeDeviceListAdapter.notifyDataSetChanged();
             });
         }
     };

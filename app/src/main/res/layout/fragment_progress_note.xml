@@ -68,7 +68,7 @@
 
             <TextView
                 android:id="@+id/txtDrName"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/_70sdp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="#10207A"

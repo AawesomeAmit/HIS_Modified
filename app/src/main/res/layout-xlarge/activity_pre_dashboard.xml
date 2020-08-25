@@ -60,27 +60,29 @@
             android:textColor="#ffffff" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
             android:gravity="center_vertical"
             android:layout_toStartOf="@id/btnOxi"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:foregroundGravity="center"
             android:textSize="@dimen/_12sdp"
+            android:visibility="gone"
             android:textColor="@color/black"
             android:drawablePadding="@dimen/_2sdp"
             android:background="@drawable/ic_bp_chart"
             android:id="@+id/btnBp"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
             android:gravity="center_vertical"
             android:layout_toStartOf="@id/txtScan"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:foregroundGravity="center"
             android:textSize="@dimen/_12sdp"
+            android:visibility="gone"
             android:textColor="@color/black"
             android:drawablePadding="@dimen/_2sdp"
             android:background="@drawable/ic_bluetooth_oxi"
@@ -95,10 +97,26 @@
             android:foregroundGravity="center"
             android:textSize="@dimen/_12sdp"
             android:text="Scan"
+            android:visibility="gone"
             android:textColor="@color/black"
             android:drawablePadding="@dimen/_2sdp"
             android:drawableStart="@drawable/ic_qr_scanner"
             android:id="@+id/txtScan"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_toStartOf="@id/ll"
+            android:paddingTop="@dimen/_7sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:foregroundGravity="center"
+            android:textSize="@dimen/_12sdp"
+            android:visibility="gone"
+            android:text="@string/covid_registration"
+            android:textColor="@color/black"
+            android:drawablePadding="@dimen/_2sdp"
+            android:drawableStart="@drawable/ic_covid_patient"
+            android:id="@+id/txtCovidRegistration"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,10 +162,75 @@
         tools:listitem="@layout/card_layout_head"
         android:columnCount="4"
         android:layout_height="0dp"/>
-    <ImageView
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:contentDescription="@string/logo"
         app:srcCompat="@drawable/logo"
-        android:layout_weight="6"/>
+        android:layout_weight="6"/>-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6">
+
+        <TextView
+            android:id="@+id/txtScans"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/rectangle_orange"
+            android:drawableStart="@drawable/ic_qr_scanner"
+            android:drawableLeft="@drawable/ic_qr_scanner"
+            android:drawablePadding="@dimen/_10sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="Scan PID"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtBp"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/rectangle_bp"
+            android:drawableBottom="@drawable/ic_bp_chart2"
+            android:gravity="center"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_15sdp"
+            android:text="Connect BP\nMachine"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/txtSpo2"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtScans" />
+
+        <TextView
+            android:id="@+id/txtSpo2"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/rectangle_orange"
+            android:drawableBottom="@drawable/ic_spo2"
+            android:gravity="center"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_15sdp"
+            android:text="Connect Spo2\nMachine"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@+id/txtBp"
+            app:layout_constraintTop_toBottomOf="@+id/txtScans" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

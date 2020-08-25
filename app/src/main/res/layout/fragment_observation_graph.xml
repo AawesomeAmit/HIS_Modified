@@ -31,16 +31,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="@dimen/_5sdp"
             android:layout_toEndOf="@id/date"
             android:foregroundGravity="center_vertical"
             android:background="@drawable/btn_investigation"
             android:drawableRight="@drawable/calender"
             android:drawablePadding="@dimen/_5sdp"
             android:gravity="center_vertical"
-            android:paddingStart="@dimen/_10sdp"
+            android:paddingStart="@dimen/_5sdp"
             android:paddingTop="@dimen/_4sdp"
-            android:paddingEnd="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_5sdp"
             android:paddingBottom="@dimen/_4sdp"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp"
@@ -61,6 +60,22 @@
             android:paddingBottom="@dimen/_4sdp"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp" />
+        <TextView
+            android:id="@+id/tvViewdoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:backgroundTint="@color/orange"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/ic_baseline_remove_red_eye_24"
+            android:layout_toStartOf="@id/btnImg"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_4sdp"
+            />
+
 
         <TextView
             android:id="@+id/btnOxi"

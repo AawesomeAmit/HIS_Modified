@@ -53,7 +53,8 @@ public class SharedPrefManager {
                 sharedprefs.getString("username", null),
                 sharedprefs.getString("displayName", null),
                 sharedprefs.getString("accessToken", null),
-                sharedprefs.getInt("desigid", 0)
+                sharedprefs.getInt("desigid", 0),
+                sharedprefs.getInt("userTypeID", 0)
         );
     }
 
@@ -64,6 +65,7 @@ public class SharedPrefManager {
         editor.putString("accessToken", user.getAccessToken());
         editor.putString("displayName", user.getDisplayName());
         editor.putInt("desigid", user.getDesigid());
+        editor.putInt("userTypeID", user.getUserTypeID());
         editor.apply();
     }
 
@@ -87,6 +89,22 @@ public class SharedPrefManager {
     }
     public Boolean isCovid() {
         return sharedprefs.getBoolean("covid", false);
+    }
+    public void setBpMachine(int machine) {
+        this.editor = sharedprefs.edit();
+        editor.putInt("bp", machine);
+        editor.apply();
+    }
+    public Integer getBpMachine() {
+        return sharedprefs.getInt("bp", 0);
+    }
+    public void setOximeter(int machine) {
+        this.editor = sharedprefs.edit();
+        editor.putInt("oximeter", machine);
+        editor.apply();
+    }
+    public Integer getOximeter() {
+        return sharedprefs.getInt("oximeter", 0);
     }
     public void setIntakeDate(String intakeDate) {
         this.editor = sharedprefs.edit();
@@ -209,9 +227,22 @@ public class SharedPrefManager {
         );
     }
 
+    public void setCr(String cr) {
+        this.editor = sharedprefs.edit();
+        editor.putString("cr", cr);
+        editor.apply();
+    }
+    public String getCr() {
+        return sharedprefs.getString("cr", "");
+    }
     public void setPid(int pid) {
         this.editor = sharedprefs.edit();
         editor.putInt("pid", pid);
+        editor.apply();
+    }
+    public void setPtName(String name) {
+        this.editor = sharedprefs.edit();
+        editor.putString("name", name);
         editor.apply();
     }
     public void setfor(int pid) {
@@ -222,6 +253,9 @@ public class SharedPrefManager {
 
     public int getPid() {
         return sharedprefs.getInt("pid", 0);
+    }
+    public String getPtName() {
+        return sharedprefs.getString("name", "");
     }
 
     public void setPmId(int pid) {

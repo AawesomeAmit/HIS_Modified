@@ -15,4 +15,9 @@
           android:title="@string/menu_stop"
           android:orderInCategory="101"
         app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/scan"
+        android:icon="@drawable/ic_barcode"
+        android:title="@string/barcode"
+        app:showAsAction="always" />
 </menu>

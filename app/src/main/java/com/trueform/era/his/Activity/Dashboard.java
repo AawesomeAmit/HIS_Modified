@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
+import com.trueform.era.his.Activity.UploadMultipleImg.DischargePatient.DischargePatient;
+import com.trueform.era.his.Activity.UploadMultipleImg.EmployeeOnDuty.EmployeesOnDuty;
 import com.trueform.era.his.Fragment.ActivityProblemInput;
 import com.trueform.era.his.Fragment.CalciumPatientReport;
 import com.trueform.era.his.Fragment.CalciumReportDynamic;
@@ -59,6 +61,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     public static Spinner spnConsultant;
     List<ConsultantName> consultantNameList;
     LinearLayout llHeader;
+    Fragment fragment;
+    int subdept=0;
     public ArrayAdapter<ConsultantName> consltantAdp;
 
     @Override
@@ -74,7 +78,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         consultantNameList = new ArrayList<>();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        Menu menu=navigationView.getMenu();
+        Menu menu = navigationView.getMenu();
+
         /*Menu menu=navigationView.getMenu();
         if(SharedPrefManager.getInstance(Dashboard.this).getHeadID()==7) {
             menu.findItem(R.id.nav_vital_graph).setVisible(false);
@@ -94,10 +99,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        Fragment fragment;
-        if(SharedPrefManager.getInstance(this).getHeadID() != 10) {
-            if (getIntent().getExtras() != null) {
-                switch (Objects.requireNonNull(getIntent().getExtras().getString("status"))) {
+        if (SharedPrefManager.getInstance(this).getHeadID() != 10) {
+            if (getIntent().getStringExtra("statuss") != null) {
+                switch (Objects.requireNonNull(getIntent().getStringExtra("statuss"))) {
                     case "1":
                         if (SharedPrefManager.getInstance(this).getUser().getDesigid() != 1)
                             spnConsultant.setVisibility(View.VISIBLE);
@@ -125,7 +129,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 fragment = new ObservationGraph();
                 spnConsultant.setVisibility(View.GONE);
             }
-        } else{
+        } else {
             fragment = new CalciumPatientReport();
             llHeader.setVisibility(View.GONE);
         }
@@ -134,7 +138,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
         }
-        if(SharedPrefManager.getInstance(this).getHeadID() == 10) {
+        if (SharedPrefManager.getInstance(this).getHeadID() == 10) {
             menu.findItem(R.id.nav_cal_patient).setVisible(true);
             menu.findItem(R.id.nav_patient_dashboard).setVisible(true);
             menu.findItem(R.id.nav_employee).setVisible(true);
@@ -164,20 +168,27 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getIcuAdmitPatient().getPname());
         else if (SharedPrefManager.getInstance(this).getHeadID() == 9)
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getPhysioPatient().getPatientName());
-        else if(SharedPrefManager.getInstance(Dashboard.this).getHeadID()==7)
+        else if (SharedPrefManager.getInstance(Dashboard.this).getHeadID() == 7)
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getDieteticsPatient().getName());
-        else txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getOpdPatient().getPname());
-        if(ScannerActivity.patientInfo!=null)
-        txtPName.setText(ScannerActivity.patientInfo.getPatientName());
-        ScannerActivity.patientInfo=null;
+        else
+            txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getOpdPatient().getPname());
+        if (ScannerActivity.patientInfo != null)
+            txtPName.setText(ScannerActivity.patientInfo.getPatientName());
+        ScannerActivity.patientInfo = null;
         txtPId.setText(String.valueOf(SharedPrefManager.getInstance(this).getPid()));
 
+        if (getIntent().getStringExtra("status1") != null || getIntent().getStringExtra("status") != null)
+            subdept=SharedPrefManager.getInstance(this).getSubdeptID();
+        else subdept=SharedPrefManager.getInstance(this).getSubDept().getId();
+        /*if (getIntent().getStringExtra("status") != null)
+            subdept=SharedPrefManager.getInstance(this).getSubdeptID();
+        else subdept=SharedPrefManager.getInstance(this).getSubDept().getId();*/
         consultantNameList.add(0, new ConsultantName(0, 0, "Select Consultant", 0));
-        Call<ControlBySubDeptResp> call = RetrofitClient.getInstance().getApi().getControlsBySubDept(SharedPrefManager.getInstance(this).getUser().getAccessToken(), SharedPrefManager.getInstance(Dashboard.this).getUser().getUserid().toString(), SharedPrefManager.getInstance(this).getSubDept().getId(), SharedPrefManager.getInstance(this).getHeadID(), SharedPrefManager.getInstance(this).getUser().getUserid());
+        Call<ControlBySubDeptResp> call = RetrofitClient.getInstance().getApi().getControlsBySubDept(SharedPrefManager.getInstance(this).getUser().getAccessToken(), SharedPrefManager.getInstance(Dashboard.this).getUser().getUserid().toString(), subdept, SharedPrefManager.getInstance(this).getHeadID(), SharedPrefManager.getInstance(this).getUser().getUserid());
         call.enqueue(new Callback<ControlBySubDeptResp>() {
             @Override
             public void onResponse(Call<ControlBySubDeptResp> call, Response<ControlBySubDeptResp> response) {
-                if (response.isSuccessful()) {
+                                                                                                                                                                                                                          if (response.isSuccessful()) {
                     if (response.body() != null) {
                         consultantNameList.addAll(1, response.body().getConsultantName());
                     }
@@ -186,6 +197,22 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 consltantAdp = new ArrayAdapter<>(Dashboard.this, R.layout.spinner_layout, consultantNameList);
                 spnConsultant.setAdapter(consltantAdp);
                 spnConsultant.setSelection(0);
+
+                /*if (getIntent().getStringExtra("status1") != null) {
+                    if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("0")) {
+                        if (SharedPrefManager.getInstance(Dashboard.this).getUser().getDesigid() != 1)
+                            spnConsultant.setVisibility(View.VISIBLE);
+                        else spnConsultant.setVisibility(View.GONE);
+                        fragment = new Prescription();
+                    }
+                    if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("1"))
+                        fragment = new ObservationGraph();
+                    if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("2"))
+                        fragment = new DischargePatient();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.content_frame, fragment);
+                    ft.commit();
+                }*/
             }
 
             @Override
@@ -193,6 +220,23 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
 
             }
         });
+        if (getIntent().getStringExtra("status1") != null) {
+            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("0")) {
+                if (SharedPrefManager.getInstance(this).getUser().getDesigid() != 1)
+                    spnConsultant.setVisibility(View.VISIBLE);
+                else spnConsultant.setVisibility(View.GONE);
+                fragment = new Prescription();
+            }
+            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("1"))
+                fragment = new ObservationGraph();
+            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("2"))
+                fragment = new DischargePatient();
+            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("3"))
+                fragment = new IntakeInput();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+        }
     }
 
     @Override
@@ -267,6 +311,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_intake) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new Intake();
+//            fragment = new IntakeI nput();
         } else if (id == R.id.nav_cal_dynamic) {
             fragment = new CalciumReportDynamic();
         } else if (id == R.id.nav_ventilator) {
@@ -304,7 +349,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             fragment = new InputVital();
         } else if (id == R.id.nav_input_intake) {
             spnConsultant.setVisibility(View.GONE);
-            fragment = new IntakeInput();
+//            fragment = new IntakeInput();
+            fragment = new Intake();
         } else if (id == R.id.nav_output) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new Output();
@@ -320,6 +366,13 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 spnConsultant.setVisibility(View.VISIBLE);
             else spnConsultant.setVisibility(View.GONE);
             fragment = new IntakeOutputVitalRange();
+        }else if (id == R.id.nav_emp_on_duty) {
+            spnConsultant.setVisibility(View.GONE);
+            fragment = new EmployeesOnDuty();
+        }
+        else if (id == R.id.nav_discharge_patient) {
+            spnConsultant.setVisibility(View.GONE);
+            fragment = new DischargePatient();
         }
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

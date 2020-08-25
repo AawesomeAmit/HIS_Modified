@@ -163,10 +163,34 @@ public class PriscriptionOverviewPopup extends BaseActivity {
             bindData();
             hitGetIntakeOutputData();
         }
-        btnMedication.setOnClickListener(view -> startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "1")));
-        btnObservation.setOnClickListener(view -> startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "2")));
-        btnViewMedication.setOnClickListener(view -> startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "4")));
-        btnViewInvestigation.setOnClickListener(view -> startActivity(new Intent(PriscriptionOverviewPopup.this, Dashboard.class).putExtra("status", "5")));
+        btnMedication.setOnClickListener(view -> {
+            Intent intent=new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
+            intent.putExtra("statuss", "1");
+            if(getIntent().getStringExtra("status")!=null)
+            intent.putExtra("status", "1");
+            startActivity(intent);
+        });
+        btnObservation.setOnClickListener(view -> {
+            Intent intent=new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
+            intent.putExtra("statuss", "2");
+            if(getIntent().getStringExtra("status")!=null)
+                intent.putExtra("status", "1");
+            startActivity(intent);
+        });
+        btnViewMedication.setOnClickListener(view -> {
+            Intent intent=new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
+            intent.putExtra("statuss", "4");
+            if(getIntent().getStringExtra("status")!=null)
+                intent.putExtra("status", "1");
+            startActivity(intent);
+        });
+        btnViewInvestigation.setOnClickListener(view -> {
+            Intent intent=new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
+            intent.putExtra("statuss", "5");
+            if(getIntent().getStringExtra("status")!=null)
+                intent.putExtra("status", "1");
+            startActivity(intent);
+        });
     }
 
     private void bindData(){

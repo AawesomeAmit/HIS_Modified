@@ -1,6 +1,7 @@
 package com.trueform.era.his.Activity.UploadMultipleImg;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.fxn.pix.Pix;
 import com.fxn.utility.PermUtil;
 import com.trueform.era.his.Activity.UploadMultipleImg.adapters.MyAdapter;
 import com.trueform.era.his.R;
+import com.trueform.era.his.Utils.SharedPrefManager;
 import com.trueform.era.his.view.BaseActivity;
 
 import java.io.File;
@@ -39,30 +41,33 @@ public class UploadImg extends BaseActivity {
     Options options;
     ArrayList<String> returnValue = new ArrayList<>();
     Button btnSubmit;
+
     String dateString;
     Calendar calendar;
+    Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_img);
         btnSubmit = findViewById(R.id.btnSubmit);
+        context = mActivity;
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
+        btnSubmit.setOnClickListener(view -> {
+            try {
+                if (getIntent().getStringExtra("meal") == null)
                     hitUploadImg();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                else hitUploadDietImg();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
         calendar = Calendar.getInstance();
 
         Date date= Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.US);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         dateString = df.format(date);
         Log.v("dateTime",dateString);
 
@@ -83,7 +88,10 @@ public class UploadImg extends BaseActivity {
             options.setPreSelectedUrls(returnValue);
             Pix.start(UploadImg.this, options);
         });
-
+        if(getIntent().getStringExtra("meal")!=null){
+            options.setPreSelectedUrls(returnValue);
+            Pix.start(UploadImg.this, options);
+        }
     }
 
 
@@ -123,8 +131,7 @@ public class UploadImg extends BaseActivity {
         MultipartBody.Part[] fileParts = new MultipartBody.Part[returnValue.size()];
         try {
             for (int i = 0; i < returnValue.size(); i++) {
-                String path = null;
-                path = returnValue.get(i);
+                String path = returnValue.get(i);
                 Log.d("filePath", "File Path: " + path);
                 File file = new File(path);
                 MediaType mediaType = MediaType.parse(Utils.getMimeType(path));
@@ -139,29 +146,26 @@ public class UploadImg extends BaseActivity {
         Api iRestInterfaces = ApiUtilsForFile.getAPIService();
         Call<String> call;
         call = iRestInterfaces.addImage(
-                "NkU1MzdFRTM5OENDNEEwQUI2MkIwQjQ3NjI5N0U1NUUtMTIzNDU2Nw==",
-                "1234567",
+                SharedPrefManager.getInstance(context).getUser().getAccessToken(),
+                String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid()),
                 fileParts,
-                RequestBody.create(MediaType.parse("text/plain"), "1000000"),
-                RequestBody.create(MediaType.parse("text/plain"), "1234567"),
+                RequestBody.create(MediaType.parse("text/plain"),  String.valueOf(SharedPrefManager.getInstance(context).getPid())),
+                RequestBody.create(MediaType.parse("text/plain"), String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid())),
                 RequestBody.create(MediaType.parse("text/plain"), dateString)
-
         );
 
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-
                 if (response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
                     onBackPressed();
                     finish();
-
                 } else {
-                        switch (response.code()) {
-                            case 401:
-                                Toast.makeText(getApplicationContext(), "Unauthorized User", Toast.LENGTH_SHORT).show();
-                                break;
+                    switch (response.code()) {
+                        case 401:
+                            Toast.makeText(getApplicationContext(), "Unauthorized User", Toast.LENGTH_SHORT).show();
+                            break;
                         case 500:
                             Toast.makeText(getApplicationContext(), "Internal Server Error", Toast.LENGTH_SHORT).show();
                             break;
@@ -178,10 +182,73 @@ public class UploadImg extends BaseActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
                  Utils.hideDialog();
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
+    }
+    private void hitUploadDietImg() {
+        Date date= Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+        dateString = df.format(date);
+        MultipartBody.Part[] fileParts = new MultipartBody.Part[returnValue.size()];
+        try {
+            for (int i = 0; i < returnValue.size(); i++) {
+                String path = returnValue.get(i);
+                Log.d("filePath", "File Path: " + path);
+                File file = new File(path);
+                MediaType mediaType = MediaType.parse(Utils.getMimeType(path));
+                RequestBody fileBody = RequestBody.create(mediaType, file);
+                fileParts[i] = MultipartBody.Part.createFormData("fileName", file.getName(), fileBody);
+//                fileParts = MultipartBody.Part.createFormData("attachedFile", file.getName(), fileBody);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Utils.showRequestDialog(mActivity);
+        Api iRestInterfaces = ApiUtilsForFile.getAPIService();
+        Call<String> call;
+        call = iRestInterfaces.UserDateWiseDietImage(
+                SharedPrefManager.getInstance(context).getUser().getAccessToken(),
+                String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid()),
+                fileParts,
+                RequestBody.create(MediaType.parse("text/plain"),  String.valueOf(SharedPrefManager.getInstance(context).getPid())),
+                RequestBody.create(MediaType.parse("text/plain"), String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid())),
+                RequestBody.create(MediaType.parse("text/plain"), dateString)
+        );
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                    finish();
+                } else {
+                    switch (response.code()) {
+                        case 401:
+                            Toast.makeText(getApplicationContext(), "Unauthorized User", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 500:
+                            Toast.makeText(getApplicationContext(), "Internal Server Error", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(getApplicationContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                 Utils.hideDialog();
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 

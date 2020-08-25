@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@color/colorPrimaryDark"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/txtFluid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fluid_intake"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25" />
+
+            <TextView
+                android:id="@+id/txtEditDate"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:background="@drawable/ic_edit"
+                app:layout_constraintBottom_toBottomOf="@+id/txtFluid"
+                app:layout_constraintStart_toEndOf="@+id/txtFluid"
+                app:layout_constraintTop_toTopOf="@+id/txtFluid" />
+
+            <TextView
+                android:id="@+id/txtDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:text="ddsfdf"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
+
+            <TextView
+                android:id="@+id/txtQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toEndOf="@+id/txtDateTime"
+                app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
+
+            <TextView
+                android:id="@+id/txtUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="mg"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                app:layout_constraintStart_toEndOf="@+id/txtQty"
+                app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
+            <EditText
+                android:id="@+id/edtQty"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="100"
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp"
+                android:inputType="number"
+                android:visibility="gone"
+                android:selectAllOnFocus="true"
+                android:background="@drawable/edt_bor"
+                app:layout_constraintStart_toEndOf="@+id/txtUnit"
+                app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
+
+            <TextView
+                android:id="@+id/txtPer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="%"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15sdp"
+                app:layout_constraintStart_toEndOf="@+id/edtQty"
+                app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
+            <TextView
+                android:id="@+id/txtSave"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/ic_save"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/txtPer"
+                app:layout_constraintTop_toBottomOf="@+id/txtFluid"  />
+            <TextView
+                android:id="@+id/txtClose"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:visibility="gone"
+                android:background="@drawable/ic_close"
+                app:layout_constraintStart_toEndOf="@+id/txtSave"
+                app:layout_constraintTop_toBottomOf="@+id/txtFluid"  />
+            <TextView
+                android:id="@+id/txtEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/ic_edit_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

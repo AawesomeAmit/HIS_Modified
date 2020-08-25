@@ -12,10 +12,11 @@
         android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,7 +27,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -46,19 +47,37 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.DeviceControlActivity"
-            android:theme="@android:style/Theme.Holo.Light"/>
-        <activity android:name=".Activity.DeviceScanActivity"
-            android:theme="@android:style/Theme.Holo.Light"/>
-        <activity android:name=".Activity.NursingNote" />
-        <!--<activity android:name=".Activity.BP.TerminalFragment" />-->
+        <activity android:name=".Activity.DevicesSelection"></activity>
+        <activity android:name=".Activity.ChecklistCovidPatient" />
+        <activity android:name=".Activity.ProgressNoteScan" />
+        <activity android:name=".Activity.UpdateVital" />
+        <activity android:name=".Activity.ViewDietImage" />
+        <activity android:name=".Activity.ScanSelector" />
+        <activity android:name=".Activity.ScanDashboard" />
+        <activity android:name=".Activity.CasualtyRegistration" />
+        <activity
+            android:name=".Activity.DeviceControlActivity"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity
+            android:name=".Activity.BP.BLE.DeviceControlActivity"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity
+            android:name=".Activity.DeviceScanActivity"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity
+            android:name=".Activity.BP.BLE.DeviceScanActivity"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity android:name=".Activity.NursingNote" /> <!-- <activity android:name=".Activity.BP.TerminalFragment" /> -->
         <activity android:name=".Activity.PatientNote" />
         <activity android:name=".Activity.ConsultantNote" />
+        <activity android:name=".Activity.BP.Medcheck.MainActivity" />
+        <activity android:name=".Activity.BP.Medcheck.DeviceConnectionActivity" />
         <activity android:name=".Activity.OTNote" />
         <activity android:name=".Activity.BP.Initial" />
         <activity android:name=".Activity.ScannerActivity" />
         <activity android:name=".Activity.UploadMultipleImg.FragmentSampleActivity" />
         <activity android:name=".Activity.UploadMultipleImg.UploadImg" />
+        <activity android:name=".Activity.UploadMultipleImg.ViewPatientDoc" />
         <activity
             android:name=".Activity.AchievedNutrientGraphActivity"
             android:screenOrientation="portrait"
@@ -122,6 +141,10 @@
         <activity
             android:name=".Activity.PatientDashboard"
             android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".Activity.ViaOximeter.DataActivity"
+            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Fragment.IntakeInput"
@@ -194,6 +217,11 @@
             android:name=".Activity.BluetoothLeService"
             android:enabled="true"
             android:theme="@android:style/Theme.Holo.Light" />
+        <service
+            android:name=".Activity.BP.BLE.BluetoothLeService1"
+            android:enabled="true"
+            android:theme="@android:style/Theme.Holo.Light" />
+
         <activity
             android:name=".Activity.ProgressNoteActivity"
             android:screenOrientation="portrait"
@@ -218,6 +246,14 @@
             android:name=".Activity.AngioReportActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".Activity.DeviceConnectScanActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".Activity.ViaOximeter.ViaOximeterScanActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <service android:name=".Activity.BP.SerialService" />
         <service
             android:name=".Utils.MyFirebaseMessagingService"

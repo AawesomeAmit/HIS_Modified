@@ -34,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -171,6 +172,7 @@ public class AddMedication extends Fragment {
         llOpd = view.findViewById(R.id.llOpd);
         llType = view.findViewById(R.id.llType);
         edtAdvice = view.findViewById(R.id.edtAdvice);
+        btnHistory = view.findViewById(R.id.btnHistory);
         spnPrescriptionType = view.findViewById(R.id.spnPrescriptionType);
         txtDate = view.findViewById(R.id.txtDate);
         //TextView btnAdd = view.findViewById(R.id.btnAdd);
@@ -179,6 +181,7 @@ public class AddMedication extends Fragment {
         // edtHour =view.findViewById(R.id.edtHour);
         // edtMinute =view.findViewById(R.id.edtMinute);
         //  txtTime=view.findViewById(R.id.txtTime);
+        btnSave.setVisibility(View.GONE);
         tvTime = view.findViewById(R.id.tvTime);
         edtStr = view.findViewById(R.id.txtStr);
         edtRemark = view.findViewById(R.id.edtRemark);
@@ -584,6 +587,7 @@ public class AddMedication extends Fragment {
                     etUnit.setText("");
                     tvTime.setText("");
                     edtMedName.setEnabled(true);
+                    btnSave.setVisibility(View.VISIBLE);
             } else Toast.makeText(context, "Please enter medicine", Toast.LENGTH_LONG).show();
         });
         btnSave.setOnClickListener(view13 -> {
@@ -592,6 +596,12 @@ public class AddMedication extends Fragment {
             } else if (SharedPrefManager.getInstance(context).getUser().getDesigid() != 1 && spnConsultant.getSelectedItemPosition() != 0) {
                 sendPrescription(SharedPrefManager.getInstance(context).getConsultantList().get(spnConsultant.getSelectedItemPosition()).getUserid());
             } else Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
+        });
+        btnHistory.setOnClickListener(view1 -> {
+             Fragment fragment = new ViewMedication();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
         });
         return view;
     }
@@ -924,7 +934,9 @@ public class AddMedication extends Fragment {
 
                 jsonObject.put("PID", SharedPrefManager.getInstance(context).getPid());
                 jsonObject.put("headID", SharedPrefManager.getInstance(context).getHeadID());
+                if(SharedPrefManager.getInstance(context).getSubdeptID()==null || SharedPrefManager.getInstance(context).getSubdeptID()==0)
                 jsonObject.put("subDeptID", SharedPrefManager.getInstance(context).getSubDept().getId());
+                else jsonObject.put("subDeptID", SharedPrefManager.getInstance(context).getSubdeptID());
                 jsonObject.put("investigation", new JSONArray());
                 jsonObject.put("ipNo", SharedPrefManager.getInstance(context).getIpNo());
                 jsonObject.put("userID", SharedPrefManager.getInstance(context).getUser().getUserid());

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".Fragment.PrescribedMedicine">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/llMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,13 +102,27 @@
             android:text="Given By"
             android:textColor="@color/black"
             android:textSize="@dimen/_8sdp" />
-    </LinearLayout>
-
+    </LinearLayout>-->
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:background="@color/grey"
+        android:gravity="start"
+        android:paddingBottom="@dimen/_4sdp"
+        android:text="@string/please_tick_after_medicine"
+        android:textColor="@color/blue_text"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:background="#F8F8F8"
         tools:listitem="@layout/inner_view_prescription" />
 

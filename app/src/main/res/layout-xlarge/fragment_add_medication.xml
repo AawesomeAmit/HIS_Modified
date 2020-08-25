@@ -7,6 +7,7 @@
     android:background="#F6F6F6"
     android:fillViewport="true"
     android:orientation="vertical"
+    android:scrollbars="none"
     tools:context=".Fragment.AddMedication">
 
     <LinearLayout
@@ -73,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:visibility="gone"
+            android:id="@+id/llType"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_2sdp"
             android:orientation="horizontal">
@@ -124,7 +126,7 @@
                 <AutoCompleteTextView
                     android:id="@+id/etChiefComplaint"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:background="@drawable/edt_bor"
                     android:paddingLeft="@dimen/_5sdp"
                     android:paddingRight="@dimen/_5sdp"
@@ -170,9 +172,7 @@
                     android:paddingRight="@dimen/_5sdp"
                     android:textSize="@dimen/_10sdp"
                     tools:ignore="LabelFor" />
-
             </RelativeLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewDiagnosis"
                 android:layout_width="match_parent"
@@ -180,10 +180,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@drawable/edt_bor" />
-
-
         </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -320,11 +317,8 @@
                                                         android:textColor="@color/black"
                                                         android:textSize="@dimen/_13sdp" />
                             -->
-
                         </LinearLayout>
-
                     </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -353,7 +347,6 @@
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_10sdp" />
                         </LinearLayout>
-
                         <!-- <EditText
                              android:id="@+id/txtStr"
                              android:layout_width="0dp"
@@ -409,7 +402,6 @@
                              &ndash;&gt;
 
                          </LinearLayout>-->
-
                         <!--<EditText
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_30sdp"
@@ -425,7 +417,6 @@
                             android:layout_gravity="center_vertical"
                             android:textSize="@dimen/_13sdp"
                             android:id="@+id/txtTime"/>-->
-
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_20sdp"
@@ -454,7 +445,6 @@
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_10sdp"
                                 tools:ignore="NestedWeights,UnusedAttribute" />
-
 
                             <!--  <EditText
                                   android:id="@+id/edtHour"
@@ -553,12 +543,11 @@
                             android:textColor="@color/black"
                             android:textSize="@dimen/_10sdp"
                             tools:ignore="Autofill,TextFields" />
-
                     </LinearLayout>
                     <TextView
                         android:id="@+id/txtAction"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -572,7 +561,6 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10sdp"
                         tools:ignore="UnusedAttribute" />
-
                 </LinearLayout>
             </ScrollView>
 
@@ -700,7 +688,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/llOpd"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/scrollNoti"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -813,16 +801,17 @@
             <LinearLayout
                 android:id="@+id/llFooter"
                 android:layout_width="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="end"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/btnSave"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
