@@ -42,6 +42,9 @@ public class AdmittedPatient {
     @SerializedName("sex")
     @Expose
     private String sex;
+    @SerializedName("pmid")
+    @Expose
+    public Integer pmid;
     @SerializedName("gender")
     @Expose
     private String gender;
@@ -89,6 +92,10 @@ public class AdmittedPatient {
 
     public String getIpNo() {
         return ipNo;
+    }
+
+    public Integer getPmid() {
+        return pmid;
     }
 
     public Integer getUserID() {

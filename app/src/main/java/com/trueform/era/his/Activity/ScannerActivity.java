@@ -111,7 +111,9 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
 //                                    connect(getIntent().getStringExtra("mac"), getIntent().getStringExtra("mac"));
                                     intent = new Intent(ScannerActivity.this, DataActivity.class);
                                     intent.putExtra("mac", getIntent().getStringExtra("mac"));
+                                    intent.putExtra("mac", getIntent().getStringExtra("mac"));
                                     intent.putExtra("show", getIntent().getStringExtra("show"));
+                                    intent.putExtra("status", "");
                                 }
                                 finish();
                                 startActivity(intent);

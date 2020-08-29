@@ -81,6 +81,7 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
     Spinner spnWard, spnAgeUnit, spnGender, spnEdu, spnDoctor, spnState, spnCity;
     EditText edtFloor, edtCaseId, edtPid, edtName, edtAge, edtAddress, edtPulse, edtBpSys, edtBpDias, edtTemp, edtSpo2, edtRbs, edtHistory, edtSymptoms;
     private static String fromDate = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,6 +183,7 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
                     }
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -208,7 +210,7 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!charSequence.toString().equalsIgnoreCase("")) {
                     if (Integer.parseInt(charSequence.toString()) >= 18) {
-                        if(spnAgeUnit.getSelectedItemPosition()==0) {
+                        if (spnAgeUnit.getSelectedItemPosition() == 0) {
                             subDeptID = 2;
                             getDoctor(2);
                         } else {
@@ -221,12 +223,14 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
                     }
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
 
             }
         });
     }
+
     private void getDoctor(int id) {
         Utils.showRequestDialog(mActivity);
         Call<DoctorWardResp> call = RetrofitClient.getInstance().getApi().getWardDoctors(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), id);
@@ -235,11 +239,11 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
             public void onResponse(Call<DoctorWardResp> call, Response<DoctorWardResp> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        doctorNameList=response.body().getDoctorsList();
-                        wardNameList=null;
-                        wardNameList=new ArrayList<>();
+                        doctorNameList = response.body().getDoctorsList();
+                        wardNameList = null;
+                        wardNameList = new ArrayList<>();
                         wardNameList.add(0, new WardNameList(0, "Select Ward"));
-                        wardNameList.addAll(response.body().getWardList());
+                        wardNameList.addAll(1, response.body().getWardList());
                         adpDoctor = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, doctorNameList);
                         spnDoctor.setAdapter(adpDoctor);
                         adpWard = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, wardNameList);
@@ -255,20 +259,21 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
             }
         });
     }
-    private void getDistrict(int id){
+
+    private void getDistrict(int id) {
         Utils.showRequestDialog(mActivity);
         Call<DistrictMasterResp> call = RetrofitClient.getInstance().getApi().getDistrictList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), id);
         call.enqueue(new Callback<DistrictMasterResp>() {
             @Override
             public void onResponse(Call<DistrictMasterResp> call, Response<DistrictMasterResp> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        cityList=response.body().getDistrictMaster();
+                        cityList = response.body().getDistrictMaster();
                     }
                     adpCity = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, cityList);
                     spnCity.setAdapter(adpCity);
-                    if(id==34)
-                    spnCity.setSelection(51);
+                    if (id == 34)
+                        spnCity.setSelection(51);
                     Utils.hideDialog();
                 }
             }
@@ -279,6 +284,7 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
             }
         });
     }
+
     private void saveData() {
         if (!edtName.getText().toString().trim().equals("")) {
             if (!edtAge.getText().toString().trim().equals("")) {
@@ -324,10 +330,11 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
                         Utils.hideDialog();
                     }
                 });
-            }else Toast.makeText(mActivity, "Please Enter Valid Age!", Toast.LENGTH_SHORT).show();
-        }else Toast.makeText(mActivity, "Please Enter Patient Name!", Toast.LENGTH_SHORT).show();
+            } else Toast.makeText(mActivity, "Please Enter Valid Age!", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(mActivity, "Please Enter Patient Name!", Toast.LENGTH_SHORT).show();
     }
-    private void saveIPD(){
+
+    private void saveIPD() {
         Utils.showRequestDialog(mActivity);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Call<ResponseBody> call = RetrofitClient.getInstance().getApi().insertIPDRegistration(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
@@ -343,7 +350,7 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Toast.makeText(ChecklistCovidPatient.this, "Saved Successfully!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(mActivity, ChecklistCovidPatient.class));
                 }
@@ -356,16 +363,17 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
             }
         });
     }
-    private void loadData(){
+
+    private void loadData() {
         Utils.showRequestDialog(mActivity);
         Call<PatientRegistrationListResp> call = RetrofitClient.getInstance().getApi().getPatientRegistrationList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
         call.enqueue(new Callback<PatientRegistrationListResp>() {
             @Override
             public void onResponse(Call<PatientRegistrationListResp> call, Response<PatientRegistrationListResp> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     if (response.body() != null) {
                         stateList.addAll(1, response.body().getStateMaster());
-                        wardNameList.addAll(1, response.body().getWardNameList());
+//                        wardNameList.addAll(1, response.body().getWardNameList());
                         educationList.addAll(1, response.body().getEducationList());
                     }
                     adpState = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, stateList);
@@ -448,6 +456,7 @@ public class ChecklistCovidPatient extends BaseActivity implements View.OnClickL
             return value;
         }
     }
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.txtFrmDate) {

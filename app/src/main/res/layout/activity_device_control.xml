@@ -78,7 +78,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
-                <EditText
+                <TextView
                     android:id="@+id/txtPid"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"

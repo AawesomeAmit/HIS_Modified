@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.trueform.era.his.Activity.Dashboard;
 import com.trueform.era.his.Activity.EnterPID;
 import com.trueform.era.his.Activity.GuardPostActivity;
+import com.trueform.era.his.Activity.PriscriptionOverviewPopup;
 import com.trueform.era.his.Fragment.MedicineSidePathway;
 import com.trueform.era.his.Model.AdmittedPatient;
 import com.trueform.era.his.R;
@@ -67,13 +68,14 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
             holder.txtPId.setBackgroundResource(R.drawable.pid_bg);
             holder.txtGender.setTextColor(mCtx.getResources().getColor(R.color.pink));
         }
-        if(admittedPatient.get(i).getRead())holder.txtNew.setVisibility(View.GONE);
+        if (admittedPatient.get(i).getRead()) holder.txtNew.setVisibility(View.GONE);
         else holder.txtNew.setVisibility(View.VISIBLE);
         holder.txtGender.setText(admittedPatient.get(i).getGender());
+        holder.txtDiagnosis.setText(admittedPatient.get(i).getWardName() + " - " + admittedPatient.get(i).getConsultantName());
         holder.txtPName.setOnClickListener(View -> {
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 2) {
-                if(!admittedPatient.get(i).getRead())
-                checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
+                if (!admittedPatient.get(i).getRead())
+                    checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setAdmitPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
                 SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
@@ -83,8 +85,8 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
         });
         holder.txtDiagnosis.setOnClickListener(View -> {
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 2) {
-                if(!admittedPatient.get(i).getRead())
-                checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
+                if (!admittedPatient.get(i).getRead())
+                    checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setAdmitPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
                 SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
@@ -94,8 +96,8 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
         });
         holder.txtPId.setOnClickListener(View -> {
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 2) {
-                if(!admittedPatient.get(i).getRead())
-                checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
+                if (!admittedPatient.get(i).getRead())
+                    checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setAdmitPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
                 SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
@@ -105,19 +107,20 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
         });
         holder.imgInfo.setOnClickListener(View -> {
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 2) {
-                if(!admittedPatient.get(i).getRead())
-                checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
+                if (!admittedPatient.get(i).getRead())
+                    checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setAdmitPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
                 SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
-                Intent intent = new Intent(mCtx, Dashboard.class);
+                SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
+                Intent intent = new Intent(mCtx, PriscriptionOverviewPopup.class);
                 mCtx.startActivity(intent);
             }
         });
         holder.txtMed.setOnClickListener(View -> {
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 2) {
-                if(!admittedPatient.get(i).getRead())
-                checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
+                if (!admittedPatient.get(i).getRead())
+                    checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setAdmitPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
                 SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());

@@ -129,6 +129,9 @@ public class AdmittedPatientICU {
     @SerializedName("previousWardName")
     @Expose
     public String previousWardName;
+    @SerializedName("wardName")
+    @Expose
+    public String wardName;
 
     @SerializedName("isRead")
     @Expose
@@ -194,6 +197,18 @@ public class AdmittedPatientICU {
 
     public String getPname() {
         return pname;
+    }
+
+    public String getWardName() {
+        return wardName;
+    }
+
+    public void setWardName(String wardName) {
+        this.wardName = wardName;
+    }
+
+    public void setRead(Boolean read) {
+        isRead = read;
     }
 
     public String getGender() {

@@ -68,9 +68,10 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
         }
         if(admittedPatient.get(i).getRead())holder.txtNew.setVisibility(View.GONE);
         else holder.txtNew.setVisibility(View.VISIBLE);
-        holder.txtGender.setText(admittedPatient.get(i).getGender());
+        holder.txtGender.setText(admittedPatient.get(i).getSex());
+        holder.txtDiagnosis.setText(admittedPatient.get(i).getWardName() + " - " + admittedPatient.get(i).getConsultantName());
         holder.txtPName.setOnClickListener(View -> {
-            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
+//            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
                 if(!admittedPatient.get(i).getRead())
                 checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setIcuAdmitPatient(admittedPatient.get(i));
@@ -79,10 +80,10 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
                 SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
                 Intent intent = new Intent(mCtx, Dashboard.class);
                 mCtx.startActivity(intent);
-            }
+//            }
         });
         holder.txtPId.setOnClickListener(View -> {
-            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
+//            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
                 if(!admittedPatient.get(i).getRead())
                 checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setIcuAdmitPatient(admittedPatient.get(i));
@@ -91,10 +92,10 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
                 SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
                 Intent intent = new Intent(mCtx, Dashboard.class);
                 mCtx.startActivity(intent);
-            }
+//            }
         });
         holder.txtDiagnosis.setOnClickListener(View -> {
-            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
+//            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
                 if(!admittedPatient.get(i).getRead())
                 checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setIcuAdmitPatient(admittedPatient.get(i));
@@ -103,10 +104,10 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
                 SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
                 Intent intent = new Intent(mCtx, Dashboard.class);
                 mCtx.startActivity(intent);
-            }
+//            }
         });
         holder.imgInfo.setOnClickListener(View -> {
-            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
+//            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
                 if(!admittedPatient.get(i).getRead())
                 checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setIcuAdmitPatient(admittedPatient.get(i));
@@ -115,10 +116,10 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
                 SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
                 Intent intent = new Intent(mCtx, PriscriptionOverviewPopup.class);
                 mCtx.startActivity(intent);
-            }
+//            }
         });
         holder.txtMed.setOnClickListener(View -> {
-            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
+//            if (SharedPrefManager.getInstance(mCtx).getHeadID() == 3 || SharedPrefManager.getInstance(mCtx).getHeadID() == 4) {
                 if(!admittedPatient.get(i).getRead())
                 checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
                 SharedPrefManager.getInstance(mCtx).setIcuAdmitPatient(admittedPatient.get(i));
@@ -127,13 +128,13 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
                 SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
                 Intent intent = new Intent(mCtx, MedicineSidePathway.class);
                 mCtx.startActivity(intent);
-            }
+//            }
         });
     }
 
     @Override
     public int getItemCount() {
-        return admittedPatient.size();
+        return +admittedPatient.size();
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {

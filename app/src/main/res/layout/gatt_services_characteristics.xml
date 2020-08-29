@@ -91,7 +91,7 @@
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
-            <EditText
+            <TextView
                 android:id="@+id/txtId"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"

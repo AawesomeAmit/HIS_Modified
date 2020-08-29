@@ -164,7 +164,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         }
         if (SharedPrefManager.getInstance(this).getHeadID() == 2)
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getAdmitPatient().getPname());
-        else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4)
+        else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4 || SharedPrefManager.getInstance(this).getHeadID() == 2029 || SharedPrefManager.getInstance(this).getHeadID() == 2030)
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getIcuAdmitPatient().getPname());
         else if (SharedPrefManager.getInstance(this).getHeadID() == 9)
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getPhysioPatient().getPatientName());

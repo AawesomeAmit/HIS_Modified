@@ -54,8 +54,7 @@ public class DeviceControlActivity extends Activity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private TextView mConnectionState;
-    private TextView mDataField1, mDataField2, mDataField3, btnGetData, btnSaveData, btnScan;
-    EditText txtPid;
+    private TextView mDataField1, txtPid, mDataField2, mDataField3, btnGetData, btnSaveData, btnScan;
     private String mDeviceName;
     private Date today = new Date();
     private String mDeviceAddress;

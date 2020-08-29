@@ -178,6 +178,6 @@
         android:layout_marginTop="@dimen/_2sdp"
         android:background="#F8F8F8"
         android:layout_marginLeft="@dimen/_2sdp"
-        tools:listitem="@layout/inner_display_input_fluid"
+        tools:listitem="@layout/inner_input_meal"
         android:id="@+id/rvMeal"/>
 </LinearLayout>

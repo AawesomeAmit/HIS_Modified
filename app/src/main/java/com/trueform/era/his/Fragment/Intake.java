@@ -51,10 +51,12 @@ import com.trueform.era.his.Model.UnitResponseValue;
 import com.trueform.era.his.R;
 import com.trueform.era.his.Response.FoodDetailResp;
 import com.trueform.era.his.Response.InsertResponse;
+import com.trueform.era.his.Response.IntakeData;
 import com.trueform.era.his.Response.IntekeUnitResp;
 import com.trueform.era.his.Response.MealResp;
 import com.trueform.era.his.Response.MemberIdResp;
 import com.trueform.era.his.Response.UnitResp;
+import com.trueform.era.his.Response.UniversalResp;
 import com.trueform.era.his.Utils.ConnectivityChecker;
 import com.trueform.era.his.Utils.InputFilterMinMax;
 import com.trueform.era.his.Utils.RetrofitClient;
@@ -80,6 +82,7 @@ import java.util.Objects;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -102,6 +105,7 @@ public class Intake extends Fragment implements View.OnClickListener {
     static Context context;
     static String date = "";
     int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
+    int mYear1 = 0, mMonth1 = 0, mDay1 = 0, mHour1 = 0, mMinute1 = 0;
     Date today = new Date();
 //    private int mealId = 0;
     Calendar c;
@@ -137,9 +141,9 @@ public class Intake extends Fragment implements View.OnClickListener {
         context = view.getContext();
         Utils.showRequestDialog(context);
         c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+        mYear=mYear1 = c.get(Calendar.YEAR);
+        mMonth=mMonth1 = c.get(Calendar.MONTH);
+        mDay=mDay1 = c.get(Calendar.DAY_OF_MONTH);
         date = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
         //txtDate.setText(date);
         edtMeal.setThreshold(0);
@@ -231,7 +235,7 @@ public class Intake extends Fragment implements View.OnClickListener {
                 if (mealList.getIntakeID() != 0) {
                     Utils.showRequestDialog(context);
                     Call<InsertResponse> call1;
-                    if (mealList.getIsSupplement() == 1) call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
+                    if (mealList.getIsSupplement() == 1) call1 = RetrofitClient1.getInstance().getApi().addSupplementDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid());
                     else call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
                     call1.enqueue(new Callback<InsertResponse>() {
                         @Override
@@ -256,14 +260,16 @@ public class Intake extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void dateTimePopup() {
+    private void dateTimePopup(int id, int isSupplement, String intake) {
         View popupView = getLayoutInflater().inflate(R.layout.popup_intake_date_time_change, null);
         final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
         LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
         TextView btnSave = popupView.findViewById(R.id.btnUpdate);
         TextView btnClose = popupView.findViewById(R.id.btnClose);
+        TextView txtTitle = popupView.findViewById(R.id.txtTitle);
         TextView txtDate1 = popupView.findViewById(R.id.txtDate1);
         TextView txtTime1 = popupView.findViewById(R.id.txtTime1);
+        txtTitle.setText(intake);
         Date today1 = new Date();
         c1 = Calendar.getInstance();
         popupWindow.setFocusable(true);
@@ -272,8 +278,7 @@ public class Intake extends Fragment implements View.OnClickListener {
         lLayout.getLocationOnScreen(location);
         popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
         btnClose.setOnClickListener(view -> popupWindow.dismiss());
-
-        txtDate1.setText(Utils.formatDate(c1.get(Calendar.DAY_OF_MONTH) + "/" + (c1.get(Calendar.MONTH) + 1) + "/" + c1.get(Calendar.YEAR)));
+        txtDate1.setText(Utils.formatDate(mYear1 + "/" + (mMonth1 + 1) + "/" + mDay1));
         txtTime1.setText(format2.format(today1));
         txtTime1.setOnClickListener(view -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), R.style.DialogTheme, (timePicker, i, i1) -> {
@@ -296,12 +301,30 @@ public class Intake extends Fragment implements View.OnClickListener {
                         today1.setMonth(monthOfYear);
                         today1.setYear(year - 1900);
                         txtDate1.setText(Utils.formatDate(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth));
-                    }, today1.getYear(), today1.getMonth(), mDay);
+                    }, mYear1, mMonth1, mDay1);
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
         });
-        btnSave.setOnClickListener(view -> {
+        btnSave.setOnClickListener(view -> updateDateTime(id, (new SimpleDateFormat("dd/MM/yyyy hh:mm a")).format(today1), isSupplement, popupWindow));
+    }
+    private void updateDateTime(int id, String dateTime, int isSupplement, PopupWindow popupWindow){
+        Call<UniversalResp> call = RetrofitClient1.getInstance().getApi().updateIntakeDateTimeByIntakeID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", id, dateTime, isSupplement, SharedPrefManager.getInstance(context).getMemberId().getMemberId(), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
+        call.enqueue(new Callback<UniversalResp>() {
+            @Override
+            public void onResponse(Call<UniversalResp> call, Response<UniversalResp> response) {
+                if(response.isSuccessful()){
+                    if (response.body() != null) {
+                        Toast.makeText(context, response.body().getResponseMessage(), Toast.LENGTH_LONG).show();
+                        bind();
+                        popupWindow.dismiss();
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<UniversalResp> call, Throwable t) {
+
+            }
         });
     }
     private void recordingPopup() {
@@ -508,21 +531,21 @@ public class Intake extends Fragment implements View.OnClickListener {
 
     public void bind() {
         Utils.showRequestDialog(context);
-        Call<FoodDetailResp> call = RetrofitClient.getInstance().getApi().getIntakeFoodData(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
-        call.enqueue(new Callback<FoodDetailResp>() {
+        Call<List<IntakeData>> call = RetrofitClient.getInstance().getApi().getIntakeData(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), (new SimpleDateFormat("dd/MM/yyyy")).format(today)+" 12:00 AM", (new SimpleDateFormat("dd/MM/yyyy")).format(today)+" 11:59 PM", SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
+        call.enqueue(new Callback<List<IntakeData>>() {
             @Override
-            public void onResponse(Call<FoodDetailResp> call, Response<FoodDetailResp> response) {
+            public void onResponse(Call<List<IntakeData>> call, Response<List<IntakeData>> response) {
                 if (response.isSuccessful()) {
-                    FoodDetailResp foodDetailResp = response.body();
-                    if ((foodDetailResp != null ? foodDetailResp.getFoodDetail().size() : 0) > 0) {
-                        rvMeal.setAdapter(new IntakeAdp(context, foodDetailResp.getFoodDetail()));
+                    List<IntakeData> foodDetailResp = response.body();
+                    if ((foodDetailResp != null ? foodDetailResp.size() : 0) > 0) {
+                        rvMeal.setAdapter(new IntakeAdp(context, foodDetailResp));
                     }
                 }
                 Utils.hideDialog();
             }
 
             @Override
-            public void onFailure(Call<FoodDetailResp> call, Throwable t) {
+            public void onFailure(Call<List<IntakeData>> call, Throwable t) {
                 Utils.hideDialog();
             }
         });
@@ -541,6 +564,7 @@ public class Intake extends Fragment implements View.OnClickListener {
                         today.setMonth(monthOfYear);
                         today.setYear(year - 1900);
                         txtDate.setText(Utils.formatDate(date));
+                        bind();
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
@@ -567,8 +591,8 @@ public class Intake extends Fragment implements View.OnClickListener {
 
     public class IntakeAdp extends RecyclerView.Adapter<IntakeAdp.RecyclerViewHolder> {
         private Context mCtx;
-        private List<FoodDetail> foodDetails;
-        public IntakeAdp(Context mCtx, List<FoodDetail> foodDetails) {
+        private List<IntakeData> foodDetails;
+        public IntakeAdp(Context mCtx, List<IntakeData> foodDetails) {
             this.mCtx = mCtx;
             this.foodDetails = foodDetails;
         }
@@ -584,11 +608,11 @@ public class Intake extends Fragment implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
-            holder.txtFluid.setText(String.valueOf(foodDetails.get(i).getTypeName()));
-            holder.txtQty.setText(String.valueOf(foodDetails.get(i).getQuantity()));
-            holder.txtUnit.setText(String.valueOf(foodDetails.get(i).getUnitname()));
-            holder.txtDateTime.setText(foodDetails.get(i).getIntakeDate());
-            holder.txtEditDate.setOnClickListener(view -> dateTimePopup());
+            holder.txtFluid.setText(String.valueOf(foodDetails.get(i).getIntakeName()));
+            holder.txtQty.setText(String.valueOf(foodDetails.get(i).getIntakeQuantity()));
+            holder.txtUnit.setText(String.valueOf(foodDetails.get(i).getUnitName()));
+            holder.txtDateTime.setText(foodDetails.get(i).getIntakeDateTime());
+            holder.txtEditDate.setOnClickListener(view -> dateTimePopup(foodDetails.get(i).getId(), foodDetails.get(i).getIsSupplement(), foodDetails.get(i).getIntakeName()));
             holder.txtEdit.setOnClickListener(view -> {
                 holder.txtEdit.setVisibility(View.GONE);
                 holder.txtSave.setVisibility(View.VISIBLE);
@@ -617,7 +641,9 @@ public class Intake extends Fragment implements View.OnClickListener {
                     array.put(object);
                     Log.v("array", String.valueOf(array));
                     Utils.showRequestDialog(mCtx);
-                    Call<UnitResp> call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()));
+                    Call<UnitResp> call = null;
+                    if (foodDetails.get(i).getIsSupplement()==0)
+                    call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()));
                     call.enqueue(new Callback<UnitResp>() {
                         @Override
                         public void onResponse(Call<UnitResp> call, Response<UnitResp> response) {

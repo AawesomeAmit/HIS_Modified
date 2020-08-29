@@ -35,7 +35,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("Dashboard/GetIPDPatientList")
-    Call<IpdPatientListResp> getIPDPatientList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("subDeptID") Integer subDeptID, @Field("who") Integer who);
+    Call<IpdPatientListResp> getIPDPatientList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("subDeptID") Integer subDeptID, @Field("who") Integer who, @Field("headID") Integer headID);
 
     @FormUrlEncoded
     @POST("Dashboard/GetPhysiotherapyPanelPatientList")
@@ -43,7 +43,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("Dashboard/GetICUPatientList")
-    Call<IcuPatientListResp> getICUPatientList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("subDeptID") Integer subDeptID, @Field("wardID") Integer wardID, @Field("who") Integer who);
+    Call<IcuPatientListResp> getICUPatientList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("subDeptID") Integer subDeptID, @Field("who") Integer who, @Field("headID") Integer headID);
 
     //@FormUrlEncoded
     @POST("PatientMonitor/GetIntakeOutputList")
@@ -64,6 +64,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("PatientMonitor/GetIntakeFoodData")
     Call<FoodDetailResp> getIntakeFoodData(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
+
+    @FormUrlEncoded
+    @POST("PatientMonitor/GetIntakeData")
+    Call<List<IntakeData>> getIntakeData(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("fromDateTime") String fromDateTime, @Field("toDateTime") String toDateTime, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
 
     @FormUrlEncoded
     @POST("PatientPhysicalActivity/GetPatientPhysicalActivityList")
@@ -257,6 +261,9 @@ public interface Api {
     @FormUrlEncoded
     @POST("UserIntake.asmx/AddIntakeDetails")
     Call<InsertResponse> addIntakeDetails(@Header("Token") String accessToken, @Field("foodId") Integer foodId, @Field("foodQuantity") String foodQuantity, @Field("foodTime") String foodTime, @Field("foodUnitId") String foodUnitId, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID);
+    @FormUrlEncoded
+    @POST("SupplementIntake.asmx/AddSupplementDetails")
+    Call<InsertResponse> addSupplementDetails(@Header("Token") String accessToken, @Field("supplementID") Integer supplementID, @Field("supplementQuantity") String supplementQuantity, @Field("intakeTime") String intakeTime, @Field("supplementUnitID") String supplementUnitID, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID);
 
     @FormUrlEncoded
     @POST("familymember.asmx/GetUserProfileByPID")
@@ -813,6 +820,17 @@ public interface Api {
             @Header("accessToken") String token,
             @Header("userId") String userId,
             @Field("stateID") Integer stateID
+    );
+
+    @FormUrlEncoded
+    @POST("UserIntake.asmx/UpdateIntakeDateTimeByIntakeID")
+    Call<UniversalResp> updateIntakeDateTimeByIntakeID(
+            @Header("Token") String token,
+            @Field("id") Integer id,
+            @Field("intakeDateTime") String intakeDateTime,
+            @Field("isSupplement") Integer isSupplement,
+            @Field("memberID") Integer memberID,
+            @Field("userLoginID") Integer userLoginID
     );
 
     @FormUrlEncoded

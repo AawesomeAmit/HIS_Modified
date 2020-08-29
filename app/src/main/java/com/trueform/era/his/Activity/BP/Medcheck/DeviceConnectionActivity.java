@@ -55,8 +55,7 @@ public class DeviceConnectionActivity extends MedCheckActivity implements View.O
     }
 
     private BleDevice mBleDevice;
-    private TextView mTvDeviceName, txtSys, txtDias, txtPulse, btnSaveData, btnScan;
-    EditText txtPid;
+    private TextView mTvDeviceName, txtPid, txtSys, txtDias, txtPulse, btnSaveData, btnScan;
     private TextView mTvConnectionState;
     private Button mBtnConnect, mBtnReadData, mBtnClearData, mBtnTimeSync, mBtnDisconnect;
     private LinearLayout mLlCoreOperations, mLlBLEDeviceOperation;

@@ -322,13 +322,10 @@ public class PreDashboard extends AppCompatActivity {
 
                                     if (!DatabaseController.checkRecordExistWhere(TableSubDeptList.sub_dept_list,
                                             TableSubDeptList.subDeptListColumn.headID +" = '"+ subDept.getHeadID().toString() +"'" +
-                                                    " and "+ TableSubDeptList.subDeptListColumn.id +" = '"+ subDept.getId().toString() +"'")){
-
+                                                    " and "+ TableSubDeptList.subDeptListColumn.id +" = '"+ subDept.getId().toString() +"'")) {
                                         DatabaseController.insertData(contentValues, TableSubDeptList.sub_dept_list);
                                     }
-
 //                                    DatabaseController.insertUpdateData(contentValues, TableSubDeptList.sub_dept_list, "id", subDept.getId().toString());
-
                                 }
 
                                 DatabaseController.myDataBase.setTransactionSuccessful();
@@ -341,7 +338,7 @@ public class PreDashboard extends AppCompatActivity {
 
                         } else {
                             try {
-                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7))) {//
+                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2029) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2030))) {//
                                     Intent intent = new Intent(PreDashboard.this, PatientList.class);
                                     SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
                                     startActivity(intent);
@@ -512,8 +509,6 @@ public class PreDashboard extends AppCompatActivity {
                     MemberIdResp memberIdResp = response.body();
                     if (memberIdResp.getResponseCode() == 1) {
                         SharedPrefManager.getInstance(getApplicationContext()).setMemberId(memberIdResp.getResponseValue().get(0));
-
-
                     } else {
                         SharedPrefManager.getInstance(getApplicationContext()).setMemberId(new GetMemberId(0,0));
                     }

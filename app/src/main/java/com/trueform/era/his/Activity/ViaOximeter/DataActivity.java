@@ -20,6 +20,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.inuker.bluetooth.library.Code;
 import com.inuker.bluetooth.library.Constants;
+import com.trueform.era.his.Activity.BP.Initial;
 import com.trueform.era.his.Activity.DeviceControlActivity;
 import com.trueform.era.his.Activity.ScannerActivity;
 import com.trueform.era.his.R;
@@ -45,20 +46,16 @@ import java.util.Date;
 
 public class DataActivity extends BaseActivity {
     private final static String TAG = DataActivity.class.getSimpleName();
-    TextView device_address, btnScan, btnGetData, btnSaveData, connectionState, txtSpo2, txtPulse;
-    EditText txtId;
+    TextView device_address, btnScan, btnGetData, btnSaveData, txtId, connectionState, txtSpo2, txtPulse;
     static String spo2, pulse;
     LinearLayout ll;
 
     private IBleWriteResponse getBleWriteResponse() {
-        return new IBleWriteResponse() {
-            @Override
-            public void onResponse(int state) {
-                if (state == Code.REQUEST_SUCCESS) {
-                    Log.i(TAG, "write success");
-                } else {
-                    Log.i(TAG, "write fail");
-                }
+        return state -> {
+            if (state == Code.REQUEST_SUCCESS) {
+                Log.i(TAG, "write success");
+            } else {
+                Log.i(TAG, "write fail");
             }
         };
     }
@@ -73,48 +70,47 @@ public class DataActivity extends BaseActivity {
         init();
     }
 
-    private void init(){
+    private void init() {
         mac = getIntent().getStringExtra("mac");
         listenState(mac);
-        device_address=findViewById(R.id.device_address);
-        btnScan=findViewById(R.id.btnScan);
-        txtId=findViewById(R.id.txtId);
-        btnGetData=findViewById(R.id.btnGetData);
-        btnSaveData=findViewById(R.id.btnSaveData);
-        connectionState=findViewById(R.id.connection_state);
-        txtPulse=findViewById(R.id.txtPulse);
-        txtSpo2=findViewById(R.id.txtSpo2);
-        ll=findViewById(R.id.ll);
+        device_address = findViewById(R.id.device_address);
+        btnScan = findViewById(R.id.btnScan);
+        txtId = findViewById(R.id.txtId);
+        btnGetData = findViewById(R.id.btnGetData);
+        btnSaveData = findViewById(R.id.btnSaveData);
+        connectionState = findViewById(R.id.connection_state);
+        txtPulse = findViewById(R.id.txtPulse);
+        txtSpo2 = findViewById(R.id.txtSpo2);
+        ll = findViewById(R.id.ll);
         device_address.setText(mac);
 
         btnScan.setOnClickListener(view -> {
-            Intent intent1=new Intent(this, ScannerActivity.class);
+            Intent intent1 = new Intent(this, ScannerActivity.class);
             intent1.putExtra("redi", "7");
             intent1.putExtra("mac", mac);
             startActivity(intent1);
             finish();
         });
 
-        if(getIntent().getStringExtra("id")!=null) {
-            txtId.setText(getIntent().getStringExtra("id"));
+        if (getIntent().getStringExtra("status") != null) {
+            txtId.setText(String.valueOf(SharedPrefManager.getInstance(DataActivity.this).getPid()));
         }
 
-        btnGetData.setOnClickListener(view -> {
-            start_recevice_data();
-        });
+        btnGetData.setOnClickListener(view -> start_recevice_data());
 
         btnSaveData.setOnClickListener(view -> {
 //            displayData(spo2, pulse);
             JSONArray dtTableArray = new JSONArray();
             try {
-                if (pulse != null && !pulse.equals("0")){
+                if (pulse != null && !pulse.equals("0")) {
                     JSONObject jsonObject1 = new JSONObject();
                     jsonObject1.put("vitalId", "3");
                     jsonObject1.put("vitalValue", pulse);
+
                     dtTableArray.put(jsonObject1);
                 }
 
-                if (spo2 != null && !spo2.equals("0")){
+                if (spo2 != null && !spo2.equals("0")) {
                     JSONObject jsonObject2 = new JSONObject();
                     jsonObject2.put("vitalId", "56");
                     jsonObject2.put("vitalValue", spo2);
@@ -133,7 +129,7 @@ public class DataActivity extends BaseActivity {
             }
         });
 
-        if(getIntent().getStringExtra("show")!=null) {
+        if (getIntent().getStringExtra("show") != null) {
             if (getIntent().getStringExtra("show").equalsIgnoreCase("0")) {
                 ll.setVisibility(View.GONE);
             } else ll.setVisibility(View.VISIBLE);
@@ -199,7 +195,7 @@ public class DataActivity extends BaseActivity {
         });
     }*/
 
-//    @OnClick(R.id.start_recevice_data)
+    //    @OnClick(R.id.start_recevice_data)
     public void start_recevice_data() {
         OxiOprateManager.getMangerInstance(getApplicationContext()).startListenTestData(getBleWriteResponse(), new OnACKDataListener() {
             @Override
@@ -237,8 +233,8 @@ public class DataActivity extends BaseActivity {
                 txtSpo2.setText(String.valueOf(detectData.getSpo2h()));
                 txtPulse.setText(String.valueOf(detectData.getHeart()));
 
-                pulse =String.valueOf(detectData.getHeart());
-                spo2 =String.valueOf(detectData.getSpo2h());
+                pulse = String.valueOf(detectData.getHeart());
+                spo2 = String.valueOf(detectData.getSpo2h());
             }
         });
     }

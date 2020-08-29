@@ -44,7 +44,29 @@
                     android:paddingEnd="@dimen/_2sdp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp" />
+                <TextView
+                    android:id="@+id/txtPAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:gravity="end"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10sdp" />
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gryText" />
+
+                <TextView
+                    android:id="@+id/txtGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/_2sdp"
+                    android:gravity="end"
+                    android:textSize="@dimen/_10sdp" />
                 <TextView
                     android:id="@+id/txtNew"
                     android:layout_width="wrap_content"
@@ -72,7 +94,7 @@
                         android:src="@drawable/ic_info"
                         tools:ignore="ContentDescription" />
 
-                    <TextView
+                   <!-- <TextView
                         android:id="@+id/txtPAge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -94,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/_2sdp"
                         android:gravity="end"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_10sdp" />-->
                 </LinearLayout>
             </LinearLayout>
 

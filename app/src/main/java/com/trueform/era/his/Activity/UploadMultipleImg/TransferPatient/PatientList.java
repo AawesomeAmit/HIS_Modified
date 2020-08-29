@@ -170,7 +170,7 @@ public class PatientList extends BaseActivity implements View.OnClickListener {
         if (SharedPrefManager.getInstance(this).getHeadID() == 2) {
             if (ConnectivityChecker.checker(context)) {
                 Utils.showRequestDialog(context);
-                Call<IpdPatientListResp> call = RetrofitClient.getInstance().getApi().getIPDPatientList(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(), SharedPrefManager.getInstance(PatientList.this).getUser().getUserid());
+                Call<IpdPatientListResp> call = RetrofitClient.getInstance().getApi().getIPDPatientList(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(), SharedPrefManager.getInstance(PatientList.this).getUser().getUserid(), SharedPrefManager.getInstance(mActivity).getHeadID());
                 call.enqueue(new Callback<IpdPatientListResp>() {
                     @Override
                     public void onResponse(Call<IpdPatientListResp> call, Response<IpdPatientListResp> response) {
@@ -209,12 +209,12 @@ public class PatientList extends BaseActivity implements View.OnClickListener {
             bindCovidPatient();
         } else if (SharedPrefManager.getInstance(this).getHeadID() == 9) {
             bindPhysioList();
-        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4) {
-            int wardId;
+        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4 || SharedPrefManager.getInstance(this).getHeadID() == 2029 || SharedPrefManager.getInstance(this).getHeadID() == 2030) {
+            /*int wardId;
             if (SharedPrefManager.getInstance(this).getHeadID() == 3)
                 wardId = 39;
-            else wardId = 36;
-            hitGetICUPatientList(wardId);
+            else wardId = 36;*/
+            hitGetICUPatientList();
         }
         spnSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -467,7 +467,7 @@ public class PatientList extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private void hitGetICUPatientList(Integer wardId){
+    private void hitGetICUPatientList(){
 
         if (ConnectivityChecker.checker(context)){
 
@@ -476,8 +476,8 @@ public class PatientList extends BaseActivity implements View.OnClickListener {
                     SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(),
                     SharedPrefManager.getInstance(context).getUser().getUserid().toString(),
                     SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(),
-                    wardId,
-                    SharedPrefManager.getInstance(PatientList.this).getUser().getUserid());
+                    SharedPrefManager.getInstance(PatientList.this).getUser().getUserid(),
+                    SharedPrefManager.getInstance(mActivity).getHeadID());
             call.enqueue(new Callback<IcuPatientListResp>() {
                 @Override
                 public void onResponse(Call<IcuPatientListResp> call, Response<IcuPatientListResp> response) {
