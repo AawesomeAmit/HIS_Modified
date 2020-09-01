@@ -122,6 +122,7 @@
                 android:paddingEnd="@dimen/_2sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11ssp"
+                android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/txtDate1"

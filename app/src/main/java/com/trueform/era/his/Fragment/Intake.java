@@ -146,10 +146,11 @@ public class Intake extends Fragment implements View.OnClickListener {
         mDay=mDay1 = c.get(Calendar.DAY_OF_MONTH);
         date = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
         //txtDate.setText(date);
-        edtMeal.setThreshold(0);
+        edtMeal.setThreshold(-1);
         rvMeal.setLayoutManager(new LinearLayoutManager(context));
         txtTime.setText(c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + " " + c.get(Calendar.AM_PM));
         unitLists = new ArrayList<>();
+        unitLists.add(0, new UnitList(0, "-Select-"));
         format1 = new SimpleDateFormat("dd/MM/yyyy");
         format2 = new SimpleDateFormat("hh:mm a");
         date = mYear + "/" + (mMonth + 1) + "/" + mDay;
@@ -189,6 +190,7 @@ public class Intake extends Fragment implements View.OnClickListener {
                 if (edtMeal.getText().length() > 0) {
                     //Utils.showRequestDialog(context);
                     mealList = null;
+                    edtQty.setText("");
                     edtQty.setEnabled(true);
                     spnUnit.setEnabled(true);
                     Call<MealResp> call = RetrofitClient1.getInstance().getApi().getIntakeListByPrefixText("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", SharedPrefManager.getInstance(context).getMemberId().getMemberId(), edtMeal.getText().toString().trim(), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
@@ -503,10 +505,12 @@ public class Intake extends Fragment implements View.OnClickListener {
                     unitResp = response.body().getResponseValue();
                     if (response.body().getResponseCode() == 1) {
                         unitLists.addAll(1, unitResp.getUnitList());
+                        unitListArrayAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, unitLists);
+                        spnUnit.setAdapter(unitListArrayAdapter);
                         if(mealList.getIsSynonym()==1) {
                             for (int i = 0; i < unitResp.getUnitList().size(); i++) {
-                                if (unitLists.get(i).getId().equals(unitResp.getDefaultUnitID()))
-                                    spnUnit.setSelection(i);
+                                if (unitLists.get(i+1).getId().equals(unitResp.getDefaultUnitID()))
+                                    spnUnit.setSelection(i+1);
                             }
                             edtQty.setText(unitResp.getDefaultQuantity());
                             edtQty.setEnabled(false);
@@ -517,8 +521,8 @@ public class Intake extends Fragment implements View.OnClickListener {
                         }
                     }
                 }
-                unitListArrayAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, unitLists);
-                spnUnit.setAdapter(unitListArrayAdapter);
+                /*unitListArrayAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, unitLists);
+                spnUnit.setAdapter(unitListArrayAdapter);*/
                 Utils.hideDialog();
             }
 
@@ -644,6 +648,7 @@ public class Intake extends Fragment implements View.OnClickListener {
                     Call<UnitResp> call = null;
                     if (foodDetails.get(i).getIsSupplement()==0)
                     call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()));
+                    else call = RetrofitClient1.getInstance().getApi().UpdateConsumptionPercentage("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", holder.edtQty.getText().toString().trim(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), array, SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()), foodDetails.get(i).getId().toString());
                     call.enqueue(new Callback<UnitResp>() {
                         @Override
                         public void onResponse(Call<UnitResp> call, Response<UnitResp> response) {

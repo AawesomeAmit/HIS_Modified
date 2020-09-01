@@ -70,7 +70,7 @@ public class SupplimentIntakeAdp extends RecyclerView.Adapter<SupplimentIntakeAd
         });
         holder.txtSave.setOnClickListener(view -> {
                 Utils.showRequestDialog(mCtx);
-                Call<UnitResp> call = RetrofitClient1.getInstance().getApi().UpdateConsumptionPercentage("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", holder.edtQty.getText().toString().trim(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()), String.valueOf(supplimentDetails.get(i).getId()));
+                /*Call<UnitResp> call = RetrofitClient1.getInstance().getApi().UpdateConsumptionPercentage("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", holder.edtQty.getText().toString().trim(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()), String.valueOf(supplimentDetails.get(i).getId()));
                 call.enqueue(new Callback<UnitResp>() {
                     @Override
                     public void onResponse(Call<UnitResp> call, Response<UnitResp> response) {
@@ -93,7 +93,7 @@ public class SupplimentIntakeAdp extends RecyclerView.Adapter<SupplimentIntakeAd
                     public void onFailure(Call<UnitResp> call, Throwable t) {
                         Utils.hideDialog();
                     }
-                });
+                });*/
         });
     }
 
