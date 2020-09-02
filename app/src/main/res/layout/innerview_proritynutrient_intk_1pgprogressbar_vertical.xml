@@ -41,7 +41,7 @@
                     android:progressDrawable="@drawable/progress_drawable_orange" />-->
 
 
-                <com.trueform.era.his.Utils.VerticalProgressBar
+                <com.his.android.Utils.VerticalProgressBar
                     android:id="@+id/textView7"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="@dimen/_10sdp"

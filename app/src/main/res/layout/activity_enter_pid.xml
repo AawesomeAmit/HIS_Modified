@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    tools:context=".Activity.EnterPID">
+    tools:context="com.his.android.Activity.EnterPID">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F6F6F6"
-    tools:context=".Activity.UploadMultipleImg.EmployeeOnDuty.EmployeesOnDuty">
+    tools:context="com.his.android.Activity.UploadMultipleImg.EmployeeOnDuty.EmployeesOnDuty">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

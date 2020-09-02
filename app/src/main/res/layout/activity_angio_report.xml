@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="50"
-    tools:context=".Activity.AngioReportActivity">
+    tools:context="com.his.android.Activity.AngioReportActivity">
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"

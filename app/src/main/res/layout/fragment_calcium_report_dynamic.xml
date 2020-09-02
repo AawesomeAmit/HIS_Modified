@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragment.CalciumReportDynamic">
+    tools:context="com.his.android.Fragment.CalciumReportDynamic">
 
     <TextView
         android:layout_width="match_parent"

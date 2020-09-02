@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.trueform.era.his",
+  "applicationId": "com.his.android",
   "variantName": "release",
   "elements": [
     {

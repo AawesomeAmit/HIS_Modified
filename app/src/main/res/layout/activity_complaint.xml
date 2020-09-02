@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="50"
-    tools:context=".Fragment.ProgressNote">
+    tools:context="com.his.android.Fragment.ProgressNote">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"

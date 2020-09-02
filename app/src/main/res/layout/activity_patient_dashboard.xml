@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.DiseasePatientList">
+    tools:context="com.his.android.Activity.DiseasePatientList">
 
     <TextView
         android:id="@+id/textView8"

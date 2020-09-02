@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragment.ActivityInput">
+    tools:context="com.his.android.Fragment.ActivityInput">
     <RelativeLayout
         android:layout_width="match_parent"
         android:gravity="center"

@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:679802632547:android:233a1b0fe2bcc1b1",
         "android_client_info": {
-          "package_name": "com.trueform.era.his"
+          "package_name": "com.his.android"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "679802632547-5lka4bbpe1qc45sio8ok3gbdtvvjle06.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.trueform.era.his",
+            "package_name": "com.his.android",
             "certificate_hash": "8a685a9c542a2ac397fd23bbc32f5372534649b4"
           }
         },

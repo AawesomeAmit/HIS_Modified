@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.PatientMovementInsert">
+    tools:context="com.his.android.Fragment.PatientMovementInsert">
 
     <ImageView
         android:id="@+id/imageView4"

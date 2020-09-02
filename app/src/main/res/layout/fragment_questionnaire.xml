@@ -6,7 +6,7 @@
     android:background="#F7F7F7"
     android:weightSum="30"
     android:orientation="vertical"
-    tools:context=".Fragment.Questionnaire">
+    tools:context="com.his.android.Fragment.Questionnaire">
     <RelativeLayout
         android:layout_width="match_parent"
         android:gravity="center"

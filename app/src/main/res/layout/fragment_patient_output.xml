@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gryText"
-    tools:context=".Fragment.PatientOutput">
+    tools:context="com.his.android.Fragment.PatientOutput">
 
     <LinearLayout
         android:id="@+id/linearLayout"

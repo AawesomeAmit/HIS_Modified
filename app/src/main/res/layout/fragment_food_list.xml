@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".Fragment.FoodList">
+    tools:context="com.his.android.Fragment.FoodList">
     <TextView
         android:id="@+id/textView8"
         android:layout_width="match_parent"

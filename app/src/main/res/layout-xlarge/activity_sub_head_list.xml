@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/relLayout"
-    tools:context=".Activity.SubHeadList">
+    tools:context="com.his.android.Activity.SubHeadList">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
