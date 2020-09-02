@@ -50,7 +50,7 @@ public class HeadAdp extends RecyclerView.Adapter<HeadAdp.RecyclerViewHolder> {
 
     @Override
     public int getItemCount() {
-        if(headList==null){
+        if (headList == null) {
             return 0;
         } else return headList.size();
     }
