@@ -408,4 +408,9 @@
     <string name="stop_scan">Stop Scan</string>
     <string name="scan">SCAN</string>
     <string name="barcode">Barcode</string>
+    <string name="pi">PI</string>
+    <string name="hrv">HRV</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
 </resources>

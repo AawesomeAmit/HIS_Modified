@@ -185,6 +185,8 @@ public class PreDashboard extends AppCompatActivity {
                 startActivity(new Intent(PreDashboard.this, DevicesSelection.class));
                 return true;
             });
+
+
             menu.getMenu().findItem(R.id.one).setOnMenuItemClickListener(item -> {
                 Call<ResponseBody> call = RetrofitClient.getInstance().getApi().logOut(SharedPrefManager.getInstance(PreDashboard.this).getUser().getAccessToken(), SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid().toString(), SharedPrefManager.getInstance(PreDashboard.this).getFCMToken(), String.valueOf(SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid()));
                 call.enqueue(new Callback<ResponseBody>() {

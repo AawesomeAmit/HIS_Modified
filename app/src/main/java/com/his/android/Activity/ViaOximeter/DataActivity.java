@@ -41,8 +41,8 @@ import java.util.Date;
 
 public class DataActivity extends BaseActivity {
     private final static String TAG = DataActivity.class.getSimpleName();
-    TextView device_address, btnScan, btnGetData, btnSaveData, txtId, connectionState, txtSpo2, txtPulse;
-    static String spo2, pulse;
+    TextView device_address, btnScan, btnGetData, btnSaveData, txtId, connectionState, txtSpo2, txtPulse, txtPi, txtHrv;
+    static String spo2, pulse, pi, hrv;
     LinearLayout ll;
 
     private IBleWriteResponse getBleWriteResponse() {
@@ -76,6 +76,8 @@ public class DataActivity extends BaseActivity {
         connectionState = findViewById(R.id.connection_state);
         txtPulse = findViewById(R.id.txtPulse);
         txtSpo2 = findViewById(R.id.txtSpo2);
+        txtPi = findViewById(R.id.txtPi);
+        txtHrv = findViewById(R.id.txtHrv);
         ll = findViewById(R.id.ll);
         device_address.setText(mac);
 
@@ -99,17 +101,30 @@ public class DataActivity extends BaseActivity {
             try {
                 if (pulse != null && !pulse.equals("0")) {
                     JSONObject jsonObject1 = new JSONObject();
-                    jsonObject1.put("vitalId", "3");
-                    jsonObject1.put("vitalValue", pulse);
-
+                    jsonObject1.put("vmID", "3");
+                    jsonObject1.put("vmValue", pulse);
                     dtTableArray.put(jsonObject1);
                 }
 
                 if (spo2 != null && !spo2.equals("0")) {
                     JSONObject jsonObject2 = new JSONObject();
-                    jsonObject2.put("vitalId", "56");
-                    jsonObject2.put("vitalValue", spo2);
+                    jsonObject2.put("vmID", "56");
+                    jsonObject2.put("vmValue", spo2);
                     dtTableArray.put(jsonObject2);
+                }
+
+                if (pi != null && !pi.equals("0")) {
+                    JSONObject jsonObject3 = new JSONObject();
+                    jsonObject3.put("vmID", "203");
+                    jsonObject3.put("vmValue", pi);
+                    dtTableArray.put(jsonObject3);
+                }
+
+                if (hrv != null && !hrv.equals("0")) {
+                    JSONObject jsonObject4 = new JSONObject();
+                    jsonObject4.put("vmID", "204");
+                    jsonObject4.put("vmValue", hrv);
+                    dtTableArray.put(jsonObject4);
                 }
 
             } catch (Exception e) {
@@ -162,6 +177,8 @@ public class DataActivity extends BaseActivity {
                     connectionState.setText(unConnectStr);
                     txtPulse.setText(getString(R.string.no_data));
                     txtSpo2.setText(getString(R.string.no_data));
+                    txtHrv.setText(getString(R.string.no_data));
+                    txtPi.setText(getString(R.string.no_data));
                 }
             }
         });
@@ -230,6 +247,10 @@ public class DataActivity extends BaseActivity {
 
                 pulse = String.valueOf(detectData.getHeart());
                 spo2 = String.valueOf(detectData.getSpo2h());
+                pi = String.valueOf(detectData.getPerfusionIndex());
+                hrv = String.valueOf(detectData.getHrv());
+                txtPi.setText(String.valueOf(detectData.getPerfusionIndex()));
+                txtHrv.setText(String.valueOf(detectData.getHrv()));
             }
         });
     }
@@ -274,7 +295,6 @@ public class DataActivity extends BaseActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Toast.makeText(DataActivity.this, "Vitals saved successfully", Toast.LENGTH_SHORT).show();
-//                        bind();
                         Utils.hideDialog();
                     }
 

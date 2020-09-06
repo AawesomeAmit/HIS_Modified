@@ -100,9 +100,9 @@ public class PatientDashboard extends BaseFragment {
     }
 
     private void hitGetPatientPerformanceList() {
-        if(ConnectivityChecker.checker(getActivity())) {
-        mSwipeRefreshLayout.setRefreshing(true);
-            Call<PatientPerformanceListResp> call = RetrofitClient.getInstance().getApi().getPatientPerformanceList(SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(), SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString());
+        if (ConnectivityChecker.checker(getActivity())) {
+            mSwipeRefreshLayout.setRefreshing(true);
+            Call<PatientPerformanceListResp> call = RetrofitClient.getInstance().getApi().getPatientPerformanceList(SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(), SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString(), SharedPrefManager.getInstance(getActivity()).getUser().getUserid(), SharedPrefManager.getInstance(getActivity()).getSubDept().getId(), SharedPrefManager.getInstance(getActivity()).getHeadID());
             call.enqueue(new Callback<PatientPerformanceListResp>() {
                 @Override
                 public void onResponse(Call<PatientPerformanceListResp> call, Response<PatientPerformanceListResp> response) {
@@ -123,7 +123,8 @@ public class PatientDashboard extends BaseFragment {
                     Utils.hideDialog();
                 }
             });
-        } else Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
 
     private void hitGetPatientDiagnosisResult(String pmID, String pId, int pos) {

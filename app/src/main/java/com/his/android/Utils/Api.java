@@ -528,8 +528,9 @@ public interface Api {
     @POST("UserNotification/ChangeRDAThroughNotification")
     Call<ResponseBody> changeRDAThroughNotification(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("notificationID") Integer notificationID, @Field("userID") String userID1, @Field("rdaPercentage") String rdaPercentage, @Field("rdaChangeToDate ") String rdaChangeToDate);
 
+//    @FormUrlEncoded
     @POST("PatientDashboard/GetPatientPerformanceList")
-    Call<PatientPerformanceListResp> getPatientPerformanceList(@Header("accessToken") String accessToken, @Header("userID") String userID);
+    Call<PatientPerformanceListResp> getPatientPerformanceList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("userID") Integer userID1, @Field("subDeptID") Integer subDeptID, @Field("headID") Integer headID);
 
     @FormUrlEncoded
     @POST("ClinicalNotification/GetClinicalNotification")

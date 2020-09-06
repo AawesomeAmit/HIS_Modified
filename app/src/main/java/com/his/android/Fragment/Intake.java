@@ -541,8 +541,8 @@ public class Intake extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call<List<IntakeData>> call, Response<List<IntakeData>> response) {
                 if (response.isSuccessful()) {
-                    List<IntakeData> foodDetailResp = response.body();
-                    if ((foodDetailResp != null ? foodDetailResp.size() : 0) > 0) {
+                      List<IntakeData> foodDetailResp = response.body();
+                    if (foodDetailResp != null) {
                         rvMeal.setAdapter(new IntakeAdp(context, foodDetailResp));
                     }
                 }

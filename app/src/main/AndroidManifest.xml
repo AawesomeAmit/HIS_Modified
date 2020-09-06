@@ -38,7 +38,7 @@
     <uses-permission android:name="android.permission.STORAGE" />
 
     <application
-        android:name="com.his.android.database.MyApplication"
+        android:name=".database.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -47,90 +47,91 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.his.android.Activity.DevicesSelection"></activity>
-        <activity android:name="com.his.android.Activity.ChecklistCovidPatient" />
-        <activity android:name="com.his.android.Activity.ProgressNoteScan" />
-        <activity android:name="com.his.android.Activity.UpdateVital" />
-        <activity android:name="com.his.android.Activity.ViewDietImage" />
-        <activity android:name="com.his.android.Activity.ScanSelector" />
-        <activity android:name="com.his.android.Activity.ScanDashboard" />
-        <activity android:name="com.his.android.Activity.CasualtyRegistration" />
+        <activity android:name=".Activity.LangSelection"></activity>
+        <activity android:name=".Activity.DevicesSelection" />
+        <activity android:name=".Activity.ChecklistCovidPatient" />
+        <activity android:name=".Activity.ProgressNoteScan" />
+        <activity android:name=".Activity.UpdateVital" />
+        <activity android:name=".Activity.ViewDietImage" />
+        <activity android:name=".Activity.ScanSelector" />
+        <activity android:name=".Activity.ScanDashboard" />
+        <activity android:name=".Activity.CasualtyRegistration" />
         <activity
-            android:name="com.his.android.Activity.DeviceControlActivity"
+            android:name=".Activity.DeviceControlActivity"
             android:theme="@android:style/Theme.Holo.Light" />
         <activity
-            android:name="com.his.android.Activity.BP.BLE.DeviceControlActivity"
+            android:name=".Activity.BP.BLE.DeviceControlActivity"
             android:theme="@android:style/Theme.Holo.Light" />
         <activity
-            android:name="com.his.android.Activity.DeviceScanActivity"
+            android:name=".Activity.DeviceScanActivity"
             android:theme="@android:style/Theme.Holo.Light" />
         <activity
-            android:name="com.his.android.Activity.BP.BLE.DeviceScanActivity"
+            android:name=".Activity.BP.BLE.DeviceScanActivity"
             android:theme="@android:style/Theme.Holo.Light" />
-        <activity android:name="com.his.android.Activity.NursingNote" /> <!-- <activity android:name=".Activity.BP.TerminalFragment" /> -->
-        <activity android:name="com.his.android.Activity.PatientNote" />
-        <activity android:name="com.his.android.Activity.ConsultantNote" />
-        <activity android:name="com.his.android.Activity.BP.Medcheck.MainActivity" />
-        <activity android:name="com.his.android.Activity.BP.Medcheck.DeviceConnectionActivity" />
-        <activity android:name="com.his.android.Activity.OTNote" />
-        <activity android:name="com.his.android.Activity.BP.Initial" />
-        <activity android:name="com.his.android.Activity.ScannerActivity" />
-        <activity android:name="com.his.android.Activity.UploadMultipleImg.FragmentSampleActivity" />
-        <activity android:name="com.his.android.Activity.UploadMultipleImg.UploadImg" />
-        <activity android:name="com.his.android.Activity.UploadMultipleImg.ViewPatientDoc" />
+        <activity android:name=".Activity.NursingNote" /> <!-- <activity android:name=".Activity.BP.TerminalFragment" /> -->
+        <activity android:name=".Activity.PatientNote" />
+        <activity android:name=".Activity.ConsultantNote" />
+        <activity android:name=".Activity.BP.Medcheck.MainActivity" />
+        <activity android:name=".Activity.BP.Medcheck.DeviceConnectionActivity" />
+        <activity android:name=".Activity.OTNote" />
+        <activity android:name=".Activity.BP.Initial" />
+        <activity android:name=".Activity.ScannerActivity" />
+        <activity android:name=".Activity.UploadMultipleImg.FragmentSampleActivity" />
+        <activity android:name=".Activity.UploadMultipleImg.UploadImg" />
+        <activity android:name=".Activity.UploadMultipleImg.ViewPatientDoc" />
         <activity
-            android:name="com.his.android.Activity.AchievedNutrientGraphActivity"
+            android:name=".Activity.AchievedNutrientGraphActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.GuardPostPatientListActivity"
+            android:name=".Activity.GuardPostPatientListActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.GuardPostActivity"
+            android:name=".Activity.GuardPostActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.NotificationDetail"
+            android:name=".Activity.NotificationDetail"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.DiseasePatientList"
+            android:name=".Activity.DiseasePatientList"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Fragment.DiseaseList"
+            android:name=".Fragment.DiseaseList"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Fragment.NutritiAnalyzer"
+            android:name=".Fragment.NutritiAnalyzer"
             android:label="@string/title_activity_nutriti_analyzer"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Fragment.IntakeOutputVitalRange"
+            android:name=".Fragment.IntakeOutputVitalRange"
             android:label="@string/title_activity_intake_output_vital_range"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Fragment.NutriAnalyserFragment"
+            android:name=".Fragment.NutriAnalyserFragment"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.AverageNutrientReportActivity"
+            android:name=".Activity.AverageNutrientReportActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.IdealNutrientIntakeActivity"
+            android:name=".Activity.IdealNutrientIntakeActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Fragment.ActivityProblemInput"
+            android:name=".Fragment.ActivityProblemInput"
             android:label="@string/title_activity_problem_input"
-            android:parentActivityName="com.his.android.Activity.Dashboard"
+            android:parentActivityName=".Activity.Dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">
@@ -139,18 +140,18 @@
                 android:value="com.his.android.Activity.Dashboard" />
         </activity>
         <activity
-            android:name="com.his.android.Activity.PatientDashboard"
+            android:name=".Activity.PatientDashboard"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.ViaOximeter.DataActivity"
+            android:name=".Activity.ViaOximeter.DataActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Fragment.IntakeInput"
+            android:name=".Fragment.IntakeInput"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_intake_input"
-            android:parentActivityName="com.his.android.Activity.Dashboard"
+            android:parentActivityName=".Activity.Dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">
@@ -159,41 +160,41 @@
                 android:value="com.his.android.Activity.Dashboard" />
         </activity>
         <activity
-            android:name="com.his.android.Activity.EnterPID"
+            android:name=".Activity.EnterPID"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name="com.his.android.Activity.ShowPatientAnalyzingGraph" />
+        <activity android:name=".Activity.ShowPatientAnalyzingGraph" />
         <activity
-            android:name="com.his.android.Activity.NotificationList"
+            android:name=".Activity.NotificationList"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.MainActivity"
+            android:name=".Activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.PriscriptionOverviewPopup"
+            android:name=".Activity.PriscriptionOverviewPopup"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@style/AppTheme.CustomTheme" />
         <activity
-            android:name="com.his.android.Activity.PatientList"
+            android:name=".Activity.PatientList"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Fragment.MedicineSidePathway"
+            android:name=".Fragment.MedicineSidePathway"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.PreDashboard"
+            android:name=".Activity.PreDashboard"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.Dashboard"
+            android:name=".Activity.Dashboard"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_dashboard"
             android:screenOrientation="portrait"
@@ -201,7 +202,7 @@
             android:windowSoftInputMode="stateVisible|adjustResize"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.StartActivity"
+            android:name=".Activity.StartActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -214,49 +215,51 @@
         </activity>
 
         <service
-            android:name="com.his.android.Activity.BluetoothLeService"
+            android:name=".Activity.BluetoothLeService"
             android:enabled="true"
             android:theme="@android:style/Theme.Holo.Light" />
         <service
-            android:name="com.his.android.Activity.BP.BLE.BluetoothLeService1"
+            android:name=".Activity.BP.BLE.BluetoothLeService1"
             android:enabled="true"
             android:theme="@android:style/Theme.Holo.Light" />
 
         <activity
-            android:name="com.his.android.Activity.ProgressNoteActivity"
+            android:name=".Activity.ProgressNoteActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.ComplaintActivity"
+            android:name=".Activity.ComplaintActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.PatientHistoryActivity"
+            android:name=".Activity.PatientHistoryActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.PhysicalExaminationActivity"
+            android:name=".Activity.PhysicalExaminationActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.ProcedureNoteActivity"
+            android:name=".Activity.ProcedureNoteActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="com.his.android.Activity.AngioReportActivity"
+            android:name=".Activity.AngioReportActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name="com.his.android.Activity.DeviceConnectScanActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".Activity.DeviceConnectScanActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name="com.his.android.Activity.ViaOximeter.ViaOximeterScanActivity"
+        <activity
+            android:name=".Activity.ViaOximeter.ViaOximeterScanActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 
-        <service android:name="com.his.android.Activity.BP.SerialService" />
+        <service android:name=".Activity.BP.SerialService" />
         <service
-            android:name="com.his.android.Utils.MyFirebaseMessagingService"
+            android:name=".Utils.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

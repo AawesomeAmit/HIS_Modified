@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.his.android.Activity.DevicesSelection">
+    tools:context=".Activity.LangSelection">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,14 +16,14 @@
         android:paddingBottom="@dimen/_2sdp"
         android:gravity="center"
         android:background="@drawable/rectangle_grey"
-        android:text="BP And Oximeter Device Selection"
+        android:text="Language Selection"
         android:textColor="@color/blue_text"
         android:textSize="@dimen/_14sdp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <TextView
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
@@ -36,7 +36,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="@dimen/_20sdp"
@@ -47,63 +47,19 @@
         android:weightSum="2">
 
         <RadioButton
-            android:id="@+id/rbOxiControlD"
+            android:id="@+id/rbEnglish"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/control_d"
+            android:text="@string/english"
             android:textSize="@dimen/_11sdp" />
 
         <RadioButton
-            android:id="@+id/rbOxiVia"
+            android:id="@+id/rbHindi"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/via"
-            android:textSize="@dimen/_11sdp" />
-    </RadioGroup>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:gravity="center"
-        android:text="@string/set_bp_type"
-        android:textColor="@color/blue_text"
-        android:textSize="@dimen/_14sdp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_20sdp"
-        android:background="@drawable/edt_bor"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="3">
-        <RadioButton
-            android:id="@+id/rbBpMedcheck"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/medcheck"
-            android:textSize="@dimen/_11sdp" />
-        <RadioButton
-            android:id="@+id/rbBpOmron"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Omron"
-            android:textSize="@dimen/_11sdp" />
-        <RadioButton
-            android:id="@+id/rbBpMeditive"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/meditive"
+            android:text="@string/hindi"
             android:textSize="@dimen/_11sdp" />
     </RadioGroup>
     <TextView
