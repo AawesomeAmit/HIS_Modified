@@ -37,6 +37,9 @@ public class QuestionList {
     @SerializedName("createdDate")
     @Expose
     public String createdDate;
+    @SerializedName("subCategoryName")
+    @Expose
+    public String subCategoryName;
     @SerializedName("status")
     @Expose
     public Integer status;
@@ -116,6 +119,10 @@ public class QuestionList {
 
     public Integer getSubCategoryID() {
         return subCategoryID;
+    }
+
+    public String getSubCategoryName() {
+        return subCategoryName;
     }
 
     public String getQuestionText() {

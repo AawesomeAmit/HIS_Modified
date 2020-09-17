@@ -56,9 +56,7 @@ public class UploadImg extends BaseActivity {
 
         btnSubmit.setOnClickListener(view -> {
             try {
-                if (getIntent().getStringExtra("meal") == null)
-                    hitUploadImg();
-                else hitUploadDietImg();
+                hitUploadDietImg();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -124,69 +122,6 @@ public class UploadImg extends BaseActivity {
                 return;
             }
         }
-    }
-
-    //Upload Image
-    private void hitUploadImg() {
-        MultipartBody.Part[] fileParts = new MultipartBody.Part[returnValue.size()];
-        try {
-            for (int i = 0; i < returnValue.size(); i++) {
-                String path = returnValue.get(i);
-                Log.d("filePath", "File Path: " + path);
-                File file = new File(path);
-                MediaType mediaType = MediaType.parse(Utils.getMimeType(path));
-                RequestBody fileBody = RequestBody.create(mediaType, file);
-                fileParts[i] = MultipartBody.Part.createFormData("fileName", file.getName(), fileBody);
-//                fileParts = MultipartBody.Part.createFormData("attachedFile", file.getName(), fileBody);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Utils.showRequestDialog(mActivity);
-        Api iRestInterfaces = ApiUtilsForFile.getAPIService();
-        Call<String> call;
-        call = iRestInterfaces.addImage(
-                SharedPrefManager.getInstance(context).getUser().getAccessToken(),
-                String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid()),
-                fileParts,
-                RequestBody.create(MediaType.parse("text/plain"),  String.valueOf(SharedPrefManager.getInstance(context).getPid())),
-                RequestBody.create(MediaType.parse("text/plain"), String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid())),
-                RequestBody.create(MediaType.parse("text/plain"), dateString)
-        );
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Uploaded Successfully!", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-                    finish();
-                } else {
-                    switch (response.code()) {
-                        case 401:
-                            Toast.makeText(getApplicationContext(), "Unauthorized User", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 500:
-                            Toast.makeText(getApplicationContext(), "Internal Server Error", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 404:
-                            Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();
-                            break;
-                        default:
-                            Toast.makeText(getApplicationContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-                Utils.hideDialog();
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                 Utils.hideDialog();
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
     }
     private void hitUploadDietImg() {
         Date date= Calendar.getInstance().getTime();

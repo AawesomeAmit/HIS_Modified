@@ -242,6 +242,7 @@ public class DeviceControlActivity extends Activity {
             jsonObject.put("entryDate", format.format(today));
             jsonObject.put("subDeptID", SharedPrefManager.getInstance(DeviceControlActivity.this).getSubdeptID());
             jsonObject.put("isFinalDiagnosis", false);
+            jsonObject.put("isMachine", "1");
             jsonObject.put("ipNo", SharedPrefManager.getInstance(DeviceControlActivity.this).getIpNo());
             jsonObject.put("userID", SharedPrefManager.getInstance(DeviceControlActivity.this).getUser().getUserid());
             jsonObject.put("consultantName", SharedPrefManager.getInstance(DeviceControlActivity.this).getUser().getUserid());

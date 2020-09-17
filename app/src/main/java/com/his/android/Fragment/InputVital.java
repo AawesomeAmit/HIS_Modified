@@ -443,6 +443,7 @@ public class InputVital extends Fragment implements View.OnClickListener {
             jsonObject.put("entryDate", format.format(today));
             jsonObject.put("subDeptID", SharedPrefManager.getInstance(context).getSubDept().getId());
             jsonObject.put("isFinalDiagnosis", false);
+            jsonObject.put("isMachine", "0");
             jsonObject.put("ipNo", SharedPrefManager.getInstance(context).getIpNo());
             jsonObject.put("userID", SharedPrefManager.getInstance(context).getUser().getUserid());
             jsonObject.put("consultantName", drId);

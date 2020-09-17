@@ -65,7 +65,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Questionnaire extends Fragment implements View.OnClickListener {
-    private TextView txtQues, btnSave;
+    private TextView txtQues, txtSubCat, btnSave;
     private int selectedIndex=0;
     private Spinner spnSets;
     private SetIDResp setID;
@@ -117,17 +117,17 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_questionnaire, container, false);
-        context=view.getContext();
-        rvQuestionnaire=view.findViewById(R.id.rvQuestionnaire);
-        rvQuestionnaireResp=view.findViewById(R.id.rvQuestionnaireResp);
-        spnSets=view.findViewById(R.id.spnSets);
-        btnSave=view.findViewById(R.id.btnSave);
-        svQuesResp=view.findViewById(R.id.svQuesResp);
-        progressDialog=new ProgressDialog(context);
-        txtDate=view.findViewById(R.id.txtDate);
-        label=view.findViewById(R.id.label);
-        txtTime=view.findViewById(R.id.txtTime);
-        svQues=view.findViewById(R.id.svQues);
+        context = view.getContext();
+        rvQuestionnaire = view.findViewById(R.id.rvQuestionnaire);
+        rvQuestionnaireResp = view.findViewById(R.id.rvQuestionnaireResp);
+        spnSets = view.findViewById(R.id.spnSets);
+        btnSave = view.findViewById(R.id.btnSave);
+        svQuesResp = view.findViewById(R.id.svQuesResp);
+        progressDialog = new ProgressDialog(context);
+        txtDate = view.findViewById(R.id.txtDate);
+        label = view.findViewById(R.id.label);
+        txtTime = view.findViewById(R.id.txtTime);
+        svQues = view.findViewById(R.id.svQues);
         txtDate.setOnClickListener(this);
         txtTime.setOnClickListener(this);
         Calendar c = Calendar.getInstance();
@@ -141,23 +141,23 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
         txtTime.setText(format2.format(today));
         progressDialog.setMessage("Please wait...");
         final int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0,0,0, (int) getResources().getDimension(R.dimen._5sdp));
-        params1=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params1.setMargins((int) getResources().getDimension(R.dimen._7sdp),(int) getResources().getDimension(R.dimen._2sdp),(int) getResources().getDimension(R.dimen._5sdp),0);
-        params2=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params2.setMargins((int) getResources().getDimension(R.dimen._10sdp),0,(int) getResources().getDimension(R.dimen._7sdp),0);
-        params3=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen._5sdp));
+        params1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params1.setMargins((int) getResources().getDimension(R.dimen._7sdp), (int) getResources().getDimension(R.dimen._2sdp), (int) getResources().getDimension(R.dimen._5sdp), 0);
+        params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params2.setMargins((int) getResources().getDimension(R.dimen._10sdp), 0, (int) getResources().getDimension(R.dimen._7sdp), 0);
+        params3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         radioLayout = view.findViewById(R.id.radioLayout);
         checkLayout = view.findViewById(R.id.checkLayout);
-        Call<SetIDResp> call1=RetrofitClient.getInstance().getApi().getSetList(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getHeadID());
+        Call<SetIDResp> call1 = RetrofitClient.getInstance().getApi().getSetList(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getHeadID());
         call1.enqueue(new Callback<SetIDResp>() {
             @Override
             public void onResponse(Call<SetIDResp> call, Response<SetIDResp> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        setID=response.body();
-                        if(setID.getSetList().size()>0) {
+                        setID = response.body();
+                        if (setID.getSetList().size() > 0) {
                             setListArrayAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, setID.getSetList());
                             spnSets.setAdapter(setListArrayAdapter);
                             //bindResponse();
@@ -178,34 +178,34 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
             public void onItemSelected(AdapterView<?> adapterView, final View view, int i, long l) {
                 progressDialog.show();
                 rvQuestionnaire.removeAllViews();
-                selectedIndex=i;
+                selectedIndex = i;
                 bindResponse();
-                Call<QuestionnaireResp> call2= RetrofitClient.getInstance().getApi().getQuestionnaireList(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), setID.getSetList().get(i).getSetID(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
+                Call<QuestionnaireResp> call2 = RetrofitClient.getInstance().getApi().getQuestionnaireList(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), setID.getSetList().get(i).getSetID(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
                 call2.enqueue(new Callback<QuestionnaireResp>() {
                     @Override
                     public void onResponse(Call<QuestionnaireResp> call, Response<QuestionnaireResp> response) {
                         if (response.isSuccessful()) {
                             questionnaireResp = response.body();
                             QuestionList questionList;
-                            int l=0;
-                            List<QuestionList> questionLists=new ArrayList<>();
+                            int l = 0;
+                            List<QuestionList> questionLists = new ArrayList<>();
                             if (questionnaireResp.getQuestionList().size() > 0) {
                                 for (int j = 0; j < questionnaireResp.getQuestionList().size(); j++) {
-                                    if(questionnaireResp.getQuestionList().get(j).getDependentQuestionID()!=0) {
-                                        if(!questionLists.contains(questionnaireResp.getQuestionList().get(j))) {
+                                    if (questionnaireResp.getQuestionList().get(j).getDependentQuestionID() != 0) {
+                                        if (!questionLists.contains(questionnaireResp.getQuestionList().get(j))) {
                                             questionLists.add(l, questionnaireResp.getQuestionList().get(j));
                                             l++;
                                         }
                                         for (int k = 0; k < questionnaireResp.getQuestionList().size(); k++) {
-                                            if(questionnaireResp.getQuestionList().get(j).getDependentQuestionID().equals(questionnaireResp.getQuestionList().get(k).getId())){
-                                                if(!questionLists.contains(questionnaireResp.getQuestionList().get(k))) {
+                                            if (questionnaireResp.getQuestionList().get(j).getDependentQuestionID().equals(questionnaireResp.getQuestionList().get(k).getId())) {
+                                                if (!questionLists.contains(questionnaireResp.getQuestionList().get(k))) {
                                                     questionLists.add(l, questionnaireResp.getQuestionList().get(k));
                                                     l++;
                                                 }
                                             }
                                         }
                                     } else {
-                                        if(!questionLists.contains(questionnaireResp.getQuestionList().get(j))) {
+                                        if (!questionLists.contains(questionnaireResp.getQuestionList().get(j))) {
                                             questionLists.add(l, questionnaireResp.getQuestionList().get(j));
                                             l++;
                                         }
@@ -221,12 +221,31 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
                                     ll.setId(questionnaireResp.getQuestionList().get(i).getSubCategoryID());
                                     questionList = questionnaireResp.getQuestionList().get(i);
                                     ll.setBackgroundResource(R.drawable.edt_bor);
+                                    if (i == 0) {
+                                        txtSubCat = new TextView(context);
+                                        txtSubCat.setTypeface(Typeface.DEFAULT_BOLD);
+                                        txtSubCat.setText(questionList.getSubCategoryName());
+                                        txtSubCat.setTextColor(R.color.blue_text);
+                                        txtSubCat.setPadding(R.dimen._1sdp, 0, 0, 0);
+                                        txtSubCat.setTextSize((int) getResources().getDimension(R.dimen._5sdp));
+                                        rvQuestionnaire.addView(txtSubCat);
+                                    } else {
+                                        if (!questionList.getSubCategoryID().equals(questionnaireResp.getQuestionList().get(i - 1).getSubCategoryID())) {
+                                            txtSubCat = new TextView(context);
+                                            txtSubCat.setTypeface(Typeface.DEFAULT_BOLD);
+                                            txtSubCat.setText(questionList.getSubCategoryName());
+                                            txtSubCat.setTextColor(R.color.blue_text);
+                                            txtSubCat.setTextSize((int) getResources().getDimension(R.dimen._5sdp));
+                                            rvQuestionnaire.addView(txtSubCat);
+                                        }
+                                    }
                                     txtQues = new TextView(context);
                                     txtQues.setTextColor(Color.BLACK);
                                     txtQues.setId(questionnaireResp.getQuestionList().get(i).getId());
-                                    if(screenSize==Configuration.SCREENLAYOUT_SIZE_XLARGE)
-                                    txtQues.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
-                                    else txtQues.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
+                                    if (screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE)
+                                        txtQues.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
+                                    else
+                                        txtQues.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
                                     txtQues.setLayoutParams(params1);
                                     txtQues.setText(questionList.getQuestionText());
                                     txtQues.setPadding(0, (int) getResources().getDimension(R.dimen._2sdp), 0, (int) getResources().getDimension(R.dimen._2sdp));
@@ -246,7 +265,8 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
                                         edtAns.setId(0);
                                         edtAns.setPadding((int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp), (int) getResources().getDimension(R.dimen._5sdp));
                                         gridLayout.addView(edtAns);
-                                    } /*else if (questionList.getAnswerDataType().equalsIgnoreCase("numeric")) {
+                                    }
+                                    /*else if (questionList.getAnswerDataType().equalsIgnoreCase("numeric")) {
                                         for (int k = 0; k < questionnaireResp.getOptionList().size(); k++) {
                                             optionList = questionnaireResp.getOptionList().get(k);
                                             if (questionList.getId().equals(optionList.getQuestionMasterID())) {
@@ -275,9 +295,10 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
                                                 final RadioButton rButton = new RadioButton(context);
                                                 rButton.setTextColor(context.getResources().getColor(R.color.black));
                                                 rButton.setButtonDrawable(null);
-                                                if(screenSize==Configuration.SCREENLAYOUT_SIZE_XLARGE)
+                                                if (screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE)
                                                     rButton.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
-                                                else rButton.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
+                                                else
+                                                    rButton.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
                                                 rButton.setTag(questionnaireResp.getOptionList().get(k).getDependentQuestionID());
                                                 rButton.setButtonDrawable(context.getResources().getDrawable(R.drawable.radio_selector));
                                                 rButton.setText(optionList.getOptionText());
@@ -286,9 +307,9 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
                                                 rButton.setPadding(0, (int) getResources().getDimension(R.dimen._2sdp), 0, (int) getResources().getDimension(R.dimen._2sdp));
                                                 rdGrp.addView(rButton);
                                                 rButton.setOnCheckedChangeListener((compoundButton, b) -> {
-                                                    if(!rButton.getTag().equals(0)){
+                                                    if (!rButton.getTag().equals(0)) {
                                                         for (int j = 0; j < questionnaireResp.getQuestionList().size(); j++) {
-                                                            if(rButton.getTag().equals(questionnaireResp.getQuestionList().get(j).getId())) {
+                                                            if (rButton.getTag().equals(questionnaireResp.getQuestionList().get(j).getId())) {
                                                                 LinearLayout ll1 = (LinearLayout) rvQuestionnaire.getChildAt(j);
                                                                 ll1.setVisibility(View.VISIBLE);
                                                             }
@@ -307,9 +328,10 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
                                                 chk.setText(optionList.getOptionText());
                                                 chk.setId(questionnaireResp.getOptionList().get(k).getId());
                                                 chk.setButtonDrawable(null);
-                                                if(screenSize==Configuration.SCREENLAYOUT_SIZE_XLARGE)
+                                                if (screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE)
                                                     chk.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
-                                                else chk.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
+                                                else
+                                                    chk.setTextSize((int) getResources().getDimension(R.dimen._4sdp));
                                                 chk.setTextColor(context.getResources().getColor(R.color.black));
                                                 chk.setButtonDrawable(context.getResources().getDrawable(R.drawable.radio_selector));
                                                 chk.setPadding(0, (int) getResources().getDimension(R.dimen._3sdp), 0, (int) getResources().getDimension(R.dimen._3sdp));
@@ -323,10 +345,10 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
                                     rvQuestionnaire.addView(ll);
                                 }
                                 for (int j = 0; j < questionnaireResp.getQuestionList().size(); j++) {
-                                    if(questionnaireResp.getQuestionList().get(j).getDependentQuestionID()!=0) {
+                                    if (questionnaireResp.getQuestionList().get(j).getDependentQuestionID() != 0) {
                                         for (int k = 0; k < questionnaireResp.getQuestionList().size(); k++) {
-                                            if(questionnaireResp.getQuestionList().get(j).getDependentQuestionID().equals(questionnaireResp.getQuestionList().get(k).getId())){
-                                                LinearLayout ll= (LinearLayout) rvQuestionnaire.getChildAt(k);
+                                            if (questionnaireResp.getQuestionList().get(j).getDependentQuestionID().equals(questionnaireResp.getQuestionList().get(k).getId())) {
+                                                LinearLayout ll = (LinearLayout) rvQuestionnaire.getChildAt(k);
                                                 ll.setVisibility(View.GONE);
                                             }
                                         }

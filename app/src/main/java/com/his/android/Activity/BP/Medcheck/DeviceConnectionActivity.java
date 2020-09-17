@@ -296,6 +296,7 @@ public class DeviceConnectionActivity extends MedCheckActivity implements View.O
                 jsonObject.put("entryDate", format.format(today));
                 jsonObject.put("subDeptID", SharedPrefManager.getInstance(DeviceConnectionActivity.this).getSubdeptID());
                 jsonObject.put("isFinalDiagnosis", false);
+                jsonObject.put("isMachine", "1");
                 jsonObject.put("ipNo", SharedPrefManager.getInstance(DeviceConnectionActivity.this).getIpNo());
                 jsonObject.put("userID", SharedPrefManager.getInstance(DeviceConnectionActivity.this).getUser().getUserid());
                 jsonObject.put("consultantName", SharedPrefManager.getInstance(DeviceConnectionActivity.this).getUser().getUserid());

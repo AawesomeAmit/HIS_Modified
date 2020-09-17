@@ -239,19 +239,16 @@ public class DataActivity extends BaseActivity {
     }*/
 
     public void listenDetectResult() {
-        OxiOprateManager.getMangerInstance(getApplicationContext()).setOnDetectDataListener(new OnDetectDataListener() {
-            @Override
-            public void onDataChange(DetectData detectData) {
-                txtSpo2.setText(String.valueOf(detectData.getSpo2h()));
-                txtPulse.setText(String.valueOf(detectData.getHeart()));
+        OxiOprateManager.getMangerInstance(getApplicationContext()).setOnDetectDataListener(detectData -> {
+            txtSpo2.setText(String.valueOf(detectData.getSpo2h()));
+            txtPulse.setText(String.valueOf(detectData.getHeart()));
 
-                pulse = String.valueOf(detectData.getHeart());
-                spo2 = String.valueOf(detectData.getSpo2h());
-                pi = String.valueOf(detectData.getPerfusionIndex());
-                hrv = String.valueOf(detectData.getHrv());
-                txtPi.setText(String.valueOf(detectData.getPerfusionIndex()));
-                txtHrv.setText(String.valueOf(detectData.getHrv()));
-            }
+            pulse = String.valueOf(detectData.getHeart());
+            spo2 = String.valueOf(detectData.getSpo2h());
+            pi = String.valueOf(detectData.getPerfusionIndex());
+            hrv = String.valueOf(detectData.getHrv());
+            txtPi.setText(String.valueOf(detectData.getPerfusionIndex()));
+            txtHrv.setText(String.valueOf(detectData.getHrv()));
         });
     }
 
@@ -277,6 +274,7 @@ public class DataActivity extends BaseActivity {
             jsonObject.put("entryDate", format.format(today));
             jsonObject.put("subDeptID", SharedPrefManager.getInstance(DataActivity.this).getSubdeptID().toString());
             jsonObject.put("isFinalDiagnosis", false);
+            jsonObject.put("isMachine", "1");
             jsonObject.put("ipNo", SharedPrefManager.getInstance(DataActivity.this).getIpNo());
             jsonObject.put("userID", SharedPrefManager.getInstance(DataActivity.this).getUser().getUserid());
             jsonObject.put("consultantName", SharedPrefManager.getInstance(DataActivity.this).getUser().getUserid());

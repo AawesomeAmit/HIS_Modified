@@ -46,7 +46,7 @@ public class DischargePatient extends BaseFragment {
 
     private String dischargeTypeID="";
 
-    TextView tvSubmit;
+    TextView tvSubmit, txtUpload;
 
 
     @Override
@@ -61,6 +61,7 @@ public class DischargePatient extends BaseFragment {
 
         etRemark = view.findViewById(R.id.etReview);
         tvSubmit = view.findViewById(R.id.tvSubmit);
+        txtUpload = view.findViewById(R.id.txtUpload);
         spnType = view.findViewById(R.id.spnDischargeType);
 
         if (ConnectivityChecker.checker(mActivity)) {
@@ -68,7 +69,9 @@ public class DischargePatient extends BaseFragment {
         } else {
             Toast.makeText(getActivity(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
         }
+        txtUpload.setOnClickListener(view12 -> {
 
+        });
         tvSubmit.setOnClickListener(view1 -> {
             try {
 

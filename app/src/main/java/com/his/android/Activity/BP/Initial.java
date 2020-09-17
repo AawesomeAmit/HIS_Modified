@@ -145,6 +145,7 @@ public class Initial extends AppCompatActivity implements FragmentManager.OnBack
             jsonObject.put("entryDate", format.format(today));
             jsonObject.put("subDeptID", SharedPrefManager.getInstance(Initial.this).getSubdeptID());
             jsonObject.put("isFinalDiagnosis", false);
+            jsonObject.put("isMachine", "1");
             jsonObject.put("ipNo", SharedPrefManager.getInstance(Initial.this).getIpNo());
             jsonObject.put("userID", SharedPrefManager.getInstance(Initial.this).getUser().getUserid());
             jsonObject.put("consultantName", SharedPrefManager.getInstance(Initial.this).getUser().getUserid());
