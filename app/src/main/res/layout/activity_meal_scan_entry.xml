@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.MealScanEntry">
+
+    <TextView
+        android:id="@+id/textView31"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/greyLine"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/input_intake"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_15ssp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/txtMeal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:text="THE COCA-COLA COMPANY, NOS energy drink, Original, grape, loaded cherry, charged citrus, fortified with vitamins B6 and B12"
+        android:textSize="@dimen/_14ssp"
+        android:padding="@dimen/_5sdp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:background="@color/greyLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="@string/quantity"
+        android:textSize="@dimen/_12ssp"
+        android:padding="@dimen/_5sdp"
+        android:gravity="center"
+        android:background="@color/greyLine"
+        android:textColor="@color/grey_heading"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtMeal" />
+
+    <TextView
+        android:id="@+id/txtQty"
+        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_100sdp"
+        android:text="25 gm"
+        android:gravity="center"
+        android:background="@color/greyLine"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        android:padding="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:background="@drawable/edt_bor_intake"
+        android:paddingBottom="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtQty">
+
+        <TextView
+            android:id="@+id/textView35"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/_15sdp"
+            android:text="Do you want to add above intake item?"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtQty" />
+
+        <TextView
+            android:id="@+id/btnNo"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/edt_bor"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/no"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toStartOf="@+id/btnYes"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+
+        <TextView
+            android:id="@+id/btnYes"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@drawable/edt_bor"
+            android:gravity="center"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/yes"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnNo"
+            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

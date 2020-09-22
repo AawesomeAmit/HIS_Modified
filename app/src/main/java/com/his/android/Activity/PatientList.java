@@ -87,6 +87,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
     IpdPatientListResp ipdPatientListResp;
     CovidPatientResp covidPatientResp;
     IcuPatientListResp icuPatientListResp;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +179,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             bindCovidPatient();
         } else if (SharedPrefManager.getInstance(this).getHeadID() == 9) {
             bindPhysioList();
-        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4 || SharedPrefManager.getInstance(this).getHeadID() == 2029 || SharedPrefManager.getInstance(this).getHeadID() == 2030) {
+        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4 || SharedPrefManager.getInstance(this).getHeadID() == 2029 || SharedPrefManager.getInstance(this).getHeadID() == 2030 || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 36)) {
             /*int wardId = 0;
             if (SharedPrefManager.getInstance(this).getHeadID() == 3)
                 wardId = 39;
@@ -243,7 +244,8 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                             Utils.hideDialog();
                         }
                     });
-                } else Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                 return true;
             });
             menu.show();
@@ -271,6 +273,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             }
         }));*/
     }
+
     public void bindDieteticsPatient() {
         if (ConnectivityChecker.checker(getApplicationContext())) {
             Utils.showRequestDialog(context);
@@ -301,8 +304,10 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     Utils.hideDialog();
                 }
             });
-        } else Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
+
     private void bindCovidPatient() {
         if (ConnectivityChecker.checker(getApplicationContext())) {
             Utils.showRequestDialog(context);
@@ -314,7 +319,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     if (response.isSuccessful()) {
                         covidPatientResp = response.body();
                         if (covidPatientResp != null) {
-                            if(covidPatientResp.getPatientList().size()>0) {
+                            if (covidPatientResp.getPatientList().size() > 0) {
                                 covidArrayAdp = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, covidPatientResp.getPatientList());
                                 covidArrayAdp.setDropDownViewResource(R.layout.spinner_item_text_size);
                                 spnSearch.setAdapter(covidArrayAdp);
@@ -337,6 +342,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
         } else
             Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
+
     public void bindPhysioList() {
         if (ConnectivityChecker.checker(getApplicationContext())) {
             Utils.showRequestDialog(context);
@@ -365,8 +371,10 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     Utils.hideDialog();
                 }
             });
-        } else Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(PatientList.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -376,8 +384,8 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         Utils.showRequestDialog(context);
-        if(view.getId()==R.id.btnGo){
-            if(!edtPid.getText().toString().isEmpty()) {
+        if (view.getId() == R.id.btnGo) {
+            if (!edtPid.getText().toString().isEmpty()) {
                 Call<ResponseBody> call = RetrofitClient.getInstance().getApi().savePatientPhysiotherapyPanel(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(PatientList.this).getHeadID(), edtPid.getText().toString().trim(), SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(), SharedPrefManager.getInstance(PatientList.this).getUser().getUserid());
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -385,7 +393,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                         if (response.isSuccessful()) {
                             Toast.makeText(PatientList.this, "Patient Added Successfully!", Toast.LENGTH_LONG).show();
                             bindPhysioList();
-                        }else {
+                        } else {
                             try {
                                 Toast.makeText(PatientList.this, response.errorBody() != null ? response.errorBody().string() : null, Toast.LENGTH_LONG).show();
                             } catch (IOException e) {
@@ -401,7 +409,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     }
                 });
             } else Toast.makeText(this, "Please enter PID!", Toast.LENGTH_SHORT).show();
-        } else if(view.getId()==R.id.txtFrmDate){
+        } else if (view.getId() == R.id.txtFrmDate) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme,
                     (view12, year, monthOfYear, dayOfMonth) -> {
                         fYear = year;
@@ -415,7 +423,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     }, fYear, fMonth, fDay);
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
-        } else if(view.getId()==R.id.txtToDate){
+        } else if (view.getId() == R.id.txtToDate) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(context, R.style.DialogTheme,
                     (view12, year, monthOfYear, dayOfMonth) -> {
                         tYear = year;
@@ -429,17 +437,17 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     }, tYear, tMonth, tDay);
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
-        } else if(view.getId()==R.id.btnCovid){
+        } else if (view.getId() == R.id.btnCovid) {
             bindCovidPatient();
         }
     }
 
-    private void hitGetICUPatientList(){
+    private void hitGetICUPatientList() {
 
-        if (ConnectivityChecker.checker(context)){
+        if (ConnectivityChecker.checker(context)) {
 
             Utils.showRequestDialog(context);
-            Call<IcuPatientListResp> call= RetrofitClient.getInstance().getApi().getICUPatientList(
+            Call<IcuPatientListResp> call = RetrofitClient.getInstance().getApi().getICUPatientList(
                     SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(),
                     SharedPrefManager.getInstance(context).getUser().getUserid().toString(),
                     SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(),
@@ -455,11 +463,11 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                             icuArrayAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
                             spnSearch.setAdapter(icuArrayAdapter);
                             spnSearch.setSelection(-1);
-                            icuPatientList=icuPatientListResp.getAdmittedPatientICU();
-                            icuPatientList1=icuPatientListResp.getAdmittedPatientICU();
+                            icuPatientList = icuPatientListResp.getAdmittedPatientICU();
+                            icuPatientList1 = icuPatientListResp.getAdmittedPatientICU();
                             rView.setAdapter(new IcuPatientListAdp(PatientList.this, icuPatientList));
 
-                            try{
+                            try {
                                 DatabaseController.myDataBase.beginTransaction();
 
                                 DatabaseController.deleteRow(TableICUAdmittedPatientList.icu_admitted_patient_list,
@@ -501,7 +509,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                                     contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.previousWardName.toString(), admittedPatientICU.getPreviousWardName());
                                     contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.notificationCount.toString(), admittedPatientICU.getNotificationCount());
 
-                                   // DatabaseController.insertUpdateData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list, "subDeptID", admittedPatientICU.getPmid().toString());
+                                    // DatabaseController.insertUpdateData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list, "subDeptID", admittedPatientICU.getPmid().toString());
 //                                    DatabaseController.insertUpdateData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list, "subDeptID", admittedPatientICU.getPid().toString());
 
                                     DatabaseController.insertData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list);
@@ -529,7 +537,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                     Utils.hideDialog();
                 }
             });
-        }else {
+        } else {
 
             icuPatientListResp = new IcuPatientListResp();
 

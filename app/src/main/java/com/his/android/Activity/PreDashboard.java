@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -38,11 +40,13 @@ import com.his.android.Adapter.SubHeadAdp;
 import com.his.android.Fragment.NutriAnalyserFragment;
 import com.his.android.Model.GetMemberId;
 import com.his.android.Model.HeadAssign;
+import com.his.android.Model.PatientInfoBarcode;
 import com.his.android.Model.SubDept;
 import com.his.android.R;
 import com.his.android.Response.GetAllMedicineByAlphabetRes;
 import com.his.android.Response.MemberIdResp;
 import com.his.android.Response.NotificationCountResp;
+import com.his.android.Response.PatientBarcodeResp;
 import com.his.android.Response.SubHeadIDResp;
 import com.his.android.Utils.ClickListener;
 import com.his.android.Utils.ConnectivityChecker;
@@ -55,6 +59,7 @@ import com.his.android.database.DatabaseController;
 import com.his.android.database.TableMedicineList;
 import com.his.android.database.TableSubDeptList;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -71,6 +76,8 @@ public class PreDashboard extends AppCompatActivity {
     ArrayList<HeadAssign> headAssigns;
     ProgressDialog progressDialog;
     RecyclerView rvGrid;
+    EditText edtPid;
+    ImageView btnGo;
     private static final int REQUEST_LOCATION = 1;
 
 
@@ -83,17 +90,62 @@ public class PreDashboard extends AppCompatActivity {
         txtBp = findViewById(R.id.txtBp);
         txtSpo2 = findViewById(R.id.txtSpo2);
         txtScans = findViewById(R.id.txtScans);
+        edtPid = findViewById(R.id.edtPid);
+        btnGo = findViewById(R.id.btnGo);
         txtCovidRegistration = findViewById(R.id.txtCovidRegistration);
         count = findViewById(R.id.count);
         img = findViewById(R.id.img);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
         imgNotification = findViewById(R.id.imgNotification);
+        SharedPrefManager.getInstance(PreDashboard.this).setScanned(false);
         if (SharedPrefManager.getInstance(this).getUser().getDesigid()==3 || SharedPrefManager.getInstance(this).getUser().getDesigid()==4 ||
                 SharedPrefManager.getInstance(this).getUser().getDesigid()==5 || SharedPrefManager.getInstance(this).getUser().getDesigid()==21 ||
                 SharedPrefManager.getInstance(this).getUser().getDesigid()==22 || SharedPrefManager.getInstance(this).getUser().getDesigid()==11)
             txtCovidRegistration.setVisibility(View.VISIBLE);
         else txtCovidRegistration.setVisibility(View.GONE);
+
+        btnGo.setOnClickListener(view -> {
+            if (!edtPid.getText().toString().isEmpty()) {
+                Utils.showRequestDialog(PreDashboard.this);
+                Call<PatientBarcodeResp> call = RetrofitClient.getInstance().getApi().getPatientDetailByBarcode(SharedPrefManager.getInstance(PreDashboard.this).getUser().getAccessToken(), SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid().toString(), edtPid.getText().toString().trim());
+                call.enqueue(new Callback<PatientBarcodeResp>() {
+                    @Override
+                    public void onResponse(Call<PatientBarcodeResp> call, Response<PatientBarcodeResp> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().getPatientInfo().size() > 0) {
+                                PatientInfoBarcode patientInfo = response.body().getPatientInfo().get(0);
+                                ScannerActivity.patientInfo = patientInfo;
+                                SharedPrefManager.getInstance(PreDashboard.this).setScanned(true);
+                                SharedPrefManager.getInstance(PreDashboard.this).setPid(patientInfo.getPid());
+                                SharedPrefManager.getInstance(PreDashboard.this).setIpNo(patientInfo.getIpNo());
+                                SharedPrefManager.getInstance(PreDashboard.this).setPmId(patientInfo.getPmID());
+                                SharedPrefManager.getInstance(PreDashboard.this).setPtName(patientInfo.getPatientName());
+                                SharedPrefManager.getInstance(PreDashboard.this).setCr(patientInfo.getCrNo());
+                                SharedPrefManager.getInstance(PreDashboard.this).setSubdeptID(patientInfo.getAdmitSubDepartmentID());
+                                SharedPrefManager.getInstance(PreDashboard.this).setHeadID(patientInfo.getHeadId(), "", "");
+                                Intent intent = new Intent(PreDashboard.this, ScanSelector.class);
+                                intent.putExtra("status", "");
+                                startActivity(intent);
+                            }
+                        } else {
+                            try {
+                                Toast.makeText(PreDashboard.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        Utils.hideDialog();
+                    }
+
+                    @Override
+                    public void onFailure(Call<PatientBarcodeResp> call, Throwable t) {
+                        Utils.hideDialog();
+                    }
+                });
+            } else
+                Toast.makeText(PreDashboard.this, "Please enter a valid PID", Toast.LENGTH_SHORT).show();
+        });
         txtBp.setOnClickListener(view -> {
             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
@@ -334,7 +386,7 @@ public class PreDashboard extends AppCompatActivity {
 
                         } else {
                             try {
-                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2029) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2030))) {//
+                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2029) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2030) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 36))) {//
                                     Intent intent = new Intent(PreDashboard.this, PatientList.class);
                                     SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
                                     startActivity(intent);

@@ -172,9 +172,11 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getDieteticsPatient().getName());
         else
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getOpdPatient().getPname());
-        if (ScannerActivity.patientInfo != null)
+        if (SharedPrefManager.getInstance(Dashboard.this).isScanned()) {
+            menu.findItem(R.id.nav_patient_list).setVisible(false);
             txtPName.setText(ScannerActivity.patientInfo.getPatientName());
-        ScannerActivity.patientInfo = null;
+        }
+//        ScannerActivity.patientInfo = null;
         txtPId.setText(String.valueOf(SharedPrefManager.getInstance(this).getPid()));
 
         if (getIntent().getStringExtra("status1") != null || getIntent().getStringExtra("status") != null)
@@ -310,8 +312,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             fragment = new PatientDashboard();
         } else if (id == R.id.nav_intake) {
             spnConsultant.setVisibility(View.GONE);
-            fragment = new Intake();
-//            fragment = new IntakeI nput();
+            fragment = new IntakeInput();
         } else if (id == R.id.nav_cal_dynamic) {
             fragment = new CalciumReportDynamic();
         } else if (id == R.id.nav_ventilator) {

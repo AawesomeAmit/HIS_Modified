@@ -196,7 +196,7 @@ public class InputMeal extends Fragment implements View.OnClickListener {
             @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             String dateToStr = format.format(today);
             Utils.showRequestDialog(context);
-            Call<InsertResponse> call= RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealId, edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
+            Call<InsertResponse> call= RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealId, edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), 1);
             call.enqueue(new Callback<InsertResponse>() {
                 @Override
                 public void onResponse(Call<InsertResponse> call, Response<InsertResponse> response) {

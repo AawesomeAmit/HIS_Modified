@@ -233,8 +233,8 @@ public class Intake extends Fragment implements View.OnClickListener {
                 if (mealList.getIntakeID() != 0) {
                     Utils.showRequestDialog(context);
                     Call<InsertResponse> call1;
-                    if (mealList.getIsSupplement() == 1) call1 = RetrofitClient1.getInstance().getApi().addSupplementDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid());
-                    else call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
+                    if (mealList.getIsSupplement() == 1) call1 = RetrofitClient1.getInstance().getApi().addSupplementDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1);
+                    else call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), 1);
                     call1.enqueue(new Callback<InsertResponse>() {
                         @Override
                         public void onResponse(Call<InsertResponse> call1, Response<InsertResponse> response) {
@@ -247,7 +247,7 @@ public class Intake extends Fragment implements View.OnClickListener {
                                 bind();
 
                             }
-                            Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, response.body().getResponseMessage(), Toast.LENGTH_SHORT).show();
                             Utils.hideDialog();
                         }
 

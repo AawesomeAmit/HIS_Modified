@@ -232,6 +232,14 @@ public class SharedPrefManager {
         editor.putString("cr", cr);
         editor.apply();
     }
+    public void setScanned(Boolean scanned) {
+        this.editor = sharedprefs.edit();
+        editor.putBoolean("scanned", scanned);
+        editor.apply();
+    }
+    public Boolean isScanned() {
+        return sharedprefs.getBoolean("scanned", false);
+    }
     public String getCr() {
         return sharedprefs.getString("cr", "");
     }

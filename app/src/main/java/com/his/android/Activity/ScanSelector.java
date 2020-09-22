@@ -27,8 +27,11 @@ import com.his.android.Activity.UploadMultipleImg.TransferPatient.GetDepartmentR
 import com.his.android.Activity.UploadMultipleImg.TransferPatient.WardList;
 import com.his.android.Activity.UploadMultipleImg.Universalres;
 import com.his.android.Activity.UploadMultipleImg.UploadImg;
+import com.his.android.Model.GetMemberId;
 import com.his.android.R;
+import com.his.android.Response.MemberIdResp;
 import com.his.android.Utils.ConnectivityChecker;
+import com.his.android.Utils.RetrofitClient1;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.view.BaseActivity;
@@ -42,7 +45,7 @@ import retrofit2.Response;
 
 public class ScanSelector extends BaseActivity {
     TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload,
-            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote;
+            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote,txtScanIntake;
     Intent intent;
     Spinner popupspnDepartment,popUpspnConsultant,popUpspnWard, spnBed;
     EditText popUpEtReason;
@@ -59,16 +62,17 @@ public class ScanSelector extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_selector);
-        txtPrescription=findViewById(R.id.txtPrescription);
-        txtUpload=findViewById(R.id.txtUpload);
-        txtUpdateVital=findViewById(R.id.txtUpdateVital);
-        txtTransferIn =findViewById(R.id.txtTransferIn);
-        txtTransferOut =findViewById(R.id.txtTransferOut);
-        txtDischarge=findViewById(R.id.txtDischarge);
-        txtProgressNote=findViewById(R.id.txtProgressNote);
-        txtVital=findViewById(R.id.txtVital);
-        txtIntake=findViewById(R.id.txtIntake);
-        intent=new Intent(ScanSelector.this, Dashboard.class);
+        txtPrescription = findViewById(R.id.txtPrescription);
+        txtUpload = findViewById(R.id.txtUpload);
+        txtUpdateVital = findViewById(R.id.txtUpdateVital);
+        txtScanIntake = findViewById(R.id.txtScanIntake);
+        txtTransferIn = findViewById(R.id.txtTransferIn);
+        txtTransferOut = findViewById(R.id.txtTransferOut);
+        txtDischarge = findViewById(R.id.txtDischarge);
+        txtProgressNote = findViewById(R.id.txtProgressNote);
+        txtVital = findViewById(R.id.txtVital);
+        txtIntake = findViewById(R.id.txtIntake);
+        intent = new Intent(ScanSelector.this, Dashboard.class);
         txtPrescription.setOnClickListener(view -> {
             intent.putExtra("status1", "0");
             startActivity(intent);
@@ -85,19 +89,23 @@ public class ScanSelector extends BaseActivity {
         txtTransferOut.setOnClickListener(view -> alertTransferPatient("Transfer-Out"));
         txtDischarge.setOnClickListener(view -> {
             intent.putExtra("status1", "2");
-            startActivity(intent);});
+            startActivity(intent);
+        });
+        txtScanIntake.setOnClickListener(view -> startActivity(new Intent(mActivity, MealScanner.class)));
         txtUpload.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, UploadImg.class)));
         txtUpdateVital.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, UpdateVital.class)));
         txtProgressNote.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, ProgressNoteScan.class)));
-        if(SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID()==1){
+        txtProgressNote.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, MealScanner.class)));
+        if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 1) {
             txtProgressNote.setVisibility(View.VISIBLE);
             txtPrescription.setVisibility(View.VISIBLE);
             txtIntake.setVisibility(View.GONE);
-        } else if(SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID()==4){
+        } else if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 4) {
             txtProgressNote.setVisibility(View.GONE);
             txtPrescription.setVisibility(View.GONE);
             txtIntake.setVisibility(View.VISIBLE);
         }
+        hitGetUserProfileByPID();
     }
 
     //Dialog transfer patient
@@ -184,7 +192,27 @@ public class ScanSelector extends BaseActivity {
         dialog.show();
 
     }
+    private void hitGetUserProfileByPID(){
+        Call<MemberIdResp> call= RetrofitClient1.getInstance().getApi().getUserProfileByPID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", String.valueOf(SharedPrefManager.getInstance(getApplicationContext()).getPid()));
+        call.enqueue(new Callback<MemberIdResp>() {
+            @Override
+            public void onResponse(Call<MemberIdResp> call, Response<MemberIdResp> response) {
+                if (response.body() != null) {
+                    MemberIdResp memberIdResp = response.body();
+                    if (memberIdResp.getResponseCode() == 1) {
+                        SharedPrefManager.getInstance(getApplicationContext()).setMemberId(memberIdResp.getResponseValue().get(0));
+                    } else {
+                        SharedPrefManager.getInstance(getApplicationContext()).setMemberId(new GetMemberId(0,0));
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<MemberIdResp> call, Throwable t) {
+                Log.v("showError", t.getMessage());
+            }
+        });
+    }
     //Hit Get Department
     private void hitGetDepartment() {
         departmentList.clear();
@@ -601,5 +629,13 @@ public class ScanSelector extends BaseActivity {
                 Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+        finish();
+        startActivity(new Intent(ScanSelector.this, PreDashboard.class));
     }
 }

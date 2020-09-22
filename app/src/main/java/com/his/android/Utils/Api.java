@@ -260,10 +260,10 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("UserIntake.asmx/AddIntakeDetails")
-    Call<InsertResponse> addIntakeDetails(@Header("Token") String accessToken, @Field("foodId") Integer foodId, @Field("foodQuantity") String foodQuantity, @Field("foodTime") String foodTime, @Field("foodUnitId") String foodUnitId, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID);
+    Call<InsertResponse> addIntakeDetails(@Header("Token") String accessToken, @Field("foodId") Integer foodId, @Field("foodQuantity") String foodQuantity, @Field("foodTime") String foodTime, @Field("foodUnitId") String foodUnitId, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("isIntakeGiven") Integer isIntakeGiven);
     @FormUrlEncoded
     @POST("SupplementIntake.asmx/AddSupplementDetails")
-    Call<InsertResponse> addSupplementDetails(@Header("Token") String accessToken, @Field("supplementID") Integer supplementID, @Field("supplementQuantity") String supplementQuantity, @Field("intakeTime") String intakeTime, @Field("supplementUnitID") String supplementUnitID, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID);
+    Call<InsertResponse> addSupplementDetails(@Header("Token") String accessToken, @Field("supplementID") Integer supplementID, @Field("supplementQuantity") String supplementQuantity, @Field("intakeTime") String intakeTime, @Field("supplementUnitID") String supplementUnitID, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID, @Field("isIntakeGiven") Integer isIntakeGiven);
 
     @FormUrlEncoded
     @POST("familymember.asmx/GetUserProfileByPID")
@@ -402,6 +402,9 @@ public interface Api {
     @FormUrlEncoded
     @POST("Report/GetUserMedicationReport")
     Call<UserMedicationReportResp> getUserMedicationReport(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("PID") Integer PID, @Field("userid") String userid, @Field("headID") Integer headID, @Field("subDeptID") Integer subDeptID, @Field("timePeriod") String timePeriod);
+    @FormUrlEncoded
+    @POST("userIntake.asmx/GetIntakeDetailsByQRCode")
+    Call<ScanMealResp> getIntakeNameByDetails(@Header("token") String accessToken, @Header("userID") String userID, @Field("qrCode") String qrCode);
 
     @FormUrlEncoded
     @POST("Prescription/GetDiagnosisByPID")

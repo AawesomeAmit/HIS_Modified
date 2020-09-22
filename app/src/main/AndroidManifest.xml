@@ -47,7 +47,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.LangSelection"></activity>
+        <activity android:name=".Activity.MealScanner"></activity>
+        <activity android:name=".Activity.MealScanEntry" />
+        <activity android:name=".Activity.LangSelection" />
         <activity android:name=".Activity.DevicesSelection" />
         <activity android:name=".Activity.ChecklistCovidPatient" />
         <activity android:name=".Activity.ProgressNoteScan" />

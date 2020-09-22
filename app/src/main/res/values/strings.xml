@@ -413,4 +413,7 @@
     <string name="language">Language</string>
     <string name="english">English</string>
     <string name="hindi">Hindi</string>
+    <string name="scan_pid">Scan PID</string>
+    <string name="connect_spo2">Connect Spo2\nMachine</string>
+    <string name="connect_bp">Connect BP\nMachine</string>
 </resources>

@@ -226,7 +226,7 @@ public class Questionnaire extends Fragment implements View.OnClickListener {
                                         txtSubCat.setTypeface(Typeface.DEFAULT_BOLD);
                                         txtSubCat.setText(questionList.getSubCategoryName());
                                         txtSubCat.setTextColor(R.color.blue_text);
-                                        txtSubCat.setPadding(R.dimen._1sdp, 0, 0, 0);
+//                                        txtSubCat.setPadding(R.dimen._1sdp, 0, 0, 0);
                                         txtSubCat.setTextSize((int) getResources().getDimension(R.dimen._5sdp));
                                         rvQuestionnaire.addView(txtSubCat);
                                     } else {
