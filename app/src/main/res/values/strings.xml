@@ -416,4 +416,5 @@
     <string name="scan_pid">Scan PID</string>
     <string name="connect_spo2">Connect Spo2\nMachine</string>
     <string name="connect_bp">Connect BP\nMachine</string>
+    <string name="intake_medicine">Intake Medicine</string>
 </resources>

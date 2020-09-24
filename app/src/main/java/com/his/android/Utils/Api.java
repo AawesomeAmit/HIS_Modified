@@ -403,8 +403,8 @@ public interface Api {
     @POST("Report/GetUserMedicationReport")
     Call<UserMedicationReportResp> getUserMedicationReport(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("PID") Integer PID, @Field("userid") String userid, @Field("headID") Integer headID, @Field("subDeptID") Integer subDeptID, @Field("timePeriod") String timePeriod);
     @FormUrlEncoded
-    @POST("userIntake.asmx/GetIntakeDetailsByQRCode")
-    Call<ScanMealResp> getIntakeNameByDetails(@Header("token") String accessToken, @Header("userID") String userID, @Field("qrCode") String qrCode);
+    @POST("Prescription/GetIntakeDetailsByQRCode")
+    Call<ScanMealResp> getIntakeNameByDetails(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("qrCode") String qrCode, @Field("PID") String PID);
 
     @FormUrlEncoded
     @POST("Prescription/GetDiagnosisByPID")

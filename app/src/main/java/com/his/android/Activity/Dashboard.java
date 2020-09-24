@@ -62,7 +62,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
     List<ConsultantName> consultantNameList;
     LinearLayout llHeader;
     Fragment fragment;
-    int subdept=0;
+    int subdept = 0;
     public ArrayAdapter<ConsultantName> consltantAdp;
 
     @Override
@@ -180,8 +180,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         txtPId.setText(String.valueOf(SharedPrefManager.getInstance(this).getPid()));
 
         if (getIntent().getStringExtra("status1") != null || getIntent().getStringExtra("status") != null)
-            subdept=SharedPrefManager.getInstance(this).getSubdeptID();
-        else subdept=SharedPrefManager.getInstance(this).getSubDept().getId();
+            subdept = SharedPrefManager.getInstance(this).getSubdeptID();
+        else subdept = SharedPrefManager.getInstance(this).getSubDept().getId();
         /*if (getIntent().getStringExtra("status") != null)
             subdept=SharedPrefManager.getInstance(this).getSubdeptID();
         else subdept=SharedPrefManager.getInstance(this).getSubDept().getId();*/
@@ -190,7 +190,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         call.enqueue(new Callback<ControlBySubDeptResp>() {
             @Override
             public void onResponse(Call<ControlBySubDeptResp> call, Response<ControlBySubDeptResp> response) {
-                                                                                                                                                                                                                          if (response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     if (response.body() != null) {
                         consultantNameList.addAll(1, response.body().getConsultantName());
                     }
@@ -235,9 +235,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 fragment = new DischargePatient();
             if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("3"))
                 fragment = new IntakeInput();
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame, fragment);
-                ft.commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
         }
     }
 
@@ -320,10 +320,10 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_questionnaire) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new Questionnaire();
-        }  else if (id == R.id.nav_employee) {
+        } else if (id == R.id.nav_employee) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new EmployeeDetail();
-        }else if (id == R.id.nav_detail_graph) {
+        } else if (id == R.id.nav_detail_graph) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new PatientDetailGraph();
         } else if (id == R.id.nav_view_medication) {
@@ -362,16 +362,15 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             spnConsultant.setVisibility(View.GONE);
             //fragment = new PatientMovementInsert();
             fragment = new PatientInput();
-        }else if (id == R.id.nav_range) {
+        } else if (id == R.id.nav_range) {
             if (SharedPrefManager.getInstance(this).getUser().getDesigid() != 1)
                 spnConsultant.setVisibility(View.VISIBLE);
             else spnConsultant.setVisibility(View.GONE);
             fragment = new IntakeOutputVitalRange();
-        }else if (id == R.id.nav_emp_on_duty) {
+        } else if (id == R.id.nav_emp_on_duty) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new EmployeesOnDuty();
-        }
-        else if (id == R.id.nav_discharge_patient) {
+        } else if (id == R.id.nav_discharge_patient) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new DischargePatient();
         }

@@ -94,29 +94,30 @@ public class PrescribedMedicine extends Fragment {
         bind();
         return view;
     }
-private void bind(){
-    Call<GetPrescriptionResponse> call = RetrofitClient.getInstance().getApi().getintakePrescription(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getHeadID(), SharedPrefManager.getInstance(context).getIpNo(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
-    call.enqueue(new Callback<GetPrescriptionResponse>() {
-        @Override
-        public void onResponse(Call<GetPrescriptionResponse> call, Response<GetPrescriptionResponse> response) {
-            dialog.show();
-            if (response.isSuccessful()) {
-                if (response.body() != null) {
-                    prescriptionList = response.body().getPrescriptionList();
-                    if (prescriptionList.size() > 0) {
-                        rView.setAdapter(new PrescribedMedicationAdp(prescriptionList));
+
+    private void bind() {
+        Call<GetPrescriptionResponse> call = RetrofitClient.getInstance().getApi().getintakePrescription(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getHeadID(), SharedPrefManager.getInstance(context).getIpNo(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
+        call.enqueue(new Callback<GetPrescriptionResponse>() {
+            @Override
+            public void onResponse(Call<GetPrescriptionResponse> call, Response<GetPrescriptionResponse> response) {
+                dialog.show();
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        prescriptionList = response.body().getPrescriptionList();
+                        if (prescriptionList.size() > 0) {
+                            rView.setAdapter(new PrescribedMedicationAdp(prescriptionList));
+                        }
                     }
                 }
+                dialog.dismiss();
             }
-            dialog.dismiss();
-        }
 
-        @Override
-        public void onFailure(Call<GetPrescriptionResponse> call, Throwable t) {
-            dialog.dismiss();
-        }
-    });
-}
+            @Override
+            public void onFailure(Call<GetPrescriptionResponse> call, Throwable t) {
+                dialog.dismiss();
+            }
+        });
+    }
 
     public class PrescribedMedicationAdp extends RecyclerView.Adapter<PrescribedMedicationAdp.RecyclerViewHolder> {
         private List<PrescriptionList> prescriptionList;
@@ -221,7 +222,7 @@ private void bind(){
         }
     }
 
-    private void action(int prescriptionID, int pmID, String comment, int status){
+    private void action(int prescriptionID, int pmID, String comment, int status) {
         Utils.showRequestDialog(context);
         Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveIntakePrescription(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), comment, pmID, prescriptionID, status, String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid()));
         call.enqueue(new Callback<ResponseBody>() {
@@ -254,11 +255,12 @@ private void bind(){
         lLayout.getLocationOnScreen(location);
         popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
         btnSave.setOnClickListener(view -> {
-            if(chkMedicine.isChecked())
-            action(prescriptionID, pmID, edtComment.getText().toString().trim(), 2);
+            if (chkMedicine.isChecked())
+                action(prescriptionID, pmID, edtComment.getText().toString().trim(), 2);
             else action(prescriptionID, pmID, edtComment.getText().toString().trim(), 0);
         });
     }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

@@ -49,7 +49,7 @@ public class FluidIntakeAdp extends RecyclerView.Adapter<FluidIntakeAdp.Recycler
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtFluid =itemView.findViewById(R.id.txtFluid);
-            txtQty=itemView.findViewById(R.id.txtQty);
+            txtQty=itemView.findViewById(R.id.txtStr);
             txtUnit=itemView.findViewById(R.id.txtUnit);
             txtDateTime=itemView.findViewById(R.id.txtDateTime);
         }

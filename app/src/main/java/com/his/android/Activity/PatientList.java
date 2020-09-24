@@ -179,7 +179,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             bindCovidPatient();
         } else if (SharedPrefManager.getInstance(this).getHeadID() == 9) {
             bindPhysioList();
-        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4 || SharedPrefManager.getInstance(this).getHeadID() == 2029 || SharedPrefManager.getInstance(this).getHeadID() == 2030 || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 36)) {
+        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4 || SharedPrefManager.getInstance(this).getHeadID() == 2029 || SharedPrefManager.getInstance(this).getHeadID() == 2030 || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 36) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 14)) {
             /*int wardId = 0;
             if (SharedPrefManager.getInstance(this).getHeadID() == 3)
                 wardId = 39;

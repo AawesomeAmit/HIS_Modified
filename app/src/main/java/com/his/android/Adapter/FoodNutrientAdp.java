@@ -54,7 +54,7 @@ public class FoodNutrientAdp extends RecyclerView.Adapter<FoodNutrientAdp.Recycl
             super(itemView);
             txtSno =itemView.findViewById(R.id.txtSno);
             txtFood =itemView.findViewById(R.id.txtFood);
-            txtQty =itemView.findViewById(R.id.txtQty);
+            txtQty =itemView.findViewById(R.id.txtStr);
             txtTiming =itemView.findViewById(R.id.txtTiming);
         }
     }

@@ -47,14 +47,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link InputMeal.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link InputMeal#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class InputMeal extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -119,8 +111,7 @@ public class InputMeal extends Fragment implements View.OnClickListener {
 
     @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_input_meal, container, false);
         edtMeal=view.findViewById(R.id.edtMeal);
         edtQty=view.findViewById(R.id.edtQty);

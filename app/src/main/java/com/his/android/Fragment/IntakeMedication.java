@@ -73,8 +73,8 @@ public class IntakeMedication extends Fragment {
             public void onResponse(Call<IntakePrescriptionResp> call, Response<IntakePrescriptionResp> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        intakeList=response.body().getIntakeList();
-                        if(intakeList.size()>0){
+                        intakeList = response.body().getIntakeList();
+                        if (intakeList.size() > 0) {
                             rView.setAdapter(new IntakeMedicationAdp(context, intakeList));
                         }
                     }

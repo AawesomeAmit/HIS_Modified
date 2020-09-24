@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <TextView
-        android:id="@+id/txtMeal"
+        android:id="@+id/txtMed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
@@ -51,10 +51,10 @@
         android:textColor="@color/grey_heading"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtMeal" />
+        app:layout_constraintTop_toBottomOf="@+id/txtMed" />
 
     <TextView
-        android:id="@+id/txtQty"
+        android:id="@+id/txtStr"
         android:layout_height="wrap_content"
         android:layout_width="@dimen/_100sdp"
         android:text="25 gm"
@@ -78,7 +78,7 @@
         android:paddingBottom="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtQty">
+        app:layout_constraintTop_toBottomOf="@+id/txtStr">
 
         <TextView
             android:id="@+id/textView35"
@@ -91,7 +91,7 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtQty" />
+            app:layout_constraintTop_toBottomOf="@+id/txtStr" />
 
         <TextView
             android:id="@+id/btnNo"

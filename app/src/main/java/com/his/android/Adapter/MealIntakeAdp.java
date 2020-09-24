@@ -118,7 +118,7 @@ public class MealIntakeAdp extends RecyclerView.Adapter<MealIntakeAdp.RecyclerVi
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtFluid =itemView.findViewById(R.id.txtFluid);
-            txtQty=itemView.findViewById(R.id.txtQty);
+            txtQty=itemView.findViewById(R.id.txtStr);
             txtUnit=itemView.findViewById(R.id.txtUnit);
             txtDateTime=itemView.findViewById(R.id.txtDateTime);
             txtEdit=itemView.findViewById(R.id.txtEdit);

@@ -70,29 +70,30 @@ public class MealScanner extends BaseActivity implements ZXingScannerView.Result
         Log.d("QRCodeScanner", rawResult.getBarcodeFormat().toString());
         if (ConnectivityChecker.checker(MealScanner.this)) {
             Utils.showRequestDialog(MealScanner.this);
-            Call<ScanMealResp> call = RetrofitClient1.getInstance().getApi().getIntakeNameByDetails(NUTRI_TOKEN, SharedPrefManager.getInstance(MealScanner.this).getUser().getUserid().toString(), rawResult.getText());
+            Call<ScanMealResp> call = RetrofitClient.getInstance().getApi().getIntakeNameByDetails(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(MealScanner.this).getUser().getUserid().toString(), rawResult.getText(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
             call.enqueue(new Callback<ScanMealResp>() {
                 @Override
                 public void onResponse(Call<ScanMealResp> call, Response<ScanMealResp> response) {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
-                            if(response.body().getResponseCode()==1) {
                                 moveTaskToBack(true);
                                 finish();
                                 Intent intent=new Intent(mActivity, MealScanEntry.class);
-                                intent.putExtra("intake", response.body().getResponseValue().get(0).getIntakeName());
-                                intent.putExtra("intakeID", response.body().getResponseValue().get(0).getIntakeID().toString());
-                                intent.putExtra("qty", response.body().getResponseValue().get(0).getIntakeQuantity().toString());
-                                intent.putExtra("isSupplement", response.body().getResponseValue().get(0).getIsSupplement().toString());
-                                intent.putExtra("isSynonym", response.body().getResponseValue().get(0).getIsSynonym().toString());
-                                intent.putExtra("textID", response.body().getResponseValue().get(0).getTextID().toString());
-                                intent.putExtra("unit", response.body().getResponseValue().get(0).getUnitName());
-                                intent.putExtra("unitID", response.body().getResponseValue().get(0).getUnitID().toString());
+                                intent.putExtra("intake", response.body().getTable().get(0).getIntakeName());
+                                intent.putExtra("intakeID", response.body().getTable().get(0).getIntakeID().toString());
+                                intent.putExtra("qty", response.body().getTable().get(0).getIntakeQuantity().toString());
+                                intent.putExtra("isSupplement", response.body().getTable().get(0).getIntakeType().toString());
+                                intent.putExtra("isSynonym", response.body().getTable().get(0).getIsSynonym().toString());
+                                intent.putExtra("textID", response.body().getTable().get(0).getTextID().toString());
+                                intent.putExtra("doseForm", response.body().getTable().get(0).getDoseForm());
+                                intent.putExtra("pmID", response.body().getTable().get(0).getPmID().toString());
+                                intent.putExtra("prescriptionID", response.body().getTable().get(0).getPrescriptionID().toString());
+                                intent.putExtra("unit", response.body().getTable().get(0).getUnitName());
+                                intent.putExtra("unitID", response.body().getTable().get(0).getUnitID().toString());
                                 startActivity(intent);
-
-                            } else
-                                Toast.makeText(MealScanner.this, response.body().getResponseMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }else {
+                        Toast.makeText(MealScanner.this, response.message(), Toast.LENGTH_SHORT).show();
                     }
                     Utils.hideDialog();
                 }
@@ -200,6 +201,12 @@ public class MealScanner extends BaseActivity implements ZXingScannerView.Result
                 .setNegativeButton("Cancel", null)
                 .create()
                 .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(mActivity, PreDashboard.class));
     }
 
     @Override

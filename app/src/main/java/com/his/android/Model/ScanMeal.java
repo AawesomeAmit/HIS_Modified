@@ -4,15 +4,15 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ScanMeal {
+    @SerializedName("intakeType")
+    @Expose
+    public Integer intakeType;
     @SerializedName("intakeID")
     @Expose
     public Integer intakeID;
     @SerializedName("intakeName")
     @Expose
     public String intakeName;
-    @SerializedName("isSupplement")
-    @Expose
-    public Integer isSupplement;
     @SerializedName("isSynonym")
     @Expose
     public Integer isSynonym;
@@ -21,13 +21,26 @@ public class ScanMeal {
     public Integer textID;
     @SerializedName("intakeQuantity")
     @Expose
-    public Float intakeQuantity;
-    @SerializedName("unitName")
-    @Expose
-    public String unitName;
+    public Double intakeQuantity;
     @SerializedName("unitID")
     @Expose
     public Integer unitID;
+    @SerializedName("unitName")
+    @Expose
+    public String unitName;
+    @SerializedName("pmID")
+    @Expose
+    public Integer pmID;
+    @SerializedName("doseForm")
+    @Expose
+    public String doseForm;
+    @SerializedName("prescriptionID")
+    @Expose
+    public Integer prescriptionID;
+
+    public Integer getIntakeType() {
+        return intakeType;
+    }
 
     public Integer getIntakeID() {
         return intakeID;
@@ -35,10 +48,6 @@ public class ScanMeal {
 
     public String getIntakeName() {
         return intakeName;
-    }
-
-    public Integer getIsSupplement() {
-        return isSupplement;
     }
 
     public Integer getIsSynonym() {
@@ -49,15 +58,27 @@ public class ScanMeal {
         return textID;
     }
 
-    public String getUnitName() {
-        return unitName;
-    }
-
-    public Float getIntakeQuantity() {
+    public Double getIntakeQuantity() {
         return intakeQuantity;
     }
 
     public Integer getUnitID() {
         return unitID;
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public Integer getPmID() {
+        return pmID;
+    }
+
+    public String getDoseForm() {
+        return doseForm;
+    }
+
+    public Integer getPrescriptionID() {
+        return prescriptionID;
     }
 }

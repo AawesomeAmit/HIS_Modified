@@ -55,7 +55,7 @@ public class AddVitalAdp extends RecyclerView.Adapter<AddVitalAdp.RecyclerViewHo
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtVital =itemView.findViewById(R.id.txtVital);
-            txtQty =itemView.findViewById(R.id.txtQty);
+            txtQty =itemView.findViewById(R.id.txtStr);
             txtRemove =itemView.findViewById(R.id.txtRemove);
         }
     }

@@ -34,7 +34,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_gravity="center_vertical"
                 android:textSize="@dimen/_11sdp"
-                android:id="@+id/txtQty"/>
+                android:id="@+id/txtStr"/>
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
