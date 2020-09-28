@@ -12,57 +12,59 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/greyLine"
+        android:gravity="center"
         android:padding="@dimen/_5sdp"
         android:text="@string/input_intake"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_15ssp"
         android:textStyle="bold"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txtMed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:text="THE COCA-COLA COMPANY, NOS energy drink, Original, grape, loaded cherry, charged citrus, fortified with vitamins B6 and B12"
-        android:textSize="@dimen/_14ssp"
-        android:padding="@dimen/_5sdp"
-        android:gravity="center"
-        android:textColor="@color/black"
         android:background="@color/greyLine"
+        android:gravity="center"
+        android:padding="@dimen/_5sdp"
+        android:text="THE COCA-COLA COMPANY, NOS energy drink, Original, grape, loaded cherry, charged citrus, fortified with vitamins B6 and B12"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView31" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
     <TextView
         android:id="@+id/textView33"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="@string/quantity"
-        android:textSize="@dimen/_12ssp"
-        android:padding="@dimen/_5sdp"
-        android:gravity="center"
         android:background="@color/greyLine"
+        android:gravity="center"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/quantity"
         android:textColor="@color/grey_heading"
+        android:textSize="@dimen/_12ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtMed" />
 
     <TextView
         android:id="@+id/txtStr"
-        android:layout_height="wrap_content"
         android:layout_width="@dimen/_100sdp"
-        android:text="25 gm"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:background="@color/greyLine"
+        android:gravity="center"
+        android:padding="@dimen/_5sdp"
+        android:text="25 gm"
         android:textColor="@color/black"
         android:textSize="@dimen/_12ssp"
-        android:padding="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView33" />
@@ -125,4 +127,49 @@
             app:layout_constraintStart_toEndOf="@+id/btnNo"
             app:layout_constraintTop_toBottomOf="@+id/textView35" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView31">
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_weight="1"
+            android:background="@color/blue_heading"
+            android:gravity="center"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_2sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+        <TextView
+            android:id="@+id/txtTime"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:background="@color/blue_heading"
+            android:gravity="center"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_2sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -757,7 +757,7 @@
                 android:textStyle="bold"
                 android:text="Date"
                 android:textSize="@dimen/_9sdp"
-                android:id="@+id/txtMedName"/>
+                android:id="@+id/tvSub"/>
 
             <TextView
                 android:layout_width="0dp"

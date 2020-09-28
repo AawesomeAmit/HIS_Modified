@@ -47,6 +47,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.SendMessage"></activity>
         <activity android:name=".Activity.MealScanner" />
         <activity android:name=".Activity.MealScanEntry" />
         <activity android:name=".Activity.LangSelection" />
@@ -79,8 +80,7 @@
         <activity android:name=".Activity.BP.Initial" />
         <activity android:name=".Activity.ScannerActivity" />
         <activity android:name=".Activity.UploadMultipleImg.FragmentSampleActivity" />
-        <activity android:name=".Activity.UploadMultipleImg.UploadImg" />
-<!--        <activity android:name=".Activity.UploadMultipleImg.UploadDischargeImg" />-->
+        <activity android:name=".Activity.UploadMultipleImg.UploadImg" /> <!-- <activity android:name=".Activity.UploadMultipleImg.UploadDischargeImg" /> -->
         <activity android:name=".Activity.UploadMultipleImg.ViewPatientDoc" />
         <activity
             android:name=".Activity.AchievedNutrientGraphActivity"

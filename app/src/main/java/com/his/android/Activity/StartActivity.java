@@ -35,7 +35,6 @@ public class StartActivity extends AppCompatActivity {
     VersionChecker versionChecker;
     double mLatestVersionName;
     TextView txt;
-    Intent httpIntent;
     Handler handler;
     LinearLayout linearLayout;
     ProgressDialog progressDialog;
@@ -63,34 +62,19 @@ public class StartActivity extends AppCompatActivity {
                 }
             });*/
             Log.v("status", BuildConfig.VERSION_NAME);
-
-
             versionChecker = new VersionChecker();
-            //Log.v("version1", String.valueOf(version));
             try {
                 mLatestVersionName = Double.parseDouble(versionChecker.execute().get());
                 if (Double.parseDouble(BuildConfig.VERSION_NAME) < mLatestVersionName) {
                     txt.setEnabled(true);
                     Toast.makeText(StartActivity.this, R.string.please_update_to_latest_version, Toast.LENGTH_LONG).show();
                     txt.setText(R.string.please_update_to_latest_version);
-                    /*httpIntent = new Intent(Intent.ACTION_VIEW);
-                    httpIntent.setData(Uri.parse(version.getIsVersionUpdated().get(0).getAppURL()));
-                    startActivity(httpIntent);*/
-
                     update = true;
                     Toast.makeText(this, "Please update to latest version", Toast.LENGTH_LONG).show();
-                    /*handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-                        }
-                    }, 2000);*/
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                 } else {
                     if (SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()) {
                         handler = new Handler();
-                        //Log.v("ver", String.valueOf(SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()));
                         handler.postDelayed(() -> {
                             Intent intent = new Intent(StartActivity.this, PreDashboard.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -110,7 +94,6 @@ public class StartActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()) {
                     handler = new Handler();
-                    //Log.v("ver", String.valueOf(SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()));
                     handler.postDelayed(() -> {
                         Intent intent = new Intent(StartActivity.this, PreDashboard.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -128,7 +111,6 @@ public class StartActivity extends AppCompatActivity {
         }else {
             if (SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()) {
                 handler = new Handler();
-                //Log.v("ver", String.valueOf(SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()));
                 handler.postDelayed(() -> {
                     Intent intent = new Intent(StartActivity.this, PreDashboard.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -143,85 +125,11 @@ public class StartActivity extends AppCompatActivity {
                 }, 3000);
             }
         }
-            /*Call<VersionCheckResp> call = RetrofitClient.getInstance().getApi().checkVersion(BuildConfig.VERSION_NAME);
-            call.enqueue(new Callback<VersionCheckResp>() {
-                @Override
-                public void onResponse(Call<VersionCheckResp> call, Response<VersionCheckResp> response) {
-                    progressDialog.show();
-                    if (response.isSuccessful()) {
-                        //Log.v("status", "entered");
-                        version = response.body();
-                        //Log.v("version1", String.valueOf(version));
-                        if (!Objects.requireNonNull(version).getIsVersionUpdated().get(0).getStatus()) {
-                            txt.setEnabled(true);
-                            Toast.makeText(StartActivity.this, R.string.please_update_to_latest_version, Toast.LENGTH_LONG).show();
-                            txt.setText(R.string.please_update_to_latest_version);
-                            httpIntent = new Intent(Intent.ACTION_VIEW);
-                            httpIntent.setData(Uri.parse(version.getIsVersionUpdated().get(0).getAppURL()));
-                            startActivity(httpIntent);
-                        } else {
-                            try {
-                                if (SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()) {
-                                    handler=new Handler();
-                                    //Log.v("ver", String.valueOf(SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()));
-                                    handler.postDelayed(() -> {
-                                        Intent intent = new Intent(StartActivity.this, PreDashboard.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(intent);
-                                        finish();
-                                    },3000);
-                                } else{
-                                    handler=new Handler();
-                                    handler.postDelayed(() -> {
-                                        startActivity(new Intent(StartActivity.this, MainActivity.class));
-                                        finish();
-                                    },3000);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onFailure(Call<VersionCheckResp> call, Throwable t) {
-                    Log.v("status", t.getMessage());
-                    Toast.makeText(StartActivity.this, "Network Error!", Toast.LENGTH_SHORT).show();
-                }
-            });*/
-        txt.setOnClickListener(view -> startActivity(httpIntent));
-    }
-        /*else{
-            //Toast.makeText(this, "Network connection not found!", Toast.LENGTH_SHORT).show();
-
-            try {
-                if (SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()) {
-                    handler=new Handler();
-                    //Log.v("ver", String.valueOf(SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()));
-                    handler.postDelayed(() -> {
-                        Intent intent = new Intent(StartActivity.this, PreDashboard.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    },3000);
-                } else{
-                    handler=new Handler();
-                    handler.postDelayed(() -> {
-                        startActivity(new Intent(StartActivity.this, MainActivity.class));
-                        finish();
-                    },3000);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        linearLayout.setOnClickListener(view -> {
-            Intent intent = new Intent(StartActivity.this, StartActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+        txt.setOnClickListener(view -> {
+            if(update)
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
         });
-    }*/
+    }
 
     public static class VersionChecker extends AsyncTask<String, String, String> {
 

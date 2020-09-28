@@ -36,6 +36,7 @@ import androidx.core.content.FileProvider;
 
 import com.his.android.R;
 import com.his.android.Response.GetPatientDetailsByPidResp;
+import com.his.android.Response.UniversalResp;
 import com.his.android.Utils.ConnectivityChecker;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.RetrofitClientFile;
@@ -72,7 +73,7 @@ public class GuardPostActivity extends AppCompatActivity {
     Uri picUri;
     String filePath = "";
 
-    private TextView txtDrName, txtDept, img, tvSubmit;
+    private TextView txtDrName, txtDept, img, tvSubmit, tvDischarge;
 
     ImageView ivImage, ivCapture;
 
@@ -99,6 +100,7 @@ public class GuardPostActivity extends AppCompatActivity {
         txtDept = findViewById(R.id.txtDept);
         img = findViewById(R.id.img);
         tvSubmit = findViewById(R.id.tvSubmit);
+        tvDischarge = findViewById(R.id.tvDischarge);
 
         ivImage = findViewById(R.id.ivImage);
         ivCapture = findViewById(R.id.ivCapture);
@@ -175,19 +177,27 @@ public class GuardPostActivity extends AppCompatActivity {
         tvSubmit.setOnClickListener(view -> {
             if (etPatientName.getText().toString().isEmpty()) {
                 Toast.makeText(this, "Enter Patient Name", Toast.LENGTH_SHORT).show();
-            } /*else if (etAge.getText().toString().isEmpty()) {
-                Toast.makeText(this, "Enter Age", Toast.LENGTH_SHORT).show();
-            } else if (spinnerAgeUnit.getSelectedItemPosition() == 0) {
-                Toast.makeText(this, "Select Age Unit", Toast.LENGTH_SHORT).show();
-            }*/ else {
+            } else {
                 hitSavePatientEntryByGuard();
             }
+        });
+        tvDischarge.setOnClickListener(view -> {
+            Utils.showRequestDialog(GuardPostActivity.this);
+            Call<UniversalResp> call = RetrofitClient.getInstance().getApi().patientOutEntry(SharedPrefManager.getInstance(GuardPostActivity.this).getUser().getAccessToken(), SharedPrefManager.getInstance(GuardPostActivity.this).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(GuardPostActivity.this).getPid()), SharedPrefManager.getInstance(GuardPostActivity.this).getUser().getUserid().toString());
+            call.enqueue(new Callback<UniversalResp>() {
+                @Override
+                public void onResponse(Call<UniversalResp> call, Response<UniversalResp> response) {
+                    if(response.isSuccessful()){
+                        startActivity(new Intent(GuardPostActivity.this, EnterPID.class));
+                    }
+                    Utils.hideDialog();
+                }
 
-            /*else if (!rbMale.isChecked() && !rbFemale.isChecked()){
-                Toast.makeText(this, "Select Gender", Toast.LENGTH_SHORT).show();
-            }else if (!rbMale.isChecked() && !rbFemale.isChecked()){
-                Toast.makeText(this, "Select Gender", Toast.LENGTH_SHORT).show();
-            }*/
+                @Override
+                public void onFailure(Call<UniversalResp> call, Throwable t) {
+                    Utils.hideDialog();
+                }
+            });
         });
 
     }

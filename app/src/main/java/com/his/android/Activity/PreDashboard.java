@@ -299,7 +299,8 @@ public class PreDashboard extends AppCompatActivity {
             startActivity(intent);
         });
         txtScans.setOnClickListener(view -> {
-            Intent intent=new Intent(PreDashboard.this, ScannerActivity.class);
+//            Intent intent=new Intent(PreDashboard.this, ScannerActivity.class);
+            Intent intent=new Intent(PreDashboard.this, SendMessage.class);
             intent.putExtra("redi", "4");
             startActivity(intent);
         });

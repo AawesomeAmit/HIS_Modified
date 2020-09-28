@@ -1,5 +1,7 @@
 package com.his.android.Activity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import com.his.android.Utils.Utils;
 import com.his.android.view.BaseActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -25,8 +28,11 @@ import retrofit2.Response;
 import static com.his.android.Fragment.NutriAnalyserFragment.NUTRI_TOKEN;
 
 public class MealScanEntry extends BaseActivity {
-    TextView txtMeal, txtQty, btnNo, btnYes, textView33;
+    TextView txtMeal, txtQty, btnNo, btnYes, textView33, txtDate, txtTime;
     Date today = new Date();
+    int mYear = 0, mMonth = 0, mDay = 0, mHour=0, mMinute=0;
+    Calendar c;
+    SimpleDateFormat format2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,40 @@ public class MealScanEntry extends BaseActivity {
         txtQty = findViewById(R.id.txtStr);
         btnNo = findViewById(R.id.btnNo);
         btnYes = findViewById(R.id.btnYes);
+        txtDate=findViewById(R.id.txtDate);
+        txtTime=findViewById(R.id.txtTime);
+        c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        txtDate.setText(Utils.formatDate(mYear + "/" + (mMonth + 1) + "/" + mDay));
+        format2 = new SimpleDateFormat("hh:mm a");
+        txtTime.setText(format2.format(today));
+        txtDate.setOnClickListener(view -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity, R.style.DialogTheme,
+                    (view1, year, monthOfYear, dayOfMonth) -> {
+                        mYear = year;
+                        mMonth = monthOfYear;
+                        mDay = dayOfMonth;
+                        today.setDate(dayOfMonth);
+                        today.setMonth(monthOfYear);
+                        today.setYear(year-1900);
+                        txtDate.setText(Utils.formatDate(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth));
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        });
+        txtTime.setOnClickListener(view -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(mActivity, R.style.DialogTheme, (timePicker, i, i1) -> {
+                mHour=i;
+                mMinute=i1;
+                today.setHours(mHour);
+                today.setMinutes(mMinute);
+                txtTime.setText(format2.format(today));
+            },mHour,mMinute,false);
+            timePickerDialog.updateTime(today.getHours(), today.getMinutes());
+            timePickerDialog.show();
+        });
         textView33 = findViewById(R.id.textView33);
         if (getIntent().getStringExtra("intake") != null) {
             if(getIntent().getStringExtra("isSupplement").equals("3"))
@@ -97,7 +137,7 @@ public class MealScanEntry extends BaseActivity {
             });
         }
         else {
-            Call<ResponseBody> call2 = RetrofitClient.getInstance().getApi().saveIntakePrescription(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), "", Integer.valueOf(getIntent().getStringExtra("pmID")), Integer.valueOf(getIntent().getStringExtra("prescriptionID")), 1, String.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid()));
+            Call<ResponseBody> call2 = RetrofitClient.getInstance().getApi().saveIntakePrescription1(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), "", Integer.valueOf(getIntent().getStringExtra("pmID")), Integer.valueOf(getIntent().getStringExtra("prescriptionID")), 1, String.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid()), dateToStr+" "+timeToStr);
             call2.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call2, Response<ResponseBody> response) {

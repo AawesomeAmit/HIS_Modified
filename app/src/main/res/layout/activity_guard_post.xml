@@ -313,7 +313,6 @@
         android:layout_width="@dimen/_90sdp"
         android:layout_height="@dimen/_90sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvImageHead"
@@ -329,15 +328,33 @@
 
     <TextView
         android:id="@+id/tvSubmit"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:background="@color/orange"
         android:gravity="center"
         android:text="@string/submit"
-        android:textColor="@color/blue_text"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvDischarge"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDischarge"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@color/blue_gender"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/discharge"
+        android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvSubmit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

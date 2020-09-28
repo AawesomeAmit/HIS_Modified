@@ -93,7 +93,12 @@ public class MealScanner extends BaseActivity implements ZXingScannerView.Result
                                 startActivity(intent);
                         }
                     }else {
-                        Toast.makeText(MealScanner.this, response.message(), Toast.LENGTH_SHORT).show();
+                        try {
+                            Toast.makeText(mActivity, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     Utils.hideDialog();
                 }

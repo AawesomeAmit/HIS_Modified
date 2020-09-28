@@ -417,4 +417,9 @@
     <string name="connect_spo2">Connect Spo2\nMachine</string>
     <string name="connect_bp">Connect BP\nMachine</string>
     <string name="intake_medicine">Intake Medicine</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+    <string name="chat_message">Chat Message</string>
+    <string name="recipient">Recipient</string>
+    <string name="send">Send</string>
 </resources>

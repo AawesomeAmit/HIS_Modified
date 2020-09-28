@@ -485,6 +485,29 @@ public interface Api {
     Call<VitalAutoCompleteResp> getAutoCompleteVital(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("searchKey") String searchKey);
 
     @FormUrlEncoded
+    @POST("ChatMessage/GetDepartmentDesignationUserList")
+    Call<RecepientListResp> getDepartmentDesignationUserList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("preIndex") String preIndex);
+
+    @FormUrlEncoded
+    @POST("IPDRegistration/PatientOutEntry")
+    Call<UniversalResp> patientOutEntry(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") String PID, @Field("userID") String userID);
+
+    @FormUrlEncoded
+    @POST("ChatMessage/CreateNewChatMessage")
+    Call<UniversalResp> createNewChatMessage(@Header("accessToken") String accessToken,
+                                                 @Header("userID") String userID1,
+                                                 @Field("pid") Integer pid,
+                                                 @Field("subjectId") Integer subjectId,
+                                                 @Field("userId") String userId,
+                                                 @Field("recipientList") String recipientList,
+                                                 @Field("chatMessage") String chatMessage,
+                                                 @Field("timelineMessage") Integer timelineMessage,
+                                                 @Field("filePath") String filePath);
+
+    @POST("ChatMessage/GetSubjectList")
+    Call<SubjectListResp> getSubjectList(@Header("accessToken") String accessToken, @Header("userID") String userID);
+
+    @FormUrlEncoded
     @POST("Report/GetResearchDiseasePatientList")
     Call<DiseasePatientListResp> getResearchDiseasePatientList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("userNotificationAssignID") Integer userNotificationAssignID, @Field("queryDate") String queryDate, @Field("userID") String userID);
 
@@ -796,6 +819,18 @@ public interface Api {
             @Field("prescriptionID") Integer prescriptionID,
             @Field("status") Integer status,
             @Field("userId") String userId1
+    );
+    @FormUrlEncoded
+    @POST("IntakePrescription/SaveIntakePrescription")
+    Call<ResponseBody> saveIntakePrescription1(
+            @Header("accessToken") String token,
+            @Header("userId") String userId,
+            @Field("comment") String comment,
+            @Field("pmID") Integer pmID,
+            @Field("prescriptionID") Integer prescriptionID,
+            @Field("status") Integer status,
+            @Field("userId") String userId1,
+            @Field("inTakeTime") String inTakeTime
     );
     @POST("PatientRegistration/GetPatientRegistrationList")
     Call<PatientRegistrationListResp> getPatientRegistrationList(

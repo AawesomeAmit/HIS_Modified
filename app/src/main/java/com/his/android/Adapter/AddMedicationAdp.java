@@ -96,7 +96,7 @@ public class AddMedicationAdp extends RecyclerView.Adapter<AddMedicationAdp.Recy
         TextView txtMedName,txtNumDays, txtRemark, txtAction, txtEdit, txtDoseForm, txtDuration, txtStr, txtStop, txtDelete;
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtMedName=itemView.findViewById(R.id.txtMedName);
+            txtMedName=itemView.findViewById(R.id.tvSub);
             txtNumDays=itemView.findViewById(R.id.txtNumDays);
             txtRemark=itemView.findViewById(R.id.txtRemark);
             txtAction=itemView.findViewById(R.id.txtAction);

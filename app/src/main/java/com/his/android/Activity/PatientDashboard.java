@@ -123,8 +123,7 @@ public class PatientDashboard extends BaseFragment {
                     Utils.hideDialog();
                 }
             });
-        } else
-            Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
 
     private void hitGetPatientDiagnosisResult(String pmID, String pId, int pos) {
@@ -264,9 +263,11 @@ public class PatientDashboard extends BaseFragment {
     }
     public class DiseasePatientListAdp extends RecyclerView.Adapter<DiseasePatientListAdp.RecyclerViewHolder> {
         private Context mCtx;
+
         DiseasePatientListAdp(Context mCtx) {
             this.mCtx = mCtx;
         }
+
         @NonNull
         @Override
         public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -493,7 +494,7 @@ public class PatientDashboard extends BaseFragment {
                 rvInputDetails.setLayoutManager(new LinearLayoutManager(mActivity));
                 rvToDoDetails.setLayoutManager(new LinearLayoutManager(mActivity));
                 rvNotToDoDetails.setLayoutManager(new LinearLayoutManager(mActivity));
-                if(ConnectivityChecker.checker(mActivity)) {
+                if (ConnectivityChecker.checker(mActivity)) {
                     Call<ClinicalNotificationResp> call = RetrofitClient.getInstance().getApi().getClinicalNotification(
                             SharedPrefManager.getInstance(getActivity()).getUser().getAccessToken(),
                             SharedPrefManager.getInstance(getActivity()).getUser().getUserid().toString(), patientList.get(i).getPid());
@@ -517,12 +518,12 @@ public class PatientDashboard extends BaseFragment {
                                             Type type2 = new TypeToken<List<AlertToDo>>() {
                                             }.getType();
                                             List<AlertToDo> alertNotToDoList = gson2.fromJson(clinicalNotificationList.get(i).getNotToDo(), type2);
-                                            if(alertInputList!=null)
-                                            rvInputDetails.setAdapter(new InputAlertAdp(alertInputList));
-                                            if(alertToDoList!=null)
-                                            rvToDoDetails.setAdapter(new ToDoAlertAdp(alertToDoList));
-                                            if(alertNotToDoList!=null)
-                                            rvNotToDoDetails.setAdapter(new ToDoAlertAdp(alertNotToDoList));
+                                            if (alertInputList != null)
+                                                rvInputDetails.setAdapter(new InputAlertAdp(alertInputList));
+                                            if (alertToDoList != null)
+                                                rvToDoDetails.setAdapter(new ToDoAlertAdp(alertToDoList));
+                                            if (alertNotToDoList != null)
+                                                rvNotToDoDetails.setAdapter(new ToDoAlertAdp(alertNotToDoList));
                                         }
                                         popupWindow.setFocusable(true);
                                         popupWindow.setBackgroundDrawable(new ColorDrawable());
@@ -535,18 +536,20 @@ public class PatientDashboard extends BaseFragment {
                                 }
                             }
                         }
+
                         @Override
                         public void onFailure(Call<ClinicalNotificationResp> call, Throwable t) {
                             Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-                } else Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(mActivity, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
             });
 
             holder.tvPid.setText(patientList.get(i).getPid().toString());
             holder.tvName.setText(patientList.get(i).getPatientName());
             holder.tvWard.setText((patientList.get(i).getWardName()));
-            if(patientList.get(i).getToDo()==1)
+            if (patientList.get(i).getToDo() == 1)
                 holder.tvUserStatusBox.setVisibility(View.VISIBLE);
             holder.tvIpNo.setText(patientList.get(i).getIpNo());
             holder.tvAgeGender.setText(patientList.get(i).getAge());
@@ -577,13 +580,13 @@ public class PatientDashboard extends BaseFragment {
                             double maxValue = Double.parseDouble(jsonObject.get("maxValue").toString());
                             //double perc = 0;
 
-                            int range = checkRange(value,minValue,maxValue,Double.parseDouble(jsonObject.get("variationPercent").toString()));
+                            int range = checkRange(value, minValue, maxValue, Double.parseDouble(jsonObject.get("variationPercent").toString()));
 
-                            if (range == 1){
+                            if (range == 1) {
                                 holder.tvBpBox.setTextColor(getResources().getColor(R.color.greenDark));
-                            }else if (range == 2){
+                            } else if (range == 2) {
                                 holder.tvBpBox.setTextColor(getResources().getColor(R.color.orangeDark));
-                            }else if (range == 3){
+                            } else if (range == 3) {
                                 holder.tvBpBox.setTextColor(getResources().getColor(R.color.darkRed));
                             }
 
@@ -591,19 +594,19 @@ public class PatientDashboard extends BaseFragment {
 
                             holder.tvTempBox.setText(jsonObject.get("vmValue").toString());
 
-                            if (jsonObject.has("minValue") && jsonObject.has("maxValue")){
+                            if (jsonObject.has("minValue") && jsonObject.has("maxValue")) {
                                 double value = Double.parseDouble(jsonObject.get("vmValue").toString());
                                 double minValue = Double.parseDouble(jsonObject.get("minValue").toString());
                                 double maxValue = Double.parseDouble(jsonObject.get("maxValue").toString());
                                 //double perc = 0;
 
-                                int range = checkRange(value,minValue,maxValue,Double.parseDouble(jsonObject.get("variationPercent").toString()));
+                                int range = checkRange(value, minValue, maxValue, Double.parseDouble(jsonObject.get("variationPercent").toString()));
 
-                                if (range == 1){
+                                if (range == 1) {
                                     holder.tvTempBox.setTextColor(getResources().getColor(R.color.greenDark));
-                                }else if (range == 2){
+                                } else if (range == 2) {
                                     holder.tvTempBox.setTextColor(getResources().getColor(R.color.orangeDark));
-                                }else if (range == 3){
+                                } else if (range == 3) {
                                     holder.tvTempBox.setTextColor(getResources().getColor(R.color.darkRed));
                                 }
 
@@ -614,19 +617,19 @@ public class PatientDashboard extends BaseFragment {
 
                             holder.tvRespBox.setText(jsonObject.get("vmValue").toString());
 
-                            if (jsonObject.has("minValue") && jsonObject.has("maxValue")){
+                            if (jsonObject.has("minValue") && jsonObject.has("maxValue")) {
                                 double value = Double.parseDouble(jsonObject.get("vmValue").toString());
                                 double minValue = Double.parseDouble(jsonObject.get("minValue").toString());
                                 double maxValue = Double.parseDouble(jsonObject.get("maxValue").toString());
                                 //double perc = 0;
 
-                                int range = checkRange(value,minValue,maxValue,Double.parseDouble(jsonObject.get("variationPercent").toString()));
+                                int range = checkRange(value, minValue, maxValue, Double.parseDouble(jsonObject.get("variationPercent").toString()));
 
-                                if (range == 1){
+                                if (range == 1) {
                                     holder.tvRespBox.setTextColor(getResources().getColor(R.color.greenDark));
-                                }else if (range == 2){
+                                } else if (range == 2) {
                                     holder.tvRespBox.setTextColor(getResources().getColor(R.color.orangeDark));
-                                }else if (range == 3){
+                                } else if (range == 3) {
                                     holder.tvRespBox.setTextColor(getResources().getColor(R.color.darkRed));
                                 }
                             }
@@ -635,20 +638,20 @@ public class PatientDashboard extends BaseFragment {
 
                             holder.tvHbBox.setText(jsonObject.get("vmValue").toString());
 
-                            if (jsonObject.has("minValue") && jsonObject.has("maxValue")){
+                            if (jsonObject.has("minValue") && jsonObject.has("maxValue")) {
 
                                 double value = Double.parseDouble(jsonObject.get("vmValue").toString());
                                 double minValue = Double.parseDouble(jsonObject.get("minValue").toString());
                                 double maxValue = Double.parseDouble(jsonObject.get("maxValue").toString());
                                 //double perc = 0;
 
-                                int range = checkRange(value,minValue,maxValue,Double.parseDouble(jsonObject.get("variationPercent").toString()));
+                                int range = checkRange(value, minValue, maxValue, Double.parseDouble(jsonObject.get("variationPercent").toString()));
 
-                                if (range == 1){
+                                if (range == 1) {
                                     holder.tvHbBox.setTextColor(getResources().getColor(R.color.greenDark));
-                                }else if (range == 2){
+                                } else if (range == 2) {
                                     holder.tvHbBox.setTextColor(getResources().getColor(R.color.orangeDark));
-                                }else if (range == 3){
+                                } else if (range == 3) {
                                     holder.tvHbBox.setTextColor(getResources().getColor(R.color.darkRed));
                                 }
                             }
@@ -656,20 +659,20 @@ public class PatientDashboard extends BaseFragment {
 
                             holder.tvPulseBox.setText(jsonObject.get("vmValue").toString());
 
-                            if (jsonObject.has("minValue") && jsonObject.has("maxValue")){
+                            if (jsonObject.has("minValue") && jsonObject.has("maxValue")) {
 
                                 double value = Double.parseDouble(jsonObject.get("vmValue").toString());
                                 double minValue = Double.parseDouble(jsonObject.get("minValue").toString());
                                 double maxValue = Double.parseDouble(jsonObject.get("maxValue").toString());
                                 //double perc = 0;
 
-                                int range = checkRange(value,minValue,maxValue,Double.parseDouble(jsonObject.get("variationPercent").toString()));
+                                int range = checkRange(value, minValue, maxValue, Double.parseDouble(jsonObject.get("variationPercent").toString()));
 
-                                if (range == 1){
+                                if (range == 1) {
                                     holder.tvPulseBox.setTextColor(getResources().getColor(R.color.greenDark));
-                                }else if (range == 2){
+                                } else if (range == 2) {
                                     holder.tvPulseBox.setTextColor(getResources().getColor(R.color.orangeDark));
-                                }else if (range == 3){
+                                } else if (range == 3) {
                                     holder.tvPulseBox.setTextColor(getResources().getColor(R.color.darkRed));
                                 }
                             }
@@ -693,14 +696,14 @@ public class PatientDashboard extends BaseFragment {
                         double maxValue = Double.parseDouble(jsonObject.get("maxValue").toString());
                         //double perc = 0;
 
-                        if (minValue != 0 && maxValue !=0){
-                            int range = checkRange(value,minValue,maxValue,Double.parseDouble("5"));
+                        if (minValue != 0 && maxValue != 0) {
+                            int range = checkRange(value, minValue, maxValue, Double.parseDouble("5"));
 
-                            if (range == 1){
+                            if (range == 1) {
                                 holder.ivIntakeBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                            }else if (range == 2){
+                            } else if (range == 2) {
                                 holder.ivIntakeBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                            }else if (range == 3){
+                            } else if (range == 3) {
                                 holder.ivIntakeBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
                             }
                         }
@@ -722,14 +725,14 @@ public class PatientDashboard extends BaseFragment {
                         double maxValue = Double.parseDouble(jsonObject.get("maxValue").toString());
                         //double perc = 0;
 
-                        if (minValue != 0 && maxValue !=0){
-                            int range = checkRange(value,minValue,maxValue,Double.parseDouble("5"));
+                        if (minValue != 0 && maxValue != 0) {
+                            int range = checkRange(value, minValue, maxValue, Double.parseDouble("5"));
 
-                            if (range == 1){
+                            if (range == 1) {
                                 holder.ivOutputBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.greenDark));
-                            }else if (range == 2){
+                            } else if (range == 2) {
                                 holder.ivOutputBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.orangeDark));
-                            }else if (range == 3){
+                            } else if (range == 3) {
                                 holder.ivOutputBox.setImageTintList(ContextCompat.getColorStateList(mCtx, R.color.darkRed));
                             }
                         }

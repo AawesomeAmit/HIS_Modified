@@ -589,7 +589,7 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/medicine_name"
                         android:textSize="@dimen/_11sdp"
-                        android:id="@+id/txtMedName"/>
+                        android:id="@+id/tvSub"/>
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
