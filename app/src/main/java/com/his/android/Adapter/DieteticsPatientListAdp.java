@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.his.android.Activity.PatientList;
 import com.his.android.Activity.PriscriptionOverviewPopup;
+import com.his.android.Activity.SendMessage;
 import com.his.android.Fragment.MedicineSidePathway;
 import com.his.android.Fragment.NutriAnalyserFragment;
 import com.his.android.Model.DieteticsPatientList;
@@ -106,6 +107,12 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
             Intent intent = new Intent(mCtx, MedicineSidePathway.class);
             mCtx.startActivity(intent);
         });
+        holder.imgMsg.setOnClickListener(view -> {
+            SharedPrefManager.getInstance(mCtx).setDieteticsPatient(physioPatientLists.get(i));
+            SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getpID());
+            SharedPrefManager.getInstance(mCtx).setIpNo("0");
+            mCtx.startActivity(new Intent(mCtx, SendMessage.class));
+        });
         holder.txtRemove.setOnClickListener(view -> new AlertDialog.Builder(mCtx).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
                 .setMessage("Are you sure you want to remove patient?")
                 .setCancelable(true)
@@ -142,7 +149,7 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         TextView txtPName,txtPId,txtPAge,txtGender,txtDiagnosis, txtRemove, txtMed;
-        ImageView imgInfo;
+        ImageView imgInfo, imgMsg;
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtPName=itemView.findViewById(R.id.txtPName);
@@ -153,6 +160,7 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
             txtDiagnosis=itemView.findViewById(R.id.txtDiagnosis);
             imgInfo=itemView.findViewById(R.id.imgInfo);
             txtMed=itemView.findViewById(R.id.txtMed);
+            imgMsg=itemView.findViewById(R.id.imgMsg);
             txtRemove.setVisibility(View.VISIBLE);
         }
     }

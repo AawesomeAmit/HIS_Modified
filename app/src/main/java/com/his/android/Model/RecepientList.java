@@ -10,6 +10,9 @@ public class RecepientList {
     @SerializedName("name")
     @Expose
     public String name;
+    @SerializedName("userType")
+    @Expose
+    public String userType;
 
     public Integer getId() {
         return id;
@@ -17,5 +20,9 @@ public class RecepientList {
 
     public String getName() {
         return name;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 }

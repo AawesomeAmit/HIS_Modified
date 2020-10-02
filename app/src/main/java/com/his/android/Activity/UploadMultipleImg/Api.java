@@ -9,7 +9,11 @@ import com.his.android.Activity.UploadMultipleImg.EmployeeOnDuty.NonMedicosDepar
 import com.his.android.Activity.UploadMultipleImg.TransferPatient.BedResp;
 import com.his.android.Activity.UploadMultipleImg.TransferPatient.ConsultantRes;
 import com.his.android.Activity.UploadMultipleImg.TransferPatient.GetDepartmentRes;
+import com.his.android.Response.ChatFilesUploaderResp;
 import com.his.android.Response.DietImageResp;
+import com.his.android.Response.UniversalResp;
+
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -46,6 +50,12 @@ public interface Api {
             @Part("dietTime") RequestBody dietTime
 
     );
+
+    @Multipart
+    @POST("chatBoxFileUploadHandler.ashx")
+    Call<List<ChatFilesUploaderResp>> chatBoxFileUploadHandler(
+            @Part MultipartBody.Part[] filePath,
+            @Part MultipartBody.Part[] filePath1);
 
     //get Image
     @POST("api/PatientDocument/GetPatientAllDocumentList")

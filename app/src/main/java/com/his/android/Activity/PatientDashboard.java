@@ -95,7 +95,6 @@ public class PatientDashboard extends BaseFragment {
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
         mSwipeRefreshLayout.setOnRefreshListener(this::hitGetPatientPerformanceList);
-
         return view;
     }
 

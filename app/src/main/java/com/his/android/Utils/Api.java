@@ -259,8 +259,8 @@ public interface Api {
     Call<InsertResponse> saveIntakeData(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("advBy") String advBy, @Field("doseStrength") Integer doseStrength, @Field("doseUnitID") Integer doseUnitID, @Field("foodId") Integer foodId, @Field("foodQuantity") String foodQuantity, @Field("foodTime") String foodTime, @Field("foodUnitId") Integer foodUnitId, @Field("intakeDate") String intakeDate, @Field("intakeDateTime") String intakeDateTime, @Field("intakeOralDate") String intakeOralDate, @Field("intakeQty") Integer intakeQty, @Field("intakeTime") String intakeTime, @Field("intakeType") Integer intakeType, @Field("intakeUnit") Integer intakeUnit, @Field("memberId") Integer memberId, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID, @Field("userLoginID") Integer userLoginID);
 
     @FormUrlEncoded
-    @POST("UserIntake.asmx/AddIntakeDetails")
-    Call<InsertResponse> addIntakeDetails(@Header("Token") String accessToken, @Field("foodId") Integer foodId, @Field("foodQuantity") String foodQuantity, @Field("foodTime") String foodTime, @Field("foodUnitId") String foodUnitId, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("isIntakeGiven") Integer isIntakeGiven);
+    @POST("UserIntake.asmx/AddIntakeDetailsWithEntryId")
+    Call<InsertResponse> addIntakeDetails(@Header("Token") String accessToken, @Field("foodId") Integer foodId, @Field("foodQuantity") String foodQuantity, @Field("foodTime") String foodTime, @Field("foodUnitId") String foodUnitId, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID, @Field("isIntakeGiven") Integer isIntakeGiven);
     @FormUrlEncoded
     @POST("SupplementIntake.asmx/AddSupplementDetails")
     Call<InsertResponse> addSupplementDetails(@Header("Token") String accessToken, @Field("supplementID") Integer supplementID, @Field("supplementQuantity") String supplementQuantity, @Field("intakeTime") String intakeTime, @Field("supplementUnitID") String supplementUnitID, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID, @Field("isIntakeGiven") Integer isIntakeGiven);
@@ -494,15 +494,16 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("ChatMessage/CreateNewChatMessage")
-    Call<UniversalResp> createNewChatMessage(@Header("accessToken") String accessToken,
-                                                 @Header("userID") String userID1,
-                                                 @Field("pid") Integer pid,
-                                                 @Field("subjectId") Integer subjectId,
-                                                 @Field("userId") String userId,
-                                                 @Field("recipientList") String recipientList,
-                                                 @Field("chatMessage") String chatMessage,
-                                                 @Field("timelineMessage") Integer timelineMessage,
-                                                 @Field("filePath") String filePath);
+    Call<ResponseBody> createNewChatMessage(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID1,
+            @Field("pid") Integer pid,
+            @Field("subjectId") Integer subjectId,
+            @Field("userId") String userId,
+            @Field("recipientList") JSONArray recipientList,
+            @Field("chatMessage") String chatMessage,
+            @Field("timelineMessage") Integer timelineMessage,
+            @Field ("filePath") JSONArray filePath);
 
     @POST("ChatMessage/GetSubjectList")
     Call<SubjectListResp> getSubjectList(@Header("accessToken") String accessToken, @Header("userID") String userID);
@@ -554,7 +555,7 @@ public interface Api {
     @POST("UserNotification/ChangeRDAThroughNotification")
     Call<ResponseBody> changeRDAThroughNotification(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("notificationID") Integer notificationID, @Field("userID") String userID1, @Field("rdaPercentage") String rdaPercentage, @Field("rdaChangeToDate ") String rdaChangeToDate);
 
-//    @FormUrlEncoded
+    @FormUrlEncoded
     @POST("PatientDashboard/GetPatientPerformanceList")
     Call<PatientPerformanceListResp> getPatientPerformanceList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("userID") Integer userID1, @Field("subDeptID") Integer subDeptID, @Field("headID") Integer headID);
 

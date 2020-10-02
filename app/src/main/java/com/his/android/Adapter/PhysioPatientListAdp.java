@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.his.android.Activity.Dashboard;
 import com.his.android.Activity.PatientList;
 import com.his.android.Activity.PriscriptionOverviewPopup;
+import com.his.android.Activity.SendMessage;
 import com.his.android.Fragment.MedicineSidePathway;
 import com.his.android.Model.PhysioPatientList;
 import com.his.android.R;
@@ -101,6 +102,12 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             Intent intent = new Intent(mCtx, MedicineSidePathway.class);
             mCtx.startActivity(intent);
         });
+        holder.imgMsg.setOnClickListener(view -> {
+            SharedPrefManager.getInstance(mCtx).setPhysioPatient(physioPatientLists.get(i));
+            SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
+            SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
+            mCtx.startActivity(new Intent(mCtx, SendMessage.class));
+        });
         holder.txtRemove.setOnClickListener(view -> new AlertDialog.Builder(mCtx).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
                 .setMessage("Are you sure you want to remove patient?")
                 .setCancelable(true)
@@ -136,7 +143,7 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         TextView txtPName,txtPId,txtPAge,txtGender,txtDiagnosis, txtRemove, txtMed;
-        ImageView imgInfo;
+        ImageView imgInfo, imgMsg;
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtPName=itemView.findViewById(R.id.txtPName);
@@ -148,6 +155,7 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             imgInfo=itemView.findViewById(R.id.imgInfo);
             txtRemove.setVisibility(View.VISIBLE);
             txtMed=itemView.findViewById(R.id.txtMed);
+            imgMsg=itemView.findViewById(R.id.imgMsg);
         }
     }
 }

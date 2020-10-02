@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.his.android.Activity.Dashboard;
+import com.his.android.Activity.SendMessage;
 import com.his.android.Fragment.MedicineSidePathway;
 import com.his.android.Model.PatientList;
 import com.his.android.R;
@@ -107,6 +108,13 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
                 mCtx.startActivity(intent);
             }
         });
+
+        holder.imgMsg.setOnClickListener(view -> {
+            SharedPrefManager.getInstance(mCtx).setCovidPatient(admittedPatient.get(i));
+            SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
+            SharedPrefManager.getInstance(mCtx).setIsCovid(true);
+            mCtx.startActivity(new Intent(mCtx, SendMessage.class));
+        });
     }
 
     @Override
@@ -116,7 +124,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         TextView txtPName,txtPId,txtPAge,txtGender,txtDiagnosis, txtMed;
-        ImageView imgInfo;
+        ImageView imgInfo, imgMsg;
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtPName=itemView.findViewById(R.id.txtPName);
@@ -126,6 +134,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
             txtDiagnosis=itemView.findViewById(R.id.txtDiagnosis);
             imgInfo=itemView.findViewById(R.id.imgInfo);
             txtMed=itemView.findViewById(R.id.txtMed);
+            imgMsg=itemView.findViewById(R.id.imgMsg);
         }
     }
 }

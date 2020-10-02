@@ -130,7 +130,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 spnConsultant.setVisibility(View.GONE);
             }
         } else {
-            fragment = new CalciumPatientReport();
+            fragment = new PatientDashboard();
             llHeader.setVisibility(View.GONE);
         }
         if (savedInstanceState == null) {
@@ -199,7 +199,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 consltantAdp = new ArrayAdapter<>(Dashboard.this, R.layout.spinner_layout, consultantNameList);
                 spnConsultant.setAdapter(consltantAdp);
                 spnConsultant.setSelection(0);
-
                 /*if (getIntent().getStringExtra("status1") != null) {
                     if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("0")) {
                         if (SharedPrefManager.getInstance(Dashboard.this).getUser().getDesigid() != 1)
@@ -234,7 +233,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("2"))
                 fragment = new DischargePatient();
             if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("3"))
-                fragment = new IntakeInput();
+                fragment = new Intake();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();

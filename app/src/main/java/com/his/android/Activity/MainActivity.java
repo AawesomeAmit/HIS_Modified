@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (ConnectivityChecker.checker(MainActivity.this)) {
                 if (validate()) {
                     try {
-                        //Utils.showRequestDialog(MainActivity.this);
+                        Utils.showRequestDialog(MainActivity.this);
                         byte[] data;
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
                             data = edtPwd.getText().toString().getBytes(StandardCharsets.UTF_8);
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 } catch (Exception ex){
                                     ex.printStackTrace();
                                 }
-                                //Utils.hideDialog();
+                                Utils.hideDialog();
                             }
                             @Override
                             public void onFailure(Call<LoginResp> call, Throwable t) {

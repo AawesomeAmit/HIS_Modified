@@ -99,7 +99,7 @@ public class MealScanEntry extends BaseActivity {
         Utils.showRequestDialog(mActivity);
         Call<InsertResponse> call1;
         if (Objects.requireNonNull(getIntent().getStringExtra("isSupplement")).equalsIgnoreCase("1")) {
-            call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails(NUTRI_TOKEN, Integer.valueOf(Objects.requireNonNull(getIntent().getStringExtra("intakeID"))), getIntent().getStringExtra("qty"), timeToStr, getIntent().getStringExtra("unitID"), dateToStr, String.valueOf(SharedPrefManager.getInstance(mActivity).getMemberId().getMemberId()), SharedPrefManager.getInstance(mActivity).getMemberId().getUserLoginId(), 1);
+            call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails(NUTRI_TOKEN, Integer.valueOf(Objects.requireNonNull(getIntent().getStringExtra("intakeID"))), getIntent().getStringExtra("qty"), timeToStr, getIntent().getStringExtra("unitID"), dateToStr, String.valueOf(SharedPrefManager.getInstance(mActivity).getMemberId().getMemberId()), SharedPrefManager.getInstance(mActivity).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(mActivity).getUser().getUserid(), 1);
             call1.enqueue(new Callback<InsertResponse>() {
                 @Override
                 public void onResponse(Call<InsertResponse> call1, Response<InsertResponse> response) {

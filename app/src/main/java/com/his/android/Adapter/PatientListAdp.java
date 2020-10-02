@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.his.android.Activity.Dashboard;
 import com.his.android.Activity.PriscriptionOverviewPopup;
+import com.his.android.Activity.SendMessage;
 import com.his.android.Fragment.MedicineSidePathway;
 import com.his.android.Model.AdmittedPatient;
 import com.his.android.R;
@@ -126,6 +127,14 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
                 mCtx.startActivity(intent);
             }
         });
+        holder.imgMsg.setOnClickListener(view -> {
+            if (!admittedPatient.get(i).getRead())
+                checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
+            SharedPrefManager.getInstance(mCtx).setAdmitPatient(admittedPatient.get(i));
+            SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
+            SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
+            mCtx.startActivity(new Intent(mCtx, SendMessage.class));
+        });
     }
 
     @Override
@@ -135,7 +144,7 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         TextView txtPName,txtPId,txtPAge,txtGender,txtDiagnosis, txtMed, txtNew;
-        ImageView imgInfo;
+        ImageView imgInfo, imgMsg;
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtPName=itemView.findViewById(R.id.txtPName);
@@ -146,6 +155,7 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
             imgInfo=itemView.findViewById(R.id.imgInfo);
             txtMed=itemView.findViewById(R.id.txtMed);
             txtNew=itemView.findViewById(R.id.txtNew);
+            imgMsg=itemView.findViewById(R.id.imgMsg);
         }
     }
     private void checkCrNo(String pid){

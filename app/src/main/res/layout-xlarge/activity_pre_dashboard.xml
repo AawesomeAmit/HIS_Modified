@@ -158,7 +158,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:id="@+id/rvGrid"
-        android:layout_weight="9.2"
+        android:layout_weight="8.9"
         tools:listitem="@layout/card_layout_head"
         android:columnCount="4"
         android:layout_height="0dp"/>
@@ -172,7 +172,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6">
+        android:layout_weight="6.8">
 
         <TextView
             android:id="@+id/txtScans"
@@ -182,11 +182,11 @@
             android:background="@drawable/rectangle_orange"
             android:drawableStart="@drawable/ic_qr_scanner"
             android:drawableLeft="@drawable/ic_qr_scanner"
-            android:drawablePadding="@dimen/_10sdp"
+            android:drawablePadding="@dimen/_5sdp"
             android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_5sdp"
+            android:paddingTop="@dimen/_2sdp"
             android:paddingEnd="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_2sdp"
             android:text="Scan PID"
             android:textColor="@color/white"
             android:textSize="@dimen/_20sdp"
@@ -198,13 +198,13 @@
         <TextView
             android:id="@+id/txtBp"
             android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_height="@dimen/_85sdp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/rectangle_bp"
             android:drawableBottom="@drawable/ic_bp_chart2"
             android:gravity="center"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_15sdp"
+            android:paddingTop="@dimen/_1sdp"
+            android:paddingBottom="@dimen/_10sdp"
             android:text="Connect BP\nMachine"
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp"
@@ -212,18 +212,18 @@
             app:layout_constraintEnd_toStartOf="@+id/txtSpo2"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtScans" />
+            app:layout_constraintTop_toBottomOf="@+id/edtPid" />
 
         <TextView
             android:id="@+id/txtSpo2"
             android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_height="@dimen/_85sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/rectangle_orange"
             android:drawableBottom="@drawable/ic_spo2"
             android:gravity="center"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_15sdp"
+            android:paddingTop="@dimen/_1sdp"
+            android:paddingBottom="@dimen/_10sdp"
             android:text="Connect Spo2\nMachine"
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp"
@@ -231,6 +231,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/txtBp"
+            app:layout_constraintTop_toBottomOf="@+id/edtPid" />
+
+        <EditText
+            android:id="@+id/edtPid"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/edt_bor"
+            android:textSize="@dimen/_12ssp"
+            android:hint="@string/scan_pid"
+            android:padding="@dimen/_2sdp"
+            android:singleLine="true"
+            app:layout_constraintEnd_toStartOf="@+id/btnGo"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtScans" />
+
+        <ImageView
+            android:id="@+id/btnGo"
+            android:layout_width="0dp"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:srcCompat="@drawable/ic_go"
+            android:layout_marginEnd="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtScans" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
