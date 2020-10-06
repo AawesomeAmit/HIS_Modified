@@ -127,16 +127,16 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_15sdp"
         android:textStyle="bold" />
-    <TextView
+    <EditText
         android:id="@+id/txtPid"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_30sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:backgroundTint="@color/red"
         android:gravity="center"
+        android:background="@drawable/edt_bor"
         android:layout_below="@id/btnScan"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:hint="PID"
+        android:hint="@string/pid1"
         android:inputType="number"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"

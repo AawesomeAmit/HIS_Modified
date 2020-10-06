@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +54,8 @@ public class DeviceConnectionActivity extends MedCheckActivity implements View.O
     }
 
     private BleDevice mBleDevice;
-    private TextView mTvDeviceName, txtPid, txtSys, txtDias, txtPulse, btnSaveData, btnScan;
+    EditText txtPid;
+    private TextView mTvDeviceName, txtSys, txtDias, txtPulse, btnSaveData, btnScan;
     private TextView mTvConnectionState;
     private Button mBtnConnect, mBtnReadData, mBtnClearData, mBtnTimeSync, mBtnDisconnect;
     private LinearLayout mLlCoreOperations, mLlBLEDeviceOperation;
@@ -266,15 +268,15 @@ public class DeviceConnectionActivity extends MedCheckActivity implements View.O
                     if ((!txtSys.getText().toString().trim().equalsIgnoreCase("No data")) && (!txtDias.getText().toString().trim().equalsIgnoreCase("No data")) && (!txtPulse.getText().toString().trim().equalsIgnoreCase("No data"))) {
                         try {
                             JSONObject jsonObject1 = new JSONObject();
-                            jsonObject1.put("vmID", 3);
+                            jsonObject1.put("vmID", "206");
                             jsonObject1.put("vmValue", txtPulse.getText().toString().trim());
                             dtTableArray.put(jsonObject1);
                             JSONObject jsonObject2 = new JSONObject();
-                            jsonObject2.put("vmID", 6);
+                            jsonObject2.put("vmID", "6");
                             jsonObject2.put("vmValue", txtDias.getText().toString().trim());
                             dtTableArray.put(jsonObject2);
                             JSONObject jsonObject3 = new JSONObject();
-                            jsonObject3.put("vmID", 4);
+                            jsonObject3.put("vmID", "4");
                             jsonObject3.put("vmValue", txtSys.getText().toString().trim());
                             dtTableArray.put(jsonObject3);
                         } catch (Exception e) {

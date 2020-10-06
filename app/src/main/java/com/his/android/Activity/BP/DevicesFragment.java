@@ -54,7 +54,6 @@ public class DevicesFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         setListAdapter(null);
         View header = getActivity().getLayoutInflater().inflate(R.layout.device_list_header, null, false);
-
         FloatingActionButton fabBarcode=header.findViewById(R.id.fabBarcode);
         getListView().addHeaderView(header, null, false);
         setEmptyText("initializing...");

@@ -13,8 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.his.android.Activity.ChatActivity;
 import com.his.android.Activity.Dashboard;
-import com.his.android.Activity.SendMessage;
 import com.his.android.Fragment.MedicineSidePathway;
 import com.his.android.Model.PatientList;
 import com.his.android.R;
@@ -113,7 +113,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
             SharedPrefManager.getInstance(mCtx).setCovidPatient(admittedPatient.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIsCovid(true);
-            mCtx.startActivity(new Intent(mCtx, SendMessage.class));
+            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
         });
     }
 

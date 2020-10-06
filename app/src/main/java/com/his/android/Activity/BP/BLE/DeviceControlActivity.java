@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
@@ -53,7 +54,8 @@ public class DeviceControlActivity extends Activity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private TextView mConnectionState;
-    private TextView mDataField1, txtPid, mDataField2, mDataField3, btnGetData, btnSaveData, btnScan;
+    private TextView mDataField1, mDataField2, mDataField3, btnGetData, btnSaveData, btnScan;
+    EditText txtPid;
     private String mDeviceName;
     private Date today = new Date();
     private String mDeviceAddress;
@@ -201,15 +203,15 @@ public class DeviceControlActivity extends Activity {
                         JSONArray dtTableArray = new JSONArray();
                         try {
                             JSONObject jsonObject1 = new JSONObject();
-                            jsonObject1.put("vmID", 3);
+                            jsonObject1.put("vmID", "206");
                             jsonObject1.put("vmValue", pulse);
                             dtTableArray.put(jsonObject1);
                             JSONObject jsonObject2 = new JSONObject();
-                            jsonObject2.put("vmID", 6);
+                            jsonObject2.put("vmID", "6");
                             jsonObject2.put("vmValue", dias);
                             dtTableArray.put(jsonObject2);
                             JSONObject jsonObject3 = new JSONObject();
-                            jsonObject3.put("vmID", 4);
+                            jsonObject3.put("vmID", "4");
                             jsonObject3.put("vmValue", sys);
                             dtTableArray.put(jsonObject3);
                         } catch (Exception e) {

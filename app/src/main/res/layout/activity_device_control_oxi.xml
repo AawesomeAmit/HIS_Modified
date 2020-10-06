@@ -77,13 +77,14 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
-            <TextView
+            <EditText
                 android:id="@+id/txtPid"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:backgroundTint="@color/red"
+                android:background="@drawable/edt_bor"
                 android:gravity="center"
+                android:inputType="number"
                 android:layout_below="@id/btnScan"
                 android:layout_alignParentEnd="true"
                 android:layout_marginBottom="@dimen/_5sdp"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,17 +42,15 @@ import java.util.Date;
 
 public class DataActivity extends BaseActivity {
     private final static String TAG = DataActivity.class.getSimpleName();
-    TextView device_address, btnScan, btnGetData, btnSaveData, txtId, connectionState, txtSpo2, txtPulse, txtPi, txtHrv;
+    TextView device_address, btnScan, btnGetData, btnSaveData, connectionState, txtSpo2, txtPulse, txtPi, txtHrv;
+    EditText txtId;
     static String spo2, pulse, pi, hrv;
     LinearLayout ll;
 
     private IBleWriteResponse getBleWriteResponse() {
         return state -> {
-            if (state == Code.REQUEST_SUCCESS) {
-                Log.i(TAG, "write success");
-            } else {
-                Log.i(TAG, "write fail");
-            }
+            if (state == Code.REQUEST_SUCCESS) Log.i(TAG, "write success");
+            else Log.i(TAG, "write fail");
         };
     }
 
@@ -101,7 +100,7 @@ public class DataActivity extends BaseActivity {
             try {
                 if (pulse != null && !pulse.equals("0")) {
                     JSONObject jsonObject1 = new JSONObject();
-                    jsonObject1.put("vmID", "3");
+                    jsonObject1.put("vmID", "206");
                     jsonObject1.put("vmValue", pulse);
                     dtTableArray.put(jsonObject1);
                 }

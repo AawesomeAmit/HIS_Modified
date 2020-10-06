@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
@@ -50,7 +51,8 @@ public class DeviceControlActivity extends Activity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private TextView mConnectionState;
-    private TextView mDataField1, mDataField2, btnGetData, btnSaveData, txtPid, btnScan;
+    private TextView mDataField1, mDataField2, btnGetData, btnSaveData, btnScan;
+    EditText txtPid;
     private String mDeviceName;
     private String mDeviceAddress;
     private ExpandableListView mGattServicesList;
@@ -151,7 +153,7 @@ public class DeviceControlActivity extends Activity {
         mDataField2 = (TextView) findViewById(R.id.txtPulse);
         btnGetData = (TextView) findViewById(R.id.btnGetData);
         btnSaveData = (TextView) findViewById(R.id.btnSaveData);
-        txtPid = (TextView) findViewById(R.id.txtPid);
+        txtPid = findViewById(R.id.txtPid);
         btnScan = (TextView) findViewById(R.id.btnScan);
         mGattServicesList.setVisibility(View.GONE);
 
@@ -195,11 +197,11 @@ public class DeviceControlActivity extends Activity {
                     JSONArray dtTableArray = new JSONArray();
                     try {
                         JSONObject jsonObject1 = new JSONObject();
-                        jsonObject1.put("vmID", 3);
+                        jsonObject1.put("vmID", "206");
                         jsonObject1.put("vmValue", pulse1);
                         dtTableArray.put(jsonObject1);
                         JSONObject jsonObject2 = new JSONObject();
-                        jsonObject2.put("vmID", 56);
+                        jsonObject2.put("vmID", "56");
                         jsonObject2.put("vmValue", spo21);
                         dtTableArray.put(jsonObject2);
                     } catch (Exception e) {

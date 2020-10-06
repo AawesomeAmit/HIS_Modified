@@ -91,15 +91,15 @@
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/txtId"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:backgroundTint="@color/red"
+                android:background="@drawable/edt_bor"
                 android:gravity="center"
                 android:inputType="number"
-                android:hint="@string/pid"
+                android:hint="PID"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />

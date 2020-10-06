@@ -14,10 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.his.android.Activity.ChatActivity;
 import com.his.android.Activity.Dashboard;
-import com.his.android.Activity.PreDashboard;
 import com.his.android.Activity.PriscriptionOverviewPopup;
-import com.his.android.Activity.SendMessage;
 import com.his.android.Fragment.MedicineSidePathway;
 import com.his.android.Model.AdmittedPatientICU;
 import com.his.android.R;
@@ -139,7 +138,7 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
             SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
-            mCtx.startActivity(new Intent(mCtx, SendMessage.class));
+            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
         });
     }
 

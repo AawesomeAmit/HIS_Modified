@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,7 @@ import static com.his.android.Activity.BP.TerminalFragment.pulse;
 
 public class Initial extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
     static TextView btnScan;
-    TextView txtPid;
+    EditText txtPid;
     TextView btnSaveData;
     private Date today = new Date();
     @Override
@@ -103,15 +104,15 @@ public class Initial extends AppCompatActivity implements FragmentManager.OnBack
                 JSONArray dtTableArray = new JSONArray();
                 try {
                     JSONObject jsonObject1 = new JSONObject();
-                    jsonObject1.put("vmID", 4);
+                    jsonObject1.put("vmID", "4");
                     jsonObject1.put("vmValue", sys);
                     dtTableArray.put(jsonObject1);
                     JSONObject jsonObject2 = new JSONObject();
-                    jsonObject2.put("vmID", 6);
+                    jsonObject2.put("vmID", "6");
                     jsonObject2.put("vmValue", dias);
                     dtTableArray.put(jsonObject2);
                     JSONObject jsonObject3 = new JSONObject();
-                    jsonObject3.put("vmID", 3);
+                    jsonObject3.put("vmID", "206");
                     jsonObject3.put("vmValue", pulse);
                     dtTableArray.put(jsonObject3);
                 } catch (Exception e) {

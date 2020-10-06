@@ -489,6 +489,14 @@ public interface Api {
     Call<RecepientListResp> getDepartmentDesignationUserList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("preIndex") String preIndex);
 
     @FormUrlEncoded
+    @POST("ChatMessage/GetSubjectWiseChatList")
+    Call<SubjectWiseChatResp> getSubjectWiseChatList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("subjectId") Integer subjectId, @Field("userId") String userId);
+
+    @FormUrlEncoded
+    @POST("ChatMessage/GetsubjectWiseChatHead")
+    Call<SubjectWiseChatHeadResp> getsubjectWiseChatHead(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("subjectId") String subjectId, @Field("userId") String userId);
+
+    @FormUrlEncoded
     @POST("IPDRegistration/PatientOutEntry")
     Call<UniversalResp> patientOutEntry(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") String PID, @Field("userID") String userID);
 

@@ -126,8 +126,7 @@ public class StartActivity extends AppCompatActivity {
             }
         }
         txt.setOnClickListener(view -> {
-            if(update)
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+            if(update) startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
         });
     }
 
