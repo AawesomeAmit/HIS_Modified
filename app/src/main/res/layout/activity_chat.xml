@@ -67,21 +67,18 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChat"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_height="@dimen/_435sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        tools:listitem="@layout/inner_chat"
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
-        app:layout_constraintEnd_toStartOf="@+id/fab"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        tools:listitem="@layout/inner_chat" />
     <TextView
-        android:id="@+id/btnSubmit"
+        android:id="@+id/btnMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -96,7 +93,7 @@
         android:paddingTop="@dimen/_4sdp"
         android:paddingEnd="@dimen/_7sdp"
         android:paddingBottom="@dimen/_4sdp"
-        android:text="@string/send"
+        android:text="@string/send_message"
         android:textColor="@color/blue_text"
         android:textSize="@dimen/_14sdp"
         android:textStyle="bold"

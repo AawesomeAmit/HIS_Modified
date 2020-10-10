@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -92,6 +93,7 @@ public class SendMessage extends BaseActivity {
     RecyclerView rvRecipient;
     TextView btnSubmit;
     EditText edtMsg;
+    CheckBox chkTimeline;
     private MediaPlayer mPlayer;
     private MediaRecorder mRecorder;
     private static String mFileName = null;
@@ -111,6 +113,7 @@ public class SendMessage extends BaseActivity {
         rvRecipient = findViewById(R.id.rvRecipient);
         btnSubmit = findViewById(R.id.btnSubmit);
         edtMsg = findViewById(R.id.edtMsg);
+        chkTimeline = findViewById(R.id.chkTimeline);
         rvRecipient.setLayoutManager(new LinearLayoutManager(mActivity));
         rvRecipient.setNestedScrollingEnabled(true);
         chpRecipient = findViewById(R.id.chpRecipient);
@@ -165,6 +168,7 @@ public class SendMessage extends BaseActivity {
             if (!edtMsg.getText().toString().isEmpty()) {
                 if (spnSubject.getSelectedItemPosition() != 0) {
                     if (chpRecipient.getSelectedChipList().size() > 0) {
+                        Utils.showRequestDialog(mActivity);
                         JSONArray jsonArray = new JSONArray();
                         JSONObject object;
                         MultipartBody.Part[] fileParts = new MultipartBody.Part[returnValue.size()];
@@ -200,6 +204,7 @@ public class SendMessage extends BaseActivity {
                             e.printStackTrace();
                         }
                         if (returnValue.size() > 0 || mFileName != null) {
+                            Utils.showRequestDialog(mActivity);
                             Api iRestInterfaces = ApiUtilsForFile.getAPIService();
                             Call<List<ChatFilesUploaderResp>> call = iRestInterfaces.chatBoxFileUploadHandler(fileParts, fileParts1);
                             call.enqueue(new Callback<List<ChatFilesUploaderResp>>() {
@@ -216,11 +221,13 @@ public class SendMessage extends BaseActivity {
                                             e.printStackTrace();
                                         }
                                     }
+                                    Utils.hideDialog();
                                 }
 
                                 @Override
                                 public void onFailure(Call<List<ChatFilesUploaderResp>> call, Throwable t) {
                                     Toast.makeText(SendMessage.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Utils.hideDialog();
                                 }
                             });
                         } else sendMsg(jsonArray, null);
@@ -243,12 +250,12 @@ public class SendMessage extends BaseActivity {
             break;
         }
     }
-    private void sendMsg(JSONArray jsonArray, JSONArray files){
-        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), 2154772/*SharedPrefManager.getInstance(mActivity).getPid()*/, subjectList.get(spnSubject.getSelectedItemPosition()).getId(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), 0, files);
+    private void sendMsg(JSONArray jsonArray, JSONArray files) {
+        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), subjectList.get(spnSubject.getSelectedItemPosition()).getId(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, files);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Toast.makeText(SendMessage.this, "Message sent successfully!", Toast.LENGTH_SHORT).show();
                     edtMsg.setText("");
                 } else {
@@ -258,16 +265,20 @@ public class SendMessage extends BaseActivity {
                         e.printStackTrace();
                     }
                 }
+                Utils.hideDialog();
+                onBackPressed();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(SendMessage.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Utils.hideDialog();
             }
         });
     }
     private void bindRecipient(String text) {
         if(!text.equalsIgnoreCase("")) {
+            Utils.showRequestDialog1(mActivity);
             Call<RecepientListResp> call = RetrofitClient.getInstance().getApi().getDepartmentDesignationUserList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), text);
             call.enqueue(new Callback<RecepientListResp>() {
                 @Override
@@ -291,7 +302,6 @@ public class SendMessage extends BaseActivity {
             recepientList.addAll(recepientList);
         }
     }
-
 
     private void recordingPopup() {
         View popupView = getLayoutInflater().inflate(R.layout.popup_vital_recording, null);
@@ -550,4 +560,13 @@ public class SendMessage extends BaseActivity {
             }
         }
     }
+/*
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(mActivity, ChatActivity.class);
+        finish();
+        moveTaskToBack(true);
+        startActivity(intent);
+    }*/
 }

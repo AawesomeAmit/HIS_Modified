@@ -28,9 +28,12 @@ import com.his.android.Activity.UploadMultipleImg.TransferPatient.WardList;
 import com.his.android.Activity.UploadMultipleImg.Universalres;
 import com.his.android.Activity.UploadMultipleImg.UploadImg;
 import com.his.android.Model.GetMemberId;
+import com.his.android.Model.Ward;
 import com.his.android.R;
 import com.his.android.Response.MemberIdResp;
+import com.his.android.Response.WardResp;
 import com.his.android.Utils.ConnectivityChecker;
+import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.RetrofitClient1;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
@@ -50,10 +53,11 @@ public class ScanSelector extends BaseActivity {
     Spinner popupspnDepartment,popUpspnConsultant,popUpspnWard, spnBed;
     EditText popUpEtReason;
     Dialog dialog;
+    ArrayAdapter arrayAdapter;
     List<GetDepartmentList> departmentList = new ArrayList<>();
     List<ConsultantList> consultantLists = new ArrayList<>();
     List<BedMaster> bedList = new ArrayList<>();
-    List<WardList> wardLists = new ArrayList<>();
+    static List<Ward> wardLists = new ArrayList<>();
     private String departmentID="";
     private String consultantID="";
     private String bedID="";
@@ -67,11 +71,15 @@ public class ScanSelector extends BaseActivity {
         txtUpdateVital = findViewById(R.id.txtUpdateVital);
         txtScanIntake = findViewById(R.id.txtScanIntake);
         txtTransferIn = findViewById(R.id.txtTransferIn);
-        txtTransferOut = findViewById(R.id.txtTransferOut);
+        tvPtName = findViewById(R.id.tvPtName);
+        tvPID = findViewById(R.id.tvPID);
+        //txtTransferOut = findViewById(R.id.txtTransferOut);
         txtDischarge = findViewById(R.id.txtDischarge);
         txtProgressNote = findViewById(R.id.txtProgressNote);
         txtVital = findViewById(R.id.txtVital);
         txtIntake = findViewById(R.id.txtIntake);
+        tvPID.setText(String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
+        tvPtName.setText(SharedPrefManager.getInstance(mActivity).getPtName());
         intent = new Intent(ScanSelector.this, Dashboard.class);
         txtPrescription.setOnClickListener(view -> {
             intent.putExtra("status1", "0");
@@ -85,8 +93,8 @@ public class ScanSelector extends BaseActivity {
             intent.putExtra("status1", "3");
             startActivity(intent);
         });
-        txtTransferIn.setOnClickListener(view -> alertTransferPatient("Transfer-In"));
-        txtTransferOut.setOnClickListener(view -> alertTransferPatient("Transfer-Out"));
+        txtTransferIn.setOnClickListener(view -> alertPatientTransfer());//alertTransferPatient("Transfer-In")
+//        txtTransferOut.setOnClickListener(view -> alertTransferPatient("Transfer-Out"));
         txtDischarge.setOnClickListener(view -> {
             intent.putExtra("status1", "2");
             startActivity(intent);
@@ -105,7 +113,8 @@ public class ScanSelector extends BaseActivity {
             txtPrescription.setVisibility(View.GONE);
             txtIntake.setVisibility(View.VISIBLE);
         }
-        hitGetUserProfileByPID();
+//        hitGetUserProfileByPID();
+        hitGetWard();
     }
 
     //Dialog transfer patient
@@ -172,7 +181,7 @@ public class ScanSelector extends BaseActivity {
                         /*if(head.equalsIgnoreCase("transfer-out")) {
                             hitTransferPatient(true);
                         } else hitTransferPatient(false);*/
-                        hitTransferPatient();
+                        hitPatientTransfer();
 
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
@@ -192,7 +201,61 @@ public class ScanSelector extends BaseActivity {
         dialog.show();
 
     }
-    private void hitGetUserProfileByPID(){
+    private void alertPatientTransfer() {
+        dialog = new Dialog(mActivity);
+        dialog.setContentView(R.layout.dialog_transfer_patient);
+
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+
+        window.setAttributes(wlp);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//        RelativeLayout relativelyBed=dialog.findViewById(R.id.relativelyBed);
+        ImageView ivClose = dialog.findViewById(R.id.ivClose);
+        TextView tvSubmit = dialog.findViewById(R.id.tvSubmit);
+        tvPID = dialog.findViewById(R.id.tvPID);
+        tvPtName = dialog.findViewById(R.id.tvPtName);
+        tvPID.setText(String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
+        tvPtName.setText(SharedPrefManager.getInstance(mActivity).getPtName());
+        popUpspnWard = dialog.findViewById(R.id.spnWard);
+        arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, wardLists);
+        popUpspnWard.setAdapter(arrayAdapter);
+        popUpEtReason = dialog.findViewById(R.id.etReason);
+        ivClose.setOnClickListener(view -> dialog.dismiss());
+        tvSubmit.setOnClickListener(view -> {
+            try {
+
+                if (popUpspnWard.getSelectedItemPosition()==0) {
+                    Toast.makeText(mActivity, "Please select ward", Toast.LENGTH_SHORT).show();
+                }/* else if (popUpEtReason.getText().toString().isEmpty()) {
+                    Toast.makeText(mActivity, "Please enter reason", Toast.LENGTH_SHORT).show();
+                } */else {
+                    if (ConnectivityChecker.checker(mActivity)) {
+                        /*if(head.equalsIgnoreCase("transfer-out")) {
+                            hitTransferPatient(true);
+                        } else hitTransferPatient(false);*/
+                        hitPatientTransfer();
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+        });
+
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+    }
+    /*private void hitGetUserProfileByPID(){
         Call<MemberIdResp> call= RetrofitClient1.getInstance().getApi().getUserProfileByPID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", String.valueOf(SharedPrefManager.getInstance(getApplicationContext()).getPid()));
         call.enqueue(new Callback<MemberIdResp>() {
             @Override
@@ -212,7 +275,70 @@ public class ScanSelector extends BaseActivity {
                 Log.v("showError", t.getMessage());
             }
         });
+    }*/
+
+    private void hitGetWard() {
+        departmentList.clear();
+
+        Utils.showRequestDialog(mActivity);
+        Call<WardResp> call = RetrofitClient.getInstance().getApi().getWardTransferList(
+                SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString()
+        );
+
+        call.enqueue(new Callback<WardResp>() {
+            @Override
+            public void onResponse(Call<WardResp> call, Response<WardResp> response) {
+                if (response.isSuccessful()) {
+                    wardLists.add(new Ward());
+                    wardLists.get(0).setId(0);
+                    wardLists.get(0).setShortName("Select Ward");
+                    wardLists.addAll(response.body().getWardTransferList());
+                    if (wardLists.size() > 0) {
+
+                        arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, wardLists);
+//                        popUpspnWard.setAdapter(arrayAdapter);
+
+                        /*popUpspnWard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                                wardID = String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId());
+                                if (position != 0) hitGetBed();
+                                Log.v("asfasgtrhasb", String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId()));
+
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });*/
+                        Utils.hideDialog();
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
+                }
+
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<WardResp> call, Throwable t) {
+
+                Utils.hideDialog();
+                // progressDialog.dismiss();
+                Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
     }
+
     //Hit Get Department
     private void hitGetDepartment() {
         departmentList.clear();
@@ -289,6 +415,62 @@ public class ScanSelector extends BaseActivity {
 
             @Override
             public void onFailure(Call<GetDepartmentRes> call, Throwable t) {
+
+                Utils.hideDialog();
+                // progressDialog.dismiss();
+                Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
+    private void hitPatientTransfer() {
+        Utils.showRequestDialog(mActivity);
+        Call<Universalres> call = RetrofitClient.getInstance().getApi().patientIPDTransferToWard(
+                SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
+                String.valueOf(SharedPrefManager.getInstance(mActivity).getPmId()),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
+                String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId())
+        );
+
+        call.enqueue(new Callback<Universalres>() {
+            @Override
+            public void onResponse(Call<Universalres> call, Response<Universalres> response) {
+
+                if (response.isSuccessful()) {
+                    //Toast.makeText(getApplicationContext(), "Transfer Successfully!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    //if(!out)
+//                    hitAccept();
+                }
+                else {
+                    // error case
+                    switch (response.code()) {
+                        case 400:
+                            Toast.makeText(mActivity, "Unauthorized User", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 401:
+                            Toast.makeText(mActivity, "Unauthorized User", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(mActivity, "Data not found", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 500:
+                            Toast.makeText(mActivity, "Internal Server Error", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(mActivity, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<Universalres> call, Throwable t) {
 
                 Utils.hideDialog();
                 // progressDialog.dismiss();
@@ -419,11 +601,11 @@ public class ScanSelector extends BaseActivity {
                     }
 
                     //For ward List
-                    wardLists.add(new WardList());
+                    wardLists.add(new Ward());
                     wardLists.get(0).setId(0);
-                    wardLists.get(0).setName("Select Ward");
+                    wardLists.get(0).setShortName("Select Ward");
 
-                    wardLists.addAll(response.body().getWards());
+//                    wardLists.addAll(response.body());
 
                     if (wardLists.size()>0) {
 

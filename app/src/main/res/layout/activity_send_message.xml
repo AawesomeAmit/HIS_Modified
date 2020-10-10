@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:scrollbars="none"
+    android:id="@+id/lLayout"
     tools:context=".Activity.SendMessage">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -178,6 +179,11 @@
             app:layout_constraintEnd_toStartOf="@+id/fab"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnRec" />
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Is timeline?"
+                android:id="@+id/chkTimeline"/>
         <TextView
             android:layout_width="match_parent"
             android:textColor="@color/blue_text"

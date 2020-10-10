@@ -131,6 +131,18 @@ public class Utils {
         }
     }
 
+    public static void showRequestDialog1(Context activity) {
+        if (!((Activity) activity).isFinishing()) {
+            if (progressDialog == null) {
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Please wait...");
+                progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                progressDialog.show();
+            }
+        }
+    }
+
     public static String print(String mString) {
         Log.d("mString ",mString);
         return mString;

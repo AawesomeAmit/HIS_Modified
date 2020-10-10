@@ -1,5 +1,7 @@
 package com.his.android.Utils;
 
+import com.his.android.Activity.UploadMultipleImg.TransferPatient.GetDepartmentRes;
+import com.his.android.Activity.UploadMultipleImg.Universalres;
 import com.his.android.Model.PatientDetailRDA;
 import com.his.android.Model.VentilatorSettingResp;
 import com.his.android.Model.VitalChart;
@@ -270,6 +272,14 @@ public interface Api {
     Call<MemberIdResp> getUserProfileByPID(@Header("Token") String accessToken, @Field("PID") String PID);
 
     @FormUrlEncoded
+    @POST("Dashboard/GetWardTransferList")
+    Call<WardResp> getWardTransferList(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("pmID") String pmID);
+
+    @FormUrlEncoded
+    @POST("Dashboard/PatientIPDTransferToWard")
+    Call<Universalres> patientIPDTransferToWard(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("pmID") String pmID, @Field("who ") String who , @Field("transferWardId") String transferWardId);
+
+    @FormUrlEncoded
     @POST("Questionnaire/GetQuestionnaireList")
     Call<QuestionnaireResp> getQuestionnaireList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("setID") Integer setID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
 
@@ -490,7 +500,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("ChatMessage/GetSubjectWiseChatList")
-    Call<SubjectWiseChatResp> getSubjectWiseChatList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("subjectId") Integer subjectId, @Field("userId") String userId);
+    Call<SubjectWiseChatResp> getSubjectWiseChatList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("subjectId") Integer subjectId, @Field("userId") String userId, @Field("pid") String pid);
 
     @FormUrlEncoded
     @POST("ChatMessage/GetsubjectWiseChatHead")

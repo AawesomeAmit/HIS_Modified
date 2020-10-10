@@ -47,7 +47,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.ChatActivity"></activity>
+        <activity android:name=".Activity.PlayChatMsg"></activity>
+        <activity android:name=".Activity.ChatActivity" />
         <activity android:name=".Activity.SendMessage" />
         <activity android:name=".Activity.MealScanner" />
         <activity android:name=".Activity.MealScanEntry" />

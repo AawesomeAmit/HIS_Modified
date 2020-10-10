@@ -233,14 +233,11 @@ public class AddMedication extends Fragment {
         rvChiefComplaint.setLayoutManager(layoutManager1);
         rvChiefComplaint.setNestedScrollingEnabled(false);
         rvChiefComplaint.setHasFixedSize(true);
-
         etConsultant.setThreshold(3);
         etChiefComplaint.setThreshold(1);
-
         c = Calendar.getInstance();
         hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
         minutes = String.valueOf(c.get(Calendar.MINUTE));
-
         formList = new ArrayList<>();
         freqList = new ArrayList<>();
         unitList = new ArrayList<>();
