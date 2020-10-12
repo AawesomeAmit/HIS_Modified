@@ -94,7 +94,7 @@ public class ChatActivity extends BaseActivity {
     RecyclerView rvChat;
     private List<SubjectList> subjectList;
     private ArrayAdapter<SubjectList> adapter;
-    TextView btnMessage;
+    TextView btnMessage, btnReply;
     MyAdapter myAdapter;
     ArrayList<String> returnValue = new ArrayList<>();
     PhotoViewAttacher photoViewAttacher;
@@ -105,6 +105,7 @@ public class ChatActivity extends BaseActivity {
         setContentView(R.layout.activity_chat);
         spnSubject = findViewById(R.id.spnSubject);
         rvChat = findViewById(R.id.rvChat);
+        btnReply = findViewById(R.id.btnReply);
         btnMessage = findViewById(R.id.btnMessage);
         rvChat.setLayoutManager(new LinearLayoutManager(mActivity));
         subjectList = new ArrayList<>();
@@ -122,7 +123,8 @@ public class ChatActivity extends BaseActivity {
 
             }
         });
-        btnMessage.setOnClickListener(view -> startActivity(new Intent(mActivity, SendMessage.class)));
+        btnMessage.setOnClickListener(view -> startActivity(new Intent(mActivity, SendMessage.class).putExtra("type", "new")));
+        btnReply.setOnClickListener(view -> startActivity(new Intent(mActivity, SendMessage.class).putExtra("type", "reply")));
     }
 
     private void bindChat(int subID) {
@@ -288,9 +290,9 @@ public class ChatActivity extends BaseActivity {
         View popupView = getLayoutInflater().inflate(R.layout.popup_chat_img, null);
         final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true);
         ConstraintLayout lLayout = popupView.findViewById(R.id.lLayout);
-        TextView btnClose=popupView.findViewById(R.id.btnClose);
-        ImageView imgChat=popupView.findViewById(R.id.imgChat);
-        VideoView videoView=popupView.findViewById(R.id.vView);
+        TextView btnClose = popupView.findViewById(R.id.btnClose);
+        ImageView imgChat = popupView.findViewById(R.id.imgChat);
+        VideoView videoView = popupView.findViewById(R.id.vView);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable());
         int[] location = new int[2];
@@ -299,12 +301,11 @@ public class ChatActivity extends BaseActivity {
         photoViewAttacher.update();
         popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
         btnClose.setOnClickListener(view -> popupWindow.dismiss());
-        if(fileType.equalsIgnoreCase("image/jpeg")) {
+        if (fileType.equalsIgnoreCase("image/jpeg")) {
             Picasso.with(mActivity).load(path).resize((int) getResources().getDimension(R.dimen._294sdp), (int) getResources().getDimension(R.dimen._180sdp)).into(imgChat);
             videoView.setVisibility(View.GONE);
             imgChat.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             videoView.setVisibility(View.VISIBLE);
             imgChat.setVisibility(View.GONE);
             MediaController mediaController = new MediaController(this);

@@ -425,4 +425,7 @@
     <string name="enter_recipient_using">Enter recipient names using @, department using $ and designation using #</string>
     <string name="send_message">Send Message</string>
     <string name="transfer_patient">Transfer Patient</string>
+    <string name="reply">Reply</string>
+    <string name="new_message">New Message</string>
+    <string name="chat_title">Chat Title</string>
 </resources>

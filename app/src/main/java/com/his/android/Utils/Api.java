@@ -523,6 +523,17 @@ public interface Api {
             @Field("timelineMessage") Integer timelineMessage,
             @Field ("filePath") JSONArray filePath);
 
+    @FormUrlEncoded
+    @POST("ChatMessage/CreateRecipientChatMessage")
+    Call<ResponseBody> createRecipientChatMessage (
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID1,
+            @Field("chatMasterId") Integer chatMasterId,
+            @Field("chatMessage") String chatMessage,
+            @Field("timelineMessage") Integer timelineMessage,
+            @Field("userId") String userId,
+            @Field ("filePath") JSONArray filePath);
+
     @POST("ChatMessage/GetSubjectList")
     Call<SubjectListResp> getSubjectList(@Header("accessToken") String accessToken, @Header("userID") String userID);
 

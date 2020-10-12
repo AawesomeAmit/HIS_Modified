@@ -91,9 +91,10 @@ public class SendMessage extends BaseActivity {
     MyAdapter myAdapter;
     Options options;
     RecyclerView rvRecipient;
-    TextView btnSubmit;
+    TextView btnSubmit, tvRecp, tvSub;
     EditText edtMsg;
     CheckBox chkTimeline;
+    LinearLayout linearLayout3;
     private MediaPlayer mPlayer;
     private MediaRecorder mRecorder;
     private static String mFileName = null;
@@ -113,6 +114,9 @@ public class SendMessage extends BaseActivity {
         rvRecipient = findViewById(R.id.rvRecipient);
         btnSubmit = findViewById(R.id.btnSubmit);
         edtMsg = findViewById(R.id.edtMsg);
+        tvRecp = findViewById(R.id.tvRecp);
+        tvSub = findViewById(R.id.tvSub);
+        linearLayout3 = findViewById(R.id.linearLayout3);
         chkTimeline = findViewById(R.id.chkTimeline);
         rvRecipient.setLayoutManager(new LinearLayoutManager(mActivity));
         rvRecipient.setNestedScrollingEnabled(true);
@@ -235,6 +239,19 @@ public class SendMessage extends BaseActivity {
                 } else Toast.makeText(mActivity, "Please select a subject!", Toast.LENGTH_SHORT).show();
             } else Toast.makeText(mActivity, "Please type a message!", Toast.LENGTH_SHORT).show();
         });
+        if(getIntent().getStringExtra("type").equalsIgnoreCase("reply")){
+            chpRecipient.setVisibility(View.GONE);
+            rvRecipient.setVisibility(View.GONE);
+            tvRecp.setVisibility(View.GONE);
+            linearLayout3.setVisibility(View.GONE);
+            tvSub.setVisibility(View.GONE);
+        } else {
+            chpRecipient.setVisibility(View.VISIBLE);
+            rvRecipient.setVisibility(View.VISIBLE);
+            tvRecp.setVisibility(View.VISIBLE);
+            linearLayout3.setVisibility(View.VISIBLE);
+            tvSub.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -251,7 +268,10 @@ public class SendMessage extends BaseActivity {
         }
     }
     private void sendMsg(JSONArray jsonArray, JSONArray files) {
-        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), subjectList.get(spnSubject.getSelectedItemPosition()).getId(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, files);
+        Call<ResponseBody> call;
+        if(getIntent().getStringExtra("type").equalsIgnoreCase("new"))
+        call = RetrofitClient.getInstance().getApi().createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), subjectList.get(spnSubject.getSelectedItemPosition()).getId(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, files);
+        else call = RetrofitClient.getInstance().getApi().createRecipientChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), 0, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), files);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -103,7 +103,6 @@ public class ScanSelector extends BaseActivity {
         txtUpload.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, UploadImg.class)));
         txtUpdateVital.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, UpdateVital.class)));
         txtProgressNote.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, ProgressNoteScan.class)));
-        txtProgressNote.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, MealScanner.class)));
         if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 1) {
             txtProgressNote.setVisibility(View.VISIBLE);
             txtPrescription.setVisibility(View.VISIBLE);
@@ -225,7 +224,6 @@ public class ScanSelector extends BaseActivity {
         ivClose.setOnClickListener(view -> dialog.dismiss());
         tvSubmit.setOnClickListener(view -> {
             try {
-
                 if (popUpspnWard.getSelectedItemPosition()==0) {
                     Toast.makeText(mActivity, "Please select ward", Toast.LENGTH_SHORT).show();
                 }/* else if (popUpEtReason.getText().toString().isEmpty()) {
@@ -236,24 +234,17 @@ public class ScanSelector extends BaseActivity {
                             hitTransferPatient(true);
                         } else hitTransferPatient(false);*/
                         hitPatientTransfer();
-
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                     }
                 }
-
             } catch (Exception e) {
-
                 e.printStackTrace();
-
             }
-
         });
-
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-
     }
     /*private void hitGetUserProfileByPID(){
         Call<MemberIdResp> call= RetrofitClient1.getInstance().getApi().getUserProfileByPID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", String.valueOf(SharedPrefManager.getInstance(getApplicationContext()).getPid()));
@@ -279,7 +270,6 @@ public class ScanSelector extends BaseActivity {
 
     private void hitGetWard() {
         departmentList.clear();
-
         Utils.showRequestDialog(mActivity);
         Call<WardResp> call = RetrofitClient.getInstance().getApi().getWardTransferList(
                 SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
@@ -440,7 +430,7 @@ public class ScanSelector extends BaseActivity {
             public void onResponse(Call<Universalres> call, Response<Universalres> response) {
 
                 if (response.isSuccessful()) {
-                    //Toast.makeText(getApplicationContext(), "Transfer Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Transferred Successfully!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     //if(!out)
 //                    hitAccept();
