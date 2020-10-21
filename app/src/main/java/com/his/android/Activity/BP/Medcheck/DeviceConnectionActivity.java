@@ -5,7 +5,9 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,8 +31,12 @@ import com.getmedcheck.lib.model.BloodGlucoseData;
 import com.getmedcheck.lib.model.BloodPressureData;
 import com.getmedcheck.lib.model.IDeviceData;
 import com.getmedcheck.lib.utils.StringUtils;
+import com.his.android.Activity.BP.BLE.DeviceControlActivity;
+import com.his.android.Activity.ScanSelector;
 import com.his.android.Activity.ScannerActivity;
+import com.his.android.Model.PatientInfoBarcode;
 import com.his.android.R;
+import com.his.android.Response.PatientBarcodeResp;
 import com.his.android.Utils.ConnectivityChecker;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.SharedPrefManager;
@@ -39,11 +45,16 @@ import com.his.android.Utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DeviceConnectionActivity extends MedCheckActivity implements View.OnClickListener {
     private Date today = new Date();
@@ -116,7 +127,56 @@ public class DeviceConnectionActivity extends MedCheckActivity implements View.O
         txtSys = findViewById(R.id.txtSys);
         txtDias = findViewById(R.id.txtDias);
         txtPulse = findViewById(R.id.txtPulse);
+        txtPid.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()>6){
+                    Utils.showRequestDialog(DeviceConnectionActivity.this);
+                    Call<PatientBarcodeResp> call = RetrofitClient.getInstance().getApi().getPatientDetailByBarcode(SharedPrefManager.getInstance(DeviceConnectionActivity.this).getUser().getAccessToken(), SharedPrefManager.getInstance(DeviceConnectionActivity.this).getUser().getUserid().toString(), txtPid.getText().toString().trim());
+                    call.enqueue(new Callback<PatientBarcodeResp>() {
+                        @Override
+                        public void onResponse(Call<PatientBarcodeResp> call, Response<PatientBarcodeResp> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body().getPatientInfo().size() > 0) {
+                                    PatientInfoBarcode patientInfo = response.body().getPatientInfo().get(0);
+                                    ScannerActivity.patientInfo = patientInfo;
+                                    SharedPrefManager.getInstance(DeviceConnectionActivity.this).setScanned(true);
+                                    SharedPrefManager.getInstance(DeviceConnectionActivity.this).setPid(patientInfo.getPid());
+                                    SharedPrefManager.getInstance(DeviceConnectionActivity.this).setIpNo(patientInfo.getIpNo());
+                                    SharedPrefManager.getInstance(DeviceConnectionActivity.this).setPmId(patientInfo.getPmID());
+                                    SharedPrefManager.getInstance(DeviceConnectionActivity.this).setPtName(patientInfo.getPatientName());
+                                    SharedPrefManager.getInstance(DeviceConnectionActivity.this).setCr(patientInfo.getCrNo());
+                                    SharedPrefManager.getInstance(DeviceConnectionActivity.this).setSubdeptID(patientInfo.getAdmitSubDepartmentID());
+                                    SharedPrefManager.getInstance(DeviceConnectionActivity.this).setHeadID(patientInfo.getHeadId(), "", "");
+                                }
+                            } else {
+                                try {
+                                    Toast.makeText(DeviceConnectionActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            Utils.hideDialog();
+                        }
+
+                        @Override
+                        public void onFailure(Call<PatientBarcodeResp> call, Throwable t) {
+                            Utils.hideDialog();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         if (mBleDevice != null) {
             mTvDeviceName.setText(mBleDevice.getDeviceName());
         }

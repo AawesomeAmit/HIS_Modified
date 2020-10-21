@@ -428,4 +428,7 @@
     <string name="reply">Reply</string>
     <string name="new_message">New Message</string>
     <string name="chat_title">Chat Title</string>
+    <string name="treatment_checklist">Treatment Checklist</string>
+    <string name="assign_o2">Assign O2</string>
+    <string name="assign_ventilator">Assign Ventilator</string>
 </resources>

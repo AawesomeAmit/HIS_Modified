@@ -48,7 +48,7 @@ import retrofit2.Response;
 
 public class ScanSelector extends BaseActivity {
     TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload,
-            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote,txtScanIntake;
+            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote,txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator;
     Intent intent;
     Spinner popupspnDepartment,popUpspnConsultant,popUpspnWard, spnBed;
     EditText popUpEtReason;
@@ -73,6 +73,10 @@ public class ScanSelector extends BaseActivity {
         txtTransferIn = findViewById(R.id.txtTransferIn);
         tvPtName = findViewById(R.id.tvPtName);
         tvPID = findViewById(R.id.tvPID);
+        txtO2 = findViewById(R.id.txtO2);
+        txtVentilator = findViewById(R.id.txtVentilator);
+        txtChecklist = findViewById(R.id.txtChecklist);
+        txtUpdateVitals = findViewById(R.id.txtUpdateVitals);
         //txtTransferOut = findViewById(R.id.txtTransferOut);
         txtDischarge = findViewById(R.id.txtDischarge);
         txtProgressNote = findViewById(R.id.txtProgressNote);
@@ -91,6 +95,14 @@ public class ScanSelector extends BaseActivity {
         });
         txtIntake.setOnClickListener(view -> {
             intent.putExtra("status1", "3");
+            startActivity(intent);
+        });
+        txtChecklist.setOnClickListener(view -> {
+            intent.putExtra("status1", "4");
+            startActivity(intent);
+        });
+        txtUpdateVitals.setOnClickListener(view -> {
+            intent.putExtra("status1", "5");
             startActivity(intent);
         });
         txtTransferIn.setOnClickListener(view -> alertPatientTransfer());//alertTransferPatient("Transfer-In")
@@ -114,17 +126,39 @@ public class ScanSelector extends BaseActivity {
         }
 //        hitGetUserProfileByPID();
         hitGetWard();
+        if(SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID()==1){
+            txtChecklist.setVisibility(View.GONE);
+            txtUpdateVitals.setVisibility(View.GONE);
+            txtIntake.setVisibility(View.GONE);
+            txtScanIntake.setVisibility(View.GONE);
+            txtO2.setVisibility(View.GONE);
+            txtVentilator.setVisibility(View.GONE);
+        } else if(SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID()==4){
+            txtVital.setVisibility(View.GONE);
+            txtProgressNote.setVisibility(View.GONE);
+            txtPrescription.setVisibility(View.GONE);
+            txtDischarge.setVisibility(View.GONE);
+            txtO2.setVisibility(View.GONE);
+            txtVentilator.setVisibility(View.GONE);
+        } else if(SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID()==5){
+            txtChecklist.setVisibility(View.GONE);
+            txtUpdateVitals.setVisibility(View.GONE);
+            txtIntake.setVisibility(View.GONE);
+            txtScanIntake.setVisibility(View.GONE);
+            txtVital.setVisibility(View.GONE);
+            txtProgressNote.setVisibility(View.GONE);
+            txtPrescription.setVisibility(View.GONE);
+            txtDischarge.setVisibility(View.GONE);
+            txtTransferIn.setVisibility(View.GONE);
+        }
     }
 
     //Dialog transfer patient
     private void alertTransferPatient(String head) {
-
         dialog = new Dialog(mActivity);
         dialog.setContentView(R.layout.dialog_patient_transfer);
-
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
-
         window.setAttributes(wlp);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -203,10 +237,8 @@ public class ScanSelector extends BaseActivity {
     private void alertPatientTransfer() {
         dialog = new Dialog(mActivity);
         dialog.setContentView(R.layout.dialog_transfer_patient);
-
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
-
         window.setAttributes(wlp);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);

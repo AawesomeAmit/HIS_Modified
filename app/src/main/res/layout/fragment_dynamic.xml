@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.ChatActivity">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
-        android:id="@+id/txtTitle"
+        android:id="@+id/textView36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -15,6 +13,7 @@
         android:drawableStart="@drawable/ic_chat"
         android:layout_alignParentStart="true"
         android:drawablePadding="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:paddingTop="@dimen/_4sdp"
         android:paddingBottom="@dimen/_4sdp"
         android:text="@string/chat_message"
@@ -25,7 +24,7 @@
         android:layout_marginEnd="@dimen/_2sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
     <TextView
         android:id="@+id/tvSub"
@@ -42,7 +41,7 @@
         android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/btnMessage" />
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
@@ -51,6 +50,7 @@
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginEnd="@dimen/_5sdp"
+        android:background="@drawable/edt_bor"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,11 +64,17 @@
             android:drawablePadding="@dimen/_2sdp"
             android:paddingStart="@dimen/_2sdp"
             android:paddingEnd="@dimen/_2sdp"
-            android:textStyle="bold"
-            android:textColor="@color/blue_text"
+            android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
     </LinearLayout>
-
+    <!--<androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnReply"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"/>-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChat"
         android:layout_width="match_parent"
@@ -87,7 +93,6 @@
         android:layout_alignParentEnd="true"
         android:layout_gravity="center|bottom"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:background="@drawable/btn_add_bg"
         android:drawableStart="@drawable/ic_send"
@@ -103,4 +108,28 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/btnMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center|bottom"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@drawable/btn_add_bg"
+        android:drawableStart="@drawable/ic_send"
+        android:drawablePadding="@dimen/_3sdp"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingStart="@dimen/_7sdp"
+        android:paddingTop="@dimen/_4sdp"
+        android:paddingEnd="@dimen/_7sdp"
+        android:paddingBottom="@dimen/_4sdp"
+        android:text="@string/new_message"
+        android:textColor="@color/blue_text"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView36" />
 </androidx.constraintlayout.widget.ConstraintLayout>

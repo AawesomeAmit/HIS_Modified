@@ -142,7 +142,7 @@ public class Intake extends Fragment implements View.OnClickListener {
         mDay=mDay1 = c.get(Calendar.DAY_OF_MONTH);
         date = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
         //txtDate.setText(date);
-        edtMeal.setThreshold(-1);
+        edtMeal.setThreshold(0);
         rvMeal.setLayoutManager(new LinearLayoutManager(context));
         txtTime.setText(c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + " " + c.get(Calendar.AM_PM));
         unitLists = new ArrayList<>();

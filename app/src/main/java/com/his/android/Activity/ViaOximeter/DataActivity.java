@@ -3,6 +3,8 @@ package com.his.android.Activity.ViaOximeter;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +18,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.his.android.Activity.BP.BLE.DeviceControlActivity;
+import com.his.android.Activity.ScanSelector;
+import com.his.android.Model.PatientInfoBarcode;
+import com.his.android.Response.PatientBarcodeResp;
 import com.inuker.bluetooth.library.Code;
 import com.inuker.bluetooth.library.Constants;
 import com.his.android.Activity.ScannerActivity;
@@ -37,8 +43,13 @@ import com.vphealthy.oximetersdk.model.data.DetectData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DataActivity extends BaseActivity {
     private final static String TAG = DataActivity.class.getSimpleName();
@@ -91,7 +102,56 @@ public class DataActivity extends BaseActivity {
         if (getIntent().getStringExtra("status") != null) {
             txtId.setText(String.valueOf(SharedPrefManager.getInstance(DataActivity.this).getPid()));
         }
+        txtId.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()>6){
+                    Utils.showRequestDialog(DataActivity.this);
+                    Call<PatientBarcodeResp> call = RetrofitClient.getInstance().getApi().getPatientDetailByBarcode(SharedPrefManager.getInstance(DataActivity.this).getUser().getAccessToken(), SharedPrefManager.getInstance(DataActivity.this).getUser().getUserid().toString(), txtId.getText().toString().trim());
+                    call.enqueue(new Callback<PatientBarcodeResp>() {
+                        @Override
+                        public void onResponse(Call<PatientBarcodeResp> call, Response<PatientBarcodeResp> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body().getPatientInfo().size() > 0) {
+                                    PatientInfoBarcode patientInfo = response.body().getPatientInfo().get(0);
+                                    ScannerActivity.patientInfo = patientInfo;
+                                    SharedPrefManager.getInstance(DataActivity.this).setScanned(true);
+                                    SharedPrefManager.getInstance(DataActivity.this).setPid(patientInfo.getPid());
+                                    SharedPrefManager.getInstance(DataActivity.this).setIpNo(patientInfo.getIpNo());
+                                    SharedPrefManager.getInstance(DataActivity.this).setPmId(patientInfo.getPmID());
+                                    SharedPrefManager.getInstance(DataActivity.this).setPtName(patientInfo.getPatientName());
+                                    SharedPrefManager.getInstance(DataActivity.this).setCr(patientInfo.getCrNo());
+                                    SharedPrefManager.getInstance(DataActivity.this).setSubdeptID(patientInfo.getAdmitSubDepartmentID());
+                                    SharedPrefManager.getInstance(DataActivity.this).setHeadID(patientInfo.getHeadId(), "", "");
+                                }
+                            } else {
+                                try {
+                                    Toast.makeText(DataActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            Utils.hideDialog();
+                        }
+
+                        @Override
+                        public void onFailure(Call<PatientBarcodeResp> call, Throwable t) {
+                            Utils.hideDialog();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         btnGetData.setOnClickListener(view -> start_recevice_data());
 
         btnSaveData.setOnClickListener(view -> {

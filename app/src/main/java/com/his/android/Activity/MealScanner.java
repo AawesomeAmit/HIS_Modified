@@ -68,8 +68,8 @@ public class MealScanner extends BaseActivity implements ZXingScannerView.Result
         final String result = rawResult.getText();
         Log.d("QRCodeScanner", rawResult.getText());
         Log.d("QRCodeScanner", rawResult.getBarcodeFormat().toString());
-        if (ConnectivityChecker.checker(MealScanner.this)) {
-            Utils.showRequestDialog(MealScanner.this);
+        if (ConnectivityChecker.checker(mActivity)) {
+            Utils.showRequestDialog(mActivity);
             Call<ScanMealResp> call = RetrofitClient.getInstance().getApi().getIntakeNameByDetails(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(MealScanner.this).getUser().getUserid().toString(), rawResult.getText(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
             call.enqueue(new Callback<ScanMealResp>() {
                 @Override
@@ -81,7 +81,7 @@ public class MealScanner extends BaseActivity implements ZXingScannerView.Result
                                 Intent intent=new Intent(mActivity, MealScanEntry.class);
                                 intent.putExtra("intake", response.body().getTable().get(0).getIntakeName());
                                 intent.putExtra("intakeID", response.body().getTable().get(0).getIntakeID().toString());
-                                intent.putExtra("qty", response.body().getTable().get(0).getIntakeQuantity().toString());
+                                intent.putExtra("qty", response.body().getTable().get(0).getIntakeQuantity());
                                 intent.putExtra("isSupplement", response.body().getTable().get(0).getIntakeType().toString());
                                 intent.putExtra("isSynonym", response.body().getTable().get(0).getIsSynonym().toString());
                                 intent.putExtra("textID", response.body().getTable().get(0).getTextID().toString());
@@ -111,7 +111,7 @@ public class MealScanner extends BaseActivity implements ZXingScannerView.Result
             });
         } else {
             Toast.makeText(MealScanner.this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MealScanner.this, PreDashboard.class);
+            Intent intent = new Intent(MealScanner.this, ScanSelector.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             startActivity(intent);
@@ -209,15 +209,8 @@ public class MealScanner extends BaseActivity implements ZXingScannerView.Result
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(mActivity, PreDashboard.class));
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
             if (checkPermission()) {

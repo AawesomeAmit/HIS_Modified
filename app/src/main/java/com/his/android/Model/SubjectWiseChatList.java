@@ -7,9 +7,6 @@ public class SubjectWiseChatList {
     @SerializedName("chatMasterId")
     @Expose
     public Integer chatMasterId;
-    @SerializedName("subjectId")
-    @Expose
-    public Integer subjectId;
     @SerializedName("subjectName")
     @Expose
     public String subjectName;
@@ -22,9 +19,15 @@ public class SubjectWiseChatList {
     @SerializedName("chatMessage")
     @Expose
     public String chatMessage;
+    @SerializedName("chatDate")
+    @Expose
+    public String chatDate;
     @SerializedName("side")
     @Expose
     public String side;
+    @SerializedName("side2")
+    @Expose
+    public String side2;
     @SerializedName("createdDate")
     @Expose
     public String createdDate;
@@ -45,10 +48,6 @@ public class SubjectWiseChatList {
         return chatMasterId;
     }
 
-    public Integer getSubjectId() {
-        return subjectId;
-    }
-
     public String getSubjectName() {
         return subjectName;
     }
@@ -65,8 +64,16 @@ public class SubjectWiseChatList {
         return chatMessage;
     }
 
+    public String getChatDate() {
+        return chatDate;
+    }
+
     public String getSide() {
         return side;
+    }
+
+    public String getSide2() {
+        return side2;
     }
 
     public String getCreatedDate() {

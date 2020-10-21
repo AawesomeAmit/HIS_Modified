@@ -68,7 +68,7 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:drawableStart="@drawable/ic_subject"
         android:drawablePadding="@dimen/_2sdp"
-        android:text="@string/subject"
+        android:text="@string/chat_title"
         android:textColor="@color/grey_heading"
         android:textSize="@dimen/_12sdp"
         android:layout_marginStart="@dimen/_5sdp"
@@ -85,20 +85,19 @@
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:background="@drawable/edt_bor"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSub">
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spnSubject"
+        <EditText
+            android:id="@+id/txtSubject"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_gravity="center_vertical"
-            android:drawablePadding="@dimen/_2sdp"
-            android:paddingStart="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:padding="@dimen/_5sdp"
+            android:background="@drawable/edt_bor"
+            android:hint="@string/chat_title"
             android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
     </LinearLayout>
@@ -180,7 +179,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnRec" />
             <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Is timeline?"
                 android:id="@+id/chkTimeline"/>

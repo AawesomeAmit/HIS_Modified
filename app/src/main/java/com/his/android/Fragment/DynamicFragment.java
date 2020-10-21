@@ -1,128 +1,101 @@
-package com.his.android.Activity;
+package com.his.android.Fragment;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.MimeTypeMap;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.fxn.pix.Options;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.fxn.pix.Pix;
-import com.fxn.utility.PermUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.his.android.Activity.UploadMultipleImg.Api;
-import com.his.android.Activity.UploadMultipleImg.ApiUtilsForFile;
+import com.his.android.Activity.ChatActivity;
+import com.his.android.Activity.SendMessage;
 import com.his.android.Activity.UploadMultipleImg.adapters.MyAdapter;
-import com.his.android.Model.RecepientList;
 import com.his.android.Model.SubjectList;
 import com.his.android.Model.SubjectWiseChatList;
 import com.his.android.R;
 import com.his.android.Response.ChatFilePath;
-import com.his.android.Response.ChatFilesUploaderResp;
-import com.his.android.Response.RecepientListResp;
-import com.his.android.Response.SubjectListResp;
 import com.his.android.Response.SubjectWiseChatResp;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
-import com.his.android.view.BaseActivity;
-import com.pchmn.materialchips.ChipsInput;
-import com.pchmn.materialchips.model.ChipInterface;
+import com.his.android.view.BaseFragment;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-import static android.Manifest.permission.RECORD_AUDIO;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.his.android.Fragment.InputVital.REQUEST_AUDIO_PERMISSION_CODE;
 
-public class ChatActivity extends BaseActivity {
-    TextView txtRecipient;
+public class DynamicFragment extends BaseFragment {
+    View view;
+    int val;
+    TextView spnSubject;
     RecyclerView rvChat;
     private List<SubjectList> subjectList;
-//    private ArrayAdapter<SubjectList> adapter;
-    TextView btnReply, txtTitle;
+    private ArrayAdapter<SubjectList> adapter;
+    TextView btnMessage, btnReply, txtRecipient;
     MyAdapter myAdapter;
     ArrayList<String> returnValue = new ArrayList<>();
     PhotoViewAttacher photoViewAttacher;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
-        txtRecipient = findViewById(R.id.txtRecipient);
-        rvChat = findViewById(R.id.rvChat);
-        txtTitle = findViewById(R.id.txtTitle);
-        btnReply = findViewById(R.id.btnReply);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_dynamic, container, false);
+        val = getArguments().getInt("someInt", 0);
+//        spnSubject = view.findViewById(R.id.spnSubject);
+        rvChat = view.findViewById(R.id.rvChat);
+        btnReply = view.findViewById(R.id.btnReply);
+        btnMessage = view.findViewById(R.id.btnMessage);
         rvChat.setLayoutManager(new LinearLayoutManager(mActivity));
         subjectList = new ArrayList<>();
-        txtTitle.setText(getIntent().getStringExtra("title"));
+//        bindSubject();
+        btnMessage.setOnClickListener(view -> startActivity(new Intent(mActivity, SendMessage.class).putExtra("type", "new")));
         btnReply.setOnClickListener(view -> startActivity(new Intent(mActivity, SendMessage.class).putExtra("type", "reply")));
-        bindChat(SharedPrefManager.getInstance(mActivity).getChatID());
+
+        bindChat(val);
+        return view;
     }
 
-    private void bindChat(int subID) {
+    private void bindChat(int value) {
         Utils.showRequestDialog(mActivity);
-        Call<SubjectWiseChatResp> call = RetrofitClient.getInstance().getApi().getSubjectWiseChatList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), subID, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
+        Call<SubjectWiseChatResp> call = RetrofitClient.getInstance().getApi().getSubjectWiseChatList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), 0/*ChatActivity.subjectNameListTabs.get(value).getChatMasterId()*/, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
         call.enqueue(new Callback<SubjectWiseChatResp>() {
             @Override
             public void onResponse(Call<SubjectWiseChatResp> call, Response<SubjectWiseChatResp> response) {
                 if (response.isSuccessful()) {
                     rvChat.setAdapter(new ChatAdp(response.body().getSubjectWiseChatList()));
-                    txtRecipient.setText(response.body().getSubjectWiseRecipientList().get(0).getRecipientName());
                 }
                 Utils.hideDialog();
             }
@@ -275,7 +248,6 @@ public class ChatActivity extends BaseActivity {
         });
     }*/
     private void zoomPopup(String path, String fileType) {
-        Log.v("vdoPath", path);
         View popupView = getLayoutInflater().inflate(R.layout.popup_chat_img, null);
         final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, true);
         ConstraintLayout lLayout = popupView.findViewById(R.id.lLayout);
@@ -297,7 +269,7 @@ public class ChatActivity extends BaseActivity {
         } else {
             videoView.setVisibility(View.VISIBLE);
             imgChat.setVisibility(View.GONE);
-            MediaController mediaController = new MediaController(this);
+            MediaController mediaController = new MediaController(mActivity);
             Uri uri = Uri.parse(path);
             videoView.setVideoURI(uri);
             videoView.setMediaController(mediaController);
@@ -358,20 +330,20 @@ public class ChatActivity extends BaseActivity {
             Type type = new TypeToken<List<ChatFilePath>>(){}.getType();
 //                String li stString = gson.toJson(subjectWiseChatLists.get(i).getFilePath(), new TypeToken<ArrayList<ChatFilePath>>() {}.getType());
             List<ChatFilePath> filePathList = gson.fromJson(subjectWiseChatLists.get(i).getFilePath(), type);
-                if(subjectWiseChatLists.get(i).getSide().equalsIgnoreCase("left")) {
+            if(subjectWiseChatLists.get(i).getSide().equalsIgnoreCase("left")) {
                 holder.txtMsgLeft.setText(subjectWiseChatLists.get(i).getChatMessage());
                 holder.txtLeftDate.setText(subjectWiseChatLists.get(i).getCreatedDate());
                 holder.txtLeftSender.setText(subjectWiseChatLists.get(i).getUserList());
                 if(filePathList!=null && filePathList.size()>0)
-                holder.rvLeftImg.setAdapter(new ChatImgAdp(filePathList));
+                    holder.rvLeftImg.setAdapter(new ChatImgAdp(filePathList));
                 holder.llRight.setVisibility(View.GONE);
             }
             else {
                 holder.txtMsgRight.setText(String.valueOf(subjectWiseChatLists.get(i).getChatMessage()));
                 holder.txtRightDate.setText(subjectWiseChatLists.get(i).getCreatedDate());
                 holder.txtRightSender.setText(subjectWiseChatLists.get(i).getUserList());
-                    if(filePathList!=null && filePathList.size()>0)
-                holder.rvRightImg.setAdapter(new ChatImgAdp(filePathList));
+                if(filePathList!=null && filePathList.size()>0)
+                    holder.rvRightImg.setAdapter(new ChatImgAdp(filePathList));
                 holder.llLeft.setVisibility(View.GONE);
             }
         }
@@ -422,8 +394,8 @@ public class ChatActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
             if(filePathList.get(i).getFileType().equalsIgnoreCase("image/jpeg"))
-            Picasso.with(mActivity).load(filePathList.get(i).getFilePath()).resize((int) getResources().getDimension(R.dimen._294sdp), (int) getResources().getDimension(R.dimen._180sdp)).into(holder.imgChat);
-            else if(filePathList.get(i).getFileType().equalsIgnoreCase("image/jpeg"))
+                Picasso.with(mActivity).load(filePathList.get(i).getFilePath()).resize((int) getResources().getDimension(R.dimen._294sdp), (int) getResources().getDimension(R.dimen._180sdp)).into(holder.imgChat);
+
             holder.imgChat.setOnClickListener(view -> zoomPopup(filePathList.get(i).getFilePath(), filePathList.get(i).getFileType()));
         }
 
@@ -441,6 +413,12 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
+   /* @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(mActivity, PatientList.class));
+    }*/
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -454,10 +432,11 @@ public class ChatActivity extends BaseActivity {
             break;
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(mActivity, ChatTitle.class));
+    public static DynamicFragment addfrag(int val) {
+        DynamicFragment fragment = new DynamicFragment();
+        Bundle args = new Bundle();
+        args.putInt("someInt", val);
+        fragment.setArguments(args);
+        return fragment;
     }
 }

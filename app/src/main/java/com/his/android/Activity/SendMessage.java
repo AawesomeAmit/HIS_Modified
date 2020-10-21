@@ -51,6 +51,7 @@ import com.his.android.R;
 import com.his.android.Response.ChatFilesUploaderResp;
 import com.his.android.Response.RecepientListResp;
 import com.his.android.Response.SubjectListResp;
+import com.his.android.Response.SubjectNameExistResp;
 import com.his.android.Response.UniversalResp;
 import com.his.android.Utils.ConnectivityChecker;
 import com.his.android.Utils.RetrofitClient;
@@ -93,6 +94,7 @@ public class SendMessage extends BaseActivity {
     RecyclerView rvRecipient;
     TextView btnSubmit, tvRecp, tvSub;
     EditText edtMsg;
+    private boolean isExist=false;
     CheckBox chkTimeline;
     LinearLayout linearLayout3;
     private MediaPlayer mPlayer;
@@ -102,15 +104,15 @@ public class SendMessage extends BaseActivity {
     private List<RecepientList> recepientList = new ArrayList<>();
     private ArrayList<String> selectedRecipientList = new ArrayList<>();
     private ChipsInput chpRecipient;
-    Spinner spnSubject;
-    private ArrayAdapter<SubjectList> adapter;
+    EditText txtSubject;
+//    private ArrayAdapter<SubjectList> adapter;
     ArrayList<String> returnValue = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_message);
         rvImg = findViewById(R.id.rvImg);
-        spnSubject = findViewById(R.id.spnSubject);
+        txtSubject = findViewById(R.id.txtSubject);
         rvRecipient = findViewById(R.id.rvRecipient);
         btnSubmit = findViewById(R.id.btnSubmit);
         edtMsg = findViewById(R.id.edtMsg);
@@ -143,6 +145,30 @@ public class SendMessage extends BaseActivity {
             Pix.start(SendMessage.this, options);
             rvImg.setVisibility(View.VISIBLE);
         });
+        txtSubject.setOnFocusChangeListener((view, b) -> {
+            if(!b) {
+                Call<SubjectNameExistResp> call = RetrofitClient.getInstance().getApi().getSubjectnameAlreadyExist(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), txtSubject.getText().toString().trim());
+                call.enqueue(new Callback<SubjectNameExistResp>() {
+                    @Override
+                    public void onResponse(Call<SubjectNameExistResp> call, Response<SubjectNameExistResp> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().getSubjectNameExistList().size() > 0) {
+                                isExist = true;
+                                txtSubject.setError("This title already exists!");
+                                Toast.makeText(mActivity, "This title already exists!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                isExist = false;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SubjectNameExistResp> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
         findViewById(R.id.btnRec).setOnClickListener((View view) -> recordingPopup());
         chpRecipient.addChipsListener(new ChipsInput.ChipsListener() {
             @Override
@@ -161,82 +187,99 @@ public class SendMessage extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence text) {
-                bindRecipient(String.valueOf(text));
-                RecipientChipAdp RecipientChipAdp = new RecipientChipAdp(recepientList);
-                rvRecipient.setAdapter(RecipientChipAdp);
-                RecipientChipAdp.notifyDataSetChanged();
+                if (text.length() > 2) {
+                    bindRecipient(String.valueOf(text));
+                    RecipientChipAdp RecipientChipAdp = new RecipientChipAdp(recepientList);
+                    rvRecipient.setAdapter(RecipientChipAdp);
+                    RecipientChipAdp.notifyDataSetChanged();
+                } else {
+                    recepientList.clear();
+                    RecipientChipAdp RecipientChipAdp = new RecipientChipAdp(recepientList);
+                    rvRecipient.setAdapter(RecipientChipAdp);
+                    RecipientChipAdp.notifyDataSetChanged();
+                }
             }
         });
-        bindSubject();
+//        bindSubject();
         btnSubmit.setOnClickListener(view -> {
+                if (getIntent().getStringExtra("type").equalsIgnoreCase("new")) {
+                    if (txtSubject.getText().toString().isEmpty()) {
+                        Toast.makeText(mActivity, "Please select a title!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (isExist) {
+                        Toast.makeText(mActivity, "This title already exists!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (chpRecipient.getSelectedChipList().size() <= 0) {
+                        Toast.makeText(mActivity, "Please add atleast one recipient!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
             if (!edtMsg.getText().toString().isEmpty()) {
-                if (spnSubject.getSelectedItemPosition() != 0) {
-                    if (chpRecipient.getSelectedChipList().size() > 0) {
-                        Utils.showRequestDialog(mActivity);
-                        JSONArray jsonArray = new JSONArray();
-                        JSONObject object;
-                        MultipartBody.Part[] fileParts = new MultipartBody.Part[returnValue.size()];
-                        MultipartBody.Part[] fileParts1 = new MultipartBody.Part[1];
-                        try {
-                            for (int i = 0; i < chpRecipient.getSelectedChipList().size(); i++) {
-                                object = new JSONObject();
-                                object.put("id", chpRecipient.getSelectedChipList().get(i).getId());
-                                object.put("name", chpRecipient.getSelectedChipList().get(i).getLabel());
-                                object.put("userType", chpRecipient.getSelectedChipList().get(i).getInfo());
-                                jsonArray.put(object);
+                Utils.showRequestDialog(mActivity);
+                JSONArray jsonArray = new JSONArray();
+                JSONObject object;
+                MultipartBody.Part[] fileParts = new MultipartBody.Part[returnValue.size()];
+                MultipartBody.Part[] fileParts1 = new MultipartBody.Part[1];
+                try {
+                    for (int i = 0; i < chpRecipient.getSelectedChipList().size(); i++) {
+                        object = new JSONObject();
+                        object.put("id", chpRecipient.getSelectedChipList().get(i).getId());
+                        object.put("name", chpRecipient.getSelectedChipList().get(i).getLabel());
+                        object.put("userType", chpRecipient.getSelectedChipList().get(i).getInfo());
+                        jsonArray.put(object);
+                    }
+                    Log.d("rcpt", String.valueOf(jsonArray));
+                    for (int i = 0; i < returnValue.size(); i++) {
+                        String path = returnValue.get(i);
+                        Log.d("filePath", "File Path: " + path);
+                        File file = new File(path);
+                        MediaType mediaType = MediaType.parse(com.his.android.Activity.UploadMultipleImg.Utils.getMimeType(path));
+                        RequestBody fileBody = RequestBody.create(mediaType, file);
+                        fileParts[i] = MultipartBody.Part.createFormData("fileName", file.getName(), fileBody);
+                        //fileParts = MultipartBody.Part.createFormData("attachedFile", file.getName(), fileBody);
+                    }
+                    if (mFileName != null) {
+                        Log.d("filePath", "File Path: " + mFileName);
+                        File file = new File(mFileName);
+                        MediaType mediaType = MediaType.parse(getMimeType(mFileName));
+                        RequestBody fileBody = RequestBody.create(mediaType, file);
+                        fileParts1[0] = MultipartBody.Part.createFormData("fileName", file.getName(), fileBody);
+                        //fileParts[fileParts.length] = MultipartBody.Part.createFormData("fileName", file.getName(), fileBody);
+                        //Log.d("filePath", "File Path: " + fileParts1);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (returnValue.size() > 0 || mFileName != null) {
+                    Utils.showRequestDialog(mActivity);
+                    Api iRestInterfaces = ApiUtilsForFile.getAPIService();
+                    Call<List<ChatFilesUploaderResp>> call = iRestInterfaces.chatBoxFileUploadHandler(fileParts, fileParts1);
+                    call.enqueue(new Callback<List<ChatFilesUploaderResp>>() {
+                        @Override
+                        public void onResponse(Call<List<ChatFilesUploaderResp>> call, Response<List<ChatFilesUploaderResp>> response) {
+                            if (response.isSuccessful()) {
+                                Gson gson = new Gson();
+                                String listString = gson.toJson(response.body(), new TypeToken<ArrayList<ChatFilesUploaderResp>>() {
+                                }.getType());
+                                try {
+                                    JSONArray fileJson = new JSONArray(listString);
+                                    sendMsg(jsonArray, fileJson);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            Log.d("rcpt", String.valueOf(jsonArray));
-                            for (int i = 0; i < returnValue.size(); i++) {
-                                String path = returnValue.get(i);
-                                Log.d("filePath", "File Path: " + path);
-                                File file = new File(path);
-                                MediaType mediaType = MediaType.parse(com.his.android.Activity.UploadMultipleImg.Utils.getMimeType(path));
-                                RequestBody fileBody = RequestBody.create(mediaType, file);
-                                fileParts[i] = MultipartBody.Part.createFormData("fileName", file.getName(), fileBody);
-                                //fileParts = MultipartBody.Part.createFormData("attachedFile", file.getName(), fileBody);
-                            }
-                            if (mFileName != null) {
-                                Log.d("filePath", "File Path: " + mFileName);
-                                File file = new File(mFileName);
-                                MediaType mediaType = MediaType.parse(getMimeType(mFileName));
-                                RequestBody fileBody = RequestBody.create(mediaType, file);
-                                fileParts1[0] = MultipartBody.Part.createFormData("fileName", file.getName(), fileBody);
-                                //fileParts[fileParts.length] = MultipartBody.Part.createFormData("fileName", file.getName(), fileBody);
-                                //Log.d("filePath", "File Path: " + fileParts1);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            Utils.hideDialog();
                         }
-                        if (returnValue.size() > 0 || mFileName != null) {
-                            Utils.showRequestDialog(mActivity);
-                            Api iRestInterfaces = ApiUtilsForFile.getAPIService();
-                            Call<List<ChatFilesUploaderResp>> call = iRestInterfaces.chatBoxFileUploadHandler(fileParts, fileParts1);
-                            call.enqueue(new Callback<List<ChatFilesUploaderResp>>() {
-                                @Override
-                                public void onResponse(Call<List<ChatFilesUploaderResp>> call, Response<List<ChatFilesUploaderResp>> response) {
-                                    if (response.isSuccessful()) {
-                                        Gson gson = new Gson();
-                                        String listString = gson.toJson(response.body(), new TypeToken<ArrayList<ChatFilesUploaderResp>>() {
-                                        }.getType());
-                                        try {
-                                            JSONArray fileJson = new JSONArray(listString);
-                                            sendMsg(jsonArray, fileJson);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                    Utils.hideDialog();
-                                }
 
-                                @Override
-                                public void onFailure(Call<List<ChatFilesUploaderResp>> call, Throwable t) {
-                                    Toast.makeText(SendMessage.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                                    Utils.hideDialog();
-                                }
-                            });
-                        } else sendMsg(jsonArray, null);
-                    } else Toast.makeText(mActivity, "Please add atleast one recipient!", Toast.LENGTH_SHORT).show();
-                } else Toast.makeText(mActivity, "Please select a subject!", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onFailure(Call<List<ChatFilesUploaderResp>> call, Throwable t) {
+                            Toast.makeText(SendMessage.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            Utils.hideDialog();
+                        }
+                    });
+                } else sendMsg(jsonArray, new JSONArray());
             } else Toast.makeText(mActivity, "Please type a message!", Toast.LENGTH_SHORT).show();
         });
         if(getIntent().getStringExtra("type").equalsIgnoreCase("reply")){
@@ -270,14 +313,16 @@ public class SendMessage extends BaseActivity {
     private void sendMsg(JSONArray jsonArray, JSONArray files) {
         Call<ResponseBody> call;
         if(getIntent().getStringExtra("type").equalsIgnoreCase("new"))
-        call = RetrofitClient.getInstance().getApi().createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), subjectList.get(spnSubject.getSelectedItemPosition()).getId(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, files);
-        else call = RetrofitClient.getInstance().getApi().createRecipientChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), 0, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), files);
+        call = RetrofitClient.getInstance().getApi().createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), txtSubject.getText().toString().trim(), 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, files);
+        else call = RetrofitClient.getInstance().getApi().createRecipientChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getChatID(), edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), files);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(SendMessage.this, "Message sent successfully!", Toast.LENGTH_SHORT).show();
                     edtMsg.setText("");
+                    Intent intent=new Intent(mActivity, ChatActivity.class);
+                    startActivity(intent);
                 } else {
                     try {
                         Toast.makeText(SendMessage.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
@@ -503,7 +548,7 @@ public class SendMessage extends BaseActivity {
     private void RequestPermissions() {
         ActivityCompat.requestPermissions(mActivity, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
-    private void bindSubject() {
+    /*private void bindSubject() {
         Utils.showRequestDialog(mActivity);
         Call<SubjectListResp> call = RetrofitClient.getInstance().getApi().getSubjectList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
         call.enqueue(new Callback<SubjectListResp>() {
@@ -513,7 +558,7 @@ public class SendMessage extends BaseActivity {
                     subjectList.addAll(1, response.body().getSubjectList());
                 }
                 adapter = new ArrayAdapter<>(mActivity, R.layout.spinner_layout, subjectList);
-                spnSubject.setAdapter(adapter);
+                txtSubject.setAdapter(adapter);
                 Utils.hideDialog();
             }
 
@@ -522,7 +567,7 @@ public class SendMessage extends BaseActivity {
                 Utils.hideDialog();
             }
         });
-    }
+    }*/
     
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -534,7 +579,6 @@ public class SendMessage extends BaseActivity {
                 } else {
                     Toast.makeText(SendMessage.this, "Approve permissions to open Pix ImagePicker", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
         }
     }
@@ -580,8 +624,8 @@ public class SendMessage extends BaseActivity {
             }
         }
     }
-/*
-    @Override
+
+    /*@Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent=new Intent(mActivity, ChatActivity.class);

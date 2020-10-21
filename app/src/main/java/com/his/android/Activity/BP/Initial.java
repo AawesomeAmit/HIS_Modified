@@ -3,6 +3,8 @@ package com.his.android.Activity.BP;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -18,10 +20,14 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.his.android.Activity.BP.BLE.DeviceControlActivity;
 import com.his.android.Activity.CasualtyRegistration;
 import com.his.android.Activity.PreDashboard;
+import com.his.android.Activity.ScanSelector;
 import com.his.android.Activity.ScannerActivity;
+import com.his.android.Model.PatientInfoBarcode;
 import com.his.android.R;
+import com.his.android.Response.PatientBarcodeResp;
 import com.his.android.Utils.ConnectivityChecker;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.SharedPrefManager;
@@ -30,8 +36,13 @@ import com.his.android.Utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.his.android.Activity.BP.TerminalFragment.dias;
 import static com.his.android.Activity.BP.TerminalFragment.sys;
@@ -130,6 +141,56 @@ public class Initial extends AppCompatActivity implements FragmentManager.OnBack
                         Toast.makeText(Initial.this, "Network connection not found!", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+        txtPid.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()>6){
+                    Utils.showRequestDialog(Initial.this);
+                    Call<PatientBarcodeResp> call = RetrofitClient.getInstance().getApi().getPatientDetailByBarcode(SharedPrefManager.getInstance(Initial.this).getUser().getAccessToken(), SharedPrefManager.getInstance(Initial.this).getUser().getUserid().toString(), txtPid.getText().toString().trim());
+                    call.enqueue(new Callback<PatientBarcodeResp>() {
+                        @Override
+                        public void onResponse(Call<PatientBarcodeResp> call, Response<PatientBarcodeResp> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body().getPatientInfo().size() > 0) {
+                                    PatientInfoBarcode patientInfo = response.body().getPatientInfo().get(0);
+                                    ScannerActivity.patientInfo = patientInfo;
+                                    SharedPrefManager.getInstance(Initial.this).setScanned(true);
+                                    SharedPrefManager.getInstance(Initial.this).setPid(patientInfo.getPid());
+                                    SharedPrefManager.getInstance(Initial.this).setIpNo(patientInfo.getIpNo());
+                                    SharedPrefManager.getInstance(Initial.this).setPmId(patientInfo.getPmID());
+                                    SharedPrefManager.getInstance(Initial.this).setPtName(patientInfo.getPatientName());
+                                    SharedPrefManager.getInstance(Initial.this).setCr(patientInfo.getCrNo());
+                                    SharedPrefManager.getInstance(Initial.this).setSubdeptID(patientInfo.getAdmitSubDepartmentID());
+                                    SharedPrefManager.getInstance(Initial.this).setHeadID(patientInfo.getHeadId(), "", "");
+                                }
+                            } else {
+                                try {
+                                    Toast.makeText(Initial.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            Utils.hideDialog();
+                        }
+
+                        @Override
+                        public void onFailure(Call<PatientBarcodeResp> call, Throwable t) {
+                            Utils.hideDialog();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }

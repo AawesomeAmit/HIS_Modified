@@ -13,6 +13,8 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +33,11 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.his.android.Activity.CasualtyRegistration;
 import com.his.android.Activity.PreDashboard;
+import com.his.android.Activity.ScanSelector;
 import com.his.android.Activity.ScannerActivity;
+import com.his.android.Model.PatientInfoBarcode;
 import com.his.android.R;
+import com.his.android.Response.PatientBarcodeResp;
 import com.his.android.Utils.ConnectivityChecker;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.SharedPrefManager;
@@ -41,12 +46,17 @@ import com.his.android.Utils.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DeviceControlActivity extends Activity {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
@@ -163,7 +173,56 @@ public class DeviceControlActivity extends Activity {
         txtPid = findViewById(R.id.txtPid);
         btnScan = (TextView) findViewById(R.id.btnScan);
         mGattServicesList.setVisibility(View.GONE);
+        txtPid.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()>6){
+                    Utils.showRequestDialog(DeviceControlActivity.this);
+                    Call<PatientBarcodeResp> call = RetrofitClient.getInstance().getApi().getPatientDetailByBarcode(SharedPrefManager.getInstance(DeviceControlActivity.this).getUser().getAccessToken(), SharedPrefManager.getInstance(DeviceControlActivity.this).getUser().getUserid().toString(), txtPid.getText().toString().trim());
+                    call.enqueue(new Callback<PatientBarcodeResp>() {
+                        @Override
+                        public void onResponse(Call<PatientBarcodeResp> call, Response<PatientBarcodeResp> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body().getPatientInfo().size() > 0) {
+                                    PatientInfoBarcode patientInfo = response.body().getPatientInfo().get(0);
+                                    ScannerActivity.patientInfo = patientInfo;
+                                    SharedPrefManager.getInstance(DeviceControlActivity.this).setScanned(true);
+                                    SharedPrefManager.getInstance(DeviceControlActivity.this).setPid(patientInfo.getPid());
+                                    SharedPrefManager.getInstance(DeviceControlActivity.this).setIpNo(patientInfo.getIpNo());
+                                    SharedPrefManager.getInstance(DeviceControlActivity.this).setPmId(patientInfo.getPmID());
+                                    SharedPrefManager.getInstance(DeviceControlActivity.this).setPtName(patientInfo.getPatientName());
+                                    SharedPrefManager.getInstance(DeviceControlActivity.this).setCr(patientInfo.getCrNo());
+                                    SharedPrefManager.getInstance(DeviceControlActivity.this).setSubdeptID(patientInfo.getAdmitSubDepartmentID());
+                                    SharedPrefManager.getInstance(DeviceControlActivity.this).setHeadID(patientInfo.getHeadId(), "", "");
+                                }
+                            } else {
+                                try {
+                                    Toast.makeText(DeviceControlActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            Utils.hideDialog();
+                        }
+
+                        @Override
+                        public void onFailure(Call<PatientBarcodeResp> call, Throwable t) {
+                            Utils.hideDialog();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         if(getIntent().getStringExtra("status1")!=null) {
             btnScan.setVisibility(View.GONE);
             btnSaveData.setVisibility(View.VISIBLE);

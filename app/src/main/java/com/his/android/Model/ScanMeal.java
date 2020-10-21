@@ -21,7 +21,7 @@ public class ScanMeal {
     public Integer textID;
     @SerializedName("intakeQuantity")
     @Expose
-    public Double intakeQuantity;
+    public String intakeQuantity;
     @SerializedName("unitID")
     @Expose
     public Integer unitID;
@@ -58,7 +58,7 @@ public class ScanMeal {
         return textID;
     }
 
-    public Double getIntakeQuantity() {
+    public String getIntakeQuantity() {
         return intakeQuantity;
     }
 

@@ -499,8 +499,8 @@ public interface Api {
     Call<RecepientListResp> getDepartmentDesignationUserList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("preIndex") String preIndex);
 
     @FormUrlEncoded
-    @POST("ChatMessage/GetSubjectWiseChatList")
-    Call<SubjectWiseChatResp> getSubjectWiseChatList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("subjectId") Integer subjectId, @Field("userId") String userId, @Field("pid") String pid);
+    @POST("ChatMessage/GetSubjectNameWiseChatMessagesList")
+    Call<SubjectWiseChatResp> getSubjectWiseChatList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("chatId") Integer chatId, @Field("UserId") String userId, @Field("pid") String pid);
 
     @FormUrlEncoded
     @POST("ChatMessage/GetsubjectWiseChatHead")
@@ -516,6 +516,7 @@ public interface Api {
             @Header("accessToken") String accessToken,
             @Header("userID") String userID1,
             @Field("pid") Integer pid,
+            @Field("chatSubjectName") String chatSubjectName,
             @Field("subjectId") Integer subjectId,
             @Field("userId") String userId,
             @Field("recipientList") JSONArray recipientList,
@@ -524,15 +525,31 @@ public interface Api {
             @Field ("filePath") JSONArray filePath);
 
     @FormUrlEncoded
+    @POST("ChatMessage/GetSubjectNameforTabsPatientWise")
+    Call<SubjectNameTabResp> getSubjectNameforTabsPatientWise(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID1,
+            @Field("pid") Integer pid,
+            @Field("UserId") String userId);
+
+    @FormUrlEncoded
     @POST("ChatMessage/CreateRecipientChatMessage")
     Call<ResponseBody> createRecipientChatMessage (
             @Header("accessToken") String accessToken,
             @Header("userID") String userID1,
-            @Field("chatMasterId") Integer chatMasterId,
+            @Field("chatId") Integer chatId,
             @Field("chatMessage") String chatMessage,
             @Field("timelineMessage") Integer timelineMessage,
             @Field("userId") String userId,
             @Field ("filePath") JSONArray filePath);
+
+    @FormUrlEncoded
+    @POST("ChatMessage/GetSubjectnameAlreadyExist")
+    Call<SubjectNameExistResp> getSubjectnameAlreadyExist (
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID1,
+            @Field("pid") Integer pid,
+            @Field("chatSubjectName") String chatSubjectName);
 
     @POST("ChatMessage/GetSubjectList")
     Call<SubjectListResp> getSubjectList(@Header("accessToken") String accessToken, @Header("userID") String userID);

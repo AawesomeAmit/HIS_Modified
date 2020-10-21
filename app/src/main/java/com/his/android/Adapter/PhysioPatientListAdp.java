@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.his.android.Activity.ChatActivity;
+import com.his.android.Activity.ChatTitle;
 import com.his.android.Activity.Dashboard;
 import com.his.android.Activity.PatientList;
 import com.his.android.Activity.PriscriptionOverviewPopup;
@@ -106,7 +107,8 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             SharedPrefManager.getInstance(mCtx).setPhysioPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
-            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
+//            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
+            mCtx.startActivity(new Intent(mCtx, ChatTitle.class));
         });
         holder.txtRemove.setOnClickListener(view -> new AlertDialog.Builder(mCtx).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
                 .setMessage("Are you sure you want to remove patient?")

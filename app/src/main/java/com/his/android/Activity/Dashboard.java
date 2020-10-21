@@ -234,6 +234,14 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 fragment = new DischargePatient();
             if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("3"))
                 fragment = new Intake();
+            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("4"))
+                fragment = new ViewMedication();
+            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("5")){
+                if (SharedPrefManager.getInstance(this).getUser().getDesigid() != 1)
+                    spnConsultant.setVisibility(View.VISIBLE);
+                else spnConsultant.setVisibility(View.GONE);
+                fragment = new InputVital();
+            }
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();

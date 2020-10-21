@@ -88,7 +88,7 @@
                     android:layout_below="@id/btnScan"
                     android:layout_alignParentEnd="true"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:hint="PID"
+                    android:hint="@string/pid1"
                     android:inputType="number"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp"

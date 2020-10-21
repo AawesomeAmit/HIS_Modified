@@ -90,6 +90,15 @@ public class SharedPrefManager {
     public Boolean isCovid() {
         return sharedprefs.getBoolean("covid", false);
     }
+
+    public void setChatID(int chatID) {
+        this.editor = sharedprefs.edit();
+        editor.putInt("chatID", chatID);
+        editor.apply();
+    }
+    public int getChatID() {
+        return sharedprefs.getInt("chatID", 0);
+    }
     public void setBpMachine(int machine) {
         this.editor = sharedprefs.edit();
         editor.putInt("bp", machine);

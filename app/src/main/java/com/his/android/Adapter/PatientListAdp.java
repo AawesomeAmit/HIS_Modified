@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.his.android.Activity.ChatActivity;
+import com.his.android.Activity.ChatTitle;
 import com.his.android.Activity.Dashboard;
 import com.his.android.Activity.PriscriptionOverviewPopup;
 import com.his.android.Fragment.MedicineSidePathway;
@@ -133,7 +134,8 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
             SharedPrefManager.getInstance(mCtx).setAdmitPatient(admittedPatient.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
-            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
+//            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
+            mCtx.startActivity(new Intent(mCtx, ChatTitle.class));
         });
     }
 
