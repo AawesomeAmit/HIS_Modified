@@ -533,6 +533,19 @@ public interface Api {
             @Field("UserId") String userId);
 
     @FormUrlEncoded
+    @POST("Prescription/SavePatientIsOnOxygen")
+    Call<ResponseBody> SavePatientIsOnOxygen(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("PID") Integer pid,
+            @Field("userID") String userId);
+
+    @POST("Prescription/GetLifeSupportMasterList")
+    Call<LifeSupportMasterResp> getLifeSupportMasterList(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID);
+
+    @FormUrlEncoded
     @POST("ChatMessage/CreateRecipientChatMessage")
     Call<ResponseBody> createRecipientChatMessage (
             @Header("accessToken") String accessToken,

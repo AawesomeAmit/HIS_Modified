@@ -431,4 +431,10 @@
     <string name="treatment_checklist">Treatment Checklist</string>
     <string name="assign_o2">Assign O2</string>
     <string name="assign_ventilator">Assign Ventilator</string>
+    <string name="life_support">Life Support</string>
+    <string name="patient_on_o2">Patient on O2</string>
+    <string name="save_o2">Save O2</string>
+    <string name="remove_o2">Remove O2</string>
+    <string name="o2">O2</string>
+    <string name="fio2">FiO2</string>
 </resources>

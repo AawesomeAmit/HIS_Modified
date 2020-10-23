@@ -289,7 +289,7 @@ public class DeviceControlActivity extends Activity {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("PID", SharedPrefManager.getInstance(DeviceControlActivity.this).getPid());
+            jsonObject.put("PID", txtPid.getText().toString().trim());
             jsonObject.put("headID", SharedPrefManager.getInstance(DeviceControlActivity.this).getHeadID().toString());
             jsonObject.put("entryDate", format.format(today));
             jsonObject.put("subDeptID", SharedPrefManager.getInstance(DeviceControlActivity.this).getSubdeptID().toString());

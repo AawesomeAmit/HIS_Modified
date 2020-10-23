@@ -202,7 +202,7 @@ public class Initial extends AppCompatActivity implements FragmentManager.OnBack
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("PID", SharedPrefManager.getInstance(Initial.this).getPid());
+            jsonObject.put("PID", txtPid.getText().toString().trim());
             jsonObject.put("headID", SharedPrefManager.getInstance(Initial.this).getHeadID());
             jsonObject.put("entryDate", format.format(today));
             jsonObject.put("subDeptID", SharedPrefManager.getInstance(Initial.this).getSubdeptID());

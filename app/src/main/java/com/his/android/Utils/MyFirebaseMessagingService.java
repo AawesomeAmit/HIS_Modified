@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.his.android.Activity.ChatActivity;
 import com.his.android.Activity.NotificationDetail;
 import com.his.android.R;
 
@@ -29,10 +30,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //sendRegistrationToServer(token);
     }
     public void showNotification(String title, String message, String tag) {
-        Intent intent=new Intent(getApplicationContext(), NotificationDetail.class);
-        intent.putExtra("nType", tag.split("-")[0]);
-        intent.putExtra("title", title);
-        intent.putExtra("nId", tag.split("-")[1]);
+        Intent intent;
+        if(title.equalsIgnoreCase("Reply Chat Message") || title.equalsIgnoreCase("New Chat Message")){
+            intent=new Intent(getApplicationContext(), ChatActivity.class);
+            intent.putExtra("pid", tag.split("-")[1]);
+            intent.putExtra("chatId", tag.split("-")[0]);
+            intent.putExtra("title", title);
+        }else {
+            intent = new Intent(getApplicationContext(), NotificationDetail.class);
+            intent.putExtra("nType", tag.split("-")[0]);
+            intent.putExtra("title", title);
+            intent.putExtra("nId", tag.split("-")[1]);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 99, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)

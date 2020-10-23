@@ -328,7 +328,7 @@ public class DataActivity extends BaseActivity {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("PID", SharedPrefManager.getInstance(DataActivity.this).getPid());
+            jsonObject.put("PID", txtId.getText().toString().trim());
             jsonObject.put("headID", SharedPrefManager.getInstance(DataActivity.this).getHeadID().toString());
             jsonObject.put("entryDate", format.format(today));
             jsonObject.put("subDeptID", SharedPrefManager.getInstance(DataActivity.this).getSubdeptID().toString());

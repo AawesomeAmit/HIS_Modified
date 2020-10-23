@@ -109,7 +109,10 @@ public class ChatActivity extends BaseActivity {
         btnReply = findViewById(R.id.btnReply);
         rvChat.setLayoutManager(new LinearLayoutManager(mActivity));
         subjectList = new ArrayList<>();
-        txtTitle.setText(getIntent().getStringExtra("title"));
+        if(getIntent().getStringExtra("pid")!=null) {
+            SharedPrefManager.getInstance(getApplicationContext()).setPid(Integer.parseInt(getIntent().getStringExtra("pid")));
+            SharedPrefManager.getInstance(getApplicationContext()).setChatID(Integer.parseInt(getIntent().getStringExtra("chatId")));
+        }
         btnReply.setOnClickListener(view -> startActivity(new Intent(mActivity, SendMessage.class).putExtra("type", "reply")));
         bindChat(SharedPrefManager.getInstance(mActivity).getChatID());
     }
@@ -121,6 +124,8 @@ public class ChatActivity extends BaseActivity {
             @Override
             public void onResponse(Call<SubjectWiseChatResp> call, Response<SubjectWiseChatResp> response) {
                 if (response.isSuccessful()) {
+                    if(response.body().getSubjectWiseChatList().size()>0)
+                    txtTitle.setText(response.body().getSubjectWiseChatList().get(0).getSubjectName());
                     rvChat.setAdapter(new ChatAdp(response.body().getSubjectWiseChatList()));
                     txtRecipient.setText(response.body().getSubjectWiseRecipientList().get(0).getRecipientName());
                 }
@@ -423,8 +428,10 @@ public class ChatActivity extends BaseActivity {
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
             if(filePathList.get(i).getFileType().equalsIgnoreCase("image/jpeg"))
             Picasso.with(mActivity).load(filePathList.get(i).getFilePath()).resize((int) getResources().getDimension(R.dimen._294sdp), (int) getResources().getDimension(R.dimen._180sdp)).into(holder.imgChat);
-            else if(filePathList.get(i).getFileType().equalsIgnoreCase("image/jpeg"))
-            holder.imgChat.setOnClickListener(view -> zoomPopup(filePathList.get(i).getFilePath(), filePathList.get(i).getFileType()));
+//            else if(filePathList.get(i).getFileType().equalsIgnoreCase("image/jpeg"))
+            holder.imgChat.setOnClickListener(view -> {
+                zoomPopup(filePathList.get(i).getFilePath(), filePathList.get(i).getFileType());
+            });
         }
 
         @Override

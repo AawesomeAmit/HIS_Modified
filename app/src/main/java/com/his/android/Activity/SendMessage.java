@@ -217,7 +217,7 @@ public class SendMessage extends BaseActivity {
                     }
                 }
             if (!edtMsg.getText().toString().isEmpty()) {
-                Utils.showRequestDialog(mActivity);
+                Utils.showRequestDialog1(mActivity);
                 JSONArray jsonArray = new JSONArray();
                 JSONObject object;
                 MultipartBody.Part[] fileParts = new MultipartBody.Part[returnValue.size()];
@@ -253,7 +253,7 @@ public class SendMessage extends BaseActivity {
                     e.printStackTrace();
                 }
                 if (returnValue.size() > 0 || mFileName != null) {
-                    Utils.showRequestDialog(mActivity);
+                    Utils.showRequestDialog1(mActivity);
                     Api iRestInterfaces = ApiUtilsForFile.getAPIService();
                     Call<List<ChatFilesUploaderResp>> call = iRestInterfaces.chatBoxFileUploadHandler(fileParts, fileParts1);
                     call.enqueue(new Callback<List<ChatFilesUploaderResp>>() {
@@ -270,7 +270,7 @@ public class SendMessage extends BaseActivity {
                                     e.printStackTrace();
                                 }
                             }
-                            Utils.hideDialog();
+//                            Utils.hideDialog();
                         }
 
                         @Override
@@ -321,8 +321,9 @@ public class SendMessage extends BaseActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(SendMessage.this, "Message sent successfully!", Toast.LENGTH_SHORT).show();
                     edtMsg.setText("");
-                    Intent intent=new Intent(mActivity, ChatActivity.class);
-                    startActivity(intent);
+                    if(getIntent().getStringExtra("type").equalsIgnoreCase("new"))
+                    startActivity(new Intent(mActivity, ChatTitle.class));
+                    else startActivity(new Intent(mActivity, ChatActivity.class));
                 } else {
                     try {
                         Toast.makeText(SendMessage.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
