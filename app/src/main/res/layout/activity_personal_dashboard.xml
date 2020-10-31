@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    tools:context=".Activity.PersonalDashboard">
+
+    <EditText
+        android:id="@+id/edtPid"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/btn_activity1"
+        android:drawablePadding="@dimen/_5sdp"
+        android:gravity="center"
+        android:maxLength="7"
+        android:hint="@string/enter_pid"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center"
+        android:hint="Patient Name"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12sdp"
+        app:layout_constraintStart_toEndOf="@+id/edtPid"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view11"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtPid" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvActivity"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@drawable/btn_activity1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rvMedication"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view12"
+        tools:listitem="@layout/inner_vital_display" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMedication"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:listitem="@layout/inner_view_prescription"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:background="@drawable/btn_activity2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rvIntake"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/rvActivity"
+        app:layout_constraintTop_toBottomOf="@+id/view12" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvIntake"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@drawable/btn_activity3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        tools:listitem="@layout/inner_input_meal"
+        app:layout_constraintStart_toEndOf="@+id/rvMedication"
+        app:layout_constraintTop_toBottomOf="@+id/view12" />
+
+    <View
+        android:id="@+id/view12"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvVitals" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVitals"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        tools:listitem="@layout/inner_vital_display"
+        app:layout_constraintEnd_toStartOf="@+id/txtTransfer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view11" />
+
+    <TextView
+        android:id="@+id/txtTransfer"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:background="@drawable/btn_investigation"
+        android:drawableStart="@drawable/ic_transfer_in"
+        android:padding="@dimen/_5sdp"
+        android:gravity="center"
+        android:text="@string/transfer_out1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view11"
+        tools:layout_editor_absoluteY="131dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

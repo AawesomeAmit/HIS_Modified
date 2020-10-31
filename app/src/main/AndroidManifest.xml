@@ -47,7 +47,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.AssignO2"></activity>
+        <activity android:name=".Activity.PersonalDashboard"></activity>
+        <activity android:name=".Activity.AssignO2" />
         <activity android:name=".Activity.ChatTitle" />
         <activity android:name=".Activity.PlayChatMsg" />
         <activity android:name=".Activity.ChatActivity" />

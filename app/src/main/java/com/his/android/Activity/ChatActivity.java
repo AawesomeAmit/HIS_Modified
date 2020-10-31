@@ -96,6 +96,7 @@ public class ChatActivity extends BaseActivity {
 //    private ArrayAdapter<SubjectList> adapter;
     TextView btnReply, txtTitle;
     MyAdapter myAdapter;
+    LinearLayoutManager mLinearLayoutManager;
     ArrayList<String> returnValue = new ArrayList<>();
     PhotoViewAttacher photoViewAttacher;
 
@@ -107,7 +108,8 @@ public class ChatActivity extends BaseActivity {
         rvChat = findViewById(R.id.rvChat);
         txtTitle = findViewById(R.id.txtTitle);
         btnReply = findViewById(R.id.btnReply);
-        rvChat.setLayoutManager(new LinearLayoutManager(mActivity));
+        mLinearLayoutManager = new LinearLayoutManager(mActivity);
+        rvChat.setLayoutManager(mLinearLayoutManager);
         subjectList = new ArrayList<>();
         if(getIntent().getStringExtra("pid")!=null) {
             SharedPrefManager.getInstance(getApplicationContext()).setPid(Integer.parseInt(getIntent().getStringExtra("pid")));
@@ -127,6 +129,7 @@ public class ChatActivity extends BaseActivity {
                     if(response.body().getSubjectWiseChatList().size()>0)
                     txtTitle.setText(response.body().getSubjectWiseChatList().get(0).getSubjectName());
                     rvChat.setAdapter(new ChatAdp(response.body().getSubjectWiseChatList()));
+                    mLinearLayoutManager.scrollToPosition(response.body().getSubjectWiseChatList().size() - 1);
                     txtRecipient.setText(response.body().getSubjectWiseRecipientList().get(0).getRecipientName());
                 }
                 Utils.hideDialog();

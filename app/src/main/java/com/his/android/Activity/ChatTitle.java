@@ -31,6 +31,7 @@ import retrofit2.Response;
 public class ChatTitle extends BaseActivity {
     RecyclerView rvChat;
     TextView btnMessage;
+    LinearLayoutManager mLinearLayoutManager;
     private List<SubjectNameListTab> subjectNameListTabs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,8 @@ public class ChatTitle extends BaseActivity {
         setContentView(R.layout.activity_chat_title);
         rvChat=findViewById(R.id.rvChat);
         btnMessage=findViewById(R.id.btnMessage);
-        rvChat.setLayoutManager(new LinearLayoutManager(mActivity));
+        mLinearLayoutManager = new LinearLayoutManager(mActivity);
+        rvChat.setLayoutManager(mLinearLayoutManager);
         Utils.showRequestDialog(mActivity);
         btnMessage.setOnClickListener(view -> startActivity(new Intent(mActivity, SendMessage.class).putExtra("type", "new")));
         Call<SubjectNameTabResp> call= RetrofitClient.getInstance().getApi().getSubjectNameforTabsPatientWise(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
@@ -48,6 +50,7 @@ public class ChatTitle extends BaseActivity {
                 if(response.isSuccessful()){
                     subjectNameListTabs=response.body().getSubjectNameListTabs();
                     rvChat.setAdapter(new ChatTitleAdp(subjectNameListTabs));
+//                    mLinearLayoutManager.scrollToPosition(subjectNameListTabs.size() - 1);
                 }
                 Utils.hideDialog();
             }

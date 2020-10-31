@@ -472,7 +472,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("Login/logOut")
-    Call<ResponseBody> logOut(@Field("Token") String accessToken, @Header("userID") String userID1, @Field("deviceToken") String deviceToken, @Field("userID") String userID);
+    Call<ResponseBody> logOut(@Field("accessToken") String accessToken, @Header("userID") String userID1, @Field("deviceToken") String deviceToken, @Field("userID") String userID);
 
     @FormUrlEncoded
     @POST("familymember.asmx/RemovePatientFromNutritionalPanel")
@@ -812,6 +812,38 @@ public interface Api {
             @Field("userId") String userId_,
             @Field("PID") String PID,
             @Field("id") String id
+    );
+
+    @FormUrlEncoded
+    @POST("PatientPhysicalActivityApp/GetPatientActivityMaster")
+    Call<ResponseBody> getPatientActivityMaster(
+            @Header("accessToken") String token,
+            @Header("userID") String userId,
+            @Field("PID") String PID,
+            @Field("headID") String headID,
+            @Field("userID") String userId1
+    );
+
+    @FormUrlEncoded
+    @POST("PatientPhysicalActivityApp/StartPatientPhysicalActivity")
+    Call<ResponseBody> startPatientPhysicalActivity(
+            @Header("accessToken") String token,
+            @Header("userID") String userId,
+            @Field("PID") String PID,
+            @Field("activityID") String activityID,
+            @Field("headID") String headID,
+            @Field("userID") String userId1
+    );
+
+    @FormUrlEncoded
+    @POST("PatientPhysicalActivityApp/StopPatientPhysicalActivity")
+    Call<ResponseBody> stopPatientPhysicalActivity(
+            @Header("accessToken") String token,
+            @Header("userID") String userId,
+            @Field("PID") String PID,
+            @Field("activityID") String activityID,
+            @Field("headID") String headID,
+            @Field("userID") String userId1
     );
 
     @FormUrlEncoded

@@ -437,4 +437,8 @@
     <string name="remove_o2">Remove O2</string>
     <string name="o2">O2</string>
     <string name="fio2">FiO2</string>
+    <string name="washroom">Washroom</string>
+    <string name="eating">Eating</string>
+    <string name="transfer_out">Transfer Out</string>
+    <string name="transfer_out1">Transfer\nOut</string>
 </resources>

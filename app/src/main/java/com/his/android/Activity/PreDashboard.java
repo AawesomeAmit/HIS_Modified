@@ -270,12 +270,15 @@ public class PreDashboard extends AppCompatActivity {
             public void onClick(View view, int position) {
                 //if((headAssigns.get(position).getHeadID()==2) || (headAssigns.get(position).getHeadID()==3)||(headAssigns.get(position).getHeadID()==4)) {
                 //Intent intent = new Intent(PreDashboard.this, SubHeadList.class);
-                SharedPrefManager.getInstance(PreDashboard.this).setHeadID(headAssigns.get(position).getHeadID(), headAssigns.get(position).getHeadName(), headAssigns.get(position).getColor());
-                if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 31)
-                    startActivity(new Intent(PreDashboard.this, CasualtyRegistration.class));
-                //startActivity(intent);
+                Log.v("headID", headAssigns.get(position).getHeadID().toString());
                 try {
-                    showPopup(view);
+                    SharedPrefManager.getInstance(PreDashboard.this).setHeadID(headAssigns.get(position).getHeadID(), headAssigns.get(position).getHeadName(), headAssigns.get(position).getColor());
+                    if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 38)
+                        startActivity(new Intent(PreDashboard.this, PersonalDashboard.class));
+                    else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 31)
+                        startActivity(new Intent(PreDashboard.this, CasualtyRegistration.class));
+                    //startActivity(intent);
+                    else showPopup(view);
                 } catch (Exception ex) {
                     Log.v("error", Objects.requireNonNull(ex.getMessage()));
                     ex.printStackTrace();
