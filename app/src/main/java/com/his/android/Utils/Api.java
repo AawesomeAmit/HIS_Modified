@@ -412,6 +412,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("Report/GetUserMedicationReport")
     Call<UserMedicationReportResp> getUserMedicationReport(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("PID") Integer PID, @Field("userid") String userid, @Field("headID") Integer headID, @Field("subDeptID") Integer subDeptID, @Field("timePeriod") String timePeriod);
+
+    @FormUrlEncoded
+    @POST("PatientPersonalDashboard/GetPersonalDashBoardDetails")
+    Call<PatientDashboardResp> getPersonalDashBoardDetails(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("PID") String PID, @Field("userid") String userid, @Field("patientDetails") Integer patientDetails, @Field("vitalDetails") Integer vitalDetails, @Field("patientActivityDetails") Integer patientActivityDetails, @Field("medicineDetails") Integer medicineDetails, @Field("intakeDetails") Integer intakeDetails);
     @FormUrlEncoded
     @POST("Prescription/GetIntakeDetailsByQRCode")
     Call<ScanMealResp> getIntakeNameByDetails(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("qrCode") String qrCode, @Field("PID") String PID);
