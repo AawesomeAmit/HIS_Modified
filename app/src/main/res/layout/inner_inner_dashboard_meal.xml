@@ -6,49 +6,98 @@
     android:layout_height="match_parent">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/green_dashboard">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:background="@color/colorPrimaryDark"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_5sdp">
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:background="@drawable/btn_activity4"
+            android:paddingStart="@dimen/_3sdp"
+            android:paddingEnd="@dimen/_3sdp"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_4sdp">
 
             <TextView
                 android:id="@+id/txtFluid"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fluid_intake"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <RadioGroup
                 android:id="@+id/txtEditDate"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/ic_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:orientation="horizontal"
+                android:weightSum="5"
                 app:layout_constraintEnd_toStartOf="@+id/txtEdit"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtDateTime" />
+                app:layout_constraintTop_toBottomOf="@+id/txtStr">
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/zero"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_9sdp" />
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/twenty_five"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_9sdp" />
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/fifty"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_9sdp" />
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/seventy_five"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_9sdp" />
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/hundred"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_9sdp" />
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/txtDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_2sdp"
                 android:text="ddsfdf"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
 
@@ -56,25 +105,24 @@
                 android:id="@+id/txtStr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_2sdp"
                 android:text="20"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp"
-                app:layout_constraintStart_toEndOf="@+id/txtDateTime"
-                app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9sdp"
+                app:layout_constraintStart_toEndOf="@+id/txtFluid"
+                app:layout_constraintTop_toBottomOf="@+id/txtFluid"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txtUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_2sdp"
                 android:text="mg"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_9sdp"
                 app:layout_constraintStart_toEndOf="@+id/txtStr"
-                app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/edtQty"
@@ -87,8 +135,8 @@
                 android:padding="@dimen/_5sdp"
                 android:selectAllOnFocus="true"
                 android:text="100"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_11sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp"
                 android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@+id/txtUnit"
                 app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
@@ -100,8 +148,8 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:text="%"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_15sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_11sdp"
                 android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@+id/edtQty"
                 app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
@@ -127,15 +175,57 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
 
             <TextView
-                android:id="@+id/txtEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_edit_24"
-                app:layout_constraintBottom_toBottomOf="@+id/txtEditDate"
+                android:id="@+id/textView39"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:background="@drawable/ic_check_blue"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtEditDate" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_weight="1"
+                android:background="@drawable/edt_bor"
+                android:drawableEnd="@drawable/ic_date1"
+                android:gravity="center"
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_2sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9ssp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toStartOf="@+id/txtTime"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/txtEditDate"
-                app:layout_constraintTop_toTopOf="@+id/txtEditDate" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtEditDate" />
+
+            <TextView
+                android:id="@+id/txtTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edt_bor"
+                android:drawableEnd="@drawable/ic_time1"
+                android:gravity="center"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_2sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9ssp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toStartOf="@+id/textView39"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/txtDate"
+                app:layout_constraintTop_toBottomOf="@+id/txtEditDate" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

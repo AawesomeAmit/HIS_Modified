@@ -48,4 +48,6 @@
     <color name="textBrown">#897753</color>
     <color name="darkPurple">#31253a</color>
     <color name="darkPurpleSecond">#251A2B</color>
+    <color name="orange_dashboard">#c77809</color>
+    <color name="green_dashboard">#c9be00</color>
 </resources>

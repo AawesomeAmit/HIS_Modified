@@ -94,8 +94,7 @@ public class PatientOutput extends Fragment implements View.OnClickListener {
 
     @SuppressLint("SimpleDateFormat")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_patient_output, container, false);
         edtUrineQty = view.findViewById(R.id.edtUrineQty);
         edtStoolQty = view.findViewById(R.id.edtStoolQty);

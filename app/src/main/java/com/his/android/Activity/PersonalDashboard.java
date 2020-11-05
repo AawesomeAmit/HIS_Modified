@@ -1,26 +1,40 @@
 package com.his.android.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.his.android.Fragment.Intake;
+import com.his.android.Fragment.PrescribedMedicine;
 import com.his.android.Model.IntakeDetail;
 import com.his.android.Model.PatientActivityDetail;
+import com.his.android.Model.PrescriptionList;
+import com.his.android.Model.VitalDetail;
+import com.his.android.Model.MedicineDetail;
 import com.his.android.Response.IntakeData;
 import com.his.android.Response.PatientDashboardResp;
 import com.his.android.R;
@@ -39,6 +53,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import android.content.pm.ActivityInfo;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,12 +64,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class PersonalDashboard extends BaseActivity {
     TextView txtName;
     EditText edtPid;
-    RecyclerView rvActivity, rvMedication, rvIntake;
+    RecyclerView rvActivity, rvMedication, rvIntake, rvVitals;
+    String date = "", time;
+    SimpleDateFormat format1;
+    SimpleDateFormat format2;
+    int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
+    Date today = new Date();
+    Calendar c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +89,20 @@ public class PersonalDashboard extends BaseActivity {
         rvActivity=findViewById(R.id.rvActivity);
         rvMedication=findViewById(R.id.rvMedication);
         rvIntake=findViewById(R.id.rvIntake);
+        rvVitals=findViewById(R.id.rvVitals);
+        c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        format1 = new SimpleDateFormat("dd/MM/yyyy");
+        format2 = new SimpleDateFormat("hh:mm a");
+        date = mYear + "/" + (mMonth + 1) + "/" + mDay;
         rvActivity.setLayoutManager(new LinearLayoutManager(mActivity));
         rvMedication.setLayoutManager(new LinearLayoutManager(mActivity));
+        rvVitals.addItemDecoration(new DividerItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL));
         rvIntake.setLayoutManager(new LinearLayoutManager(mActivity));
+        LinearLayoutManager manager=new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
+        rvVitals.setLayoutManager(manager);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         edtPid.addTextChangedListener(new TextWatcher() {
             @Override
@@ -76,6 +113,10 @@ public class PersonalDashboard extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 txtName.setText("");
+                rvVitals.setAdapter(null);
+                rvActivity.setAdapter(null);
+                rvMedication.setAdapter(null);
+                rvIntake.setAdapter(null);
                 if(charSequence.length()>6){
                     bind(1, 1, 1, 1, 1);
                 }
@@ -115,6 +156,8 @@ public class PersonalDashboard extends BaseActivity {
                     txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit());
                     rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
                     rvIntake.setAdapter(new IntakeAdp(response.body().getIntakeDetails()));
+                    rvVitals.setAdapter(new VitalAdp(response.body().getVitalDetails()));
+                    rvMedication.setAdapter(new MedicineDetailAdp(response.body().getMedicineDetails()));
                 }
                 Utils.hideDialog();
             }
@@ -125,7 +168,43 @@ public class PersonalDashboard extends BaseActivity {
             }
         });
     }
+    private void showPopup(int prescriptionID, int pmID) {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_medication_staff_comment, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
+        EditText edtComment = popupView.findViewById(R.id.edtComment);
+        CheckBox chkMedicine = popupView.findViewById(R.id.chkMedicine);
+        TextView btnSave = popupView.findViewById(R.id.btnSave);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        lLayout.getLocationOnScreen(location);
+        popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
+        btnSave.setOnClickListener(view -> {
+            if (chkMedicine.isChecked())
+                action(prescriptionID, pmID, edtComment.getText().toString().trim(), 2);
+            else action(prescriptionID, pmID, edtComment.getText().toString().trim(), 0);
+        });
+    }
+    private void action(int prescriptionID, int pmID, String comment, int status) {
+//        Utils.showRequestDialog(mActivity);
+        /*Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveIntakePrescription(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), comment, pmID, prescriptionID, status, String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid()));
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(context, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                    bind();
+                }
+                Utils.hideDialog();
+            }
 
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utils.hideDialog();
+            }
+        });*/
+    }
     public class ActivityDashboardAdp extends RecyclerView.Adapter<ActivityDashboardAdp.RecyclerViewHolder> {
         private List<PatientActivityDetail> patientActivityDetails;
         public ActivityDashboardAdp(List<PatientActivityDetail> patientActivityDetails) {
@@ -240,7 +319,7 @@ public class PersonalDashboard extends BaseActivity {
         @NonNull
         @Override
         public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            @SuppressLint("InflateParams") View view = LayoutInflater.from(mActivity).inflate(R.layout.inner_input_meal, null);
+            @SuppressLint("InflateParams") View view = LayoutInflater.from(mActivity).inflate(R.layout.inner_inner_dashboard_meal, null);
             RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(lp);
             return new RecyclerViewHolder(view);
@@ -251,6 +330,32 @@ public class PersonalDashboard extends BaseActivity {
             holder.txtFluid.setText(String.valueOf(foodDetails.get(i).getIntakeName()));
             holder.txtQty.setText(String.valueOf(foodDetails.get(i).getGivenIntakeQuantity()));
             holder.txtUnit.setText(String.valueOf(foodDetails.get(i).getUnit()));
+            holder.txtDate.setOnClickListener(view -> {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity, R.style.DialogTheme,
+                        (view1, year, monthOfYear, dayOfMonth) -> {
+                            mYear = year;
+                            mMonth = monthOfYear;
+                            mDay = dayOfMonth;
+                            date = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                            today.setDate(dayOfMonth);
+                            today.setMonth(monthOfYear);
+                            today.setYear(year - 1900);
+                            holder.txtDate.setText(Utils.formatDate(date));
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+                datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+            });
+            holder.txtTime.setOnClickListener(view -> {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(mActivity, R.style.DialogTheme, (timePicker, j, i1) -> {
+                    mHour = j;
+                    mMinute = i1;
+                    today.setHours(mHour);
+                    today.setMinutes(mMinute);
+                    holder.txtTime.setText(format2.format(today));
+                }, mHour, mMinute, false);
+                timePickerDialog.updateTime(today.getHours(), today.getMinutes());
+                timePickerDialog.show();
+            });
             /*holder.txtSave.setOnClickListener(view -> {
                 JSONArray array=new JSONArray();
                 JSONObject object = new JSONObject();
@@ -301,7 +406,7 @@ public class PersonalDashboard extends BaseActivity {
         }
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-            TextView txtFluid,txtQty,txtUnit, txtDateTime, txtEdit, txtSave, txtPer, txtEditDate, txtClose;
+            TextView txtFluid,txtQty,txtUnit, txtDateTime, txtEdit, txtSave, txtPer, txtEditDate, txtClose, txtDate, txtTime;
             EditText edtQty;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -313,9 +418,123 @@ public class PersonalDashboard extends BaseActivity {
                 edtQty=itemView.findViewById(R.id.edtQty);
                 txtSave=itemView.findViewById(R.id.txtSave);
                 txtPer=itemView.findViewById(R.id.txtPer);
-                txtEditDate=itemView.findViewById(R.id.txtEditDate);
+                txtDate=itemView.findViewById(R.id.txtDate);
+                txtTime=itemView.findViewById(R.id.txtTime);
+//                txtEditDate=itemView.findViewById(R.id.txtEditDate);
                 txtClose=itemView.findViewById(R.id.txtClose);
                 edtQty.setFilters(new InputFilter[]{ new InputFilterMinMax(0, 100)});
+                txtDate.setText(Utils.formatDate(date));
+                txtTime.setText(format2.format(today));
+            }
+        }
+    }
+
+    public class VitalAdp extends RecyclerView.Adapter<VitalAdp.RecyclerViewHolder> {
+        private List<VitalDetail> vitalDetailList;
+        public VitalAdp(List<VitalDetail> vitalDetailList) {
+            this.vitalDetailList = vitalDetailList;
+        }
+
+        @NonNull
+        @Override
+        public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(mActivity).inflate(R.layout.inner_dashboard_vital, null);
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            view.setLayoutParams(lp);
+            return new RecyclerViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
+            holder.txtVital.setText(vitalDetailList.get(i).getVitalName() + " - " + vitalDetailList.get(i).getVitalValue());
+        }
+
+        @Override
+        public int getItemCount() {
+            return vitalDetailList.size();
+        }
+
+        public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+            TextView txtVital;
+            public RecyclerViewHolder(@NonNull View itemView) {
+                super(itemView);
+                txtVital =itemView.findViewById(R.id.txtVital);
+            }
+        }
+    }
+
+
+    public class MedicineDetailAdp extends RecyclerView.Adapter<MedicineDetailAdp.RecyclerViewHolder> {
+        private List<MedicineDetail> prescriptionList;
+
+        public MedicineDetailAdp(List<MedicineDetail> prescriptionList) {
+            this.prescriptionList = prescriptionList;
+        }
+
+        @NonNull
+        @Override
+        public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(mActivity).inflate(R.layout.inner_dashboaard_prescription, null);
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            view.setLayoutParams(lp);
+            return new RecyclerViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
+                holder.txtMed.setText(prescriptionList.get(i).getMedicineName().trim().toUpperCase());
+                holder.txtStr.setText(prescriptionList.get(i).getDoseStrength() + " " + prescriptionList.get(i).getDoseUnit());
+                holder.txtFreq.setText(prescriptionList.get(i).getDoseFrequency());
+                holder.txtDosage.setText(prescriptionList.get(i).getDosageForm());
+                holder.txtRemark.setText(prescriptionList.get(i).getRemark());
+//                holder.tvGivenBy.setText(prescriptionList.get(i).getPrescribeBy());
+                holder.tvGivenTime.setText(prescriptionList.get(i).getDuration());
+                /*if (prescriptionList.get(i).getColorStatus() == null)
+                    holder.txtGive.setBackgroundResource(R.drawable.ic_check_blue);
+                else {
+                    if (prescriptionList.get(i).getColorStatus().equalsIgnoreCase("blue"))
+                        holder.txtGive.setBackgroundResource(R.drawable.ic_check_blue);
+                    else if (prescriptionList.get(i).getColorStatus().equalsIgnoreCase("green"))
+                        holder.txtGive.setBackgroundResource(R.drawable.ic_check_green);
+                    else if (prescriptionList.get(i).getColorStatus().equalsIgnoreCase("red"))
+                        holder.txtGive.setBackgroundResource(R.drawable.ic_check_red);
+                }*/
+                holder.txtComment.setOnClickListener(view -> showPopup(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID()));
+                holder.txtGive.setOnClickListener(view -> new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                        .setMessage("Are you sure?")
+                        .setCancelable(true)
+                        .setPositiveButton(
+                                "Yes",
+                                (dialog, id) -> action(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID(), "", 0))
+
+                        .setNegativeButton(
+                                "No",
+                                (dialog, id) -> dialog.cancel())
+                        .show());
+        }
+
+        @Override
+        public int getItemCount() {
+            return prescriptionList.size();
+        }
+
+        public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+            TextView txtMed, txtStr, txtFreq, txtDate, txtDosage, txtRemark, tvGivenTime, tvGivenBy, txtGive, txtComment;
+            ConstraintLayout llMain;
+
+            public RecyclerViewHolder(@NonNull View itemView) {
+                super(itemView);
+                txtMed = itemView.findViewById(R.id.txtMed);
+                txtStr = itemView.findViewById(R.id.txtStr);
+                txtFreq = itemView.findViewById(R.id.txtFreq);
+                txtDate = itemView.findViewById(R.id.txtDate);
+                txtDosage = itemView.findViewById(R.id.txtDosage);
+                txtRemark = itemView.findViewById(R.id.txtRemark);
+                tvGivenTime = itemView.findViewById(R.id.tvGivenTime);
+                tvGivenBy = itemView.findViewById(R.id.tvGivenBy);
+                llMain = itemView.findViewById(R.id.llMain);
+                txtGive = itemView.findViewById(R.id.txtGive);
+                txtComment = itemView.findViewById(R.id.txtComment);
             }
         }
     }

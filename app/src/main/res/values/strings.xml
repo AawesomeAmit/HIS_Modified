@@ -441,4 +441,9 @@
     <string name="eating">Eating</string>
     <string name="transfer_out">Transfer Out</string>
     <string name="transfer_out1">Transfer\nOut</string>
+    <string name="zero">0%</string>
+    <string name="twenty_five">25%</string>
+    <string name="fifty">50%</string>
+    <string name="seventy_five">75%</string>
+    <string name="hundred">100%</string>
 </resources>
