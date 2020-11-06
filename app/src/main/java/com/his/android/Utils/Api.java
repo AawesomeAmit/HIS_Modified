@@ -829,6 +829,17 @@ public interface Api {
     );
 
     @FormUrlEncoded
+    @POST("PatientPersonalDashboard/StartStopPatientActivity")
+    Call<ResponseBody> startStopPatientActivity(
+            @Header("accessToken") String token,
+            @Header("userID") String userId,
+            @Field("pid") String pid,
+            @Field("physicalActivityID") int physicalActivityID,
+            @Field("activityStatus") int activityStatus,
+            @Field("userID") String userId1
+    );
+
+    @FormUrlEncoded
     @POST("PatientPhysicalActivityApp/StartPatientPhysicalActivity")
     Call<ResponseBody> startPatientPhysicalActivity(
             @Header("accessToken") String token,
@@ -893,6 +904,7 @@ public interface Api {
             @Field("memberId") String memberId,
             @Field("userLoginID") String userLoginID
     );
+
     @FormUrlEncoded
     @POST("MedicineIntake.asmx/UpdateConsumptionPercentage")
     Call<UnitResp> UpdateConsumptionPercentage(
@@ -948,6 +960,19 @@ public interface Api {
             @Header("accessToken") String token,
             @Header("userId") String userId,
             @Field("admitSubDepartmentID") Integer admitSubDepartmentID
+    );
+
+    @FormUrlEncoded
+    @POST("PatientPersonalDashboard/UpdateIntakeConsumption")
+    Call<ResponseBody> UpdateIntakeConsumption(
+            @Header("accessToken") String accessToken,
+            @Header("userId") String userId,
+            @Field("pid") String pid,
+            @Field("dietID") int dietID,
+            @Field("dietDate") String dietDate,
+            @Field("dietTime") String dietTime,
+            @Field("isSupplement") int isSupplement,
+            @Field("consumptionPercentage") String consumptionPercentage
     );
 
     @FormUrlEncoded

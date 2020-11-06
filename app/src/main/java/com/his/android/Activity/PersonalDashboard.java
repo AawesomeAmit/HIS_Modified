@@ -1,21 +1,25 @@
 package com.his.android.Activity;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
+import android.view.animation.Animation;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,34 +28,30 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.RadioButton;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.his.android.Fragment.Intake;
-import com.his.android.Fragment.PrescribedMedicine;
 import com.his.android.Model.IntakeDetail;
 import com.his.android.Model.PatientActivityDetail;
-import com.his.android.Model.PrescriptionList;
 import com.his.android.Model.VitalDetail;
 import com.his.android.Model.MedicineDetail;
-import com.his.android.Response.IntakeData;
 import com.his.android.Response.PatientDashboardResp;
 import com.his.android.R;
-import com.his.android.Response.UnitResp;
 import com.his.android.Utils.InputFilterMinMax;
 import com.his.android.Utils.RetrofitClient;
-import com.his.android.Utils.RetrofitClient1;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.view.BaseActivity;
-import com.squareup.picasso.Picasso;
 import com.his.android.Model.IntakeDashboard;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import android.content.pm.ActivityInfo;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -60,13 +60,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class PersonalDashboard extends BaseActivity {
@@ -76,8 +69,9 @@ public class PersonalDashboard extends BaseActivity {
     String date = "", time;
     SimpleDateFormat format1;
     SimpleDateFormat format2;
+    SimpleDateFormat format3;
     int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
-    Date today = new Date();
+    Date today;
     Calendar c;
 
     @Override
@@ -90,19 +84,15 @@ public class PersonalDashboard extends BaseActivity {
         rvMedication=findViewById(R.id.rvMedication);
         rvIntake=findViewById(R.id.rvIntake);
         rvVitals=findViewById(R.id.rvVitals);
-        c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-        format1 = new SimpleDateFormat("dd/MM/yyyy");
-        format2 = new SimpleDateFormat("hh:mm a");
-        date = mYear + "/" + (mMonth + 1) + "/" + mDay;
         rvActivity.setLayoutManager(new LinearLayoutManager(mActivity));
         rvMedication.setLayoutManager(new LinearLayoutManager(mActivity));
         rvVitals.addItemDecoration(new DividerItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL));
         rvIntake.setLayoutManager(new LinearLayoutManager(mActivity));
         LinearLayoutManager manager=new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
         rvVitals.setLayoutManager(manager);
+        format1 = new SimpleDateFormat("yyyy-MM-dd");
+        format2 = new SimpleDateFormat("HH:mm");
+        format3 = new SimpleDateFormat("hh:mm a");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         edtPid.addTextChangedListener(new TextWatcher() {
             @Override
@@ -129,20 +119,27 @@ public class PersonalDashboard extends BaseActivity {
         });
     }
 
-    private void start() {
+    private void startStop(int physicalActivityID, int activityStatus) {
         Utils.showRequestDialog(mActivity);
-        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().startPatientPhysicalActivity(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), edtPid.getText().toString().trim(), "", "", SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
+        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().startStopPatientActivity(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), edtPid.getText().toString().trim(), physicalActivityID, activityStatus, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    
+                    bind(0, 0, 1, 0, 0);
+                } else {
+                    try {
+                        Toast.makeText(PersonalDashboard.this, response.body().string(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception ex){
+                        ex.printStackTrace();
+                    }
                 }
+                Utils.hideDialog();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Utils.hideDialog();
             }
         });
     }
@@ -153,10 +150,15 @@ public class PersonalDashboard extends BaseActivity {
             @Override
             public void onResponse(Call<PatientDashboardResp> call, Response<PatientDashboardResp> response) {
                 if(response.isSuccessful()){
+                    if (patientDetails==1)
                     txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit());
+                    if (patientActivityDetails==1)
                     rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
+                    if (intakeDetails==1)
                     rvIntake.setAdapter(new IntakeAdp(response.body().getIntakeDetails()));
+                    if (vitalDetails==1)
                     rvVitals.setAdapter(new VitalAdp(response.body().getVitalDetails()));
+                    if (medicineDetails==1)
                     rvMedication.setAdapter(new MedicineDetailAdp(response.body().getMedicineDetails()));
                 }
                 Utils.hideDialog();
@@ -187,14 +189,14 @@ public class PersonalDashboard extends BaseActivity {
         });
     }
     private void action(int prescriptionID, int pmID, String comment, int status) {
-//        Utils.showRequestDialog(mActivity);
-        /*Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveIntakePrescription(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), comment, pmID, prescriptionID, status, String.valueOf(SharedPrefManager.getInstance(context).getUser().getUserid()));
+        Utils.showRequestDialog(mActivity);
+        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveIntakePrescription(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), comment, pmID, prescriptionID, status, String.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid()));
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(context, "Saved Successfully!", Toast.LENGTH_SHORT).show();
-                    bind();
+                    Toast.makeText(mActivity, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                    bind(0, 0, 0, 1, 0);
                 }
                 Utils.hideDialog();
             }
@@ -203,7 +205,39 @@ public class PersonalDashboard extends BaseActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utils.hideDialog();
             }
-        });*/
+        });
+    }
+    private void giveDiet(int dietID, String dietDate, String dietTime, int isSupplement, String consumptionPercentage) {
+        Utils.showRequestDialog(mActivity);
+        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().UpdateIntakeConsumption(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), edtPid.getText().toString().trim(), dietID, dietDate, dietTime, isSupplement, consumptionPercentage);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(mActivity, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                    bind(0, 0, 0, 0, 1);
+                } else {
+                    try {
+                        Toast.makeText(PersonalDashboard.this, response.body().string(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utils.hideDialog();
+            }
+        });
+    }
+    private void blink(TextView txt){
+        ObjectAnimator anim=ObjectAnimator.ofInt(txt, "BackgroundColor", Color.WHITE, Color.RED, Color.WHITE);
+        anim.setDuration(800).setEvaluator(new ArgbEvaluator());
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(ValueAnimator.INFINITE);
+        anim.start();
     }
     public class ActivityDashboardAdp extends RecyclerView.Adapter<ActivityDashboardAdp.RecyclerViewHolder> {
         private List<PatientActivityDetail> patientActivityDetails;
@@ -223,34 +257,11 @@ public class PersonalDashboard extends BaseActivity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
             holder.txtActivity.setText(String.valueOf(patientActivityDetails.get(i).getPhysicalActivityName()));
+            if (patientActivityDetails.get(i).getActivityStatus().equalsIgnoreCase("r"))
+                blink(holder.txtActivity);
 //            Picasso.with(mActivity).load(patientActivityDetails.get(i).getIconImage()).into(holder.imgActivity);
 //            Picasso.with(mActivity).load(patientActivityDetails.get(i).getIconImage()).resize((int) getResources().getDimension(R.dimen._15sdp), (int) getResources().getDimension(R.dimen._15sdp)).into(holder.imgActivity);
-//            holder.txtEditDate.setOnClickListener(view -> dateTimePopup(foodDetails.get(i).getId(), foodDetails.get(i).getIsSupplement(), foodDetails.get(i).getIntakeName()));
-            /*holder.txtActivity.setOnClickListener(view -> {
-                    Utils.showRequestDialog(mActivity);
-                    if (patientActivityDetails.get(i).getActivityStatus().equalsIgnoreCase("S"))
-                        call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", "",SharedPrefManager.getInstance(mActivity).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getMemberId().getUserLoginId()));
-                    else call = RetrofitClient1.getInstance().getApi().UpdateConsumptionPercentage("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", holder.edtQty.getText().toString().trim(), String.valueOf(SharedPrefManager.getInstance(mActivity).getMemberId().getUserLoginId()), array, SharedPrefManager.getInstance(mActivity).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid()), patientActivityDetails.get(i).getPhysicalActivityID().toString());
-                    call.enqueue(new Callback<UnitResp>() {
-                        @Override
-                        public void onResponse(Call<UnitResp> call, Response<UnitResp> response) {
-                            if (response.isSuccessful()){
-                                if (response.body() != null && response.body().getResponseCode() == 1) {
-                                    bind(0, 0, 1, 0, 0);
-                                    notifyItemChanged(i);
-                                    Utils.hideDialog();
-                                } else if (response.body() != null) {
-                                    Toast.makeText(mActivity, response.body().getResponseMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<UnitResp> call, Throwable t) {
-                            Utils.hideDialog();
-                        }
-                    });
-            });*/
+            holder.txtActivity.setOnClickListener(view -> startStop(patientActivityDetails.get(i).getPhysicalActivityID(), patientActivityDetails.get(i).getActivityStatus().equalsIgnoreCase("r")?0:1));
         }
 
         @Override
@@ -327,6 +338,12 @@ public class PersonalDashboard extends BaseActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
+            c = Calendar.getInstance();
+            today = new Date();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            date = mYear + "/" + (mMonth + 1) + "/" + mDay;
             holder.txtFluid.setText(String.valueOf(foodDetails.get(i).getIntakeName()));
             holder.txtQty.setText(String.valueOf(foodDetails.get(i).getGivenIntakeQuantity()));
             holder.txtUnit.setText(String.valueOf(foodDetails.get(i).getUnit()));
@@ -351,53 +368,33 @@ public class PersonalDashboard extends BaseActivity {
                     mMinute = i1;
                     today.setHours(mHour);
                     today.setMinutes(mMinute);
-                    holder.txtTime.setText(format2.format(today));
+                    holder.txtTime.setText(format3.format(today));
                 }, mHour, mMinute, false);
                 timePickerDialog.updateTime(today.getHours(), today.getMinutes());
                 timePickerDialog.show();
             });
-            /*holder.txtSave.setOnClickListener(view -> {
-                JSONArray array=new JSONArray();
-                JSONObject object = new JSONObject();
-                try {
-                    object.put("dietID", foodDetails.get(i).getId());
-                    object.put("consumptionPercentage", holder.edtQty.getText().toString().trim());
-                    array.put(object);
-                    Log.v("array", String.valueOf(array));
-                    Utils.showRequestDialog(mActivity);
-                    Call<UnitResp> call = null;
-                    if (foodDetails.get(i).getIsSupplement()==0)
-                        call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mActivity).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getMemberId().getUserLoginId()));
-                    else call = RetrofitClient1.getInstance().getApi().UpdateConsumptionPercentage("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", holder.edtQty.getText().toString().trim(), String.valueOf(SharedPrefManager.getInstance(mActivity).getMemberId().getUserLoginId()), array, SharedPrefManager.getInstance(mActivity).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid()), foodDetails.get(i).getId().toString());
-                    call.enqueue(new Callback<UnitResp>() {
-                        @Override
-                        public void onResponse(Call<UnitResp> call, Response<UnitResp> response) {
-                            if (response.isSuccessful()){
-                                if (response.body() != null && response.body().getResponseCode() == 1) {
-                                    holder.txtEdit.setVisibility(View.VISIBLE);
-                                    holder.txtClose.setVisibility(View.GONE);
-                                    holder.txtSave.setVisibility(View.GONE);
-                                    holder.edtQty.setVisibility(View.GONE);
-                                    holder.txtPer.setVisibility(View.GONE);
-                                    holder.edtQty.setEnabled(false);
-                                    bind();
-                                    notifyItemChanged(i);
-                                    Utils.hideDialog();
-                                } else if (response.body() != null) {
-                                    Toast.makeText(mActivity, response.body().getResponseMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(Call<UnitResp> call, Throwable t) {
-                            Utils.hideDialog();
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            });*/
+             /*int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
+            RadioButton rbSelected=findViewById(selectedId);
+            giveDiet(foodDetails.get(i).getDietID(), holder.txtDate.getText().toString(), holder.txtTime.getText().toString(), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString());*/
+
+            holder.txtDate.setText(Utils.formatDate(date));
+            holder.txtTime.setText(format3.format(today));
+            holder.txtGive.setOnClickListener(view -> new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                    .setMessage("Are you sure?")
+                    .setCancelable(true)
+                    .setPositiveButton(
+                            "Yes",
+                            (dialog, id) -> {
+                                int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
+                                RadioButton rbSelected = findViewById(selectedId);
+                                giveDiet(foodDetails.get(i).getDietID(), format1.format(today), format2.format(today), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString().substring(0, rbSelected.getText().length()-1));
+                            })
+
+                    .setNegativeButton(
+                            "No",
+                            (dialog, id) -> dialog.cancel())
+                    .show());
         }
 
         @Override
@@ -406,8 +403,8 @@ public class PersonalDashboard extends BaseActivity {
         }
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-            TextView txtFluid,txtQty,txtUnit, txtDateTime, txtEdit, txtSave, txtPer, txtEditDate, txtClose, txtDate, txtTime;
-            EditText edtQty;
+            TextView txtFluid,txtQty,txtUnit, txtDateTime, txtEdit, txtSave, txtPer, txtEditDate, txtClose, txtDate, txtTime, txtGive;
+            RadioGroup rgConsumption;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 txtFluid =itemView.findViewById(R.id.txtFluid);
@@ -415,16 +412,13 @@ public class PersonalDashboard extends BaseActivity {
                 txtUnit=itemView.findViewById(R.id.txtUnit);
                 txtDateTime=itemView.findViewById(R.id.txtDateTime);
                 txtEdit=itemView.findViewById(R.id.txtEdit);
-                edtQty=itemView.findViewById(R.id.edtQty);
+                rgConsumption=itemView.findViewById(R.id.rgConsumption);
                 txtSave=itemView.findViewById(R.id.txtSave);
                 txtPer=itemView.findViewById(R.id.txtPer);
                 txtDate=itemView.findViewById(R.id.txtDate);
                 txtTime=itemView.findViewById(R.id.txtTime);
-//                txtEditDate=itemView.findViewById(R.id.txtEditDate);
+                txtGive=itemView.findViewById(R.id.txtGive);
                 txtClose=itemView.findViewById(R.id.txtClose);
-                edtQty.setFilters(new InputFilter[]{ new InputFilterMinMax(0, 100)});
-                txtDate.setText(Utils.formatDate(date));
-                txtTime.setText(format2.format(today));
             }
         }
     }
@@ -487,6 +481,13 @@ public class PersonalDashboard extends BaseActivity {
                 holder.txtFreq.setText(prescriptionList.get(i).getDoseFrequency());
                 holder.txtDosage.setText(prescriptionList.get(i).getDosageForm());
                 holder.txtRemark.setText(prescriptionList.get(i).getRemark());
+                if(prescriptionList.get(i).getRemark().equalsIgnoreCase("")){
+                    holder.txtRemark.setVisibility(View.GONE);
+                    holder.remark.setVisibility(View.GONE);
+                } else {
+                    holder.txtRemark.setVisibility(View.VISIBLE);
+                    holder.remark.setVisibility(View.VISIBLE);
+                }
 //                holder.tvGivenBy.setText(prescriptionList.get(i).getPrescribeBy());
                 holder.tvGivenTime.setText(prescriptionList.get(i).getDuration());
                 /*if (prescriptionList.get(i).getColorStatus() == null)
@@ -519,7 +520,7 @@ public class PersonalDashboard extends BaseActivity {
         }
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-            TextView txtMed, txtStr, txtFreq, txtDate, txtDosage, txtRemark, tvGivenTime, tvGivenBy, txtGive, txtComment;
+            TextView txtMed, txtStr, txtFreq, txtDate, txtDosage, txtRemark, tvGivenTime, tvGivenBy, txtGive, txtComment, remark;
             ConstraintLayout llMain;
 
             public RecyclerViewHolder(@NonNull View itemView) {
@@ -535,6 +536,7 @@ public class PersonalDashboard extends BaseActivity {
                 llMain = itemView.findViewById(R.id.llMain);
                 txtGive = itemView.findViewById(R.id.txtGive);
                 txtComment = itemView.findViewById(R.id.txtComment);
+                remark = itemView.findViewById(R.id.remark);
             }
         }
     }
