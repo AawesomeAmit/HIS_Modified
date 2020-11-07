@@ -10,6 +10,9 @@ public class PatientDetailDashboard {
     @SerializedName("patientName")
     @Expose
     public String patientName;
+    @SerializedName("pmID")
+    @Expose
+    public Integer pmID;
     @SerializedName("age")
     @Expose
     public Integer age;
@@ -66,5 +69,9 @@ public class PatientDetailDashboard {
 
     public String getCorrectWardName() {
         return correctWardName;
+    }
+
+    public Integer getPmID() {
+        return pmID;
     }
 }

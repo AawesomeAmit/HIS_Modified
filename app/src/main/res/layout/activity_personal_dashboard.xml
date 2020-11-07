@@ -13,8 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_20sdp"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/btn_activity4"
@@ -27,7 +26,7 @@
         android:paddingEnd="@dimen/_5sdp"
         android:paddingBottom="@dimen/_2sdp"
         android:textColor="@color/white"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9ssp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
         android:gravity="center"
         android:hint="@string/patient_name_"
         android:paddingStart="@dimen/_5sdp"
@@ -45,7 +44,7 @@
         android:paddingEnd="@dimen/_5sdp"
         android:paddingBottom="@dimen/_2sdp"
         android:textColor="@color/black"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9ssp"
         app:layout_constraintStart_toEndOf="@+id/edtPid"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,7 +52,7 @@
         android:id="@+id/view11"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/_2sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtPid" />
@@ -63,29 +62,30 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginStart="@dimen/_2sdp"
-        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_1sdp"
+        android:layout_marginEnd="@dimen/_1sdp"
         android:layout_marginBottom="@dimen/_2sdp"
-        android:background="@drawable/btn_activity1"
+        android:background="@color/blue_heading"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view12"
+        app:layout_constraintTop_toBottomOf="@+id/textView39"
         tools:listitem="@layout/inner_patient_dashboard_activity" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMedication"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_1sdp"
+        android:layout_marginEnd="@dimen/_1sdp"
         android:layout_marginBottom="@dimen/_2sdp"
-        android:background="@drawable/btn_activity2"
+        android:background="@color/orange_dashboard"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rvIntake"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/rvActivity"
-        app:layout_constraintTop_toBottomOf="@+id/view12"
+        app:layout_constraintTop_toBottomOf="@+id/textView40"
         app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/inner_dashboaard_prescription" />
 
@@ -93,16 +93,15 @@
         android:id="@+id/rvIntake"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/_2sdp"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_1sdp"
+        android:layout_marginEnd="@dimen/_1sdp"
         android:layout_marginBottom="@dimen/_2sdp"
-        android:background="@drawable/btn_activity3"
+        android:background="@color/green_dashboard"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/rvMedication"
-        app:layout_constraintTop_toBottomOf="@+id/view12"
+        app:layout_constraintTop_toBottomOf="@+id/textView41"
         tools:listitem="@layout/inner_dashboard_meal" />
 
     <View
@@ -141,7 +140,7 @@
         android:text="@string/transfer_out1"
         android:textColor="@color/white"
         android:singleLine="true"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_9ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view11" />
 
@@ -151,6 +150,63 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.2" />
+
+    <TextView
+        android:id="@+id/textView39"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/activity"
+        android:textSize="@dimen/_9ssp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_activities"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:textColor="@color/blue_text"
+        android:background="@color/grey_light"
+        app:layout_constraintEnd_toEndOf="@+id/rvActivity"
+        app:layout_constraintStart_toStartOf="@+id/rvActivity"
+        app:layout_constraintTop_toBottomOf="@+id/view12" />
+
+    <TextView
+        android:id="@+id/textView40"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/medication"
+        android:textSize="@dimen/_9ssp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_medication"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:textColor="@color/blue_text"
+        android:background="@color/grey_light"
+        app:layout_constraintEnd_toEndOf="@+id/rvMedication"
+        app:layout_constraintStart_toStartOf="@+id/rvMedication"
+        app:layout_constraintTop_toBottomOf="@+id/view12" />
+
+    <TextView
+        android:id="@+id/textView41"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/diet_detail"
+        android:textSize="@dimen/_9ssp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:drawableStart="@drawable/ic_food_details"
+        android:paddingTop="@dimen/_3sdp"
+        android:paddingBottom="@dimen/_3sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:textColor="@color/blue_text"
+        android:background="@color/grey_light"
+        app:layout_constraintEnd_toEndOf="@+id/rvIntake"
+        app:layout_constraintStart_toStartOf="@+id/rvIntake"
+        app:layout_constraintTop_toBottomOf="@+id/view12" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

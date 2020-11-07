@@ -446,4 +446,5 @@
     <string name="fifty">50%</string>
     <string name="seventy_five">75%</string>
     <string name="hundred">100%</string>
+    <string name="diet_detail">Diet Details</string>
 </resources>

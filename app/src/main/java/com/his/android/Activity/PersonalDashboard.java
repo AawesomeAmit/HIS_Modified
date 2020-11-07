@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,30 +17,42 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.RadioButton;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.his.android.Activity.UploadMultipleImg.Universalres;
 import com.his.android.Model.IntakeDetail;
 import com.his.android.Model.PatientActivityDetail;
+import com.his.android.Model.PatientDetailDashboard;
 import com.his.android.Model.VitalDetail;
 import com.his.android.Model.MedicineDetail;
+import com.his.android.Model.Ward;
 import com.his.android.Response.PatientDashboardResp;
 import com.his.android.R;
+import com.his.android.Response.WardResp;
+import com.his.android.Utils.ConnectivityChecker;
 import com.his.android.Utils.InputFilterMinMax;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.SharedPrefManager;
@@ -63,32 +76,37 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PersonalDashboard extends BaseActivity {
-    TextView txtName;
+    TextView txtName, txtTransfer;
     EditText edtPid;
     RecyclerView rvActivity, rvMedication, rvIntake, rvVitals;
     String date = "", time;
     SimpleDateFormat format1;
     SimpleDateFormat format2;
     SimpleDateFormat format3;
+    static List<Ward> wardLists = new ArrayList<>();
     int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
+    Spinner popUpspnWard;
+    ArrayAdapter arrayAdapter;
+    Dialog dialog;
     Date today;
     Calendar c;
-
+    List<PatientDetailDashboard> patientDetailsDashboard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_dashboard);
-        txtName=findViewById(R.id.txtName);
-        edtPid=findViewById(R.id.edtPid);
-        rvActivity=findViewById(R.id.rvActivity);
-        rvMedication=findViewById(R.id.rvMedication);
-        rvIntake=findViewById(R.id.rvIntake);
-        rvVitals=findViewById(R.id.rvVitals);
+        txtName = findViewById(R.id.txtName);
+        edtPid = findViewById(R.id.edtPid);
+        rvActivity = findViewById(R.id.rvActivity);
+        rvMedication = findViewById(R.id.rvMedication);
+        rvIntake = findViewById(R.id.rvIntake);
+        rvVitals = findViewById(R.id.rvVitals);
+        txtTransfer = findViewById(R.id.txtTransfer);
         rvActivity.setLayoutManager(new LinearLayoutManager(mActivity));
         rvMedication.setLayoutManager(new LinearLayoutManager(mActivity));
         rvVitals.addItemDecoration(new DividerItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL));
         rvIntake.setLayoutManager(new LinearLayoutManager(mActivity));
-        LinearLayoutManager manager=new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager manager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
         rvVitals.setLayoutManager(manager);
         format1 = new SimpleDateFormat("yyyy-MM-dd");
         format2 = new SimpleDateFormat("HH:mm");
@@ -107,7 +125,7 @@ public class PersonalDashboard extends BaseActivity {
                 rvActivity.setAdapter(null);
                 rvMedication.setAdapter(null);
                 rvIntake.setAdapter(null);
-                if(charSequence.length()>6){
+                if (charSequence.length() > 6) {
                     bind(1, 1, 1, 1, 1);
                 }
             }
@@ -117,6 +135,16 @@ public class PersonalDashboard extends BaseActivity {
 
             }
         });
+        hitGetWard();
+        txtTransfer.setOnClickListener(view -> hitPatientTransfer(patientDetailsDashboard.get(0).getPmID(), patientDetailsDashboard.get(0).getCorrectWardName(), patientDetailsDashboard.get(0).getCorrectWardID()));
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (edtPid.getText().length() > 6) {
+                    bind(1, 1, 1, 1, 1);
+                }
+            }
+        }, 0, 3600000);
     }
 
     private void startStop(int physicalActivityID, int activityStatus) {
@@ -150,16 +178,52 @@ public class PersonalDashboard extends BaseActivity {
             @Override
             public void onResponse(Call<PatientDashboardResp> call, Response<PatientDashboardResp> response) {
                 if(response.isSuccessful()){
-                    if (patientDetails==1)
-                    txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit());
-                    if (patientActivityDetails==1)
-                    rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
-                    if (intakeDetails==1)
-                    rvIntake.setAdapter(new IntakeAdp(response.body().getIntakeDetails()));
-                    if (vitalDetails==1)
-                    rvVitals.setAdapter(new VitalAdp(response.body().getVitalDetails()));
-                    if (medicineDetails==1)
-                    rvMedication.setAdapter(new MedicineDetailAdp(response.body().getMedicineDetails()));
+                    if(response.body().getPatientDetails()!=null) {
+                        patientDetailsDashboard = response.body().getPatientDetails();
+                        if (!response.body().getPatientDetails().get(0).getCurrentWardID().equals(response.body().getPatientDetails().get(0).getCorrectWardID())) {
+                            new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                                    .setMessage("Are you sure that you want to transfer patient to " + patientDetailsDashboard.get(0).getCorrectWardName() + "?")
+                                    .setCancelable(true)
+                                    .setPositiveButton(
+                                            "Yes",
+                                            (dialog, id) -> {
+                                                hitPatientTransfer(patientDetailsDashboard.get(0).getPmID(), patientDetailsDashboard.get(0).getCorrectWardName(), patientDetailsDashboard.get(0).getCorrectWardID());
+                                                if (patientDetails == 1)
+                                                    txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit());
+                                                if (patientActivityDetails == 1)
+                                                    rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
+                                                if (intakeDetails == 1)
+                                                    rvIntake.setAdapter(new IntakeAdp(response.body().getIntakeDetails()));
+                                                if (vitalDetails == 1)
+                                                    rvVitals.setAdapter(new VitalAdp(response.body().getVitalDetails()));
+                                                if (medicineDetails == 1)
+                                                    rvMedication.setAdapter(new MedicineDetailAdp(response.body().getMedicineDetails()));
+                                            })
+
+                                    .setNegativeButton(
+                                            "No",
+                                            (dialog, id) -> {
+                                                dialog.cancel();
+                                                txtName.setText("");
+                                                rvVitals.setAdapter(null);
+                                                rvActivity.setAdapter(null);
+                                                rvMedication.setAdapter(null);
+                                                rvIntake.setAdapter(null);
+                                            })
+                                    .show();
+                        }
+                    } else {
+                        if (patientDetails==1)
+                            txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit());
+                        if (patientActivityDetails==1)
+                            rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
+                        if (intakeDetails==1)
+                            rvIntake.setAdapter(new IntakeAdp(response.body().getIntakeDetails()));
+                        if (vitalDetails==1)
+                            rvVitals.setAdapter(new VitalAdp(response.body().getVitalDetails()));
+                        if (medicineDetails==1)
+                            rvMedication.setAdapter(new MedicineDetailAdp(response.body().getMedicineDetails()));
+                    }
                 }
                 Utils.hideDialog();
             }
@@ -233,7 +297,7 @@ public class PersonalDashboard extends BaseActivity {
         });
     }
     private void blink(TextView txt){
-        ObjectAnimator anim=ObjectAnimator.ofInt(txt, "BackgroundColor", Color.WHITE, Color.RED, Color.WHITE);
+        ObjectAnimator anim=ObjectAnimator.ofInt(txt, "BackgroundColor", Color.WHITE, Color.parseColor("#579AD3"), Color.WHITE);
         anim.setDuration(800).setEvaluator(new ArgbEvaluator());
         anim.setRepeatMode(Animation.REVERSE);
         anim.setRepeatCount(ValueAnimator.INFINITE);
@@ -539,5 +603,167 @@ public class PersonalDashboard extends BaseActivity {
                 remark = itemView.findViewById(R.id.remark);
             }
         }
+    }
+
+    private void alertPatientTransfer(int pmID, String wardName, int wardID) {
+        dialog = new Dialog(mActivity);
+        dialog.setContentView(R.layout.dialog_personal_dashboard_transfer);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        window.setAttributes(wlp);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//        RelativeLayout relativelyBed=dialog.findViewById(R.id.relativelyBed);
+        ImageView ivClose = dialog.findViewById(R.id.ivClose);
+        TextView tvSubmit = dialog.findViewById(R.id.tvSubmit);
+        ConstraintLayout cl=dialog.findViewById(R.id.cl);
+        cl.setVisibility(View.GONE);
+        /*tvPID = dialog.findViewById(R.id.tvPID);
+        tvPtName = dialog.findViewById(R.id.tvPtName);
+        tvPID.setText(String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));*/
+//        tvPtName.setText(SharedPrefManager.getInstance(mActivity).getPtName());
+        popUpspnWard = dialog.findViewById(R.id.spnWard);
+        arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, wardLists);
+        popUpspnWard.setAdapter(arrayAdapter);
+//        popUpEtReason = dialog.findViewById(R.id.etReason);
+        ivClose.setOnClickListener(view -> dialog.dismiss());
+        tvSubmit.setOnClickListener(view -> {
+            try {
+                if (popUpspnWard.getSelectedItemPosition()==0) {
+                    Toast.makeText(mActivity, "Please select ward", Toast.LENGTH_SHORT).show();
+                }/* else if (popUpEtReason.getText().toString().isEmpty()) {
+                    Toast.makeText(mActivity, "Please enter reason", Toast.LENGTH_SHORT).show();
+                } */else {
+                    if (ConnectivityChecker.checker(mActivity)) {
+                        /*if(head.equalsIgnoreCase("transfer-out")) {
+                            hitTransferPatient(true);
+                        } else hitTransferPatient(false);*/
+                        hitPatientTransfer(pmID, wardLists.get(popUpspnWard.getSelectedItemPosition()).getShortName(), wardLists.get(popUpspnWard.getSelectedItemPosition()).getId());
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    private void hitPatientTransfer(int pmID, String wardName, int wardID) {
+        Utils.showRequestDialog(mActivity);
+        Call<Universalres> call = RetrofitClient.getInstance().getApi().patientIPDTransferToWard(
+                SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
+                String.valueOf(pmID),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
+                String.valueOf(wardID)
+        );
+
+        call.enqueue(new Callback<Universalres>() {
+            @Override
+            public void onResponse(Call<Universalres> call, Response<Universalres> response) {
+
+                if (response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Transferred Successfully!", Toast.LENGTH_SHORT).show();
+                    if(dialog!=null)
+                    dialog.dismiss();
+                    //if(!out)
+//                    hitAccept();
+                }
+                else {
+                    // error case
+                    switch (response.code()) {
+                        case 400:
+                            Toast.makeText(mActivity, "Unauthorized User", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 401:
+                            Toast.makeText(mActivity, "Unauthorized User", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(mActivity, "Data not found", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 500:
+                            Toast.makeText(mActivity, "Internal Server Error", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(mActivity, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<Universalres> call, Throwable t) {
+
+                Utils.hideDialog();
+                // progressDialog.dismiss();
+                Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+    private void hitGetWard() {
+        Utils.showRequestDialog(mActivity);
+        Call<WardResp> call = RetrofitClient.getInstance().getApi().getWardTransferList(
+                SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString()
+        );
+
+        call.enqueue(new Callback<WardResp>() {
+            @Override
+            public void onResponse(Call<WardResp> call, Response<WardResp> response) {
+                if (response.isSuccessful()) {
+                    wardLists.add(new Ward());
+                    wardLists.get(0).setId(0);
+                    wardLists.get(0).setShortName("Select Ward");
+                    wardLists.addAll(response.body().getWardTransferList());
+                    if (wardLists.size() > 0) {
+
+                        arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, wardLists);
+//                        popUpspnWard.setAdapter(arrayAdapter);
+
+                        /*popUpspnWard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                                wardID = String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId());
+                                if (position != 0) hitGetBed();
+                                Log.v("asfasgtrhasb", String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId()));
+
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });*/
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
+                }
+
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<WardResp> call, Throwable t) {
+
+                Utils.hideDialog();
+                // progressDialog.dismiss();
+                Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
     }
 }

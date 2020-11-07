@@ -12,19 +12,19 @@
         android:layout_height="wrap_content"
         android:text="@string/fluid_intake"
         android:gravity="center"
-        android:paddingTop="@dimen/_2sdp"
+        android:paddingTop="@dimen/_1sdp"
         android:textColor="@color/white"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9ssp"
         android:textStyle="bold"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInnerMeal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_1sdp"
         android:layout_marginStart="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_2sdp"
-        android:layout_marginBottom="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_1sdp"
         android:background="@drawable/btn_activity3"
         tools:listitem="@layout/inner_inner_dashboard_meal"/>
 </LinearLayout>

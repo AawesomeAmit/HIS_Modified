@@ -38,7 +38,7 @@
                 android:layout_marginStart="@dimen/_1sdp"
                 android:gravity="center"
                 android:text="@string/washroom"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_9ssp"
                 android:textColor="@color/white"
                 android:textStyle="bold"/>
         </LinearLayout>
