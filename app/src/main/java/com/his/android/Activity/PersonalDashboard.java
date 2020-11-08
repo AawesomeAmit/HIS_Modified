@@ -76,7 +76,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PersonalDashboard extends BaseActivity {
-    TextView txtName, txtTransfer;
+    TextView txtName, txtTransfer, txtRefresh;
     EditText edtPid;
     RecyclerView rvActivity, rvMedication, rvIntake, rvVitals;
     String date = "", time;
@@ -101,6 +101,7 @@ public class PersonalDashboard extends BaseActivity {
         rvMedication = findViewById(R.id.rvMedication);
         rvIntake = findViewById(R.id.rvIntake);
         rvVitals = findViewById(R.id.rvVitals);
+        txtRefresh = findViewById(R.id.txtRefresh);
         txtTransfer = findViewById(R.id.txtTransfer);
         rvActivity.setLayoutManager(new LinearLayoutManager(mActivity));
         rvMedication.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -120,6 +121,8 @@ public class PersonalDashboard extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                txtRefresh.setVisibility(View.GONE);
+                txtTransfer.setVisibility(View.GONE);
                 txtName.setText("");
                 rvVitals.setAdapter(null);
                 rvActivity.setAdapter(null);
@@ -136,7 +139,8 @@ public class PersonalDashboard extends BaseActivity {
             }
         });
         hitGetWard();
-        txtTransfer.setOnClickListener(view -> hitPatientTransfer(patientDetailsDashboard.get(0).getPmID(), patientDetailsDashboard.get(0).getCorrectWardName(), patientDetailsDashboard.get(0).getCorrectWardID()));
+        txtTransfer.setOnClickListener(view -> alertPatientTransfer(patientDetailsDashboard.get(0).getPmID(), patientDetailsDashboard.get(0).getCorrectWardName(), patientDetailsDashboard.get(0).getCorrectWardID())
+                /*hitPatientTransfer(patientDetailsDashboard.get(0).getPmID(), patientDetailsDashboard.get(0).getCorrectWardName(), patientDetailsDashboard.get(0).getCorrectWardID())*/);
         new Timer().scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -145,6 +149,7 @@ public class PersonalDashboard extends BaseActivity {
                 }
             }
         }, 0, 3600000);
+        txtRefresh.setOnClickListener(view -> bind(1, 1, 1, 1,1));
     }
 
     private void startStop(int physicalActivityID, int activityStatus) {
@@ -177,8 +182,8 @@ public class PersonalDashboard extends BaseActivity {
         call.enqueue(new Callback<PatientDashboardResp>() {
             @Override
             public void onResponse(Call<PatientDashboardResp> call, Response<PatientDashboardResp> response) {
-                if(response.isSuccessful()){
-                    if(response.body().getPatientDetails()!=null) {
+                if (response.isSuccessful()) {
+                    if (!response.body().getPatientDetails().isEmpty()) {
                         patientDetailsDashboard = response.body().getPatientDetails();
                         if (!response.body().getPatientDetails().get(0).getCurrentWardID().equals(response.body().getPatientDetails().get(0).getCorrectWardID())) {
                             new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
@@ -189,7 +194,8 @@ public class PersonalDashboard extends BaseActivity {
                                             (dialog, id) -> {
                                                 hitPatientTransfer(patientDetailsDashboard.get(0).getPmID(), patientDetailsDashboard.get(0).getCorrectWardName(), patientDetailsDashboard.get(0).getCorrectWardID());
                                                 if (patientDetails == 1)
-                                                    txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit());
+                                                    txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit()+", "+
+                                                            response.body().getPatientDetails().get(0).getDiagnosis()+", "+response.body().getPatientDetails().get(0).getCorrectWardName());
                                                 if (patientActivityDetails == 1)
                                                     rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
                                                 if (intakeDetails == 1)
@@ -211,19 +217,34 @@ public class PersonalDashboard extends BaseActivity {
                                                 rvIntake.setAdapter(null);
                                             })
                                     .show();
+                        } else {
+                            if (patientDetails == 1)
+                                txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit()+", "+
+                                        response.body().getPatientDetails().get(0).getDiagnosis()+", "+response.body().getPatientDetails().get(0).getCorrectWardName());
+                            if (patientActivityDetails == 1)
+                                rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
+                            if (intakeDetails == 1)
+                                rvIntake.setAdapter(new IntakeAdp(response.body().getIntakeDetails()));
+                            if (vitalDetails == 1)
+                                rvVitals.setAdapter(new VitalAdp(response.body().getVitalDetails()));
+                            if (medicineDetails == 1)
+                                rvMedication.setAdapter(new MedicineDetailAdp(response.body().getMedicineDetails()));
                         }
                     } else {
-                        if (patientDetails==1)
-                            txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit());
-                        if (patientActivityDetails==1)
+                        if (patientDetails == 1)
+                            txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit()+", "+
+                                    response.body().getPatientDetails().get(0).getDiagnosis()+", "+response.body().getPatientDetails().get(0).getCorrectWardName());
+                        if (patientActivityDetails == 1)
                             rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
-                        if (intakeDetails==1)
+                        if (intakeDetails == 1)
                             rvIntake.setAdapter(new IntakeAdp(response.body().getIntakeDetails()));
-                        if (vitalDetails==1)
+                        if (vitalDetails == 1)
                             rvVitals.setAdapter(new VitalAdp(response.body().getVitalDetails()));
-                        if (medicineDetails==1)
+                        if (medicineDetails == 1)
                             rvMedication.setAdapter(new MedicineDetailAdp(response.body().getMedicineDetails()));
                     }
+                    txtRefresh.setVisibility(View.VISIBLE);
+                    txtTransfer.setVisibility(View.VISIBLE);
                 }
                 Utils.hideDialog();
             }
@@ -234,22 +255,106 @@ public class PersonalDashboard extends BaseActivity {
             }
         });
     }
-    private void showPopup(int prescriptionID, int pmID) {
-        View popupView = getLayoutInflater().inflate(R.layout.popup_medication_staff_comment, null);
+    private void showPopup(int dietID, int isSupplement, String percent) {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_dashboard_medication_submit, null);
         final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
         LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
-        EditText edtComment = popupView.findViewById(R.id.edtComment);
-        CheckBox chkMedicine = popupView.findViewById(R.id.chkMedicine);
-        TextView btnSave = popupView.findViewById(R.id.btnSave);
+        TextView txtDate = popupView.findViewById(R.id.txtDate);
+        TextView txtTime = popupView.findViewById(R.id.txtTime);
+        TextView btnSave = popupView.findViewById(R.id.txtSubmit);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable());
         int[] location = new int[2];
         lLayout.getLocationOnScreen(location);
         popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
         btnSave.setOnClickListener(view -> {
-            if (chkMedicine.isChecked())
-                action(prescriptionID, pmID, edtComment.getText().toString().trim(), 2);
-            else action(prescriptionID, pmID, edtComment.getText().toString().trim(), 0);
+            giveDiet(dietID, format1.format(today), format2.format(today), isSupplement, percent);
+            popupWindow.dismiss();
+        });
+        c = Calendar.getInstance();
+        today = new Date();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        date = mYear + "/" + (mMonth + 1) + "/" + mDay;
+        txtDate.setText(Utils.formatDate(date));
+        txtTime.setText(format3.format(today));
+        txtDate.setOnClickListener(view -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity, R.style.DialogTheme,
+                    (view1, year, monthOfYear, dayOfMonth) -> {
+                        mYear = year;
+                        mMonth = monthOfYear;
+                        mDay = dayOfMonth;
+                        date = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                        today.setDate(dayOfMonth);
+                        today.setMonth(monthOfYear);
+                        today.setYear(year - 1900);
+                        txtDate.setText(Utils.formatDate(date));
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        });
+        txtTime.setOnClickListener(view -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(mActivity, R.style.DialogTheme, (timePicker, j, i1) -> {
+                mHour = j;
+                mMinute = i1;
+                today.setHours(mHour);
+                today.setMinutes(mMinute);
+                txtTime.setText(format3.format(today));
+            }, mHour, mMinute, false);
+            timePickerDialog.updateTime(today.getHours(), today.getMinutes());
+            timePickerDialog.show();
+        });
+    }
+    private void showPopupMed(int prescriptionID, int pmID) {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_dashboard_medication_submit, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
+        TextView txtDate = popupView.findViewById(R.id.txtDate);
+        TextView txtTime = popupView.findViewById(R.id.txtTime);
+        TextView btnSave = popupView.findViewById(R.id.txtSubmit);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        lLayout.getLocationOnScreen(location);
+        popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
+        btnSave.setOnClickListener(view -> {
+            action(prescriptionID, pmID, "", 0);
+            popupWindow.dismiss();
+        });
+        c = Calendar.getInstance();
+        today = new Date();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        date = mYear + "/" + (mMonth + 1) + "/" + mDay;
+        txtDate.setText(Utils.formatDate(date));
+        txtTime.setText(format3.format(today));
+        txtDate.setOnClickListener(view -> {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity, R.style.DialogTheme,
+                    (view1, year, monthOfYear, dayOfMonth) -> {
+                        mYear = year;
+                        mMonth = monthOfYear;
+                        mDay = dayOfMonth;
+                        date = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                        today.setDate(dayOfMonth);
+                        today.setMonth(monthOfYear);
+                        today.setYear(year - 1900);
+                        txtDate.setText(Utils.formatDate(date));
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
+            datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        });
+        txtTime.setOnClickListener(view -> {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(mActivity, R.style.DialogTheme, (timePicker, j, i1) -> {
+                mHour = j;
+                mMinute = i1;
+                today.setHours(mHour);
+                today.setMinutes(mMinute);
+                txtTime.setText(format3.format(today));
+            }, mHour, mMinute, false);
+            timePickerDialog.updateTime(today.getHours(), today.getMinutes());
+            timePickerDialog.show();
         });
     }
     private void action(int prescriptionID, int pmID, String comment, int status) {
@@ -259,7 +364,7 @@ public class PersonalDashboard extends BaseActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(mActivity, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Submitted Successfully!", Toast.LENGTH_SHORT).show();
                     bind(0, 0, 0, 1, 0);
                 }
                 Utils.hideDialog();
@@ -278,7 +383,7 @@ public class PersonalDashboard extends BaseActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(mActivity, "Saved Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Submitted Successfully!", Toast.LENGTH_SHORT).show();
                     bind(0, 0, 0, 0, 1);
                 } else {
                     try {
@@ -402,16 +507,17 @@ public class PersonalDashboard extends BaseActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
-            c = Calendar.getInstance();
+            /*c = Calendar.getInstance();
             today = new Date();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
             mDay = c.get(Calendar.DAY_OF_MONTH);
-            date = mYear + "/" + (mMonth + 1) + "/" + mDay;
+            date = mYear + "/" + (mMonth + 1) + "/" + mDay;*/
             holder.txtFluid.setText(String.valueOf(foodDetails.get(i).getIntakeName()));
             holder.txtQty.setText(String.valueOf(foodDetails.get(i).getGivenIntakeQuantity()));
             holder.txtUnit.setText(String.valueOf(foodDetails.get(i).getUnit()));
-            holder.txtDate.setOnClickListener(view -> {
+            ((RadioButton)holder.rgConsumption.getChildAt(4)).setChecked(true);
+            /*holder.txtDate.setOnClickListener(view -> {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity, R.style.DialogTheme,
                         (view1, year, monthOfYear, dayOfMonth) -> {
                             mYear = year;
@@ -436,29 +542,32 @@ public class PersonalDashboard extends BaseActivity {
                 }, mHour, mMinute, false);
                 timePickerDialog.updateTime(today.getHours(), today.getMinutes());
                 timePickerDialog.show();
-            });
+            });*/
 
              /*int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
             RadioButton rbSelected=findViewById(selectedId);
             giveDiet(foodDetails.get(i).getDietID(), holder.txtDate.getText().toString(), holder.txtTime.getText().toString(), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString());*/
 
-            holder.txtDate.setText(Utils.formatDate(date));
-            holder.txtTime.setText(format3.format(today));
-            holder.txtGive.setOnClickListener(view -> new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
-                    .setMessage("Are you sure?")
-                    .setCancelable(true)
-                    .setPositiveButton(
-                            "Yes",
-                            (dialog, id) -> {
-                                int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
-                                RadioButton rbSelected = findViewById(selectedId);
-                                giveDiet(foodDetails.get(i).getDietID(), format1.format(today), format2.format(today), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString().substring(0, rbSelected.getText().length()-1));
-                            })
+            holder.txtGive.setOnClickListener(view -> {
+                /*new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                .setMessage("Are you sure?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "Yes",
+                        (dialog, id) -> {
+                            int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
+                            RadioButton rbSelected = findViewById(selectedId);
+                            giveDiet(foodDetails.get(i).getDietID(), format1.format(today), format2.format(today), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString().substring(0, rbSelected.getText().length()-1));
+                        })
 
-                    .setNegativeButton(
-                            "No",
-                            (dialog, id) -> dialog.cancel())
-                    .show());
+                .setNegativeButton(
+                        "No",
+                        (dialog, id) -> dialog.cancel())
+                .show()*/
+                int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
+                RadioButton rbSelected = findViewById(selectedId);
+                showPopup(foodDetails.get(i).getDietID(), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString().substring(0, rbSelected.getText().length()-1));
+            });
         }
 
         @Override
@@ -479,8 +588,8 @@ public class PersonalDashboard extends BaseActivity {
                 rgConsumption=itemView.findViewById(R.id.rgConsumption);
                 txtSave=itemView.findViewById(R.id.txtSave);
                 txtPer=itemView.findViewById(R.id.txtPer);
-                txtDate=itemView.findViewById(R.id.txtDate);
-                txtTime=itemView.findViewById(R.id.txtTime);
+//                txtDate=itemView.findViewById(R.id.txtDate);
+//                txtTime=itemView.findViewById(R.id.txtTime);
                 txtGive=itemView.findViewById(R.id.txtGive);
                 txtClose=itemView.findViewById(R.id.txtClose);
             }
@@ -564,8 +673,9 @@ public class PersonalDashboard extends BaseActivity {
                     else if (prescriptionList.get(i).getColorStatus().equalsIgnoreCase("red"))
                         holder.txtGive.setBackgroundResource(R.drawable.ic_check_red);
                 }*/
-                holder.txtComment.setOnClickListener(view -> showPopup(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID()));
-                holder.txtGive.setOnClickListener(view -> new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+                holder.txtComment.setOnClickListener(view -> showPopupMed(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID()));
+                holder.txtGive.setOnClickListener(view ->
+                        /*new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
                         .setMessage("Are you sure?")
                         .setCancelable(true)
                         .setPositiveButton(
@@ -575,7 +685,8 @@ public class PersonalDashboard extends BaseActivity {
                         .setNegativeButton(
                                 "No",
                                 (dialog, id) -> dialog.cancel())
-                        .show());
+                        .show()*/
+                    showPopupMed(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID()));
         }
 
         @Override
@@ -611,13 +722,11 @@ public class PersonalDashboard extends BaseActivity {
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         window.setAttributes(wlp);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 //        RelativeLayout relativelyBed=dialog.findViewById(R.id.relativelyBed);
         ImageView ivClose = dialog.findViewById(R.id.ivClose);
         TextView tvSubmit = dialog.findViewById(R.id.tvSubmit);
-        ConstraintLayout cl=dialog.findViewById(R.id.cl);
-        cl.setVisibility(View.GONE);
         /*tvPID = dialog.findViewById(R.id.tvPID);
         tvPtName = dialog.findViewById(R.id.tvPtName);
         tvPID.setText(String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));*/

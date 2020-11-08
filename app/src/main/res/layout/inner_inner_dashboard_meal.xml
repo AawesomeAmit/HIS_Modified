@@ -47,41 +47,36 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtStr">
 
                 <RadioButton
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/zero"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_8ssp" />
 
                 <RadioButton
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/twenty_five"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_8ssp" />
 
                 <RadioButton
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/fifty"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_8ssp" />
 
                 <RadioButton
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/seventy_five"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_8ssp" />
 
                 <RadioButton
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/hundred"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_8ssp" />
@@ -178,54 +173,12 @@
                 android:layout_width="@dimen/_12sdp"
                 android:layout_height="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
-                android:textSize="@dimen/_8ssp"
                 android:background="@drawable/ic_check_blue"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/rgConsumption"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgConsumption" />
+                app:layout_constraintTop_toTopOf="@+id/rgConsumption" />
 
-            <TextView
-                android:id="@+id/txtDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_1sdp"
-                android:layout_marginEnd="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:background="@drawable/edt_bor"
-                android:drawableEnd="@drawable/ic_date1"
-                android:gravity="center"
-                android:paddingStart="@dimen/_2sdp"
-                android:paddingTop="@dimen/_1sdp"
-                android:paddingEnd="@dimen/_2sdp"
-                android:paddingBottom="@dimen/_1sdp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8ssp"
-                android:textStyle="normal"
-                app:layout_constraintEnd_toStartOf="@+id/txtTime"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgConsumption" />
-
-            <TextView
-                android:id="@+id/txtTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/edt_bor"
-                android:drawableEnd="@drawable/ic_time1"
-                android:gravity="center"
-                android:layout_marginEnd="@dimen/_2sdp"
-                android:layout_marginStart="@dimen/_1sdp"
-                android:paddingStart="@dimen/_2sdp"
-                android:paddingTop="@dimen/_1sdp"
-                android:paddingEnd="@dimen/_2sdp"
-                android:paddingBottom="@dimen/_1sdp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_8ssp"
-                android:textStyle="normal"
-                app:layout_constraintEnd_toStartOf="@+id/txtGive"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/txtDate"
-                app:layout_constraintTop_toBottomOf="@+id/rgConsumption" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

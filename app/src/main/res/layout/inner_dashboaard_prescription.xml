@@ -102,7 +102,7 @@
             android:drawablePadding="@dimen/_2sdp"
             android:paddingStart="@dimen/_2sdp"
             android:paddingEnd="@dimen/_2sdp"
-            android:text="@string/given_time"
+            android:text="@string/first_prescription_time"
             android:textColor="@color/grey_heading"
             android:textSize="@dimen/_8ssp"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,16 +146,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginStart="@dimen/_1sdp"
             android:drawablePadding="@dimen/_2sdp"
             android:paddingStart="@dimen/_2sdp"
             android:paddingEnd="@dimen/_2sdp"
             android:text="@string/fluid_intake"
             android:textColor="@color/white"
             android:textSize="@dimen/_8ssp"
-            app:layout_constraintEnd_toEndOf="@+id/givenTime"
+            app:layout_constraintStart_toEndOf="@+id/givenTime"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/givenTime" />
+            app:layout_constraintTop_toBottomOf="@+id/txtRemark" />
 
         <TextView
             android:id="@+id/tvGivenBy"
@@ -183,7 +184,7 @@
             app:layout_constraintEnd_toStartOf="@+id/txtGive"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/givenTime" />
+            app:layout_constraintTop_toBottomOf="@+id/txtGive" />
 
         <TextView
             android:id="@+id/txtGive"

@@ -447,4 +447,6 @@
     <string name="seventy_five">75%</string>
     <string name="hundred">100%</string>
     <string name="diet_detail">Diet Details</string>
+    <string name="first_prescription_time">First Prescription Time</string>
+    <string name="refresh">Refresh</string>
 </resources>
