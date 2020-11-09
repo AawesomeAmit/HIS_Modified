@@ -313,9 +313,7 @@ public class ScanSelector extends BaseActivity {
             @Override
             public void onResponse(Call<WardResp> call, Response<WardResp> response) {
                 if (response.isSuccessful()) {
-                    wardLists.add(new Ward());
-                    wardLists.get(0).setId(0);
-                    wardLists.get(0).setShortName("Select Ward");
+                    wardLists.add(new Ward(0, "Select Ward", 0));
                     wardLists.addAll(response.body().getWardTransferList());
                     if (wardLists.size() > 0) {
 
@@ -623,9 +621,7 @@ public class ScanSelector extends BaseActivity {
                     }
 
                     //For ward List
-                    wardLists.add(new Ward());
-                    wardLists.get(0).setId(0);
-                    wardLists.get(0).setShortName("Select Ward");
+                    wardLists.add(new Ward(0, "Select Ward", 0));
 
 //                    wardLists.addAll(response.body());
 

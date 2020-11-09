@@ -13,6 +13,9 @@ public class VitalDetail {
     @SerializedName("dataDuration")
     @Expose
     public String dataDuration;
+    @SerializedName("vitalIcon")
+    @Expose
+    public String vitalIcon;
 
     public String getVitalName() {
         return vitalName;
@@ -24,5 +27,9 @@ public class VitalDetail {
 
     public String getDataDuration() {
         return dataDuration;
+    }
+
+    public String getVitalIcon() {
+        return vitalIcon;
     }
 }

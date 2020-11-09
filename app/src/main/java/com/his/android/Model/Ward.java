@@ -26,6 +26,12 @@ public class Ward {
         return headId;
     }
 
+    public Ward(Integer id, String shortName, Integer headId) {
+        this.id = id;
+        this.shortName = shortName;
+        this.headId = headId;
+    }
+
     @Override
     public String toString() {
         return shortName;

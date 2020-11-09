@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/fluid_intake"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_8ssp"
+                android:textSize="@dimen/_7ssp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -51,35 +51,35 @@
                     android:layout_height="wrap_content"
                     android:text="@string/zero"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_8ssp" />
+                    android:textSize="@dimen/_7ssp" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/twenty_five"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_8ssp" />
+                    android:textSize="@dimen/_7ssp"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/fifty"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_8ssp" />
+                    android:textSize="@dimen/_7ssp"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/seventy_five"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_8ssp" />
+                    android:textSize="@dimen/_7ssp"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hundred"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_8ssp" />
+                    android:textSize="@dimen/_7ssp" />
             </RadioGroup>
 
             <TextView
@@ -90,7 +90,7 @@
                 android:paddingBottom="@dimen/_2sdp"
                 android:text="ddsfdf"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_9ssp"
+                android:textSize="@dimen/_7ssp"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
@@ -102,7 +102,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:text="20"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_8ssp"
+                android:textSize="@dimen/_7ssp"
                 app:layout_constraintStart_toEndOf="@+id/txtFluid"
                 app:layout_constraintTop_toBottomOf="@+id/txtFluid"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -114,7 +114,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:text="mg"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_8ssp"
+                android:textSize="@dimen/_7ssp"
                 app:layout_constraintStart_toEndOf="@+id/txtStr"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -130,7 +130,7 @@
                 android:selectAllOnFocus="true"
                 android:text="100"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_9ssp"
+                android:textSize="@dimen/_7ssp"
                 android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@+id/txtUnit"
                 app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
@@ -143,7 +143,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:text="%"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_9ssp"
+                android:textSize="@dimen/_7ssp"
                 android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@+id/edtQty"
                 app:layout_constraintTop_toBottomOf="@+id/txtFluid" />
@@ -174,7 +174,7 @@
                 android:layout_height="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
                 android:background="@drawable/ic_check_blue"
-                android:textSize="@dimen/_8ssp"
+                android:textSize="@dimen/_7ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/rgConsumption"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rgConsumption" />

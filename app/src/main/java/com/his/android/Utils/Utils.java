@@ -126,7 +126,12 @@ public class Utils {
 
     public static void hideDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
+            try {
+                progressDialog.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ;
             progressDialog = null;
         }
     }

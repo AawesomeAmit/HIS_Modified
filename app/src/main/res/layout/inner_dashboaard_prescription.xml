@@ -10,8 +10,8 @@
         android:id="@+id/llMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_3sdp"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
         android:padding="@dimen/_2sdp"
         android:background="@drawable/btn_activity4"
         android:orientation="vertical">
@@ -23,7 +23,7 @@
             android:paddingStart="@dimen/_2sdp"
             android:text="@string/fluid_intake"
             android:textColor="@color/white"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/_7ssp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingStart="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingStart="@dimen/_1sdp"
+            android:paddingEnd="@dimen/_1sdp"
             android:text="@string/fluid_intake"
             android:textColor="@color/white"
             android:textSize="@dimen/_7ssp"
@@ -56,10 +56,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingStart="@dimen/_2sdp"
-            android:paddingEnd="@dimen/_2sdp"
+            android:paddingStart="@dimen/_1sdp"
+            android:paddingEnd="@dimen/_1sdp"
             android:textColor="@color/white"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/_7ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toTopOf="parent"
@@ -72,7 +72,7 @@
             android:layout_gravity="center_vertical"
             android:text="@string/fluid_intake"
             android:textColor="@color/white"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/_7ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toTopOf="parent"
@@ -89,7 +89,7 @@
             android:paddingEnd="@dimen/_2sdp"
             android:text="@string/remark"
             android:textColor="@color/grey_heading"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/_7ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDosage" />
 
@@ -104,7 +104,7 @@
             android:paddingEnd="@dimen/_2sdp"
             android:text="@string/first_prescription_time"
             android:textColor="@color/grey_heading"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/_7ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtRemark" />
 
@@ -120,7 +120,7 @@
             android:text="@string/given_by"
             android:visibility="gone"
             android:textColor="@color/grey_heading"
-            android:textSize="@dimen/_9ssp"
+            android:textSize="@dimen/_7ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvGivenTime" />
 
@@ -135,11 +135,10 @@
             android:paddingEnd="@dimen/_2sdp"
             android:text="@string/fluid_intake"
             android:textColor="@color/white"
-            android:textSize="@dimen/_8ssp"
-            app:layout_constraintEnd_toEndOf="@+id/remark"
+            android:textSize="@dimen/_7ssp"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/remark" />
+            app:layout_constraintStart_toEndOf="@id/remark"
+            app:layout_constraintTop_toBottomOf="@id/txtDosage" />
 
         <TextView
             android:id="@+id/tvGivenTime"
@@ -153,7 +152,7 @@
             android:paddingEnd="@dimen/_2sdp"
             android:text="@string/fluid_intake"
             android:textColor="@color/white"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/_7ssp"
             app:layout_constraintStart_toEndOf="@+id/givenTime"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintTop_toBottomOf="@+id/txtRemark" />
@@ -170,7 +169,7 @@
             android:text="@string/fluid_intake"
             android:visibility="gone"
             android:textColor="@color/black"
-            android:textSize="@dimen/_9ssp"
+            android:textSize="@dimen/_7ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/givenBy" />
 
@@ -192,7 +191,7 @@
             android:layout_height="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_2sdp"
             android:layout_marginTop="@dimen/_1sdp"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/_7ssp"
             android:background="@drawable/ic_check_blue"
             app:layout_constraintBottom_toBottomOf="@+id/txtComment"
             app:layout_constraintEnd_toEndOf="parent"

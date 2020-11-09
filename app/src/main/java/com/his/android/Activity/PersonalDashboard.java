@@ -59,6 +59,8 @@ import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.view.BaseActivity;
 import com.his.android.Model.IntakeDashboard;
+import com.squareup.picasso.Picasso;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,14 +78,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PersonalDashboard extends BaseActivity {
-    TextView txtName, txtTransfer, txtRefresh;
+    TextView txtName, txtTransfer, txtDiagnosis, diagnosis, txtRefresh;
     EditText edtPid;
     RecyclerView rvActivity, rvMedication, rvIntake, rvVitals;
     String date = "", time;
     SimpleDateFormat format1;
     SimpleDateFormat format2;
     SimpleDateFormat format3;
-    static List<Ward> wardLists = new ArrayList<>();
+    SimpleDateFormat format4;
+    static List<Ward> wardLists1=new ArrayList<>();
     int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
     Spinner popUpspnWard;
     ArrayAdapter arrayAdapter;
@@ -96,6 +99,7 @@ public class PersonalDashboard extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_dashboard);
         txtName = findViewById(R.id.txtName);
+        txtDiagnosis = findViewById(R.id.txtDiagnosis);
         edtPid = findViewById(R.id.edtPid);
         rvActivity = findViewById(R.id.rvActivity);
         rvMedication = findViewById(R.id.rvMedication);
@@ -103,6 +107,8 @@ public class PersonalDashboard extends BaseActivity {
         rvVitals = findViewById(R.id.rvVitals);
         txtRefresh = findViewById(R.id.txtRefresh);
         txtTransfer = findViewById(R.id.txtTransfer);
+        txtDiagnosis = findViewById(R.id.txtDiagnosis);
+        diagnosis = findViewById(R.id.diagnosis);
         rvActivity.setLayoutManager(new LinearLayoutManager(mActivity));
         rvMedication.setLayoutManager(new LinearLayoutManager(mActivity));
         rvVitals.addItemDecoration(new DividerItemDecoration(mActivity, LinearLayoutManager.HORIZONTAL));
@@ -110,6 +116,7 @@ public class PersonalDashboard extends BaseActivity {
         LinearLayoutManager manager = new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false);
         rvVitals.setLayoutManager(manager);
         format1 = new SimpleDateFormat("yyyy-MM-dd");
+        format4 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         format2 = new SimpleDateFormat("HH:mm");
         format3 = new SimpleDateFormat("hh:mm a");
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -123,6 +130,8 @@ public class PersonalDashboard extends BaseActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 txtRefresh.setVisibility(View.GONE);
                 txtTransfer.setVisibility(View.GONE);
+                txtDiagnosis.setVisibility(View.GONE);
+                diagnosis.setVisibility(View.GONE);
                 txtName.setText("");
                 rvVitals.setAdapter(null);
                 rvActivity.setAdapter(null);
@@ -162,7 +171,7 @@ public class PersonalDashboard extends BaseActivity {
                     bind(0, 0, 1, 0, 0);
                 } else {
                     try {
-                        Toast.makeText(PersonalDashboard.this, response.body().string(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PersonalDashboard.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
                     } catch (Exception ex){
                         ex.printStackTrace();
                     }
@@ -193,9 +202,11 @@ public class PersonalDashboard extends BaseActivity {
                                             "Yes",
                                             (dialog, id) -> {
                                                 hitPatientTransfer(patientDetailsDashboard.get(0).getPmID(), patientDetailsDashboard.get(0).getCorrectWardName(), patientDetailsDashboard.get(0).getCorrectWardID());
-                                                if (patientDetails == 1)
-                                                    txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit()+", "+
-                                                            response.body().getPatientDetails().get(0).getDiagnosis()+", "+response.body().getPatientDetails().get(0).getCorrectWardName());
+                                                if (patientDetails == 1) {
+                                                    txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + "/" + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit() + ", "
+                                                            + response.body().getPatientDetails().get(0).getCorrectWardName());
+                                                    txtDiagnosis.setText(response.body().getPatientDetails().get(0).getDiagnosis());
+                                                }
                                                 if (patientActivityDetails == 1)
                                                     rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
                                                 if (intakeDetails == 1)
@@ -218,9 +229,11 @@ public class PersonalDashboard extends BaseActivity {
                                             })
                                     .show();
                         } else {
-                            if (patientDetails == 1)
-                                txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit()+", "+
-                                        response.body().getPatientDetails().get(0).getDiagnosis()+", "+response.body().getPatientDetails().get(0).getCorrectWardName());
+                            if (patientDetails == 1) {
+                                txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + "/" + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit() + ", "
+                                        + response.body().getPatientDetails().get(0).getCorrectWardName());
+                                txtDiagnosis.setText(response.body().getPatientDetails().get(0).getDiagnosis());
+                            }
                             if (patientActivityDetails == 1)
                                 rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
                             if (intakeDetails == 1)
@@ -231,9 +244,11 @@ public class PersonalDashboard extends BaseActivity {
                                 rvMedication.setAdapter(new MedicineDetailAdp(response.body().getMedicineDetails()));
                         }
                     } else {
-                        if (patientDetails == 1)
-                            txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + " " + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit()+", "+
-                                    response.body().getPatientDetails().get(0).getDiagnosis()+", "+response.body().getPatientDetails().get(0).getCorrectWardName());
+                        if (patientDetails == 1) {
+                            txtName.setText(response.body().getPatientDetails().get(0).getPatientName() + "/" + response.body().getPatientDetails().get(0).getAge() + " " + response.body().getPatientDetails().get(0).getAgeUnit() + ", "
+                                    + response.body().getPatientDetails().get(0).getCorrectWardName());
+                            txtDiagnosis.setText(response.body().getPatientDetails().get(0).getDiagnosis());
+                        }
                         if (patientActivityDetails == 1)
                             rvActivity.setAdapter(new ActivityDashboardAdp(response.body().getPatientActivityDetails()));
                         if (intakeDetails == 1)
@@ -245,6 +260,8 @@ public class PersonalDashboard extends BaseActivity {
                     }
                     txtRefresh.setVisibility(View.VISIBLE);
                     txtTransfer.setVisibility(View.VISIBLE);
+                    txtDiagnosis.setVisibility(View.VISIBLE);
+                    diagnosis.setVisibility(View.VISIBLE);
                 }
                 Utils.hideDialog();
             }
@@ -319,7 +336,7 @@ public class PersonalDashboard extends BaseActivity {
         lLayout.getLocationOnScreen(location);
         popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
         btnSave.setOnClickListener(view -> {
-            action(prescriptionID, pmID, "", 0);
+            action(prescriptionID, pmID, format4.format(today));
             popupWindow.dismiss();
         });
         c = Calendar.getInstance();
@@ -357,15 +374,22 @@ public class PersonalDashboard extends BaseActivity {
             timePickerDialog.show();
         });
     }
-    private void action(int prescriptionID, int pmID, String comment, int status) {
+    private void action(int prescriptionID, int pmID, String dateTime) {
         Utils.showRequestDialog(mActivity);
-        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveIntakePrescription(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), comment, pmID, prescriptionID, status, String.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid()));
+
+        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveIntakePrescription1(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), "", pmID, prescriptionID, 0, String.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid()), dateTime);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(mActivity, "Submitted Successfully!", Toast.LENGTH_SHORT).show();
                     bind(0, 0, 0, 1, 0);
+                } else {
+                    try {
+                        Toast.makeText(PersonalDashboard.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 Utils.hideDialog();
             }
@@ -373,6 +397,7 @@ public class PersonalDashboard extends BaseActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utils.hideDialog();
+                Toast.makeText(PersonalDashboard.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -387,7 +412,7 @@ public class PersonalDashboard extends BaseActivity {
                     bind(0, 0, 0, 0, 1);
                 } else {
                     try {
-                        Toast.makeText(PersonalDashboard.this, response.body().string(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PersonalDashboard.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -401,7 +426,7 @@ public class PersonalDashboard extends BaseActivity {
             }
         });
     }
-    private void blink(TextView txt){
+    private void blink(LinearLayout txt){
         ObjectAnimator anim=ObjectAnimator.ofInt(txt, "BackgroundColor", Color.WHITE, Color.parseColor("#579AD3"), Color.WHITE);
         anim.setDuration(800).setEvaluator(new ArgbEvaluator());
         anim.setRepeatMode(Animation.REVERSE);
@@ -427,9 +452,7 @@ public class PersonalDashboard extends BaseActivity {
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
             holder.txtActivity.setText(String.valueOf(patientActivityDetails.get(i).getPhysicalActivityName()));
             if (patientActivityDetails.get(i).getActivityStatus().equalsIgnoreCase("r"))
-                blink(holder.txtActivity);
-//            Picasso.with(mActivity).load(patientActivityDetails.get(i).getIconImage()).into(holder.imgActivity);
-//            Picasso.with(mActivity).load(patientActivityDetails.get(i).getIconImage()).resize((int) getResources().getDimension(R.dimen._15sdp), (int) getResources().getDimension(R.dimen._15sdp)).into(holder.imgActivity);
+                blink(holder.llMain);
             holder.txtActivity.setOnClickListener(view -> startStop(patientActivityDetails.get(i).getPhysicalActivityID(), patientActivityDetails.get(i).getActivityStatus().equalsIgnoreCase("r")?0:1));
         }
 
@@ -441,10 +464,12 @@ public class PersonalDashboard extends BaseActivity {
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView txtActivity;
             ImageView imgActivity;
+            LinearLayout llMain;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 txtActivity =itemView.findViewById(R.id.txtActivity);
                 imgActivity =itemView.findViewById(R.id.imgActivity);
+                llMain =itemView.findViewById(R.id.llMain);
             }
         }
     }
@@ -467,7 +492,7 @@ public class PersonalDashboard extends BaseActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
-            holder.txtDate.setText(foodDetails.get(i).getIntakeDateTime());
+            holder.txtDate.setText("Adviced Time: "+foodDetails.get(i).getIntakeDateTime());
             List<IntakeDashboard> intakeDashboardList= gson.fromJson(foodDetails.get(i).getIntake(), new TypeToken<List<IntakeDashboard>>(){}.getType());
             holder.rvInnerMeal.setAdapter(new IntakeInnerAdp(intakeDashboardList));
         }
@@ -507,63 +532,11 @@ public class PersonalDashboard extends BaseActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
-            /*c = Calendar.getInstance();
-            today = new Date();
-            mYear = c.get(Calendar.YEAR);
-            mMonth = c.get(Calendar.MONTH);
-            mDay = c.get(Calendar.DAY_OF_MONTH);
-            date = mYear + "/" + (mMonth + 1) + "/" + mDay;*/
             holder.txtFluid.setText(String.valueOf(foodDetails.get(i).getIntakeName()));
             holder.txtQty.setText(String.valueOf(foodDetails.get(i).getGivenIntakeQuantity()));
             holder.txtUnit.setText(String.valueOf(foodDetails.get(i).getUnit()));
             ((RadioButton)holder.rgConsumption.getChildAt(4)).setChecked(true);
-            /*holder.txtDate.setOnClickListener(view -> {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity, R.style.DialogTheme,
-                        (view1, year, monthOfYear, dayOfMonth) -> {
-                            mYear = year;
-                            mMonth = monthOfYear;
-                            mDay = dayOfMonth;
-                            date = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
-                            today.setDate(dayOfMonth);
-                            today.setMonth(monthOfYear);
-                            today.setYear(year - 1900);
-                            holder.txtDate.setText(Utils.formatDate(date));
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-                datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
-            });
-            holder.txtTime.setOnClickListener(view -> {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(mActivity, R.style.DialogTheme, (timePicker, j, i1) -> {
-                    mHour = j;
-                    mMinute = i1;
-                    today.setHours(mHour);
-                    today.setMinutes(mMinute);
-                    holder.txtTime.setText(format3.format(today));
-                }, mHour, mMinute, false);
-                timePickerDialog.updateTime(today.getHours(), today.getMinutes());
-                timePickerDialog.show();
-            });*/
-
-             /*int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
-            RadioButton rbSelected=findViewById(selectedId);
-            giveDiet(foodDetails.get(i).getDietID(), holder.txtDate.getText().toString(), holder.txtTime.getText().toString(), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString());*/
-
             holder.txtGive.setOnClickListener(view -> {
-                /*new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
-                .setMessage("Are you sure?")
-                .setCancelable(true)
-                .setPositiveButton(
-                        "Yes",
-                        (dialog, id) -> {
-                            int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
-                            RadioButton rbSelected = findViewById(selectedId);
-                            giveDiet(foodDetails.get(i).getDietID(), format1.format(today), format2.format(today), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString().substring(0, rbSelected.getText().length()-1));
-                        })
-
-                .setNegativeButton(
-                        "No",
-                        (dialog, id) -> dialog.cancel())
-                .show()*/
                 int selectedId = holder.rgConsumption.getCheckedRadioButtonId();
                 RadioButton rbSelected = findViewById(selectedId);
                 showPopup(foodDetails.get(i).getDietID(), foodDetails.get(i).getIsSupplement(), rbSelected.getText().toString().substring(0, rbSelected.getText().length()-1));
@@ -576,7 +549,7 @@ public class PersonalDashboard extends BaseActivity {
         }
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-            TextView txtFluid,txtQty,txtUnit, txtDateTime, txtEdit, txtSave, txtPer, txtEditDate, txtClose, txtDate, txtTime, txtGive;
+            TextView txtFluid,txtQty,txtUnit, txtDateTime, txtEdit, txtSave, txtPer, txtEditDate, txtClose, txtGive;
             RadioGroup rgConsumption;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -588,8 +561,6 @@ public class PersonalDashboard extends BaseActivity {
                 rgConsumption=itemView.findViewById(R.id.rgConsumption);
                 txtSave=itemView.findViewById(R.id.txtSave);
                 txtPer=itemView.findViewById(R.id.txtPer);
-//                txtDate=itemView.findViewById(R.id.txtDate);
-//                txtTime=itemView.findViewById(R.id.txtTime);
                 txtGive=itemView.findViewById(R.id.txtGive);
                 txtClose=itemView.findViewById(R.id.txtClose);
             }
@@ -613,7 +584,8 @@ public class PersonalDashboard extends BaseActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
-            holder.txtVital.setText(vitalDetailList.get(i).getVitalName() + " - " + vitalDetailList.get(i).getVitalValue());
+            Picasso.with(mActivity).load(vitalDetailList.get(i).getVitalIcon()).into(holder.imgVital);
+            holder.txtVital.setText(/*vitalDetailList.get(i).getVitalName() + " - " + */vitalDetailList.get(i).getVitalValue());
         }
 
         @Override
@@ -623,9 +595,11 @@ public class PersonalDashboard extends BaseActivity {
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView txtVital;
+            ImageView imgVital;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 txtVital =itemView.findViewById(R.id.txtVital);
+                imgVital =itemView.findViewById(R.id.imgVital);
             }
         }
     }
@@ -661,32 +635,9 @@ public class PersonalDashboard extends BaseActivity {
                     holder.txtRemark.setVisibility(View.VISIBLE);
                     holder.remark.setVisibility(View.VISIBLE);
                 }
-//                holder.tvGivenBy.setText(prescriptionList.get(i).getPrescribeBy());
                 holder.tvGivenTime.setText(prescriptionList.get(i).getDuration());
-                /*if (prescriptionList.get(i).getColorStatus() == null)
-                    holder.txtGive.setBackgroundResource(R.drawable.ic_check_blue);
-                else {
-                    if (prescriptionList.get(i).getColorStatus().equalsIgnoreCase("blue"))
-                        holder.txtGive.setBackgroundResource(R.drawable.ic_check_blue);
-                    else if (prescriptionList.get(i).getColorStatus().equalsIgnoreCase("green"))
-                        holder.txtGive.setBackgroundResource(R.drawable.ic_check_green);
-                    else if (prescriptionList.get(i).getColorStatus().equalsIgnoreCase("red"))
-                        holder.txtGive.setBackgroundResource(R.drawable.ic_check_red);
-                }*/
                 holder.txtComment.setOnClickListener(view -> showPopupMed(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID()));
-                holder.txtGive.setOnClickListener(view ->
-                        /*new AlertDialog.Builder(mActivity).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
-                        .setMessage("Are you sure?")
-                        .setCancelable(true)
-                        .setPositiveButton(
-                                "Yes",
-                                (dialog, id) -> action(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID(), "", 0))
-
-                        .setNegativeButton(
-                                "No",
-                                (dialog, id) -> dialog.cancel())
-                        .show()*/
-                    showPopupMed(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID()));
+                holder.txtGive.setOnClickListener(view -> showPopupMed(prescriptionList.get(i).getPrescriptionID(), prescriptionList.get(i).getPmID()));
         }
 
         @Override
@@ -724,30 +675,19 @@ public class PersonalDashboard extends BaseActivity {
         window.setAttributes(wlp);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-//        RelativeLayout relativelyBed=dialog.findViewById(R.id.relativelyBed);
         ImageView ivClose = dialog.findViewById(R.id.ivClose);
         TextView tvSubmit = dialog.findViewById(R.id.tvSubmit);
-        /*tvPID = dialog.findViewById(R.id.tvPID);
-        tvPtName = dialog.findViewById(R.id.tvPtName);
-        tvPID.setText(String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));*/
-//        tvPtName.setText(SharedPrefManager.getInstance(mActivity).getPtName());
         popUpspnWard = dialog.findViewById(R.id.spnWard);
-        arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, wardLists);
+        arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, wardLists1);
         popUpspnWard.setAdapter(arrayAdapter);
-//        popUpEtReason = dialog.findViewById(R.id.etReason);
         ivClose.setOnClickListener(view -> dialog.dismiss());
         tvSubmit.setOnClickListener(view -> {
             try {
                 if (popUpspnWard.getSelectedItemPosition()==0) {
                     Toast.makeText(mActivity, "Please select ward", Toast.LENGTH_SHORT).show();
-                }/* else if (popUpEtReason.getText().toString().isEmpty()) {
-                    Toast.makeText(mActivity, "Please enter reason", Toast.LENGTH_SHORT).show();
-                } */else {
+                } else {
                     if (ConnectivityChecker.checker(mActivity)) {
-                        /*if(head.equalsIgnoreCase("transfer-out")) {
-                            hitTransferPatient(true);
-                        } else hitTransferPatient(false);*/
-                        hitPatientTransfer(pmID, wardLists.get(popUpspnWard.getSelectedItemPosition()).getShortName(), wardLists.get(popUpspnWard.getSelectedItemPosition()).getId());
+                        hitPatientTransfer(pmID, wardLists1.get(popUpspnWard.getSelectedItemPosition()).getShortName(), wardLists1.get(popUpspnWard.getSelectedItemPosition()).getId());
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
                     }
@@ -802,15 +742,12 @@ public class PersonalDashboard extends BaseActivity {
                             break;
                     }
                 }
-
                 Utils.hideDialog();
             }
 
             @Override
             public void onFailure(Call<Universalres> call, Throwable t) {
-
                 Utils.hideDialog();
-                // progressDialog.dismiss();
                 Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
@@ -829,50 +766,19 @@ public class PersonalDashboard extends BaseActivity {
             @Override
             public void onResponse(Call<WardResp> call, Response<WardResp> response) {
                 if (response.isSuccessful()) {
-                    wardLists.add(new Ward());
-                    wardLists.get(0).setId(0);
-                    wardLists.get(0).setShortName("Select Ward");
-                    wardLists.addAll(response.body().getWardTransferList());
-                    if (wardLists.size() > 0) {
-
-                        arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, wardLists);
-//                        popUpspnWard.setAdapter(arrayAdapter);
-
-                        /*popUpspnWard.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-
-                                wardID = String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId());
-                                if (position != 0) hitGetBed();
-                                Log.v("asfasgtrhasb", String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId()));
-
-
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-
-                            }
-                        });*/
-                    } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
-                }
-
+                    wardLists1.clear();
+                    wardLists1.add(new Ward(0, "Select Ward", 0));
+                    wardLists1.addAll(response.body().getWardTransferList());
+                } else Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
                 Utils.hideDialog();
             }
 
             @Override
             public void onFailure(Call<WardResp> call, Throwable t) {
-
                 Utils.hideDialog();
-                // progressDialog.dismiss();
                 Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
-
     }
 }
