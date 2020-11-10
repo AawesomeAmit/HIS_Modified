@@ -186,7 +186,7 @@ public class PersonalDashboard extends BaseActivity {
         });
     }
     private void bind(int patientDetails, int vitalDetails, int patientActivityDetails, int medicineDetails, int intakeDetails){
-        Utils.showRequestDialog(mActivity);
+        Utils.showRequestDialog1(mActivity);
         Call<PatientDashboardResp> call= RetrofitClient.getInstance().getApi().getPersonalDashBoardDetails(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), edtPid.getText().toString().trim(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), patientDetails, vitalDetails, patientActivityDetails, medicineDetails, intakeDetails);
         call.enqueue(new Callback<PatientDashboardResp>() {
             @Override
@@ -262,6 +262,12 @@ public class PersonalDashboard extends BaseActivity {
                     txtTransfer.setVisibility(View.VISIBLE);
                     txtDiagnosis.setVisibility(View.VISIBLE);
                     diagnosis.setVisibility(View.VISIBLE);
+                } else {
+                    try {
+                        Toast.makeText(PersonalDashboard.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 Utils.hideDialog();
             }
@@ -278,6 +284,7 @@ public class PersonalDashboard extends BaseActivity {
         LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
         TextView txtDate = popupView.findViewById(R.id.txtDate);
         TextView txtTime = popupView.findViewById(R.id.txtTime);
+        ImageView ivClose = popupView.findViewById(R.id.ivClose);
         TextView btnSave = popupView.findViewById(R.id.txtSubmit);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable());
@@ -288,6 +295,7 @@ public class PersonalDashboard extends BaseActivity {
             giveDiet(dietID, format1.format(today), format2.format(today), isSupplement, percent);
             popupWindow.dismiss();
         });
+        ivClose.setOnClickListener(view -> popupWindow.dismiss());
         c = Calendar.getInstance();
         today = new Date();
         mYear = c.get(Calendar.YEAR);
@@ -329,6 +337,7 @@ public class PersonalDashboard extends BaseActivity {
         LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
         TextView txtDate = popupView.findViewById(R.id.txtDate);
         TextView txtTime = popupView.findViewById(R.id.txtTime);
+        ImageView ivClose = popupView.findViewById(R.id.ivClose);
         TextView btnSave = popupView.findViewById(R.id.txtSubmit);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable());
@@ -339,6 +348,7 @@ public class PersonalDashboard extends BaseActivity {
             action(prescriptionID, pmID, format4.format(today));
             popupWindow.dismiss();
         });
+        ivClose.setOnClickListener(view -> popupWindow.dismiss());
         c = Calendar.getInstance();
         today = new Date();
         mYear = c.get(Calendar.YEAR);
@@ -375,7 +385,7 @@ public class PersonalDashboard extends BaseActivity {
         });
     }
     private void action(int prescriptionID, int pmID, String dateTime) {
-        Utils.showRequestDialog(mActivity);
+        Utils.showRequestDialog1(mActivity);
 
         Call<ResponseBody> call = RetrofitClient.getInstance().getApi().saveIntakePrescription1(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), "", pmID, prescriptionID, 0, String.valueOf(SharedPrefManager.getInstance(mActivity).getUser().getUserid()), dateTime);
         call.enqueue(new Callback<ResponseBody>() {
@@ -402,7 +412,7 @@ public class PersonalDashboard extends BaseActivity {
         });
     }
     private void giveDiet(int dietID, String dietDate, String dietTime, int isSupplement, String consumptionPercentage) {
-        Utils.showRequestDialog(mActivity);
+        Utils.showRequestDialog1(mActivity);
         Call<ResponseBody> call = RetrofitClient.getInstance().getApi().UpdateIntakeConsumption(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), edtPid.getText().toString().trim(), dietID, dietDate, dietTime, isSupplement, consumptionPercentage);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -585,7 +595,9 @@ public class PersonalDashboard extends BaseActivity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
             Picasso.with(mActivity).load(vitalDetailList.get(i).getVitalIcon()).into(holder.imgVital);
-            holder.txtVital.setText(/*vitalDetailList.get(i).getVitalName() + " - " + */vitalDetailList.get(i).getVitalValue());
+            holder.txtVital.setText(vitalDetailList.get(i).getVitalValue());
+            holder.txtDuration.setText(vitalDetailList.get(i).getDataDuration());
+            holder.txtDuration.setTextColor(Color.parseColor(vitalDetailList.get(i).getColorCode()));
         }
 
         @Override
@@ -594,12 +606,13 @@ public class PersonalDashboard extends BaseActivity {
         }
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-            TextView txtVital;
+            TextView txtVital, txtDuration;
             ImageView imgVital;
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 txtVital =itemView.findViewById(R.id.txtVital);
                 imgVital =itemView.findViewById(R.id.imgVital);
+                txtDuration =itemView.findViewById(R.id.txtDuration);
             }
         }
     }
@@ -702,7 +715,7 @@ public class PersonalDashboard extends BaseActivity {
     }
 
     private void hitPatientTransfer(int pmID, String wardName, int wardID) {
-        Utils.showRequestDialog(mActivity);
+        Utils.showRequestDialog1(mActivity);
         Call<Universalres> call = RetrofitClient.getInstance().getApi().patientIPDTransferToWard(
                 SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),

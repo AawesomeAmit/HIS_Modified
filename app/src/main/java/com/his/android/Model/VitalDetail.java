@@ -16,6 +16,9 @@ public class VitalDetail {
     @SerializedName("vitalIcon")
     @Expose
     public String vitalIcon;
+    @SerializedName("colorCode")
+    @Expose
+    public String colorCode;
 
     public String getVitalName() {
         return vitalName;
@@ -31,5 +34,9 @@ public class VitalDetail {
 
     public String getVitalIcon() {
         return vitalIcon;
+    }
+
+    public String getColorCode() {
+        return colorCode;
     }
 }
