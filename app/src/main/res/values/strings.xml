@@ -450,4 +450,5 @@
     <string name="first_prescription_time">First Prescription Time</string>
     <string name="refresh">Refresh</string>
     <string name="intake_date_time">Intake Date Time</string>
+    <string name="early_morning">EARLY MORNING</string>
 </resources>

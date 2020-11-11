@@ -461,6 +461,7 @@ public class PersonalDashboard extends BaseActivity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
             holder.txtActivity.setText(String.valueOf(patientActivityDetails.get(i).getPhysicalActivityName()));
+            Picasso.with(mActivity).load(patientActivityDetails.get(i).getIconImage()).into(holder.imgActivity);
             if (patientActivityDetails.get(i).getActivityStatus().equalsIgnoreCase("r"))
                 blink(holder.llMain);
             holder.txtActivity.setOnClickListener(view -> startStop(patientActivityDetails.get(i).getPhysicalActivityID(), patientActivityDetails.get(i).getActivityStatus().equalsIgnoreCase("r")?0:1));
