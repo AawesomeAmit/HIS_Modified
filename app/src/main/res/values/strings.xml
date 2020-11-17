@@ -451,4 +451,6 @@
     <string name="refresh">Refresh</string>
     <string name="intake_date_time">Intake Date Time</string>
     <string name="early_morning">EARLY MORNING</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
 </resources>

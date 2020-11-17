@@ -13,21 +13,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/llMain"
-            android:layout_marginTop="@dimen/_5sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:gravity="center"
             android:background="@drawable/btn_activity4"
             android:weightSum="6">
             <ImageView
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginStart="@dimen/_45sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_55sdp"
                 android:tint="@color/black"
-                android:id="@+id/imgActivity"
+                android:id="@+id/imgTime"
                 android:src="@drawable/ic_input"/>
             <TextView
-                android:id="@+id/txtActivity"
+                android:id="@+id/txtTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

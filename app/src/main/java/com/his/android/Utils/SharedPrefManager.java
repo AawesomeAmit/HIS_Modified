@@ -22,6 +22,7 @@ import com.his.android.Model.UserDetail;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SharedPrefManager {
@@ -283,6 +284,36 @@ public class SharedPrefManager {
 
     public int getPmId() {
         return sharedprefs.getInt("pmid", 0);
+    }
+
+    public void setFoodTimeId(int timeID) {
+        this.editor = sharedprefs.edit();
+        editor.putInt("timeID", timeID);
+        editor.apply();
+    }
+
+    public int getFoodTimeId() {
+        return sharedprefs.getInt("timeID", 0);
+    }
+
+    public void setFoodTime(String time) {
+        this.editor = sharedprefs.edit();
+        editor.putString("foodTime", time);
+        editor.apply();
+    }
+
+    public String getFoodTime() {
+        return sharedprefs.getString("foodTime", null);
+    }
+
+    public void setFoodDate(String date) {
+        this.editor = sharedprefs.edit();
+        editor.putString("foodDate", date);
+        editor.apply();
+    }
+
+    public String getFoodDate() {
+        return sharedprefs.getString("foodDate", null);
     }
 
     public void setIpNo(String ipNo) {

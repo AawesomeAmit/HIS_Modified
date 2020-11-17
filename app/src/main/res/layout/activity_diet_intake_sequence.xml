@@ -5,42 +5,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/intake_bg"
     tools:context=".Activity.DietIntakeSequence">
 
-    <TextView
+    <ImageView
         android:id="@+id/textView42"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_60sdp"
+        app:srcCompat="@drawable/food_intake"
         android:gravity="center"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView42"
-        app:srcCompat="@drawable/bg_color" />
+        app:srcCompat="@drawable/food_image" />
 
     <TextView
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:background="@drawable/btn_intakeDate"
+        android:background="@drawable/btn_intake_date"
         android:text="11 Nov, 2020"
+        android:textSize="@dimen/_12ssp"
         android:paddingStart="@dimen/_5sdp"
         android:paddingEnd="@dimen/_5sdp"
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_5sdp"
         android:textColor="@color/white"
+        android:drawablePadding="@dimen/_3sdp"
         android:drawableEnd="@drawable/ic_date2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
@@ -52,9 +56,11 @@
         android:layout_marginStart="@dimen/_13sdp"
         android:layout_marginEnd="@dimen/_13sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        tools:listitem="@layout/inner_sequence_diet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDate"
+        app:layout_constraintVertical_bias="1.0"
+        tools:listitem="@layout/inner_sequence_diet" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/txtQue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:gravity="center"
+        android:padding="@dimen/_25sdp"
+        android:text="How much POHA was eaten out of 1 plate?"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView42"
+        app:srcCompat="@drawable/food_image" />
+
+    <LinearLayout
+        android:id="@+id/llPercentage"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:orientation="horizontal"
+        android:weightSum="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtQue">
+
+        <TextView
+            android:id="@+id/txt0"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_circle"
+            android:gravity="center"
+            android:text="@string/zero"
+            android:textColor="@color/blue_text"
+            android:textSize="@dimen/_15ssp" />
+
+        <TextView
+            android:id="@+id/txt25"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:text="@string/twenty_five"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:background="@drawable/btn_circle"
+            android:textColor="@color/blue_text"
+            android:textSize="@dimen/_15ssp"/>
+
+        <TextView
+            android:id="@+id/txt50"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:text="@string/fifty"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:background="@drawable/btn_circle"
+            android:textColor="@color/blue_text"
+            android:textSize="@dimen/_15ssp"/>
+
+        <TextView
+            android:id="@+id/txt75"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:text="@string/seventy_five"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:background="@drawable/btn_circle"
+            android:textColor="@color/blue_text"
+            android:textSize="@dimen/_15ssp"/>
+
+        <TextView
+            android:id="@+id/txt100"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:text="@string/hundred"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:background="@drawable/btn_circle"
+            android:textColor="@color/blue_text"
+            android:textSize="@dimen/_15ssp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_70sdp"
+        android:background="@drawable/btn_next"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="@string/back"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintEnd_toStartOf="@+id/txtNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llPercentage" />
+
+    <TextView
+        android:id="@+id/txtNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_70sdp"
+        android:background="@drawable/btn_next"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="@string/next"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtBack"
+        app:layout_constraintTop_toBottomOf="@+id/llPercentage" />
+</androidx.constraintlayout.widget.ConstraintLayout>

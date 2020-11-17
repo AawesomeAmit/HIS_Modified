@@ -2,6 +2,8 @@ package com.his.android.Utils;
 
 import com.his.android.Activity.UploadMultipleImg.TransferPatient.GetDepartmentRes;
 import com.his.android.Activity.UploadMultipleImg.Universalres;
+import com.his.android.Model.FoodTiming;
+import com.his.android.Model.IntakeFoodStep;
 import com.his.android.Model.PatientDetailRDA;
 import com.his.android.Model.VentilatorSettingResp;
 import com.his.android.Model.VitalChart;
@@ -57,6 +59,10 @@ public interface Api {
     Call<List<VitalList>> getVitalMaster(
             @Header("accessToken") String accessToken, @Header("userID") String userID);
 
+    @POST("PatientIntakeForm/GetFoodTimingList")
+    Call<List<FoodTiming>> getFoodTimingList(
+            @Header("accessToken") String accessToken, @Header("userID") String userID);
+
     @POST("DateWiseReports/InitDischargeDetailsList")
     Call<DischargeTypeResp> initDischargeDetailsList(@Header("accessToken") String accessToken, @Header("userID") String userID);
 
@@ -94,6 +100,10 @@ public interface Api {
     @FormUrlEncoded
     @POST("PatientPhysicalActivity/GetProblemAttribute")
     Call<ProbAttribResp> getProblemAttribute(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("problemID") Integer problemID);
+
+    @FormUrlEncoded
+    @POST("PatientIntakeForm/GetFoodListByTimeID")
+    Call<List<IntakeFoodStep>> getFoodListByTimeID(@Header("accessToken") String accessToken, @Header("userID") String userID, @Field("PID") Integer PID, @Field("intakeTimeID") Integer intakeTimeID, @Field("intakeDate") String intakeDate);
 
     @FormUrlEncoded
     @POST("Radiology/GetAngioReportList")

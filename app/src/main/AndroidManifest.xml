@@ -47,7 +47,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.DietIntakeSequence"></activity>
+        <activity android:name=".Activity.FoodIntakeStep3"/>
+        <activity android:name=".Activity.FoodIntakeStep2" />
+        <activity android:name=".Activity.FoodIntakeStep1" />
+        <activity android:name=".Activity.DietIntakeSequence" />
         <activity android:name=".Activity.PersonalDashboard" />
         <activity android:name=".Activity.AssignO2" />
         <activity android:name=".Activity.ChatTitle" />
