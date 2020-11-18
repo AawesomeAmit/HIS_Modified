@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,21 +38,28 @@ import retrofit2.Response;
 
 public class FoodIntakeStep2 extends BaseActivity {
     RecyclerView rvFood;
+    LinearLayoutManager linearLayoutManager;
     List<IntakeFoodStep>  intakeFoodList=new ArrayList<>();
     LinearLayoutManager linearLayoutManagerData = new LinearLayoutManager(mActivity);
     int mCurX = 0;
+    int mFirst=0, mLast=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_intake_step2);
         rvFood = findViewById(R.id.rvFood);
-        /*LinearLayoutManager linearLayoutManager = new  LinearLayoutManager(mActivity);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        rvFood.setLayoutManager(linearLayoutManager);*/
-        rvFood.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
-        rvFood.removeOnScrollListener(masterOnScrollListener);
-        rvFood.scrollToPosition(0);
-        rvFood.scrollBy(mCurX, 0);
+        linearLayoutManager = new  LinearLayoutManager(mActivity, RecyclerView.HORIZONTAL, false);
+        linearLayoutManager = new LinearLayoutManager(mActivity) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+            @Override
+            public boolean canScrollHorizontally() {
+                return false;
+            }
+        };
+        rvFood.setLayoutManager(linearLayoutManager);
         bind();
     }
 
@@ -87,17 +95,22 @@ public class FoodIntakeStep2 extends BaseActivity {
         @Override
         public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             @SuppressLint("InflateParams") View view = LayoutInflater.from(mActivity).inflate(R.layout.inner_food_intake_step2, null);
-            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             view.setLayoutParams(lp);
             return new RecyclerViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
-            holder.txtQue.setText("How much " +intakeFoodList.get(i).getFoodName()+" was eaten out of "+intakeFoodList.get(i).getFoodQuantity()+" "+intakeFoodList.get(i).getUnit());
+            holder.txtQue.setText("How much " +intakeFoodList.get(i).getFoodName()+" was eaten out of "+intakeFoodList.get(i).getFoodQuantity()+" "+intakeFoodList.get(i).getUnit()+"?");
             holder.txt0.setOnClickListener(view -> {
                 intakeFoodList.get(i).setPercent(0);
                 holder.txt0.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
+                holder.txt0.setTextColor(Color.WHITE);
+                holder.txt25.setTextColor(Color.parseColor("#10207A"));
+                holder.txt50.setTextColor(Color.parseColor("#10207A"));
+                holder.txt75.setTextColor(Color.parseColor("#10207A"));
+                holder.txt100.setTextColor(Color.parseColor("#10207A"));
                 holder.txt25.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt50.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt75.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
@@ -106,6 +119,11 @@ public class FoodIntakeStep2 extends BaseActivity {
             holder.txt25.setOnClickListener(view -> {
                 intakeFoodList.get(i).setPercent(25);
                 holder.txt25.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
+                holder.txt25.setTextColor(Color.WHITE);
+                holder.txt0.setTextColor(Color.parseColor("#10207A"));
+                holder.txt50.setTextColor(Color.parseColor("#10207A"));
+                holder.txt75.setTextColor(Color.parseColor("#10207A"));
+                holder.txt100.setTextColor(Color.parseColor("#10207A"));
                 holder.txt0.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt50.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt75.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
@@ -114,6 +132,11 @@ public class FoodIntakeStep2 extends BaseActivity {
             holder.txt50.setOnClickListener(view -> {
                 intakeFoodList.get(i).setPercent(50);
                 holder.txt50.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
+                holder.txt50.setTextColor(Color.WHITE);
+                holder.txt25.setTextColor(Color.parseColor("#10207A"));
+                holder.txt0.setTextColor(Color.parseColor("#10207A"));
+                holder.txt75.setTextColor(Color.parseColor("#10207A"));
+                holder.txt100.setTextColor(Color.parseColor("#10207A"));
                 holder.txt25.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt0.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt75.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
@@ -122,6 +145,11 @@ public class FoodIntakeStep2 extends BaseActivity {
             holder.txt75.setOnClickListener(view -> {
                 intakeFoodList.get(i).setPercent(75);
                 holder.txt75.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
+                holder.txt75.setTextColor(Color.WHITE);
+                holder.txt25.setTextColor(Color.parseColor("#10207A"));
+                holder.txt50.setTextColor(Color.parseColor("#10207A"));
+                holder.txt0.setTextColor(Color.parseColor("#10207A"));
+                holder.txt100.setTextColor(Color.parseColor("#10207A"));
                 holder.txt25.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt50.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt0.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
@@ -130,11 +158,23 @@ public class FoodIntakeStep2 extends BaseActivity {
             holder.txt100.setOnClickListener(view -> {
                 intakeFoodList.get(i).setPercent(100);
                 holder.txt100.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
+                holder.txt100.setTextColor(Color.WHITE);
+                holder.txt25.setTextColor(Color.parseColor("#10207A"));
+                holder.txt50.setTextColor(Color.parseColor("#10207A"));
+                holder.txt75.setTextColor(Color.parseColor("#10207A"));
+                holder.txt0.setTextColor(Color.parseColor("#10207A"));
                 holder.txt25.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt50.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt75.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
                 holder.txt0.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
             });
+
+            holder.txtNext.setOnClickListener(v -> {
+                rvFood.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition() + 1);
+                if(intakeFoodList.size()-1==1)
+            });
+
+            holder.txtBack.setOnClickListener(v -> rvFood.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition() - 1));
         }
 
         @Override
@@ -157,54 +197,4 @@ public class FoodIntakeStep2 extends BaseActivity {
             }
         }
     }
-
-    private RecyclerView.OnScrollListener  masterOnScrollListener = new RecyclerView.OnScrollListener() {
-        RecyclerView masterRecyclerView = null;
-
-        @Override
-        public void onScrollStateChanged(final RecyclerView recyclerView, final int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            switch (newState) {
-                case RecyclerView.SCROLL_STATE_IDLE:
-                    if (masterRecyclerView != null) {
-                        masterRecyclerView = null;
-                        final int firstVisibleItemPosition = linearLayoutManagerData.findFirstVisibleItemPosition();
-                        final int lastVisibleItemPosition = linearLayoutManagerData.findLastVisibleItemPosition();
-                        /*for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; ++i) {
-                            RecyclerView horizontalRecyclerView = rvFood.findViewHolderForAdapterPosition(i).itemView;
-                            if (horizontalRecyclerView != recyclerView)
-                                horizontalRecyclerView.addOnScrollListener(this);
-                        }*/
-                    }
-                    break;
-                case RecyclerView.SCROLL_STATE_SETTLING:
-                    //TODO fix out-of-sync scrolling issues, probably here
-                case RecyclerView.SCROLL_STATE_DRAGGING:
-                    if (masterRecyclerView == null) {
-                        masterRecyclerView = recyclerView;
-                        final int firstVisibleItemPosition = linearLayoutManagerData.findFirstVisibleItemPosition();
-                        final int lastVisibleItemPosition = linearLayoutManagerData.findLastVisibleItemPosition();
-                        /*for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; ++i) {
-                            RecyclerView horizontalRecyclerView = rvFood.findViewHolderForAdapterPosition(i).itemView;
-                            if (horizontalRecyclerView != recyclerView)
-                                horizontalRecyclerView.removeOnScrollListener(this);
-                        }*/
-                    }
-                    break;
-            }
-        }
-
-        @Override
-        public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            mCurX += dx;
-            final int firstVisibleItemPosition = linearLayoutManagerData.findFirstVisibleItemPosition();
-            final int lastVisibleItemPosition = linearLayoutManagerData.findLastVisibleItemPosition();
-            /*for (int i = firstVisibleItemPosition; i <= lastVisibleItemPosition; ++i) {
-                RecyclerView horizontalRecyclerView = rvFood.findViewHolderForAdapterPosition(i).itemView;
-                if (horizontalRecyclerView != recyclerView)
-                    horizontalRecyclerView.scrollBy(dx, dy);
-            }*/
-        }
-    };
 }

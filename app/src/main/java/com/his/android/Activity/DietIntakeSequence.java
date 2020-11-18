@@ -59,6 +59,7 @@ public class DietIntakeSequence extends BaseActivity {
         foodTimingList=new ArrayList<>();
         SharedPrefManager.getInstance(mActivity).setPid(2154772);
         txtDate.setText(Utils.formatDate(mYear + "/" + (mMonth + 1) + "/" + mDay));
+        SharedPrefManager.getInstance(mActivity).setFoodDate(mYear + "-" + (mMonth + 1) + "-" + mDay);
         txtDate.setOnClickListener(view -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(mActivity, R.style.DialogTheme,
                     (view1, year, monthOfYear, dayOfMonth) -> {
@@ -69,7 +70,7 @@ public class DietIntakeSequence extends BaseActivity {
                         today.setMonth(monthOfYear);
                         today.setYear(year - 1900);
                         txtDate.setText(Utils.formatDate(mYear + "/" + (mMonth + 1) + "/" + mDay));
-                        SharedPrefManager.getInstance(mActivity).setFoodDate(Utils.formatDate(mYear + "/" + (mMonth + 1) + "/" + mDay));
+                        SharedPrefManager.getInstance(mActivity).setFoodDate(mYear + "-" + (mMonth + 1) + "-" + mDay);
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
             datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
