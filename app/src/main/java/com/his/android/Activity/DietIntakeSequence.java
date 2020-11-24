@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,7 +58,7 @@ public class DietIntakeSequence extends BaseActivity {
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
         foodTimingList=new ArrayList<>();
-        SharedPrefManager.getInstance(mActivity).setPid(2154772);
+//        SharedPrefManager.getInstance(mActivity).setPid(2154772);
         txtDate.setText(Utils.formatDate(mYear + "/" + (mMonth + 1) + "/" + mDay));
         SharedPrefManager.getInstance(mActivity).setFoodDate(mYear + "-" + (mMonth + 1) + "-" + mDay);
         txtDate.setOnClickListener(view -> {
@@ -151,5 +152,11 @@ public class DietIntakeSequence extends BaseActivity {
                 llMain =itemView.findViewById(R.id.llMain);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(mActivity, ScanSelector.class));
     }
 }

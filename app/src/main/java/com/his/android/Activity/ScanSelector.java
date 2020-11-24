@@ -47,7 +47,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ScanSelector extends BaseActivity {
-    TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload,
+    TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload, txtUpdateIntake,
             tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote,txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator;
     Intent intent;
     Spinner popupspnDepartment,popUpspnConsultant,popUpspnWard, spnBed;
@@ -77,6 +77,7 @@ public class ScanSelector extends BaseActivity {
         txtVentilator = findViewById(R.id.txtVentilator);
         txtChecklist = findViewById(R.id.txtChecklist);
         txtUpdateVitals = findViewById(R.id.txtUpdateVitals);
+        txtUpdateIntake = findViewById(R.id.txtUpdateIntake);
         //txtTransferOut = findViewById(R.id.txtTransferOut);
         txtDischarge = findViewById(R.id.txtDischarge);
         txtProgressNote = findViewById(R.id.txtProgressNote);
@@ -84,7 +85,7 @@ public class ScanSelector extends BaseActivity {
         txtIntake = findViewById(R.id.txtIntake);
         tvPID.setText(String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
         tvPtName.setText(SharedPrefManager.getInstance(mActivity).getPtName());
-        intent = new Intent(ScanSelector.this, Dashboard.class);
+        intent = new Intent(mActivity, Dashboard.class);
         txtPrescription.setOnClickListener(view -> {
             intent.putExtra("status1", "0");
             startActivity(intent);
@@ -112,9 +113,10 @@ public class ScanSelector extends BaseActivity {
             startActivity(intent);
         });
         txtScanIntake.setOnClickListener(view -> startActivity(new Intent(mActivity, MealScanner.class)));
-        txtUpload.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, UploadImg.class)));
-        txtUpdateVital.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, UpdateVital.class)));
-        txtProgressNote.setOnClickListener(view -> startActivity(new Intent(ScanSelector.this, ProgressNoteScan.class)));
+        txtUpload.setOnClickListener(view -> startActivity(new Intent(mActivity, UploadImg.class)));
+        txtUpdateVital.setOnClickListener(view -> startActivity(new Intent(mActivity, UpdateVital.class)));
+        txtProgressNote.setOnClickListener(view -> startActivity(new Intent(mActivity, ProgressNoteScan.class)));
+        txtUpdateIntake.setOnClickListener(view -> startActivity(new Intent(mActivity, DietIntakeSequence.class)));
         if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 1) {
             txtProgressNote.setVisibility(View.VISIBLE);
             txtPrescription.setVisibility(View.VISIBLE);
@@ -836,6 +838,6 @@ public class ScanSelector extends BaseActivity {
         super.onBackPressed();
         moveTaskToBack(true);
         finish();
-        startActivity(new Intent(ScanSelector.this, PreDashboard.class));
+        startActivity(new Intent(mActivity, PreDashboard.class));
     }
 }

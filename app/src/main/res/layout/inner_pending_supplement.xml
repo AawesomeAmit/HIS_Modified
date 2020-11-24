@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white_transparency"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/_2sdp">
+
+        <TextView
+            android:id="@+id/supplement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/supplement"
+            android:gravity="center"
+            android:textColor="@color/grey_heading"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toStartOf="@+id/prescribedQty"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/prescribedQty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/prescribed_quantity"
+            android:textColor="@color/grey_heading"
+            android:textSize="@dimen/_12ssp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/supplement"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtSupplement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="Supp Curcumin"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/supplement"
+            app:layout_constraintStart_toStartOf="@+id/supplement"
+            app:layout_constraintTop_toBottomOf="@+id/supplement" />
+
+        <TextView
+            android:id="@+id/txtQty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="1.8 gm"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/prescribedQty"
+            app:layout_constraintStart_toStartOf="@+id/prescribedQty"
+            app:layout_constraintTop_toBottomOf="@+id/prescribedQty" />
+
+        <TextView
+            android:id="@+id/textView49"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/prescribed_time"
+            android:textColor="@color/grey_heading"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/supplement"
+            app:layout_constraintStart_toStartOf="@+id/supplement"
+            app:layout_constraintTop_toBottomOf="@+id/txtSupplement" />
+
+        <TextView
+            android:id="@+id/textView50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/given_time"
+            android:textColor="@color/grey_heading"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/txtQty"
+            app:layout_constraintStart_toStartOf="@+id/prescribedQty"
+            app:layout_constraintTop_toBottomOf="@+id/txtQty" />
+
+        <TextView
+            android:id="@+id/txtPrescribedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/edt_black_bor"
+            android:padding="@dimen/_5sdp"
+            android:text="08:00 PM"
+            android:textColor="@color/blue_text"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/textView49"
+            app:layout_constraintStart_toStartOf="@+id/textView49"
+            app:layout_constraintTop_toBottomOf="@+id/textView49" />
+
+        <TextView
+            android:id="@+id/txtGivenTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/edt_black_bor"
+            android:padding="@dimen/_5sdp"
+            android:text="08:00 PM"
+            android:textColor="@color/deficiencyRed"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="@+id/textView50"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView50"
+            app:layout_constraintTop_toBottomOf="@+id/textView50" />
+
+        <ImageView
+            android:id="@+id/imgYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/txtGivenTime"
+            app:layout_constraintEnd_toStartOf="@+id/imgNo"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/txtGivenTime"
+            app:layout_constraintTop_toTopOf="@+id/txtGivenTime"
+            app:srcCompat="@drawable/ic_check" />
+
+        <ImageView
+            android:id="@+id/imgNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/imgYes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imgYes"
+            app:layout_constraintTop_toTopOf="@+id/imgYes"
+            app:srcCompat="@drawable/ic_close" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

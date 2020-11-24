@@ -1,5 +1,6 @@
 package com.his.android.Utils;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -31,7 +33,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
     public void showNotification(String title, String message, String tag) {
         Intent intent;
-        if(title.equalsIgnoreCase("Reply Chat Message") || title.equalsIgnoreCase("New Chat Message")){
+        if(title.equalsIgnoreCase(getString(R.string.reply_chat_msg)) || title.equalsIgnoreCase(getString(R.string.new_chat_msg))){
             intent=new Intent(getApplicationContext(), ChatActivity.class);
             intent.putExtra("pid", tag.split("-")[1]);
             intent.putExtra("chatId", tag.split("-")[0]);
@@ -40,7 +42,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent = new Intent(getApplicationContext(), NotificationDetail.class);
             intent.putExtra("nType", tag.split("-")[0]);
             intent.putExtra("title", title);
-            intent.putExtra("nId", tag.split("-")[1]);
+            intent.putExtra(" nId", tag.split("-")[1]);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 99, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -52,11 +54,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setStyle(new NotificationCompat.BigTextStyle())
                 .setWhen(System.currentTimeMillis())
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setVibrate(new long[] { 1000, 1000})
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.logo)
                 .setNumber(3)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setAutoCancel(false);
+                .setAutoCancel(true);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);

@@ -453,4 +453,14 @@
     <string name="early_morning">EARLY MORNING</string>
     <string name="next">Next</string>
     <string name="finish">Finish</string>
+    <string name="reply_chat_msg">Reply Chat Message</string>
+    <string name="new_chat_msg">New Chat Message</string>
+    <string name="update_given_diet">Update Given Diet</string>
+    <string name="intake_diet">Intake Diet</string>
+    <string name="view_previous_supp">View Previous Supplement</string>
+    <string name="pending_supplement">Pending Supplement</string>
+    <string name="upcoming_supplement">Upcoming Supplement</string>
+    <string name="prescribed_qty">Prescribed Qty</string>
+    <string name="prescribed_time">Prescribed Time</string>
+    <string name="prescribed_quantity">Prescribed Quantity</string>
 </resources>

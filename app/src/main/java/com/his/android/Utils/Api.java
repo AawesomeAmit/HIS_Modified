@@ -74,6 +74,10 @@ public interface Api {
     Call<FoodDetailResp> getIntakeFoodData(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
 
     @FormUrlEncoded
+    @POST("PatientIntakeForm/GetSupplementList")
+    Call<UpdateSupplementResp> getSupplementList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID);
+
+    @FormUrlEncoded
     @POST("PatientMonitor/GetIntakeData")
     Call<List<IntakeData>> getIntakeData(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID, @Field("fromDateTime") String fromDateTime, @Field("toDateTime") String toDateTime, @Field("subDeptID") Integer subDeptID, @Field("userID") Integer userID);
 

@@ -97,7 +97,7 @@
 
     <TextView
         android:id="@+id/txtBack"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_80sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_70sdp"
         android:background="@drawable/btn_next"
@@ -105,16 +105,18 @@
         android:paddingTop="@dimen/_5sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingBottom="@dimen/_5sdp"
+        android:drawableStart="@drawable/ic_back"
         android:text="@string/back"
+        android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_15ssp"
         app:layout_constraintEnd_toStartOf="@+id/txtNext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/llPercentage" />
 
     <TextView
         android:id="@+id/txtNext"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_80sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_70sdp"
         android:background="@drawable/btn_next"
@@ -122,9 +124,11 @@
         android:paddingTop="@dimen/_5sdp"
         android:paddingEnd="@dimen/_10sdp"
         android:paddingBottom="@dimen/_5sdp"
+        android:drawableEnd="@drawable/ic_next"
         android:text="@string/next"
+        android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_15ssp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtBack"
         app:layout_constraintTop_toBottomOf="@+id/llPercentage" />

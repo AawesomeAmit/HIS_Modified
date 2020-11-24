@@ -274,8 +274,7 @@ public class PreDashboard extends AppCompatActivity {
                 try {
                     SharedPrefManager.getInstance(PreDashboard.this).setHeadID(headAssigns.get(position).getHeadID(), headAssigns.get(position).getHeadName(), headAssigns.get(position).getColor());
                     if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 38)
-//                        startActivity(new Intent(PreDashboard.this, PersonalDashboard.class));
-                        startActivity(new Intent(PreDashboard.this, DietIntakeSequence.class));
+                        startActivity(new Intent(PreDashboard.this, PersonalDashboard.class));
                     else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 31)
                         startActivity(new Intent(PreDashboard.this, CasualtyRegistration.class));
                     //startActivity(intent);

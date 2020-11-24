@@ -42,6 +42,9 @@ public class AssignO2 extends BaseActivity {
         btnAssign.setOnClickListener(view -> {
             
         });
+        btnRemoveO2.setOnClickListener(view -> {
+
+        });
         bindSupport();
     }
     private void bindSupport(){

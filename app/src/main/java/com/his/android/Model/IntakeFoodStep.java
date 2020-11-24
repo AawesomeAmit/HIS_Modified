@@ -16,13 +16,13 @@ public class IntakeFoodStep {
     @SerializedName("unit")
     @Expose
     public String unit;
-    public int percent;
+    public String percent;
 
-    public int getPercent() {
+    public String getPercent() {
         return percent;
     }
 
-    public void setPercent(int percent) {
+    public void setPercent(String percent) {
         this.percent = percent;
     }
 

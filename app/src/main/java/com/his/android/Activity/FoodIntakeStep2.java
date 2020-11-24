@@ -28,10 +28,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -72,7 +74,12 @@ public class FoodIntakeStep2 extends BaseActivity {
                 public void onResponse(Call<List<IntakeFoodStep>> call, Response<List<IntakeFoodStep>> response) {
                     if(response.isSuccessful()){
                         intakeFoodList=response.body();
+                        if(intakeFoodList.size()>0)
                         rvFood.setAdapter(new FoodAdp(intakeFoodList));
+                        else {
+                            Toast.makeText(mActivity, "No food has been prescribed for the selected slot!", Toast.LENGTH_LONG).show();
+                            onBackPressed();
+                        }
                     }
                     Utils.hideDialog();
                 }
@@ -104,7 +111,7 @@ public class FoodIntakeStep2 extends BaseActivity {
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
             holder.txtQue.setText("How much " +intakeFoodList.get(i).getFoodName()+" was eaten out of "+intakeFoodList.get(i).getFoodQuantity()+" "+intakeFoodList.get(i).getUnit()+"?");
             holder.txt0.setOnClickListener(view -> {
-                intakeFoodList.get(i).setPercent(0);
+                intakeFoodList.get(i).setPercent("0");
                 holder.txt0.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
                 holder.txt0.setTextColor(Color.WHITE);
                 holder.txt25.setTextColor(Color.parseColor("#10207A"));
@@ -117,7 +124,7 @@ public class FoodIntakeStep2 extends BaseActivity {
                 holder.txt100.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
             });
             holder.txt25.setOnClickListener(view -> {
-                intakeFoodList.get(i).setPercent(25);
+                intakeFoodList.get(i).setPercent("25");
                 holder.txt25.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
                 holder.txt25.setTextColor(Color.WHITE);
                 holder.txt0.setTextColor(Color.parseColor("#10207A"));
@@ -130,7 +137,7 @@ public class FoodIntakeStep2 extends BaseActivity {
                 holder.txt100.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
             });
             holder.txt50.setOnClickListener(view -> {
-                intakeFoodList.get(i).setPercent(50);
+                intakeFoodList.get(i).setPercent("50");
                 holder.txt50.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
                 holder.txt50.setTextColor(Color.WHITE);
                 holder.txt25.setTextColor(Color.parseColor("#10207A"));
@@ -143,7 +150,7 @@ public class FoodIntakeStep2 extends BaseActivity {
                 holder.txt100.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
             });
             holder.txt75.setOnClickListener(view -> {
-                intakeFoodList.get(i).setPercent(75);
+                intakeFoodList.get(i).setPercent("75");
                 holder.txt75.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
                 holder.txt75.setTextColor(Color.WHITE);
                 holder.txt25.setTextColor(Color.parseColor("#10207A"));
@@ -156,7 +163,7 @@ public class FoodIntakeStep2 extends BaseActivity {
                 holder.txt100.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle));
             });
             holder.txt100.setOnClickListener(view -> {
-                intakeFoodList.get(i).setPercent(100);
+                intakeFoodList.get(i).setPercent("100");
                 holder.txt100.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.btn_circle_blue));
                 holder.txt100.setTextColor(Color.WHITE);
                 holder.txt25.setTextColor(Color.parseColor("#10207A"));
@@ -170,11 +177,21 @@ public class FoodIntakeStep2 extends BaseActivity {
             });
 
             holder.txtNext.setOnClickListener(v -> {
-                rvFood.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition() + 1);
-                if(intakeFoodList.size()-1==1)
+                if(intakeFoodList.size()-2==i) holder.txtNext.setText(R.string.finish);
+                else holder.txtNext.setText(R.string.next);
+                if(intakeFoodList.get(i).getPercent()==null) Toast.makeText(mActivity, "Please select the quantity percentage of the diet!", Toast.LENGTH_LONG).show();
+                else {
+                    giveDiet(intakeFoodList.get(i).getDietID(), SharedPrefManager.getInstance(mActivity).getFoodDate(), SharedPrefManager.getInstance(mActivity).getFoodTime(), 0, intakeFoodList.get(i).getPercent());
+                    rvFood.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition() + 1);
+                }
             });
 
-            holder.txtBack.setOnClickListener(v -> rvFood.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition() - 1));
+            holder.txtBack.setOnClickListener(v -> {
+                if(intakeFoodList.size()-1==i) holder.txtNext.setText(R.string.finish);
+                else holder.txtNext.setText(R.string.next);
+                if(i==0) onBackPressed();
+                else rvFood.getLayoutManager().scrollToPosition(linearLayoutManager.findLastVisibleItemPosition() - 1);
+            });
         }
 
         @Override
@@ -196,5 +213,30 @@ public class FoodIntakeStep2 extends BaseActivity {
                 txt100=itemView.findViewById(R.id.txt100);
             }
         }
+    }
+
+    private void giveDiet(int dietID, String dietDate, String dietTime, int isSupplement, String consumptionPercentage) {
+        Utils.showRequestDialog1(mActivity);
+        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().UpdateIntakeConsumption(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()), dietID, dietDate, dietTime, isSupplement, consumptionPercentage);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(mActivity, "Submitted Successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        Toast.makeText(mActivity, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utils.hideDialog();
+            }
+        });
     }
 }

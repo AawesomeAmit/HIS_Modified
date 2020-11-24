@@ -22,7 +22,7 @@ public class FoodIntakeStep1 extends BaseActivity implements OnClickListener {
     Date today;
     Calendar c;
     int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
-    SimpleDateFormat format;
+    SimpleDateFormat format, format1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +42,8 @@ public class FoodIntakeStep1 extends BaseActivity implements OnClickListener {
         mDay = c.get(Calendar.DAY_OF_MONTH);
         format = new SimpleDateFormat("hh:mm a");
         txtTime.setText(format.format(today));
+        format1 = new SimpleDateFormat("HH:mm");
+        SharedPrefManager.getInstance(mActivity).setFoodTime(format1.format(today));
     }
 
     @Override
@@ -57,7 +59,7 @@ public class FoodIntakeStep1 extends BaseActivity implements OnClickListener {
                 today.setHours(mHour);
                 today.setMinutes(mMinute);
                 txtTime.setText(format.format(today));
-                SharedPrefManager.getInstance(mActivity).setFoodTime(format.format(today));
+                SharedPrefManager.getInstance(mActivity).setFoodTime(format1.format(today));
             }, mHour, mMinute, false);
             timePickerDialog.updateTime(today.getHours(), today.getMinutes());
             timePickerDialog.show();
