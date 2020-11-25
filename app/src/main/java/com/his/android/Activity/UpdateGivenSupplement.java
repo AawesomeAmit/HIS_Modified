@@ -38,8 +38,8 @@ public class UpdateGivenSupplement extends BaseActivity {
     }
 
     private void bind() {
-        Utils.showRequestDialog(context);
-        Call<UpdateSupplementResp> call = RetrofitClient.getInstance().getApi().getIntakeFoodData(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid());
+        Utils.showRequestDialog(mActivity);
+        Call<UpdateSupplementResp> call = RetrofitClient.getInstance().getApi().getIntakeFoodData(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid());
         call.enqueue(new Callback<UpdateSupplementResp>() {
             @Override
             public void onResponse(Call<UpdateSupplementResp> call, Response<UpdateSupplementResp> response) {
