@@ -117,6 +117,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_2sdp"
                     android:background="@color/white_transparency"
                     tools:listitem="@layout/inner_pending_supplement" />
             </LinearLayout>
@@ -168,6 +170,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_2sdp"
                     android:background="@color/white_transparency"
                     tools:listitem="@layout/inner_upcoming_supplement" />
             </LinearLayout>

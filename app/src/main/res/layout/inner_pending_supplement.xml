@@ -32,10 +32,10 @@
             android:id="@+id/prescribedQty"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/prescribed_quantity"
+            android:gravity="center"
+            android:text="@string/prescribed_qty"
             android:textColor="@color/grey_heading"
             android:textSize="@dimen/_12ssp"
-            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/supplement"
@@ -43,13 +43,14 @@
 
         <TextView
             android:id="@+id/txtSupplement"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:text="Supp Curcumin"
+            android:gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toEndOf="@+id/supplement"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/supplement"
             app:layout_constraintTop_toBottomOf="@+id/supplement" />
 
@@ -62,7 +63,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="@+id/prescribedQty"
-            app:layout_constraintStart_toStartOf="@+id/prescribedQty"
+            app:layout_constraintStart_toEndOf="@+id/supplement"
             app:layout_constraintTop_toBottomOf="@+id/prescribedQty" />
 
         <TextView
@@ -81,13 +82,14 @@
             android:id="@+id/textView50"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/given_time"
             android:textColor="@color/grey_heading"
             android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toEndOf="@+id/txtQty"
+            app:layout_constraintBottom_toBottomOf="@+id/textView49"
+            app:layout_constraintEnd_toStartOf="@+id/imgYes"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/prescribedQty"
-            app:layout_constraintTop_toBottomOf="@+id/txtQty" />
+            app:layout_constraintTop_toTopOf="@+id/textView49" />
 
         <TextView
             android:id="@+id/txtPrescribedTime"
@@ -122,10 +124,9 @@
             android:id="@+id/imgYes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4sdp"
             app:layout_constraintBottom_toBottomOf="@+id/txtGivenTime"
             app:layout_constraintEnd_toStartOf="@+id/imgNo"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/txtGivenTime"
             app:layout_constraintTop_toTopOf="@+id/txtGivenTime"
             app:srcCompat="@drawable/ic_check" />
 
@@ -133,11 +134,17 @@
             android:id="@+id/imgNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4sdp"
             app:layout_constraintBottom_toBottomOf="@+id/imgYes"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imgYes"
             app:layout_constraintTop_toTopOf="@+id/imgYes"
             app:srcCompat="@drawable/ic_close" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

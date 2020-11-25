@@ -47,7 +47,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ScanSelector extends BaseActivity {
-    TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload, txtUpdateIntake,
+    TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload, txtUpdateIntake,txtUpdateMedicine, txtUpdateSupplement,
             tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote,txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator;
     Intent intent;
     Spinner popupspnDepartment,popUpspnConsultant,popUpspnWard, spnBed;
@@ -75,6 +75,8 @@ public class ScanSelector extends BaseActivity {
         tvPID = findViewById(R.id.tvPID);
         txtO2 = findViewById(R.id.txtO2);
         txtVentilator = findViewById(R.id.txtVentilator);
+        txtUpdateMedicine = findViewById(R.id.txtUpdateMedicine);
+        txtUpdateSupplement = findViewById(R.id.txtUpdateSupplement);
         txtChecklist = findViewById(R.id.txtChecklist);
         txtUpdateVitals = findViewById(R.id.txtUpdateVitals);
         txtUpdateIntake = findViewById(R.id.txtUpdateIntake);
@@ -117,6 +119,7 @@ public class ScanSelector extends BaseActivity {
         txtUpdateVital.setOnClickListener(view -> startActivity(new Intent(mActivity, UpdateVital.class)));
         txtProgressNote.setOnClickListener(view -> startActivity(new Intent(mActivity, ProgressNoteScan.class)));
         txtUpdateIntake.setOnClickListener(view -> startActivity(new Intent(mActivity, DietIntakeSequence.class)));
+        txtUpdateSupplement.setOnClickListener(view -> startActivity(new Intent(mActivity, UpdateGivenSupplement.class)));
         if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 1) {
             txtProgressNote.setVisibility(View.VISIBLE);
             txtPrescription.setVisibility(View.VISIBLE);

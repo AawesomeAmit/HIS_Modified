@@ -75,7 +75,7 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("PatientIntakeForm/GetSupplementList")
-    Call<UpdateSupplementResp> getSupplementList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID);
+    Call<List<UpdateSupplementResp>> getSupplementList(@Header("accessToken") String accessToken, @Header("userID") String userID1, @Field("PID") Integer PID);
 
     @FormUrlEncoded
     @POST("PatientMonitor/GetIntakeData")
