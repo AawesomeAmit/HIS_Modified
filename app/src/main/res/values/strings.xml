@@ -462,7 +462,10 @@
     <string name="upcoming_supplement">Upcoming Supplement</string>
     <string name="prescribed_qty">Prescribed Qty</string>
     <string name="prescribed_time">Prescribed Time</string>
+    <string name="advised_time">Advised Time</string>
     <string name="prescribed_quantity">Prescribed Quantity</string>
     <string name="update_supplement">Update Supplement</string>
     <string name="update_medicine">Update Medicine</string>
+    <string name="given_date_time">Given Date Time</string>
+    <string name="previous_supplement">Previous Supplement</string>
 </resources>

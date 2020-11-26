@@ -59,15 +59,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textView45"
+            <ImageView
+                android:id="@+id/imgPrev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawableStart="@drawable/ic_previous"
-                android:drawablePadding="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/txtShowPrev"
+                app:layout_constraintEnd_toStartOf="@+id/txtShowPrev"
+                app:layout_constraintTop_toTopOf="@+id/txtShowPrev"
+                app:srcCompat="@drawable/ic_previous" />
+
+            <ImageView
+                android:id="@+id/imgPending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:rotation="90"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/txtShowPrev"
+                app:layout_constraintEnd_toStartOf="@+id/txtShowPrev"
+                app:layout_constraintTop_toTopOf="@+id/txtShowPrev"
+                app:srcCompat="@drawable/ic_arrow_down_black" />
+            <TextView
+                android:id="@+id/txtShowPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/view_previous_supp"
                 android:textColor="@color/black"
+                android:layout_marginStart="@dimen/_2sdp"
                 android:textSize="@dimen/_16ssp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,17 +99,56 @@
                 android:id="@+id/view26"
                 android:layout_width="wrap_content"
                 android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:background="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView45" />
+                app:layout_constraintTop_toBottomOf="@+id/txtShowPrev" />
 
+            <LinearLayout
+                android:id="@+id/llPrevious"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view26">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/previous_supplement"
+                    android:textSize="@dimen/_13ssp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingEnd="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:background="@drawable/btn_activity5"
+                    android:textColor="@color/white"
+                    android:drawableStart="@drawable/ic_pending"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPreviousSupp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_2sdp"
+                    android:background="@color/white_transparency"
+                    tools:listitem="@layout/inner_upcoming_supplement" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/llPending"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="vertical"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/guideline4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -122,13 +181,14 @@
                     android:background="@color/white_transparency"
                     tools:listitem="@layout/inner_pending_supplement" />
             </LinearLayout>
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/blue_text"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
+                app:layout_constraintGuide_percent="0.65" />
 
             <LinearLayout
                 android:id="@+id/llUpcoming"
@@ -138,7 +198,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llPending">
+                app:layout_constraintTop_toBottomOf="@+id/guideline4">
 
                 <View
                     android:id="@+id/view26"

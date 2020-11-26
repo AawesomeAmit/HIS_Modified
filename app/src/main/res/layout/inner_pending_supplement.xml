@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:cardBackgroundColor="@color/white_transparency"
     app:cardUseCompatPadding="true">
 
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:text="@string/supplement"
             android:gravity="center"
+            android:visibility="gone"
             android:textColor="@color/grey_heading"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toStartOf="@+id/prescribedQty"
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/prescribed_qty"
+            android:visibility="gone"
             android:textColor="@color/grey_heading"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,50 +47,49 @@
             android:id="@+id/txtSupplement"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:text="Supp Curcumin"
+            android:layout_marginTop="@dimen/_1sdp"
             android:gravity="center"
+            android:text="Supp Curcumin"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/supplement"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/supplement" />
 
         <TextView
             android:id="@+id/txtQty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/_1sdp"
             android:text="1.8 gm"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toEndOf="@+id/prescribedQty"
-            app:layout_constraintStart_toEndOf="@+id/supplement"
+            app:layout_constraintStart_toEndOf="@+id/txtSupplement"
             app:layout_constraintTop_toBottomOf="@+id/prescribedQty" />
 
         <TextView
             android:id="@+id/textView49"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="@string/prescribed_time"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:text="@string/advised_time"
             android:textColor="@color/grey_heading"
             android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toEndOf="@+id/supplement"
-            app:layout_constraintStart_toStartOf="@+id/supplement"
+            app:layout_constraintEnd_toStartOf="@+id/txtGivenDate"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtSupplement" />
 
         <TextView
             android:id="@+id/textView50"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/given_time"
+            android:text="@string/given_date_time"
             android:textColor="@color/grey_heading"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/textView49"
             app:layout_constraintEnd_toStartOf="@+id/imgYes"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/prescribedQty"
+            app:layout_constraintStart_toStartOf="@+id/txtGivenDate"
             app:layout_constraintTop_toTopOf="@+id/textView49" />
 
         <TextView
@@ -97,7 +98,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/edt_black_bor"
-            android:padding="@dimen/_5sdp"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
             android:text="08:00 PM"
             android:textColor="@color/blue_text"
             android:textSize="@dimen/_12ssp"
@@ -106,18 +110,38 @@
             app:layout_constraintTop_toBottomOf="@+id/textView49" />
 
         <TextView
+            android:id="@+id/txtGivenDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/edt_black_bor"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
+            android:text="Nov, 2020"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:textColor="@color/deficiencyRed"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toStartOf="@+id/txtGivenTime"
+            app:layout_constraintTop_toBottomOf="@+id/textView50" />
+
+        <TextView
             android:id="@+id/txtGivenTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/edt_black_bor"
-            android:padding="@dimen/_5sdp"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp"
             android:text="08:00 PM"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_4sdp"
             android:textColor="@color/deficiencyRed"
             android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toEndOf="@+id/textView50"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView50"
+            app:layout_constraintEnd_toStartOf="@+id/imgYes"
             app:layout_constraintTop_toBottomOf="@+id/textView50" />
 
         <ImageView
