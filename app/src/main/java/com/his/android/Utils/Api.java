@@ -552,11 +552,44 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("Prescription/SavePatientIsOnOxygen")
-    Call<ResponseBody> SavePatientIsOnOxygen(
+    Call<ResponseBody> savePatientIsOnOxygen(
             @Header("accessToken") String accessToken,
             @Header("userID") String userID,
             @Field("PID") Integer pid,
             @Field("userID") String userId);
+
+    @FormUrlEncoded
+    @POST("Prescription/SavePatientLifeSupportAssign")
+    Call<ResponseBody> savePatientLifeSupportAssign(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("PID") Integer pid,
+            @Field("lifeSupportID") String lifeSupportID,
+            @Field("userID") String userId);
+
+    @FormUrlEncoded
+    @POST("Prescription/SaveO2")
+    Call<ResponseBody> saveO2(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("PID") Integer pid,
+            @Field("headID") Integer headID,
+            @Field("vmValueO2") String vmValueO2,
+            @Field("userID") String userId);
+
+    @FormUrlEncoded
+    @POST("Prescription/RemoveOxygen")
+    Call<ResponseBody> removeOxygen(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("PID") Integer pid);
+
+    @FormUrlEncoded
+    @POST("Prescription/CheckPatientIsOnOxygen")
+    Call<CheckO2AssignResp> checkPatientIsOnOxygen(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userID,
+            @Field("PID") Integer pid);
 
     @POST("Prescription/GetLifeSupportMasterList")
     Call<LifeSupportMasterResp> getLifeSupportMasterList(

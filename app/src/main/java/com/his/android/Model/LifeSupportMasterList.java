@@ -20,6 +20,11 @@ public class LifeSupportMasterList {
         this.lifeSupportType = lifeSupportType;
     }
 
+    @Override
+    public String toString() {
+        return lifeSupportType;
+    }
+
     public String getLifeSupportType() {
         return lifeSupportType;
     }

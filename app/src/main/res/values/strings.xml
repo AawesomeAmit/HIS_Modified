@@ -468,4 +468,6 @@
     <string name="update_medicine">Update Medicine</string>
     <string name="given_date_time">Given Date Time</string>
     <string name="previous_supplement">Previous Supplement</string>
+    <string name="enter_o2">Enter O2</string>
+    <string name="enter_fio2">Enter FIO2</string>
 </resources>
