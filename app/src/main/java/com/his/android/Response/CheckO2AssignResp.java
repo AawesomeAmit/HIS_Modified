@@ -30,7 +30,7 @@ public class CheckO2AssignResp {
         return currentOxygenValue;
     }
 
-    public List<Object> getLifeSupport() {
+    public List<LifeSupport> getLifeSupport() {
         return lifeSupport;
     }
 

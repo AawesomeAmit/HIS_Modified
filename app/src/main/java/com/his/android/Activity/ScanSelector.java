@@ -122,9 +122,7 @@ public class ScanSelector extends BaseActivity {
         txtProgressNote.setOnClickListener(view -> startActivity(new Intent(mActivity, ProgressNoteScan.class)));
         txtUpdateIntake.setOnClickListener(view -> startActivity(new Intent(mActivity, DietIntakeSequence.class)));
         txtUpdateSupplement.setOnClickListener(view -> startActivity(new Intent(mActivity, UpdateGivenSupplement.class)));
-
-        txtO2.setOnClickListener(view -> ));
-
+        txtO2.setOnClickListener(view -> startActivity(new Intent(mActivity, AssignO2.class)));
         if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 1) {
             txtProgressNote.setVisibility(View.VISIBLE);
             txtPrescription.setVisibility(View.VISIBLE);
@@ -163,31 +161,6 @@ public class ScanSelector extends BaseActivity {
         }
     }
 
-
-    private void checkO2() {
-        Utils.showRequestDialog(mActivity);
-        Call<CheckO2AssignResp> call = RetrofitClient.getInstance().getApi().checkPatientIsOnOxygen(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid());
-        call.enqueue(new Callback<CheckO2AssignResp>() {
-            @Override
-            public void onResponse(Call<CheckO2AssignResp> call, Response<CheckO2AssignResp> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(mActivity, "Removed Successfully!", Toast.LENGTH_LONG).show();
-                } else {
-                    try {
-                        Toast.makeText(mActivity, response.errorBody().string(), Toast.LENGTH_SHORT).show();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                Utils.hideDialog();
-            }
-
-            @Override
-            public void onFailure(Call<CheckO2AssignResp> call, Throwable t) {
-                Utils.hideDialog();
-            }
-        });
-    }
     //Dialog transfer patient
     private void alertTransferPatient(String head) {
         dialog = new Dialog(mActivity);

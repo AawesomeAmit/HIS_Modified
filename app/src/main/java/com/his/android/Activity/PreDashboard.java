@@ -103,7 +103,6 @@ public class PreDashboard extends AppCompatActivity {
                 SharedPrefManager.getInstance(this).getUser().getDesigid()==22 || SharedPrefManager.getInstance(this).getUser().getDesigid()==11)
             txtCovidRegistration.setVisibility(View.VISIBLE);
         else txtCovidRegistration.setVisibility(View.GONE);
-
         btnGo.setOnClickListener(view -> {
             if (!edtPid.getText().toString().isEmpty()) {
                 Utils.showRequestDialog(PreDashboard.this);

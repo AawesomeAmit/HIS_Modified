@@ -953,12 +953,12 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("MedicineIntake.asmx/UpdateConsumptionPercentage")
+    @POST("SupplementIntake.asmx/UpdateConsumptionPercentage")
     Call<UnitResp> UpdateConsumptionPercentage(
             @Header("token") String token,
             @Field("consumptionPercentage") String consumptionPercentage,
             @Field("entryUserID") String entryUserID,
-            @Field("intakeConsumption") JSONArray intakeConsumption,
+            /*@Field("intakeConsumption") JSONArray intakeConsumption,*/
             @Field("memberId") String memberId,
             @Field("userLoginID") String userLoginID,
             @Field("userMedicationID") String userMedicationID
