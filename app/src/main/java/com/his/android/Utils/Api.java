@@ -276,10 +276,10 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("UserIntake.asmx/AddIntakeDetailsWithEntryId")
-    Call<InsertResponse> addIntakeDetails(@Header("Token") String accessToken, @Field("foodId") Integer foodId, @Field("foodQuantity") String foodQuantity, @Field("foodTime") String foodTime, @Field("foodUnitId") String foodUnitId, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID, @Field("isIntakeGiven") Integer isIntakeGiven);
+    Call<InsertResponse> addIntakeDetails(@Header("Token") String accessToken, @Field("foodId") Integer foodId, @Field("foodQuantity") String foodQuantity, @Field("foodTime") String foodTime, @Field("foodUnitId") String foodUnitId, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID, @Field("isIntakeGiven") Integer isIntakeGiven, @Field("entryType") String entryType);
     @FormUrlEncoded
     @POST("SupplementIntake.asmx/AddSupplementDetails")
-    Call<InsertResponse> addSupplementDetails(@Header("Token") String accessToken, @Field("supplementID") Integer supplementID, @Field("supplementQuantity") String supplementQuantity, @Field("intakeTime") String intakeTime, @Field("supplementUnitID") String supplementUnitID, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID, @Field("isIntakeGiven") Integer isIntakeGiven);
+    Call<InsertResponse> addSupplementDetails(@Header("Token") String accessToken, @Field("supplementID") Integer supplementID, @Field("supplementQuantity") String supplementQuantity, @Field("intakeTime") String intakeTime, @Field("supplementUnitID") String supplementUnitID, @Field("intakeDate") String intakeDate, @Field("memberId") String memberId, @Field("userLoginID") Integer userLoginID, @Field("entryUserID") Integer entryUserID, @Field("isIntakeGiven") Integer isIntakeGiven, @Field("entryType") String entryType);
 
     @FormUrlEncoded
     @POST("familymember.asmx/GetUserProfileByPID")
@@ -949,7 +949,8 @@ public interface Api {
             @Header("token") String token,
             @Field("intakeConsumption") JSONArray intakeConsumption,
             @Field("memberId") String memberId,
-            @Field("userLoginID") String userLoginID
+            @Field("userLoginID") String userLoginID,
+            @Field("entryUserID") String entryUserID
     );
 
     @FormUrlEncoded
@@ -1038,7 +1039,8 @@ public interface Api {
             @Field("intakeDateTime") String intakeDateTime,
             @Field("isSupplement") Integer isSupplement,
             @Field("memberID") Integer memberID,
-            @Field("userLoginID") Integer userLoginID
+            @Field("userLoginID") Integer userLoginID,
+            @Field("entryUserID") Integer entryUserID
     );
 
     @FormUrlEncoded

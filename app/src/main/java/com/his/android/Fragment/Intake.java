@@ -233,8 +233,8 @@ public class Intake extends Fragment implements View.OnClickListener {
                 if (mealList.getIntakeID() != 0) {
                     Utils.showRequestDialog(context);
                     Call<InsertResponse> call1;
-                    if (mealList.getIsSupplement() == 1) call1 = RetrofitClient1.getInstance().getApi().addSupplementDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1);
-                    else call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1);
+                    if (mealList.getIsSupplement() == 1) call1 = RetrofitClient1.getInstance().getApi().addSupplementDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1, "S");
+                    else call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1, "S");
                     call1.enqueue(new Callback<InsertResponse>() {
                         @Override
                         public void onResponse(Call<InsertResponse> call1, Response<InsertResponse> response) {
@@ -310,7 +310,7 @@ public class Intake extends Fragment implements View.OnClickListener {
         btnSave.setOnClickListener(view -> updateDateTime(id, (new SimpleDateFormat("dd/MM/yyyy hh:mm a")).format(today1), isSupplement, popupWindow));
     }
     private void updateDateTime(int id, String dateTime, int isSupplement, PopupWindow popupWindow){
-        Call<UniversalResp> call = RetrofitClient1.getInstance().getApi().updateIntakeDateTimeByIntakeID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", id, dateTime, isSupplement, SharedPrefManager.getInstance(context).getMemberId().getMemberId(), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
+        Call<UniversalResp> call = RetrofitClient1.getInstance().getApi().updateIntakeDateTimeByIntakeID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", id, dateTime, isSupplement, SharedPrefManager.getInstance(context).getMemberId().getMemberId(), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
         call.enqueue(new Callback<UniversalResp>() {
             @Override
             public void onResponse(Call<UniversalResp> call, Response<UniversalResp> response) {
@@ -647,7 +647,7 @@ public class Intake extends Fragment implements View.OnClickListener {
                     Utils.showRequestDialog(mCtx);
                     Call<UnitResp> call = null;
                     if (foodDetails.get(i).getIsSupplement()==0)
-                    call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()));
+                    call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()));
                     else call = RetrofitClient1.getInstance().getApi().UpdateConsumptionPercentage("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", holder.edtQty.getText().toString().trim(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()), foodDetails.get(i).getId().toString());
                     call.enqueue(new Callback<UnitResp>() {
                         @Override
@@ -662,6 +662,7 @@ public class Intake extends Fragment implements View.OnClickListener {
                                     holder.edtQty.setEnabled(false);
                                     bind();
                                     notifyItemChanged(i);
+                                    Toast.makeText(mCtx, "Updated successfully!", Toast.LENGTH_SHORT).show();
                                     Utils.hideDialog();
                                 } else if (response.body() != null) {
                                     Toast.makeText(mCtx, response.body().getResponseMessage(), Toast.LENGTH_SHORT).show();

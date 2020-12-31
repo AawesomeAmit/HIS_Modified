@@ -77,7 +77,7 @@ public class MealIntakeAdp extends RecyclerView.Adapter<MealIntakeAdp.RecyclerVi
                 array.put(object);
                 Log.v("array", String.valueOf(array));
                 Utils.showRequestDialog(mCtx);
-                Call<UnitResp> call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()));
+                Call<UnitResp> call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()));
                 call.enqueue(new Callback<UnitResp>() {
                     @Override
                     public void onResponse(Call<UnitResp> call, Response<UnitResp> response) {

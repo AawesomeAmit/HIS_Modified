@@ -343,7 +343,7 @@ public class FoodSupplementIntake extends Fragment implements View.OnClickListen
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                         String dateToStr = format.format(today);
                         Utils.showRequestDialog(context);
-                        Call<InsertResponse> call = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealId, edtMealQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitMealLists.get(spnMealUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1);
+                        Call<InsertResponse> call = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealId, edtMealQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitMealLists.get(spnMealUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1, "S");
                         call.enqueue(new Callback<InsertResponse>() {
                             @Override
                             public void onResponse(Call<InsertResponse> call, Response<InsertResponse> response) {
