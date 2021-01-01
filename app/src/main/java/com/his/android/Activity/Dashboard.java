@@ -79,7 +79,6 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
-
         /*Menu menu=navigationView.getMenu();
         if(SharedPrefManager.getInstance(Dashboard.this).getHeadID()==7) {
             menu.findItem(R.id.nav_vital_graph).setVisible(false);
