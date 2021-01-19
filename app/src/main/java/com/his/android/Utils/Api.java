@@ -1044,6 +1044,23 @@ public interface Api {
     );
 
     @FormUrlEncoded
+    @POST("Pathology/GetBillListForSampleCollection")
+    Call<BillResp> getBillListForSampleCollection(
+            @Header("accessToken") String accessToken,
+            @Header("userId") String userId,
+            @Field("PID") String pid
+    );
+
+    @FormUrlEncoded
+    @POST("Pathology/GetTestListForSampleCollectionByBillID")
+    Call<SampleTestResp> getTestListForSampleCollectionByBillID(
+            @Header("accessToken") String accessToken,
+            @Header("userId") String userId,
+            @Field("PID") String pid,
+            @Field("BillID") String BillID
+    );
+
+    @FormUrlEncoded
     @POST("PatientRegistration/SavePatientRegistration")
     Call<PatientRegistrationResp> savePatientRegistration(
             @Header("accessToken") String token,

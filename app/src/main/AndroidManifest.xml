@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.his.android" >
+    package="com.his.android">
 
     <supports-screens
         android:anyDensity="true"
@@ -46,9 +46,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true" >
-        <activity android:name=".Activity.UpdateGivenSupplement" >
-        </activity>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.SampleCollectionSave"></activity>
+        <activity android:name=".Activity.SampleTestSelect" />
+        <activity android:name=".Activity.SampleCollection" />
+        <activity android:name=".Activity.UpdateGivenSupplement" />
         <activity android:name=".Activity.FoodIntakeStep3" />
         <activity android:name=".Activity.FoodIntakeStep2" />
         <activity android:name=".Activity.FoodIntakeStep1" />
@@ -148,7 +150,7 @@
             android:parentActivityName=".Activity.Dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" >
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.his.android.Activity.Dashboard" />
@@ -168,7 +170,7 @@
             android:parentActivityName=".Activity.Dashboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" >
+            tools:ignore="LockedOrientationActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.his.android.Activity.Dashboard" />
@@ -220,7 +222,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            tools:ignore="LockedOrientationActivity" >
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -274,7 +276,7 @@
         <service android:name=".Activity.BP.SerialService" />
         <service
             android:name=".Utils.MyFirebaseMessagingService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -284,7 +286,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />

@@ -470,4 +470,6 @@
     <string name="previous_supplement">Previous Supplement</string>
     <string name="enter_o2">Enter O2</string>
     <string name="enter_fio2">Enter FIO2</string>
+    <string name="sample_collection">Sample Collection</string>
+    <string name="sample_tests">Sample Tests</string>
 </resources>

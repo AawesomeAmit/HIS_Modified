@@ -50,7 +50,7 @@ import retrofit2.Response;
 
 public class ScanSelector extends BaseActivity {
     TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload, txtUpdateIntake,txtUpdateMedicine, txtUpdateSupplement,
-            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote,txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator;
+            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote,txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator, txtSample;
     Intent intent;
     Spinner popupspnDepartment,popUpspnConsultant,popUpspnWard, spnBed;
     EditText popUpEtReason;
@@ -87,12 +87,17 @@ public class ScanSelector extends BaseActivity {
         txtProgressNote = findViewById(R.id.txtProgressNote);
         txtVital = findViewById(R.id.txtVital);
         txtIntake = findViewById(R.id.txtIntake);
+        txtSample = findViewById(R.id.txtSample);
         tvPID.setText(String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
         tvPtName.setText(SharedPrefManager.getInstance(mActivity).getPtName());
         intent = new Intent(mActivity, Dashboard.class);
         txtPrescription.setOnClickListener(view -> {
             intent.putExtra("status1", "0");
             startActivity(intent);
+        });
+        txtSample.setOnClickListener(view -> {
+//            intent.putExtra("status1", "0");
+            startActivity(new Intent(mActivity, SampleCollection.class));
         });
         txtVital.setOnClickListener(view -> {
             intent.putExtra("status1", "1");
