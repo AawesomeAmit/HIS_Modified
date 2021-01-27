@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.SampleCollectionSave">
@@ -60,8 +61,23 @@
         app:layout_constraintTop_toBottomOf="@+id/textView31" />
 
 
+    <TextView
+        android:id="@+id/textView33"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/greyLine"
+        android:gravity="center"
+        android:padding="@dimen/_5sdp"
+        android:text="Selected Tests"
+        android:textColor="@color/colorPrimary"
+        android:paddingTop="@dimen/_5sdp"
+        android:textSize="@dimen/_15ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTime" />
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBill"
+        android:id="@+id/rvSample"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/_5sdp"
@@ -70,7 +86,7 @@
         app:layout_constraintBottom_toTopOf="@+id/txtBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDate"
+        app:layout_constraintTop_toBottomOf="@+id/textView33"
         tools:listitem="@layout/inner_sample" />
 
     <TextView

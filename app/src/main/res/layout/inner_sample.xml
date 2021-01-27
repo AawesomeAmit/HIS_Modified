@@ -22,13 +22,9 @@
             android:id="@+id/txtBill"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:gravity="start"
-            android:textStyle="bold"
+            android:gravity="center"
             android:text="@string/mechanism_of_action"
             android:textColor="@color/black"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_12ssp" />
         </LinearLayout>
 </androidx.cardview.widget.CardView>
