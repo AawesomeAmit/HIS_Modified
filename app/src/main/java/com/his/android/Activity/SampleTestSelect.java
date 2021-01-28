@@ -55,7 +55,6 @@ public class SampleTestSelect extends BaseActivity {
                     sampleTestListChecked.add(sampleTestList.get(i));
                 }
             }
-            String logs = gson.toJson(sampleTestListChecked);
             if (sampleTestListChecked.size()>0)
             startActivity(new Intent(mActivity, SampleCollectionSave.class).putExtra("testList", gson.toJson(sampleTestListChecked)).putExtra("billId", getIntent().getStringExtra("billId")).putExtra("sampleId", getIntent().getStringExtra("sampleId")));
             else Toast.makeText(mActivity, "Please select atleast one test!", Toast.LENGTH_SHORT).show();

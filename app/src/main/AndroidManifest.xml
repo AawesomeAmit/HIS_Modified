@@ -47,7 +47,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.SampleCollectionSave"></activity>
+        <activity android:name=".Activity.FoodTable"></activity>
+        <activity android:name=".Activity.SampleCollectionSave" />
         <activity android:name=".Activity.SampleTestSelect" />
         <activity android:name=".Activity.SampleCollection" />
         <activity android:name=".Activity.UpdateGivenSupplement" />

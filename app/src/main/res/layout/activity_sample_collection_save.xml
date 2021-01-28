@@ -33,7 +33,7 @@
         android:paddingStart="@dimen/_5sdp"
         android:paddingEnd="@dimen/_5sdp"
         android:textColor="@color/white"
-        android:textSize="@dimen/_12sdp"
+        android:textSize="@dimen/_13sdp"
         android:textStyle="bold"
         android:drawableStart="@drawable/ic_calender"
         app:layout_constraintEnd_toStartOf="@+id/txtTime"
