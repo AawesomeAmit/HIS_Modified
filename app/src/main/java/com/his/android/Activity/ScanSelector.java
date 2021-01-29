@@ -350,12 +350,9 @@ public class ScanSelector extends BaseActivity {
                             }
                         });*/
                         Utils.hideDialog();
-                    } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
-                }
+                    //else Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
+                } //else Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
 
                 Utils.hideDialog();
             }

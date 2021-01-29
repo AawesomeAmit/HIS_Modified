@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.his.android.Model.BillList;
 import com.his.android.Model.SampleTestList;
 import com.his.android.R;
@@ -23,7 +25,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,21 +36,41 @@ import retrofit2.Response;
 
 public class SampleTestSelect extends BaseActivity {
     RecyclerView rvTests;
+    TextView txtNext, txtBack;
+    List<SampleTestList> sampleTestList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample_test_select);
         rvTests=findViewById(R.id.rvTests);
+        txtNext=findViewById(R.id.txtNext);
+        txtBack=findViewById(R.id.txtBack);
+        sampleTestList=new ArrayList<>();
         load();
+        txtNext.setOnClickListener(v -> {
+            Gson gson = new Gson();
+            List<SampleTestList> sampleTestListChecked=new ArrayList<>();
+            for (int i=0;i<sampleTestList.size();i++){
+                if (sampleTestList.get(i).getSelected()){
+                    sampleTestListChecked.add(sampleTestList.get(i));
+                }
+            }
+            String logs = gson.toJson(sampleTestListChecked);
+            if (sampleTestListChecked.size()>0)
+            startActivity(new Intent(mActivity, SampleCollectionSave.class).putExtra("testList", gson.toJson(sampleTestListChecked)).putExtra("billId", getIntent().getStringExtra("billId")));
+            else Toast.makeText(mActivity, "Please select atleast one test!", Toast.LENGTH_SHORT).show();
+        });
+        txtBack.setOnClickListener(v -> startActivity(new Intent(mActivity, SampleCollection.class)));
     }
     private void load(){
         Utils.showRequestDialog(mActivity);
-        Call<SampleTestResp> call= RetrofitClient.getInstance().getApi().getTestListForSampleCollectionByBillID(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()), getIntent().getStringExtra("billId"));
+        Call<SampleTestResp> call= RetrofitClient.getInstance().getApi().getTestListForSampleCollectionByBillID(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()), getIntent().getStringExtra("sampleId"), getIntent().getStringExtra("billId"));
         call.enqueue(new Callback<SampleTestResp>() {
             @Override
             public void onResponse(Call<SampleTestResp> call, Response<SampleTestResp> response) {
                 if(response.isSuccessful()){
-                    rvTests.setAdapter(new SampleTestAdp(response.body().getTable()));
+                    sampleTestList=response.body().getTable();
+                    rvTests.setAdapter(new SampleTestAdp(sampleTestList));
                 }
                 Utils.hideDialog();
             }

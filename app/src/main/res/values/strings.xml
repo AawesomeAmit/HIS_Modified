@@ -472,4 +472,6 @@
     <string name="enter_fio2">Enter FIO2</string>
     <string name="sample_collection">Sample Collection</string>
     <string name="sample_tests">Sample Tests</string>
+    <string name="food_table">Food Table</string>
+    <string name="sample_type">Sample Type</string>
 </resources>
