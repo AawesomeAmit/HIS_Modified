@@ -199,7 +199,7 @@ public class AchievedRda extends BaseFragment {
                // progressDialog.cancel();
 
                // nutriAnalyzers.add(analyzerResp.getNutriAnalyzeValue());
-
+                try{
                 analyzerResp = response.body();
 
                 List<NutriAnalyzerDataRes> list = analyzerResp.getResponseValue();
@@ -209,7 +209,7 @@ public class AchievedRda extends BaseFragment {
 
                 if (analyzerResp != null && analyzerResp.getResponseCode() == 1) {
 
-                    final ViewRdaAdapterMain adapter = new ViewRdaAdapterMain(context,list);
+                    final ViewRdaAdapterMain adapter = new ViewRdaAdapterMain(context, list);
                     //rdaAnalyser.setAdapter(adapter);
                     recyclerViewMain.setAdapter(adapter);
 
@@ -228,6 +228,9 @@ public class AchievedRda extends BaseFragment {
 
                         }
                     });*/
+                }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 Utils.hideDialog();

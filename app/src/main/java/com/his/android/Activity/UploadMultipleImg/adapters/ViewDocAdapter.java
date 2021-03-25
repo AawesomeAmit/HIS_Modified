@@ -30,7 +30,7 @@ public class ViewDocAdapter extends RecyclerView.Adapter<ViewDocAdapter.MyViewHo
     @NonNull
     @Override
     public ViewDocAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.innerview_patient_doc,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.innerview_patient_doc, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -43,10 +43,9 @@ public class ViewDocAdapter extends RecyclerView.Adapter<ViewDocAdapter.MyViewHo
 
 
         //For Image
-       if(model.getFilePath().trim().isEmpty()) {
+        if (model.getFilePath().trim().isEmpty()) {
             holder.imageView.setImageResource(R.drawable.ic_bloodpressure);
-        }
-        else {
+        } else {
 
             Picasso.with(mContext).load(model.getFilePath()).into(holder.imageView);
 
@@ -62,6 +61,7 @@ public class ViewDocAdapter extends RecyclerView.Adapter<ViewDocAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvDateTime;
         ImageView imageView;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDateTime = itemView.findViewById(R.id.tvDateTime);

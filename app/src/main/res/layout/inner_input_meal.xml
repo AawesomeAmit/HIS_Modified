@@ -6,11 +6,13 @@
     android:layout_height="match_parent">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="@dimen/_10sdp"
         android:layout_height="wrap_content">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:id="@+id/ClIntake"
             android:background="@color/colorPrimaryDark"
             android:paddingStart="@dimen/_5sdp"
             android:paddingEnd="@dimen/_5sdp">

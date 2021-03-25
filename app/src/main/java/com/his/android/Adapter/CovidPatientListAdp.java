@@ -96,6 +96,10 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
                 //SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
                 SharedPrefManager.getInstance(mCtx).setIsCovid(true);
                 Intent intent = new Intent(mCtx, Dashboard.class);
+                intent.putExtra("PatientName", admittedPatient.get(i).getName());
+                intent.putExtra("Pid", admittedPatient.get(i).getPid());
+                intent.putExtra("ward", admittedPatient.get(i).getProblem() + " - " + admittedPatient.get(i).getAge());
+
                 mCtx.startActivity(intent);
             }
         });

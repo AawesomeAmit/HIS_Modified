@@ -5,7 +5,7 @@
     <string name="user_id">User ID</string>
     <string name="we_respect_your_privacy">We respect your privacy</string>
     <string name="forget_password">Forget Password?</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in">Send Otp</string>
     <string name="we_hate_spam_as_much_as_you_do">We hate spam as much as you do</string>
     <string name="title_activity_dashboard">HIS</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -126,7 +126,7 @@
     <string name="meal_intake">Meal</string>
     <string name="supplement_intake">Supplement</string>
     <string name="supplement_name">Supplement Name</string>
-    <string name="meal_name">Meal Name</string>
+    <string name="meal_name">Type Meal Name</string>
     <string name="dash">-</string>
     <string name="respiratory_rate">Respiratory Rate</string>
     <string name="activity">Activity</string>
@@ -424,7 +424,7 @@
     <string name="send">Send</string>
     <string name="enter_recipient_using">Enter recipient names using @, department using $ and designation using #</string>
     <string name="send_message">Send Message</string>
-    <string name="transfer_patient">Transfer Patient</string>
+    <string name="transfer_patient">Transfer In/Out Patient</string>
     <string name="reply">Reply</string>
     <string name="new_message">New Message</string>
     <string name="chat_title">Chat Title</string>

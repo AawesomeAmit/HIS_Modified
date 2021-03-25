@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,19 +26,19 @@ public class ImageCompress extends AsyncTask<String, Void, String> {
     private static final float maxWidth = 1280.0f;
 
 
-    public ImageCompress(Context context){
-        this.context=context;
+    public ImageCompress(Context context) {
+        this.context = context;
     }
 
     @Override
     protected String doInBackground(String... strings) {
-        if(strings.length == 0 || strings[0] == null)
+        if (strings.length == 0 || strings[0] == null)
             return null;
 
         return compressImage(strings[0]);
     }
 
-    protected void onPostExecute(String imagePath){
+    protected void onPostExecute(String imagePath) {
         // imagePath is path of new compressed image.
     }
 
@@ -102,8 +103,7 @@ public class ImageCompress extends AsyncTask<String, Void, String> {
         canvas.setMatrix(scaleMatrix);
         canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
 
-        if(bmp!=null)
-        {
+        if (bmp != null) {
             bmp.recycle();
         }
 
@@ -125,8 +125,12 @@ public class ImageCompress extends AsyncTask<String, Void, String> {
         }
         FileOutputStream out = null;
         String filepath = getFilename();
+        Log.d("TAG", "compressImageout: " + imagePath);
+
         try {
-            out = new FileOutputStream(filepath);
+//            out = new FileOutputStream(filepath);
+            out = new FileOutputStream(imagePath);
+            Log.d("TAG", "compressImageout: " + out);
 
             //write the compressed bitmap at the destination specified by filename.
             scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
@@ -135,7 +139,7 @@ public class ImageCompress extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
 
-        return filepath;
+        return imagePath;
     }
 
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -165,12 +169,14 @@ public class ImageCompress extends AsyncTask<String, Void, String> {
                 + "/Files/Compressed");
 
         // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
+        if (!mediaStorageDir.exists()) {
             mediaStorageDir.mkdirs();
         }
 
-        String mImageName="IMG_"+ String.valueOf(System.currentTimeMillis()) +".jpg";
-        String uriString = (mediaStorageDir.getAbsolutePath() + "/"+ mImageName);;
+        String mImageName = "IMG_" + System.currentTimeMillis() + ".jpg";
+        String uriString = (mediaStorageDir.getAbsolutePath() + "/" + mImageName);
+
+
         return uriString;
 
     }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,7 +46,8 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
     private String TAG = "FragmentActivity";
-    public static PatientInfoBarcode patientInfo=null;
+    public static PatientInfoBarcode patientInfo = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,8 +162,8 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
     }
 
     private void connect(String macAddress, String deviceName) {
-        Log.d(TAG, "connect:address: "+macAddress);
-        Log.d(TAG, "connect:name: "+deviceName);
+        Log.d(TAG, "connect:address: " + macAddress);
+        Log.d(TAG, "connect:name: " + deviceName);
 
         OxiOprateManager.getMangerInstance(getApplicationContext()).registerConnectStatusListener(macAddress, new IABleConnectStatusListener() {
             @Override
@@ -202,6 +204,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
 
 
     }
+
     private boolean checkPermission() {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
     }

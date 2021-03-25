@@ -2,12 +2,16 @@ package com.his.android.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +75,7 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
     private VitalListResp vitalChartList;
     private Spinner spnConsultant;
     Context context;
- //   private EditText edtProgress;
+    //   private EditText edtProgress;
     private String mParam1;
     private String mParam2;
     private int subDeptID;
@@ -93,6 +97,8 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
 
     RichEditor richTextEditor;
 
+    String name, pid, ward;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +108,12 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
         richTextEditor.setPlaceholder("Enter Note");
 
         setupTextEditor();
+
+        Intent intent = getIntent();
+        name = intent.getStringExtra("pname");
+        pid = intent.getStringExtra("pid");
+        ward = intent.getStringExtra("ward");
+
 
         txtDrName = findViewById(R.id.txtDrName);
         txtDept = findViewById(R.id.txtDept);
@@ -168,7 +180,7 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    private void getConsultantName(){
+    private void getConsultantName() {
         consultantNameList.add(0, new ConsultantName(0, 0, "Select Consultant", 0));
         Call<ControlBySubDeptResp> call = RetrofitClient.getInstance().getApi().getControlsBySubDept(SharedPrefManager.getInstance(this).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(this).getSubDept().getId(), SharedPrefManager.getInstance(this).getHeadID(), SharedPrefManager.getInstance(this).getUser().getUserid());
         call.enqueue(new Callback<ControlBySubDeptResp>() {
@@ -393,24 +405,24 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnSave:
 
                 if (SharedPrefManager.getInstance(context).getUser().getDesigid() == 1) {
                     saveProgressReport(SharedPrefManager.getInstance(context).getUser().getUserid());
-                }
-                else if (SharedPrefManager.getInstance(context).getUser().getDesigid()!=1 && spnConsultant.getSelectedItemPosition() != 0) {
+                } else if (SharedPrefManager.getInstance(context).getUser().getDesigid() != 1 && spnConsultant.getSelectedItemPosition() != 0) {
                     saveProgressReport(SharedPrefManager.getInstance(context).getConsultantList().get(spnConsultant.getSelectedItemPosition()).getUserid());
-                } else Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
 
                 break;
             case R.id.btnUpdate:
                 if (SharedPrefManager.getInstance(context).getUser().getDesigid() == 1) {
                     updateProgressReport(SharedPrefManager.getInstance(context).getUser().getUserid());
-                }
-                else if (SharedPrefManager.getInstance(context).getUser().getDesigid() !=1 && spnConsultant.getSelectedItemPosition() != 0) {
+                } else if (SharedPrefManager.getInstance(context).getUser().getDesigid() != 1 && spnConsultant.getSelectedItemPosition() != 0) {
                     updateProgressReport(SharedPrefManager.getInstance(context).getConsultantList().get(spnConsultant.getSelectedItemPosition()).getUserid());
-                } else Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(context, "Consultant name required!", Toast.LENGTH_LONG).show();
 
                 break;
         }
@@ -422,10 +434,10 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    private void hitGetProgressHistory(String date){
+    private void hitGetProgressHistory(String date) {
         Utils.showRequestDialog(mActivity);
 
-        Call<ViewProgressResp> call= RetrofitClient.getInstance().getApi().getProgressHistory(
+        Call<ViewProgressResp> call = RetrofitClient.getInstance().getApi().getProgressHistory(
                 SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid(),
                 SharedPrefManager.getInstance(mActivity).getPid(),
@@ -451,7 +463,7 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onFailure(Call<ViewProgressResp> call, Throwable t) {
                 Utils.hideDialog();
-                Toast.makeText(mActivity,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -460,6 +472,7 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
     public class ProgressHistoryAdapter extends RecyclerView.Adapter<ProgressHistoryAdapter.RecyclerViewHolder> {
         private Context mCtx;
         private List<ProgressList> progressList;
+        Spanned progress_note;
 
         public ProgressHistoryAdapter(Context mCtx, List<ProgressList> progressList) {
             this.mCtx = mCtx;
@@ -480,10 +493,15 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
 
             String[] time = progressList.get(i).getTime().split(":");
             holder.tvDate.setText(progressList.get(i).getCreatedDate());
-            holder.tvTime.setText(Utils.formatTime(Integer.parseInt(time[0]),Integer.parseInt(time[1])));
+            holder.tvTime.setText(Utils.formatTime(Integer.parseInt(time[0]), Integer.parseInt(time[1])));
             holder.tvConsultant.setText(progressList.get(i).getConsultant());
+            holder.details.setText(name + " " + pid + " \n" + ward);
+
+            Log.d(TAG, "onBindViewHolder: " + name);
+
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                progress_note = Html.fromHtml(progressList.get(i).getDetails().trim(), Html.FROM_HTML_MODE_COMPACT);
                 holder.tvProgressNote.setText(Html.fromHtml(progressList.get(i).getDetails().trim(), Html.FROM_HTML_MODE_COMPACT));
             } else {
                 holder.tvProgressNote.setText(Html.fromHtml(progressList.get(i).getDetails().trim()));
@@ -491,7 +509,7 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
 
             holder.ivEdit.setOnClickListener(view -> {
                 detailId = String.valueOf(progressList.get(i).getId());
-                entryDate = progressList.get(i).getCreatedDate() +" "+progressList.get(i).getTime();
+                entryDate = progressList.get(i).getCreatedDate() + " " + progressList.get(i).getTime();
                 //edtProgress.setText(holder.tvProgressNote.getText().toString().trim());
                 richTextEditor.setHtml(progressList.get(i).getDetails().trim());
                 btnUpdate.setVisibility(View.VISIBLE);
@@ -503,6 +521,30 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
                 deleteProgressReport();
             });
 
+
+            holder.Ivcopy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("AppConstant.APP_NAME", progress_note);
+                    if (clipboard == null || clip == null) return;
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(mActivity, "copied !!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            holder.share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                    String shareBody = String.valueOf(progress_note + " " + String.valueOf("Patient Name & Age " + name + "Pid " + pid + "Ward " + ward));
+                    intent.setType("text/plain");
+                    intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "progress note");
+                    intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    startActivity(Intent.createChooser(intent, "share"));
+                }
+            });
+
         }
 
         @Override
@@ -511,9 +553,9 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
         }
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-            TextView tvDate, tvTime, tvProgressNote, tvConsultant;
+            TextView tvDate, tvTime, tvProgressNote, tvConsultant, details;
 
-            ImageView ivEdit, ivRemove;
+            ImageView ivEdit, ivRemove, Ivcopy, share;
 
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -523,11 +565,14 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
                 tvConsultant = itemView.findViewById(R.id.tvConsultant);
                 ivEdit = itemView.findViewById(R.id.ivEdit);
                 ivRemove = itemView.findViewById(R.id.ivRemove);
+                Ivcopy = itemView.findViewById(R.id.copyclipboard);
+                share = itemView.findViewById(R.id.share);
+                details = itemView.findViewById(R.id.textView55);
             }
         }
     }
 
-    private void setupTextEditor(){
+    private void setupTextEditor() {
 
         richTextEditor.setPadding((int) getResources().getDimension(R.dimen._5sdp),
                 (int) getResources().getDimension(R.dimen._5sdp),
@@ -535,85 +580,99 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
                 (int) getResources().getDimension(R.dimen._5sdp));
 
         findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.undo();
             }
         });
 
         findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.redo();
             }
         });
 
         findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setBold();
             }
         });
 
         findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setItalic();
             }
         });
 
         findViewById(R.id.action_subscript).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setSubscript();
             }
         });
 
         findViewById(R.id.action_superscript).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setSuperscript();
             }
         });
 
         findViewById(R.id.action_strikethrough).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setStrikeThrough();
             }
         });
 
         findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setUnderline();
             }
         });
 
         findViewById(R.id.action_heading1).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setHeading(1);
             }
         });
 
         findViewById(R.id.action_heading2).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setHeading(2);
             }
         });
 
         findViewById(R.id.action_heading3).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setHeading(3);
             }
         });
 
         findViewById(R.id.action_heading4).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setHeading(4);
             }
         });
 
         findViewById(R.id.action_heading5).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setHeading(5);
             }
         });
 
         findViewById(R.id.action_heading6).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setHeading(6);
             }
         });
@@ -621,7 +680,8 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
             private boolean isChanged;
 
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setTextColor(isChanged ? Color.BLACK : Color.RED);
                 isChanged = !isChanged;
             }
@@ -630,63 +690,73 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.action_bg_color).setOnClickListener(new View.OnClickListener() {
             private boolean isChanged;
 
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setTextBackgroundColor(isChanged ? Color.TRANSPARENT : Color.YELLOW);
                 isChanged = !isChanged;
             }
         });
 
         findViewById(R.id.action_indent).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setIndent();
             }
         });
 
         findViewById(R.id.action_outdent).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setOutdent();
             }
         });
 
         findViewById(R.id.action_align_left).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setAlignLeft();
             }
         });
 
         findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setAlignCenter();
             }
         });
 
         findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setAlignRight();
             }
         });
 
         findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setBlockquote();
             }
         });
 
         findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setBullets();
             }
         });
 
         findViewById(R.id.action_insert_numbers).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.setNumbers();
             }
         });
 
         findViewById(R.id.action_insert_image).setVisibility(View.GONE);
         findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
                         "dachshund");
             }
@@ -695,12 +765,14 @@ public class ProgressNoteActivity extends BaseActivity implements View.OnClickLi
 
         findViewById(R.id.action_insert_link).setVisibility(View.GONE);
         findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.insertLink("https://github.com/wasabeef", "wasabeef");
             }
         });
         findViewById(R.id.action_insert_checkbox).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 richTextEditor.insertTodo();
             }
         });

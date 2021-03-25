@@ -5,17 +5,21 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -38,6 +42,7 @@ import com.his.android.Adapter.HeadAdp;
 import com.his.android.Adapter.RecyclerTouchListener;
 import com.his.android.Adapter.SubHeadAdp;
 import com.his.android.Fragment.NutriAnalyserFragment;
+import com.his.android.Model.ChangepasswordRes;
 import com.his.android.Model.GetMemberId;
 import com.his.android.Model.HeadAssign;
 import com.his.android.Model.PatientInfoBarcode;
@@ -60,6 +65,7 @@ import com.his.android.database.TableMedicineList;
 import com.his.android.database.TableSubDeptList;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -78,6 +84,8 @@ public class PreDashboard extends AppCompatActivity {
     RecyclerView rvGrid;
     EditText edtPid;
     ImageView btnGo;
+    EditText oldpass, newpass, confirmpass;
+    Button changePASS;
     private static final int REQUEST_LOCATION = 1;
 
     @Override
@@ -98,9 +106,9 @@ public class PreDashboard extends AppCompatActivity {
         progressDialog.setMessage("Please wait...");
         imgNotification = findViewById(R.id.imgNotification);
         SharedPrefManager.getInstance(PreDashboard.this).setScanned(false);
-        if (SharedPrefManager.getInstance(this).getUser().getDesigid()==3 || SharedPrefManager.getInstance(this).getUser().getDesigid()==4 ||
-                SharedPrefManager.getInstance(this).getUser().getDesigid()==5 || SharedPrefManager.getInstance(this).getUser().getDesigid()==21 ||
-                SharedPrefManager.getInstance(this).getUser().getDesigid()==22 || SharedPrefManager.getInstance(this).getUser().getDesigid()==11)
+        if (SharedPrefManager.getInstance(this).getUser().getDesigid() == 3 || SharedPrefManager.getInstance(this).getUser().getDesigid() == 4 ||
+                SharedPrefManager.getInstance(this).getUser().getDesigid() == 5 || SharedPrefManager.getInstance(this).getUser().getDesigid() == 21 ||
+                SharedPrefManager.getInstance(this).getUser().getDesigid() == 22 || SharedPrefManager.getInstance(this).getUser().getDesigid() == 11)
             txtCovidRegistration.setVisibility(View.VISIBLE);
         else txtCovidRegistration.setVisibility(View.GONE);
         btnGo.setOnClickListener(view -> {
@@ -150,11 +158,11 @@ public class PreDashboard extends AppCompatActivity {
                 if (!checkPermission()) {
                     requestPermission();
                 } else {
-                    if(SharedPrefManager.getInstance(PreDashboard.this).getBpMachine()==0){
+                    if (SharedPrefManager.getInstance(PreDashboard.this).getBpMachine() == 0) {
                         startActivity(new Intent(PreDashboard.this, com.his.android.Activity.BP.Medcheck.MainActivity.class));
-                    } else if(SharedPrefManager.getInstance(PreDashboard.this).getBpMachine()==1){
+                    } else if (SharedPrefManager.getInstance(PreDashboard.this).getBpMachine() == 1) {
                         startActivity(new Intent(PreDashboard.this, Initial.class));
-                    } else if(SharedPrefManager.getInstance(PreDashboard.this).getBpMachine()==2){
+                    } else if (SharedPrefManager.getInstance(PreDashboard.this).getBpMachine() == 2) {
                         startActivity(new Intent(PreDashboard.this, com.his.android.Activity.BP.BLE.DeviceScanActivity.class));
                     }
                 }
@@ -167,9 +175,9 @@ public class PreDashboard extends AppCompatActivity {
                 if (!checkPermission()) {
                     requestPermission();
                 } else {
-                    if(SharedPrefManager.getInstance(PreDashboard.this).getOximeter()==0){
+                    if (SharedPrefManager.getInstance(PreDashboard.this).getOximeter() == 0) {
                         startActivity(new Intent(PreDashboard.this, DeviceScanActivity.class));
-                    } else if(SharedPrefManager.getInstance(PreDashboard.this).getOximeter()==1){
+                    } else if (SharedPrefManager.getInstance(PreDashboard.this).getOximeter() == 1) {
                         startActivity(new Intent(PreDashboard.this, ViaOximeterScanActivity.class));
                     }
                 }
@@ -209,30 +217,109 @@ public class PreDashboard extends AppCompatActivity {
             }
         });
         btnBp.setOnClickListener(view -> {
-                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-                    if (!checkPermission()) {
-                        requestPermission();
-                    } else {
-                        startActivity(new Intent(PreDashboard.this, Initial.class));
-                    }
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                if (!checkPermission()) {
+                    requestPermission();
+                } else {
+                    startActivity(new Intent(PreDashboard.this, Initial.class));
                 }
+            }
         });
         btnOxi.setOnClickListener(view -> {
-                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-                if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
-                    if (!checkPermission()) {
-                        requestPermission();
-                    } else {
-                        startActivity(new Intent(PreDashboard.this, DeviceScanActivity.class));
-                    }
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
+                if (!checkPermission()) {
+                    requestPermission();
+                } else {
+                    startActivity(new Intent(PreDashboard.this, DeviceScanActivity.class));
                 }
+            }
         });
         img.setOnClickListener(view -> {
             PopupMenu menu = new PopupMenu(PreDashboard.this, img);
             menu.getMenuInflater().inflate(R.menu.popup_menu, menu.getMenu());
             menu.getMenu().findItem(R.id.setting).setOnMenuItemClickListener(menuItem -> {
                 startActivity(new Intent(PreDashboard.this, DevicesSelection.class));
+                return true;
+            });
+
+            menu.getMenu().findItem(R.id.changepassword).setOnMenuItemClickListener(menuItem -> {
+
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(PreDashboard.this);
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+                View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.changepassword, viewGroup, false);
+                builder.setView(dialogView);
+                android.app.AlertDialog alertDialog = builder.create();
+                changePASS = dialogView.findViewById(R.id.button2);
+                oldpass = dialogView.findViewById(R.id.oldpassET);
+                newpass = dialogView.findViewById(R.id.newpassET);
+                confirmpass = dialogView.findViewById(R.id.ConfirmPassET);
+
+                alertDialog.show();
+
+                changePASS.setOnClickListener(new View.OnClickListener() {
+                    byte[] oldpassdata;
+                    byte[] newpassdata;
+                    byte[] confirmpassdata;
+
+
+                    @Override
+                    public void onClick(View view) {
+
+                        if (TextUtils.isEmpty(oldpass.getText())) {
+                            oldpass.setError("Enter Old Password");
+                        } else if (TextUtils.isEmpty(newpass.getText())) {
+                            newpass.setError("Enter new Password");
+                        } else if (TextUtils.isEmpty(confirmpass.getText())) {
+                            confirmpass.setError("Enter Confirm Password");
+                        } else {
+                            progressDialog.show();
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+                                oldpassdata = oldpass.getText().toString().trim().getBytes(StandardCharsets.UTF_8);
+                            newpassdata = newpass.getText().toString().trim().getBytes(StandardCharsets.UTF_8);
+                            confirmpassdata = confirmpass.getText().toString().trim().getBytes(StandardCharsets.UTF_8);
+                            Log.d("TAG", "newpass" + Base64.encodeToString(newpassdata, Base64.DEFAULT) + " confirmpassdata" + confirmpassdata + "oldpass" + Base64.encodeToString(oldpassdata, Base64.DEFAULT));
+
+
+                            if (confirmpass.getText().toString().equals(newpass.getText().toString())) {
+                                Call<ChangepasswordRes> call = RetrofitClient.getInstance().getApi().changepassword(SharedPrefManager.getInstance(PreDashboard.this).getUser().getAccessToken(), String.valueOf(SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid()), String.valueOf(SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid()), Base64.encodeToString(oldpassdata, Base64.DEFAULT).trim(), Base64.encodeToString(newpassdata, Base64.DEFAULT).trim());
+                                call.enqueue(new Callback<ChangepasswordRes>() {
+                                    @Override
+                                    public void onResponse(Call<ChangepasswordRes> call, Response<ChangepasswordRes> response) {
+
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(PreDashboard.this, "Password Change Successfully", Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
+                                            alertDialog.dismiss();
+                                        } else {
+                                            try {
+                                                Toast.makeText(PreDashboard.this, "" + response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                                progressDialog.hide();
+                                            }
+                                        }
+                                        progressDialog.hide();
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ChangepasswordRes> call, Throwable t) {
+                                        Toast.makeText(PreDashboard.this, "" + t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                        progressDialog.hide();
+                                    }
+                                });
+
+                            } else {
+                                Toast.makeText(PreDashboard.this, "New And Confirm Password are not Same!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+
+                    }
+                });
                 return true;
             });
 
@@ -276,7 +363,7 @@ public class PreDashboard extends AppCompatActivity {
                         startActivity(new Intent(PreDashboard.this, PersonalDashboard.class));
                     else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 31)
                         startActivity(new Intent(PreDashboard.this, CasualtyRegistration.class));
-                    //startActivity(intent);
+                        //startActivity(intent);
                     else showPopup(view);
                 } catch (Exception ex) {
                     Log.v("error", Objects.requireNonNull(ex.getMessage()));
@@ -295,12 +382,12 @@ public class PreDashboard extends AppCompatActivity {
             }
         }));
         txtScan.setOnClickListener(view -> {
-            Intent intent=new Intent(PreDashboard.this, ScannerActivity.class);
+            Intent intent = new Intent(PreDashboard.this, ScannerActivity.class);
             intent.putExtra("redi", "1");
             startActivity(intent);
         });
         txtScans.setOnClickListener(view -> {
-            Intent intent=new Intent(PreDashboard.this, ScannerActivity.class);
+            Intent intent = new Intent(PreDashboard.this, ScannerActivity.class);
             intent.putExtra("redi", "4");
             startActivity(intent);
         });
@@ -336,7 +423,7 @@ public class PreDashboard extends AppCompatActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         relLayout.setBackgroundColor(Color.parseColor(SharedPrefManager.getInstance(PreDashboard.this).getHead().getColor()));
 
-        if (ConnectivityChecker.checker(PreDashboard.this)){
+        if (ConnectivityChecker.checker(PreDashboard.this)) {
 
             progressDialog.show();
             Call<SubHeadIDResp> call = RetrofitClient.getInstance().getApi().getsubDepertmentByHID(
@@ -370,8 +457,8 @@ public class PreDashboard extends AppCompatActivity {
                                     contentValues.put(TableSubDeptList.subDeptListColumn.bgColor.toString(), subDept.getBgColor());
 
                                     if (!DatabaseController.checkRecordExistWhere(TableSubDeptList.sub_dept_list,
-                                            TableSubDeptList.subDeptListColumn.headID +" = '"+ subDept.getHeadID().toString() +"'" +
-                                                    " and "+ TableSubDeptList.subDeptListColumn.id +" = '"+ subDept.getId().toString() +"'")) {
+                                            TableSubDeptList.subDeptListColumn.headID + " = '" + subDept.getHeadID().toString() + "'" +
+                                                    " and " + TableSubDeptList.subDeptListColumn.id + " = '" + subDept.getId().toString() + "'")) {
                                         DatabaseController.insertData(contentValues, TableSubDeptList.sub_dept_list);
                                     }
 //                                    DatabaseController.insertUpdateData(contentValues, TableSubDeptList.sub_dept_list, "id", subDept.getId().toString());
@@ -428,14 +515,14 @@ public class PreDashboard extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
             });
-        }else {
+        } else {
             subHeadIDResp = new SubHeadIDResp();
             subHeadIDResp.setSubDept(DatabaseController.getSubDeptList(SharedPrefManager.getInstance(PreDashboard.this).getHeadID().toString()));
 
             if (subHeadIDResp.getSubDept().size() > 1) {
                 recycler.setAdapter(new SubHeadAdp(PreDashboard.this, subHeadIDResp));
                 popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
-            }else {
+            } else {
                 if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7))) {
                     Intent intent = new Intent(PreDashboard.this, PatientList.class);
                     SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
@@ -461,13 +548,13 @@ public class PreDashboard extends AppCompatActivity {
                     Intent intent = new Intent(PreDashboard.this, EnterPID.class);
                     SharedPrefManager.getInstance(PreDashboard.this).setHeadID(SharedPrefManager.getInstance(PreDashboard.this).getHeadID(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getHeadName(), SharedPrefManager.getInstance(PreDashboard.this).getHead().getColor());
                     startActivity(intent);
-                }  else if (subHeadIDResp.getSubDept().get(position).getHeadID() == 26) {
+                } else if (subHeadIDResp.getSubDept().get(position).getHeadID() == 26) {
                     Intent intent = new Intent(PreDashboard.this, EnterPID.class);
                     startActivity(intent);
                 } else if (subHeadIDResp.getSubDept().get(position).getHeadID() == 7) {
                     Intent intent = new Intent(PreDashboard.this, NutriAnalyserFragment.class);
                     startActivity(intent);
-                }else {
+                } else {
                     Intent intent = new Intent(PreDashboard.this, PatientList.class);
                     SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(position));
                     startActivity(intent);
@@ -510,7 +597,7 @@ public class PreDashboard extends AppCompatActivity {
             public void onResponse(Call<GetAllMedicineByAlphabetRes> call, Response<GetAllMedicineByAlphabetRes> response) {
                 if (response != null && response.body().getResponseCode() == 1) {
 
-                    try{
+                    try {
                         DatabaseController.myDataBase.beginTransaction();
 
                         DatabaseController.myDataBase.delete(TableMedicineList.icd_list, null, null);
@@ -549,8 +636,8 @@ public class PreDashboard extends AppCompatActivity {
         });
     }
 
-    private void hitGetUserProfileByPID(){
-        Call<MemberIdResp> call= RetrofitClient1.getInstance().getApi().getUserProfileByPID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", String.valueOf(SharedPrefManager.getInstance(getApplicationContext()).getPid()));
+    private void hitGetUserProfileByPID() {
+        Call<MemberIdResp> call = RetrofitClient1.getInstance().getApi().getUserProfileByPID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", String.valueOf(SharedPrefManager.getInstance(getApplicationContext()).getPid()));
         call.enqueue(new Callback<MemberIdResp>() {
             @Override
             public void onResponse(Call<MemberIdResp> call, Response<MemberIdResp> response) {
@@ -559,7 +646,7 @@ public class PreDashboard extends AppCompatActivity {
                     if (memberIdResp.getResponseCode() == 1) {
                         SharedPrefManager.getInstance(getApplicationContext()).setMemberId(memberIdResp.getResponseValue().get(0));
                     } else {
-                        SharedPrefManager.getInstance(getApplicationContext()).setMemberId(new GetMemberId(0,0));
+                        SharedPrefManager.getInstance(getApplicationContext()).setMemberId(new GetMemberId(0, 0));
                     }
                 }
             }

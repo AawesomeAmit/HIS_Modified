@@ -43,6 +43,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void addImage(ArrayList<String> list) {
         this.list.clear();
         this.list.addAll(list);
+
         notifyDataSetChanged();
     }
 
@@ -56,10 +57,10 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //Uri imageUri = Uri.fromFile(new File(list.get(position)));// For files on device
-        String mImageCompress=new ImageCompress(context).compressImage(list.get(position));
+        String mImageCompress = new ImageCompress(context).compressImage(list.get(position));
 
         File f = new File(mImageCompress);
-       // Bitmap bitmap;
+        // Bitmap bitmap;
         if (f.getAbsolutePath().endsWith("mp4")) {
             ((Holder) holder).play.setVisibility(View.VISIBLE);
             bitmap = ThumbnailUtils.createVideoThumbnail(f.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
@@ -94,8 +95,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         roundedBitmapDrawable.setCornerRadius(roundPx);*/
 
 
-
-       // ((Holder) holder).iv.setImageDrawable(roundedBitmapDrawable);
+        // ((Holder) holder).iv.setImageDrawable(roundedBitmapDrawable);
         ((Holder) holder).iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

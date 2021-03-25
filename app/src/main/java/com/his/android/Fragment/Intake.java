@@ -6,12 +6,14 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -92,7 +94,7 @@ public class Intake extends Fragment implements View.OnClickListener {
     private EditText edtQty;
     private Spinner spnUnit;
     private static RecyclerView rvMeal;
-    private TextView txtDate,tvViewdoc;
+    private TextView txtDate, tvViewdoc;
     private TextView txtTime, txtVoice, btnImg;
     private SimpleDateFormat format1;
     SimpleDateFormat format2;
@@ -103,7 +105,7 @@ public class Intake extends Fragment implements View.OnClickListener {
     int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
     int mYear1 = 0, mMonth1 = 0, mDay1 = 0, mHour1 = 0, mMinute1 = 0;
     Date today = new Date();
-//    private int mealId = 0;
+    //    private int mealId = 0;
     Calendar c;
     Calendar c1;
     private static MealList mealList;
@@ -137,9 +139,9 @@ public class Intake extends Fragment implements View.OnClickListener {
         context = view.getContext();
         Utils.showRequestDialog(context);
         c = Calendar.getInstance();
-        mYear=mYear1 = c.get(Calendar.YEAR);
-        mMonth=mMonth1 = c.get(Calendar.MONTH);
-        mDay=mDay1 = c.get(Calendar.DAY_OF_MONTH);
+        mYear = mYear1 = c.get(Calendar.YEAR);
+        mMonth = mMonth1 = c.get(Calendar.MONTH);
+        mDay = mDay1 = c.get(Calendar.DAY_OF_MONTH);
         date = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
         //txtDate.setText(date);
         edtMeal.setThreshold(0);
@@ -159,7 +161,8 @@ public class Intake extends Fragment implements View.OnClickListener {
             public void onResponse(Call<MemberIdResp> call, Response<MemberIdResp> response) {
                 if (response.body() != null) {
                     MemberIdResp memberIdResp = response.body();
-                    if (memberIdResp.getResponseCode() == 1) SharedPrefManager.getInstance(context).setMemberId(memberIdResp.getResponseValue().get(0));
+                    if (memberIdResp.getResponseCode() == 1)
+                        SharedPrefManager.getInstance(context).setMemberId(memberIdResp.getResponseValue().get(0));
                     else SharedPrefManager.getInstance(context).setMemberId(new GetMemberId(0, 0));
                 }
             }
@@ -233,8 +236,10 @@ public class Intake extends Fragment implements View.OnClickListener {
                 if (mealList.getIntakeID() != 0) {
                     Utils.showRequestDialog(context);
                     Call<InsertResponse> call1;
-                    if (mealList.getIsSupplement() == 1) call1 = RetrofitClient1.getInstance().getApi().addSupplementDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1, "S");
-                    else call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1, "S");
+                    if (mealList.getIsSupplement() == 1)
+                        call1 = RetrofitClient1.getInstance().getApi().addSupplementDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1, "S");
+                    else
+                        call1 = RetrofitClient1.getInstance().getApi().addIntakeDetails("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", mealList.getIntakeID(), edtQty.getText().toString().trim(), today.getHours() + ":" + today.getMinutes(), unitLists.get(spnUnit.getSelectedItemPosition()).getId().toString(), dateToStr, String.valueOf(SharedPrefManager.getInstance(context).getMemberId().getMemberId()), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getUser().getUserid(), 1, "S");
                     call1.enqueue(new Callback<InsertResponse>() {
                         @Override
                         public void onResponse(Call<InsertResponse> call1, Response<InsertResponse> response) {
@@ -309,12 +314,13 @@ public class Intake extends Fragment implements View.OnClickListener {
         });
         btnSave.setOnClickListener(view -> updateDateTime(id, (new SimpleDateFormat("dd/MM/yyyy hh:mm a")).format(today1), isSupplement, popupWindow));
     }
-    private void updateDateTime(int id, String dateTime, int isSupplement, PopupWindow popupWindow){
+
+    private void updateDateTime(int id, String dateTime, int isSupplement, PopupWindow popupWindow) {
         Call<UniversalResp> call = RetrofitClient1.getInstance().getApi().updateIntakeDateTimeByIntakeID("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", id, dateTime, isSupplement, SharedPrefManager.getInstance(context).getMemberId().getMemberId(), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId(), SharedPrefManager.getInstance(context).getMemberId().getUserLoginId());
         call.enqueue(new Callback<UniversalResp>() {
             @Override
             public void onResponse(Call<UniversalResp> call, Response<UniversalResp> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     if (response.body() != null) {
                         Toast.makeText(context, response.body().getResponseMessage(), Toast.LENGTH_LONG).show();
                         bind();
@@ -329,6 +335,7 @@ public class Intake extends Fragment implements View.OnClickListener {
             }
         });
     }
+
     private void recordingPopup() {
         View popupView = getLayoutInflater().inflate(R.layout.popup_vital_recording, null);
         final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
@@ -507,10 +514,10 @@ public class Intake extends Fragment implements View.OnClickListener {
                         unitLists.addAll(1, unitResp.getUnitList());
                         unitListArrayAdapter = new ArrayAdapter<>(context, R.layout.spinner_layout, unitLists);
                         spnUnit.setAdapter(unitListArrayAdapter);
-                        if(mealList.getIsSynonym()==1) {
+                        if (mealList.getIsSynonym() == 1) {
                             for (int i = 0; i < unitResp.getUnitList().size(); i++) {
-                                if (unitLists.get(i+1).getId().equals(unitResp.getDefaultUnitID()))
-                                    spnUnit.setSelection(i+1);
+                                if (unitLists.get(i + 1).getId().equals(unitResp.getDefaultUnitID()))
+                                    spnUnit.setSelection(i + 1);
                             }
                             edtQty.setText(unitResp.getDefaultQuantity());
                             edtQty.setEnabled(false);
@@ -535,12 +542,12 @@ public class Intake extends Fragment implements View.OnClickListener {
 
     public void bind() {
         Utils.showRequestDialog(context);
-        Call<List<IntakeData>> call = RetrofitClient.getInstance().getApi().getIntakeData(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), (new SimpleDateFormat("dd/MM/yyyy")).format(today)+" 12:00 AM", (new SimpleDateFormat("dd/MM/yyyy")).format(today)+" 11:59 PM", SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
+        Call<List<IntakeData>> call = RetrofitClient.getInstance().getApi().getIntakeData(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), (new SimpleDateFormat("dd/MM/yyyy")).format(today) + " 12:00 AM", (new SimpleDateFormat("dd/MM/yyyy")).format(today) + " 11:59 PM", SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
         call.enqueue(new Callback<List<IntakeData>>() {
             @Override
             public void onResponse(Call<List<IntakeData>> call, Response<List<IntakeData>> response) {
                 if (response.isSuccessful()) {
-                      List<IntakeData> foodDetailResp = response.body();
+                    List<IntakeData> foodDetailResp = response.body();
                     if (foodDetailResp != null) {
                         rvMeal.setAdapter(new IntakeAdp(context, foodDetailResp));
                     }
@@ -587,7 +594,7 @@ public class Intake extends Fragment implements View.OnClickListener {
         } else if (view.getId() == R.id.txtVoice) {
             recordingPopup();
         } else if (view.getId() == R.id.btnImg) {
-            Intent intent=new Intent(context, UploadImg.class);
+            Intent intent = new Intent(context, UploadImg.class);
             intent.putExtra("meal", "");
             startActivity(intent);
         }
@@ -596,6 +603,7 @@ public class Intake extends Fragment implements View.OnClickListener {
     public class IntakeAdp extends RecyclerView.Adapter<IntakeAdp.RecyclerViewHolder> {
         private Context mCtx;
         private List<IntakeData> foodDetails;
+
         public IntakeAdp(Context mCtx, List<IntakeData> foodDetails) {
             this.mCtx = mCtx;
             this.foodDetails = foodDetails;
@@ -616,7 +624,16 @@ public class Intake extends Fragment implements View.OnClickListener {
             holder.txtQty.setText(String.valueOf(foodDetails.get(i).getIntakeQuantity()));
             holder.txtUnit.setText(String.valueOf(foodDetails.get(i).getUnitName()));
             holder.txtDateTime.setText(foodDetails.get(i).getIntakeDateTime());
+
+
             holder.txtEditDate.setOnClickListener(view -> dateTimePopup(foodDetails.get(i).getId(), foodDetails.get(i).getIsSupplement(), foodDetails.get(i).getIntakeName()));
+            if (foodDetails.get(i).isGiven == 1) {
+                holder.constraintLayout.setBackgroundColor(ContextCompat.getColor(mCtx, R.color.green));
+            }
+            if (foodDetails.get(i).isGiven == 0) {
+                holder.constraintLayout.setBackgroundColor(ContextCompat.getColor(mCtx, R.color.colorPrimaryDark));
+            }
+
             holder.txtEdit.setOnClickListener(view -> {
                 holder.txtEdit.setVisibility(View.GONE);
                 holder.txtSave.setVisibility(View.VISIBLE);
@@ -636,8 +653,10 @@ public class Intake extends Fragment implements View.OnClickListener {
                 holder.txtPer.setVisibility(View.GONE);
                 holder.edtQty.setEnabled(false);
             });
+
+
             holder.txtSave.setOnClickListener(view -> {
-                JSONArray array=new JSONArray();
+                JSONArray array = new JSONArray();
                 JSONObject object = new JSONObject();
                 try {
                     object.put("dietID", foodDetails.get(i).getId());
@@ -646,13 +665,14 @@ public class Intake extends Fragment implements View.OnClickListener {
                     Log.v("array", String.valueOf(array));
                     Utils.showRequestDialog(mCtx);
                     Call<UnitResp> call = null;
-                    if (foodDetails.get(i).getIsSupplement()==0)
-                    call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array,SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()));
-                    else call = RetrofitClient1.getInstance().getApi().UpdateConsumptionPercentage("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", holder.edtQty.getText().toString().trim(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()), foodDetails.get(i).getId().toString());
+                    if (foodDetails.get(i).getIsSupplement() == 0)
+                        call = RetrofitClient1.getInstance().getApi().UpdateIntakeConsumption("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", array, SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()));
+                    else
+                        call = RetrofitClient1.getInstance().getApi().UpdateConsumptionPercentage("AGTRIOPLKJRTYHNMJHF458GDETIOHHKA456978ADFHJHW", holder.edtQty.getText().toString().trim(), String.valueOf(SharedPrefManager.getInstance(mCtx).getMemberId().getUserLoginId()), SharedPrefManager.getInstance(mCtx).getMemberId().getMemberId().toString(), String.valueOf(SharedPrefManager.getInstance(mCtx).getUser().getUserid()), foodDetails.get(i).getId().toString());
                     call.enqueue(new Callback<UnitResp>() {
                         @Override
                         public void onResponse(Call<UnitResp> call, Response<UnitResp> response) {
-                            if (response.isSuccessful()){
+                            if (response.isSuccessful()) {
                                 if (response.body() != null && response.body().getResponseCode() == 1) {
                                     holder.txtEdit.setVisibility(View.VISIBLE);
                                     holder.txtClose.setVisibility(View.GONE);
@@ -687,21 +707,24 @@ public class Intake extends Fragment implements View.OnClickListener {
         }
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-            TextView txtFluid,txtQty,txtUnit, txtDateTime, txtEdit, txtSave, txtPer, txtEditDate, txtClose;
+            TextView txtFluid, txtQty, txtUnit, txtDateTime, txtEdit, txtSave, txtPer, txtEditDate, txtClose;
             EditText edtQty;
+            ConstraintLayout constraintLayout;
+
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
-                txtFluid =itemView.findViewById(R.id.txtFluid);
-                txtQty=itemView.findViewById(R.id.txtStr);
-                txtUnit=itemView.findViewById(R.id.txtUnit);
-                txtDateTime=itemView.findViewById(R.id.txtDateTime);
-                txtEdit=itemView.findViewById(R.id.txtEdit);
-                edtQty=itemView.findViewById(R.id.edtQty);
-                txtSave=itemView.findViewById(R.id.txtSave);
-                txtPer=itemView.findViewById(R.id.txtPer);
-                txtEditDate=itemView.findViewById(R.id.txtEditDate);
-                txtClose=itemView.findViewById(R.id.txtClose);
-                edtQty.setFilters(new InputFilter[]{ new InputFilterMinMax(0, 100)});
+                txtFluid = itemView.findViewById(R.id.txtFluid);
+                txtQty = itemView.findViewById(R.id.txtStr);
+                txtUnit = itemView.findViewById(R.id.txtUnit);
+                txtDateTime = itemView.findViewById(R.id.txtDateTime);
+                txtEdit = itemView.findViewById(R.id.txtEdit);
+                edtQty = itemView.findViewById(R.id.edtQty);
+                txtSave = itemView.findViewById(R.id.txtSave);
+                txtPer = itemView.findViewById(R.id.txtPer);
+                txtEditDate = itemView.findViewById(R.id.txtEditDate);
+                txtClose = itemView.findViewById(R.id.txtClose);
+                constraintLayout = itemView.findViewById(R.id.ClIntake);
+                edtQty.setFilters(new InputFilter[]{new InputFilterMinMax(0, 100)});
             }
         }
     }

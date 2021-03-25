@@ -1,14 +1,18 @@
 package com.his.android.Activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +52,7 @@ import com.his.android.Response.ControlBySubDeptResp;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.SharedPrefManager;
 
+import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -171,13 +176,16 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getDieteticsPatient().getName());
         else
             txtPName.setText(SharedPrefManager.getInstance(Dashboard.this).getOpdPatient().getPname());
-        if (SharedPrefManager.getInstance(Dashboard.this).isScanned()) {
-            menu.findItem(R.id.nav_patient_list).setVisible(false);
-            txtPName.setText(ScannerActivity.patientInfo.getPatientName());
-        }
+        try {
+            if (SharedPrefManager.getInstance(Dashboard.this).isScanned()) {
+                menu.findItem(R.id.nav_patient_list).setVisible(false);
+                //   txtPName.setText(ScannerActivity.patientInfo.getPatientName());
+            }
 //        ScannerActivity.patientInfo = null;
-        txtPId.setText(String.valueOf(SharedPrefManager.getInstance(this).getPid()));
-
+            txtPId.setText(String.valueOf(SharedPrefManager.getInstance(this).getPid()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (getIntent().getStringExtra("status1") != null || getIntent().getStringExtra("status") != null)
             subdept = SharedPrefManager.getInstance(this).getSubdeptID();
         else subdept = SharedPrefManager.getInstance(this).getSubDept().getId();
@@ -235,7 +243,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 fragment = new Intake();
             if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("4"))
                 fragment = new ViewMedication();
-            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("5")){
+            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("5")) {
                 if (SharedPrefManager.getInstance(this).getUser().getDesigid() != 1)
                     spnConsultant.setVisibility(View.VISIBLE);
                 else spnConsultant.setVisibility(View.GONE);
@@ -349,6 +357,11 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_calculator) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new Calculator();
+        } else if (id == R.id.uploaddocument) {
+
+            Intent intent = new Intent(Dashboard.this, UploadDocument.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_input_vital) {
             if (SharedPrefManager.getInstance(this).getUser().getDesigid() != 1)
                 spnConsultant.setVisibility(View.VISIBLE);

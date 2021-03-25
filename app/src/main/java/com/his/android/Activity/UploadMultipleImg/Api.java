@@ -11,7 +11,6 @@ import com.his.android.Activity.UploadMultipleImg.TransferPatient.ConsultantRes;
 import com.his.android.Activity.UploadMultipleImg.TransferPatient.GetDepartmentRes;
 import com.his.android.Response.ChatFilesUploaderResp;
 import com.his.android.Response.DietImageResp;
-import com.his.android.Response.UniversalResp;
 
 import java.util.List;
 
@@ -39,6 +38,7 @@ public interface Api {
             @Part("fileDateTime") RequestBody fileDateTime
 
     );
+
     @Multipart
     @POST("UserDateWiseDietImage.ashx")
     Call<String> UserDateWiseDietImage(
@@ -48,6 +48,21 @@ public interface Api {
             @Part("PID") RequestBody PID,
             @Part("userID") RequestBody userID,
             @Part("dietTime") RequestBody dietTime
+
+    );
+
+
+    @Multipart
+    @POST("UploadConsentImage.ashx")
+    Call<String> uploaddocument(
+            @Header("accessToken") String accessToken,
+            @Header("userID") String userId,
+            @Part MultipartBody.Part[] fileName,
+            @Part("PID") RequestBody PID,
+            @Part("imageName") String imageName,
+            @Part("userID") RequestBody userID,
+            @Part("documentTypeID") String documentTypeID,
+            @Part("fileDateTime") RequestBody fileDateTime
 
     );
 
@@ -72,6 +87,7 @@ public interface Api {
             @Header("accessToken") String accessToken,
             @Header("userID") String userID
     );
+
     //get Casuality Area List
     @POST("api/DoctorsDailyDuty/GetCasualityAreaList")
     Call<CasualityAreaRes> getCasualityAreaList(
@@ -131,7 +147,6 @@ public interface Api {
     );
 
 
-
     ///////////****************   Transfer Patients Apis    ******************///////
 
     //Get deparetment List
@@ -149,6 +164,7 @@ public interface Api {
             @Header("userID") String userID,
             @Field("subDeptID") String subDeptID
     );
+
     //Transfer Patient
     @POST("api/Dashboard/SendPatientReq")
     @FormUrlEncoded
@@ -175,6 +191,7 @@ public interface Api {
             @Field("wardID") String wardID,
             @Field("subDeptID") String subDeptID
     );
+
     @POST("api/Dashboard/AcceptPatient")
     @FormUrlEncoded
     Call<Universalres> AcceptPatient(

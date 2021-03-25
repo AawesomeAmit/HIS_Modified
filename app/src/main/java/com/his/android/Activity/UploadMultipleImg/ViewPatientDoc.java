@@ -2,6 +2,7 @@ package com.his.android.Activity.UploadMultipleImg;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,29 +62,32 @@ public class ViewPatientDoc extends BaseActivity {
 
                 GetPatientDocRes productListRes = (GetPatientDocRes) response.body();
 
-                    if(response.isSuccessful()){
-                        documentLists = ((GetPatientDocRes) response.body()).getGetPatientAllDocumentList();
-                        recyclerviewAdapter = new ViewDocAdapter(ViewPatientDoc.this,documentLists);
-                        recyclerView.setAdapter(recyclerviewAdapter);
-                    }
-                    else {
-                        // error case
-                        switch (response.code()) {
-                            case 400:
-                                Toast.makeText(getApplicationContext(), "Unauthorized User", Toast.LENGTH_SHORT).show();
-                                break;
-                            case 500:
-                                Toast.makeText(getApplicationContext(), "Internal Server Error", Toast.LENGTH_SHORT).show();
-                                break;
-                            case 404:
-                                Toast.makeText(getApplicationContext(), "No Data Found", Toast.LENGTH_SHORT).show();
-                                break;
-                            default:
-                                Toast.makeText(getApplicationContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    }
+                if (response.isSuccessful()) {
 
+                    documentLists = ((GetPatientDocRes) response.body()).getGetPatientAllDocumentList();
+
+                    recyclerviewAdapter = new ViewDocAdapter(ViewPatientDoc.this, documentLists);
+                    recyclerView.setAdapter(recyclerviewAdapter);
+
+                    Log.d(TAG, "onResponse: " + documentLists);
+                } else {
+                    // error case
+                    Log.d(TAG, "onResponse: " + documentLists);
+                    switch (response.code()) {
+                        case 400:
+                            Toast.makeText(getApplicationContext(), "Unauthorized User", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 500:
+                            Toast.makeText(getApplicationContext(), "Internal Server Error", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 404:
+                            Toast.makeText(getApplicationContext(), "No Data Found" + response.errorBody().toString(), Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(getApplicationContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
 
 
                 Utils.hideDialog();

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,10 @@ import retrofit2.Response;
 public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.RecyclerViewHolder> {
     private Context mCtx;
     private List<AdmittedPatient> admittedPatient;
+
     public PatientListAdp(Context mCtx, List<AdmittedPatient> admittedPatient) {
         this.mCtx = mCtx;
-        this.admittedPatient=admittedPatient;
+        this.admittedPatient = admittedPatient;
     }
 
     @NonNull
@@ -106,6 +108,8 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
             }
         });
         holder.imgInfo.setOnClickListener(View -> {
+            Toast.makeText(mCtx, "Clicked", Toast.LENGTH_SHORT).show();
+
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 2) {
                 if (!admittedPatient.get(i).getRead())
                     checkCrNo(String.valueOf(admittedPatient.get(i).getPid()));
@@ -114,6 +118,10 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
                 SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
                 SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
                 Intent intent = new Intent(mCtx, PriscriptionOverviewPopup.class);
+                intent.putExtra("PatientName", admittedPatient.get(i).getPname());
+                intent.putExtra("Pid", admittedPatient.get(i).getPid());
+                intent.putExtra("ward", admittedPatient.get(i).getWardName() + " - " + admittedPatient.get(i).getConsultantName());
+
                 mCtx.startActivity(intent);
             }
         });
@@ -137,6 +145,18 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
 //            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
             mCtx.startActivity(new Intent(mCtx, ChatTitle.class));
         });
+
+        holder.txtstop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                higetprogress();
+            }
+        });
+    }
+
+    private void higetprogress() {
+
+
     }
 
     @Override
@@ -145,22 +165,25 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        TextView txtPName,txtPId,txtPAge,txtGender,txtDiagnosis, txtMed, txtNew;
+        TextView txtPName, txtPId, txtPAge, txtGender, txtDiagnosis, txtMed, txtNew, txtstop;
         ImageView imgInfo, imgMsg;
+
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtPName=itemView.findViewById(R.id.txtPName);
-            txtPId=itemView.findViewById(R.id.txtPId);
-            txtPAge=itemView.findViewById(R.id.txtPAge);
-            txtGender=itemView.findViewById(R.id.txtGender);
-            txtDiagnosis=itemView.findViewById(R.id.txtDiagnosis);
-            imgInfo=itemView.findViewById(R.id.imgInfo);
-            txtMed=itemView.findViewById(R.id.txtMed);
-            txtNew=itemView.findViewById(R.id.txtNew);
-            imgMsg=itemView.findViewById(R.id.imgMsg);
+            txtPName = itemView.findViewById(R.id.txtPName);
+            txtPId = itemView.findViewById(R.id.txtPId);
+            txtPAge = itemView.findViewById(R.id.txtPAge);
+            txtGender = itemView.findViewById(R.id.txtGender);
+            txtDiagnosis = itemView.findViewById(R.id.txtDiagnosis);
+            imgInfo = itemView.findViewById(R.id.imgInfo);
+            txtMed = itemView.findViewById(R.id.txtMed);
+            txtNew = itemView.findViewById(R.id.txtNew);
+            imgMsg = itemView.findViewById(R.id.imgMsg);
+            txtstop = itemView.findViewById(R.id.txtStop);
         }
     }
-    private void checkCrNo(String pid){
+
+    private void checkCrNo(String pid) {
         if (ConnectivityChecker.checker(mCtx)) {
             Utils.showRequestDialog(mCtx);
             Call<CheckPidResp> call = RetrofitClient.getInstance().getApi().checkCRNo(SharedPrefManager.getInstance(mCtx).getUser().getAccessToken(), SharedPrefManager.getInstance(mCtx).getUser().getUserid().toString(), pid, SharedPrefManager.getInstance(mCtx).getSubDept().getId(), SharedPrefManager.getInstance(mCtx).getUser().getUserid());
@@ -186,6 +209,7 @@ public class PatientListAdp extends RecyclerView.Adapter<PatientListAdp.Recycler
                     Utils.hideDialog();
                 }
             });
-        } else Toast.makeText(mCtx, mCtx.getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(mCtx, mCtx.getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
 }

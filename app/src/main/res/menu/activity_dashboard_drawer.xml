@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <group android:checkableBehavior="single"
-        android:id="@+id/outmenu">
+    <group
+        android:id="@+id/outmenu"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_dashboard"
@@ -25,8 +26,8 @@
         <item
             android:id="@+id/nav_vital_graph"
             android:icon="@drawable/ic_observationgraph"
-            android:visible="false"
-            android:title="@string/vital_graph" />
+            android:title="@string/vital_graph"
+            android:visible="false" />
         <item
             android:id="@+id/nav_detail_graph"
             android:icon="@drawable/ic_observationgraph"
@@ -34,28 +35,28 @@
         <item
             android:id="@+id/nav_patient_dashboard"
             android:icon="@drawable/ic_observationgraph"
-            android:visible="false"
-            android:title="@string/patient_dashboard" />
+            android:title="@string/patient_dashboard"
+            android:visible="false" />
         <item
             android:id="@+id/nav_cal_patient"
             android:icon="@drawable/ic_observationgraph"
-            android:visible="false"
-            android:title="@string/calcium_patient_report" />
+            android:title="@string/calcium_patient_report"
+            android:visible="false" />
         <item
             android:id="@+id/nav_cal_dynamic"
             android:icon="@drawable/ic_observationgraph"
-            android:visible="false"
-            android:title="@string/calcium_hourly_report" />
+            android:title="@string/calcium_hourly_report"
+            android:visible="false" />
         <item
             android:id="@+id/nav_ventilator"
             android:icon="@drawable/ic_observationgraph"
-            android:visible="false"
-            android:title="Ventilator Setting" />
+            android:title="Ventilator Setting"
+            android:visible="false" />
         <item
             android:id="@+id/nav_employee"
             android:icon="@drawable/ic_observationgraph"
-            android:visible="false"
-            android:title="@string/employee_shift" />
+            android:title="@string/employee_shift"
+            android:visible="false" />
         <item
             android:id="@+id/nav_prescription"
             android:icon="@drawable/ic_prescription"
@@ -75,8 +76,8 @@
         <item
             android:id="@+id/nav_input_intake"
             android:icon="@drawable/ic_viewinvestigation"
-            android:visible="true"
-            android:title="@string/input_intake" />
+            android:title="@string/input_intake"
+            android:visible="true" />
         <item
             android:id="@+id/nav_output"
             android:icon="@drawable/ic_viewinvestigation"
@@ -92,13 +93,13 @@
         <item
             android:id="@+id/nav_activity_movement"
             android:icon="@drawable/ic_viewinvestigation"
-            android:visible="true"
-            android:title="@string/patient_input" />
+            android:title="@string/patient_input"
+            android:visible="true" />
         <item
-            android:visible="false"
             android:id="@+id/nav_progress_note"
             android:icon="@drawable/progressnote"
-            android:title="@string/progress_note" />
+            android:title="@string/progress_note"
+            android:visible="false" />
         <item
             android:id="@+id/nav_calculator"
             android:icon="@drawable/calculator"
@@ -110,8 +111,14 @@
         <item
             android:id="@+id/nav_intake"
             android:icon="@drawable/ic_intakegraph"
-            android:visible="false"
-            android:title="@string/intake_graph" />
+            android:title="@string/intake_graph"
+            android:visible="false" />
+
+        <item
+            android:id="@+id/uploaddocument"
+            android:icon="@drawable/ic_intakegraph"
+            android:title="Upload Consent Image"
+            android:visible="true" />
         <item
             android:id="@+id/nav_questionnaire"
             android:icon="@drawable/ic_questionnaire"

@@ -99,6 +99,10 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getpID());
             SharedPrefManager.getInstance(mCtx).setIpNo("0");
             Intent intent = new Intent(mCtx, PriscriptionOverviewPopup.class);
+            intent.putExtra("PatientName", physioPatientLists.get(i).getName());
+            intent.putExtra("Pid", physioPatientLists.get(i).getpID());
+            intent.putExtra("ward", physioPatientLists.get(i).getGender() + " - " + physioPatientLists.get(i).getAge());
+
             mCtx.startActivity(intent);
         });
         holder.txtMed.setOnClickListener(view -> {

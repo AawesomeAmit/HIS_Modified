@@ -36,10 +36,11 @@ import retrofit2.Response;
 public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientListAdp.RecyclerViewHolder> {
     private Context mCtx;
     private List<PhysioPatientList> physioPatientLists;
-    private PatientList patientList=new PatientList();
+    private PatientList patientList = new PatientList();
+
     public PhysioPatientListAdp(Context mCtx, List<PhysioPatientList> physioPatientLists) {
         this.mCtx = mCtx;
-        this.physioPatientLists =physioPatientLists;
+        this.physioPatientLists = physioPatientLists;
     }
 
     @NonNull
@@ -94,6 +95,10 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
             Intent intent = new Intent(mCtx, PriscriptionOverviewPopup.class);
+            intent.putExtra("PatientName", physioPatientLists.get(i).getPatientName());
+            intent.putExtra("Pid", physioPatientLists.get(i).getPid());
+            intent.putExtra("ward", physioPatientLists.get(i).getAddress() + " - " + physioPatientLists.get(i).getAge());
+
             mCtx.startActivity(intent);
         });
         holder.txtMed.setOnClickListener(view -> {
@@ -144,20 +149,21 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        TextView txtPName,txtPId,txtPAge,txtGender,txtDiagnosis, txtRemove, txtMed;
+        TextView txtPName, txtPId, txtPAge, txtGender, txtDiagnosis, txtRemove, txtMed;
         ImageView imgInfo, imgMsg;
+
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtPName=itemView.findViewById(R.id.txtPName);
-            txtPId=itemView.findViewById(R.id.txtPId);
-            txtPAge=itemView.findViewById(R.id.txtPAge);
-            txtGender=itemView.findViewById(R.id.txtGender);
-            txtRemove=itemView.findViewById(R.id.txtStop);
-            txtDiagnosis=itemView.findViewById(R.id.txtDiagnosis);
-            imgInfo=itemView.findViewById(R.id.imgInfo);
+            txtPName = itemView.findViewById(R.id.txtPName);
+            txtPId = itemView.findViewById(R.id.txtPId);
+            txtPAge = itemView.findViewById(R.id.txtPAge);
+            txtGender = itemView.findViewById(R.id.txtGender);
+            txtRemove = itemView.findViewById(R.id.txtStop);
+            txtDiagnosis = itemView.findViewById(R.id.txtDiagnosis);
+            imgInfo = itemView.findViewById(R.id.imgInfo);
             txtRemove.setVisibility(View.VISIBLE);
-            txtMed=itemView.findViewById(R.id.txtMed);
-            imgMsg=itemView.findViewById(R.id.imgMsg);
+            txtMed = itemView.findViewById(R.id.txtMed);
+            imgMsg = itemView.findViewById(R.id.imgMsg);
         }
     }
 }

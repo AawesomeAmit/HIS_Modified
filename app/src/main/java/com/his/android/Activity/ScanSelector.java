@@ -49,10 +49,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ScanSelector extends BaseActivity {
-    TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload, txtUpdateIntake,txtUpdateMedicine, txtUpdateSupplement,
-            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote,txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator, txtSample;
+    TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload, txtUpdateIntake, txtUpdateMedicine, txtUpdateSupplement,
+            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote, txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator, txtSample;
     Intent intent;
-    Spinner popupspnDepartment,popUpspnConsultant,popUpspnWard, spnBed;
+    Spinner popupspnDepartment, popUpspnConsultant, popUpspnWard, spnBed;
     EditText popUpEtReason;
     Dialog dialog;
     ArrayAdapter arrayAdapter;
@@ -60,10 +60,11 @@ public class ScanSelector extends BaseActivity {
     List<ConsultantList> consultantLists = new ArrayList<>();
     List<BedMaster> bedList = new ArrayList<>();
     static List<Ward> wardLists = new ArrayList<>();
-    private String departmentID="";
-    private String consultantID="";
-    private String bedID="";
-    private String wardID="";
+    private String departmentID = "";
+    private String consultantID = "";
+    private String bedID = "";
+    private String wardID = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,21 +140,21 @@ public class ScanSelector extends BaseActivity {
         }
 //        hitGetUserProfileByPID();
         hitGetWard();
-        if(SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID()==1){
+        if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 1) {
             txtChecklist.setVisibility(View.GONE);
             txtUpdateVitals.setVisibility(View.GONE);
             txtIntake.setVisibility(View.GONE);
             txtScanIntake.setVisibility(View.GONE);
             txtO2.setVisibility(View.GONE);
             txtVentilator.setVisibility(View.GONE);
-        } else if(SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID()==4){
+        } else if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 4) {
             txtVital.setVisibility(View.GONE);
             txtProgressNote.setVisibility(View.GONE);
             txtPrescription.setVisibility(View.GONE);
             txtDischarge.setVisibility(View.GONE);
             txtO2.setVisibility(View.GONE);
             txtVentilator.setVisibility(View.GONE);
-        } else if(SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID()==5){
+        } else if (SharedPrefManager.getInstance(mActivity).getUser().getUserTypeID() == 5) {
             txtChecklist.setVisibility(View.GONE);
             txtUpdateVitals.setVisibility(View.GONE);
             txtIntake.setVisibility(View.GONE);
@@ -175,7 +176,7 @@ public class ScanSelector extends BaseActivity {
         window.setAttributes(wlp);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        RelativeLayout relativelyBed=dialog.findViewById(R.id.relativelyBed);
+        RelativeLayout relativelyBed = dialog.findViewById(R.id.relativelyBed);
         ImageView ivClose = dialog.findViewById(R.id.ivClose);
         TextView tvSubmit = dialog.findViewById(R.id.tvSubmit);
         TextView tvHeading = dialog.findViewById(R.id.tvHeading);
@@ -188,11 +189,10 @@ public class ScanSelector extends BaseActivity {
         spnBed = dialog.findViewById(R.id.spnBed);
         popUpspnWard = dialog.findViewById(R.id.spnWard);
         popUpEtReason = dialog.findViewById(R.id.etReason);
-        if(head.equalsIgnoreCase("transfer-out")) {
+        if (head.equalsIgnoreCase("transfer-out")) {
             relativelyBed.setVisibility(View.GONE);
             tvHeading.setText(R.string.where_transfer_out);
-        }
-        else {
+        } else {
             relativelyBed.setVisibility(View.VISIBLE);
             tvHeading.setText(R.string.where_transfer_in);
         }
@@ -247,6 +247,7 @@ public class ScanSelector extends BaseActivity {
         dialog.show();
 
     }
+
     private void alertPatientTransfer() {
         dialog = new Dialog(mActivity);
         dialog.setContentView(R.layout.dialog_transfer_patient);
@@ -269,11 +270,11 @@ public class ScanSelector extends BaseActivity {
         ivClose.setOnClickListener(view -> dialog.dismiss());
         tvSubmit.setOnClickListener(view -> {
             try {
-                if (popUpspnWard.getSelectedItemPosition()==0) {
+                if (popUpspnWard.getSelectedItemPosition() == 0) {
                     Toast.makeText(mActivity, "Please select ward", Toast.LENGTH_SHORT).show();
                 }/* else if (popUpEtReason.getText().toString().isEmpty()) {
                     Toast.makeText(mActivity, "Please enter reason", Toast.LENGTH_SHORT).show();
-                } */else {
+                } */ else {
                     if (ConnectivityChecker.checker(mActivity)) {
                         /*if(head.equalsIgnoreCase("transfer-out")) {
                             hitTransferPatient(true);
@@ -393,7 +394,7 @@ public class ScanSelector extends BaseActivity {
 
                     departmentList.addAll(response.body().getSubDept());
 
-                    if(departmentList.size()>0) {
+                    if (departmentList.size() > 0) {
 
                         ArrayAdapter arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, departmentList);
                         popupspnDepartment.setAdapter(arrayAdapter);
@@ -417,7 +418,7 @@ public class ScanSelector extends BaseActivity {
 
                             }
                         });
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
 
                     }
@@ -474,8 +475,7 @@ public class ScanSelector extends BaseActivity {
                     dialog.dismiss();
                     //if(!out)
 //                    hitAccept();
-                }
-                else {
+                } else {
                     // error case
                     switch (response.code()) {
                         case 400:
@@ -539,8 +539,7 @@ public class ScanSelector extends BaseActivity {
                     dialog.dismiss();
                     //if(!out)
                     hitAccept();
-                }
-                else {
+                } else {
                     // error case
                     switch (response.code()) {
                         case 400:
@@ -603,7 +602,7 @@ public class ScanSelector extends BaseActivity {
                     consultantLists.addAll(response.body().getDoctors());
 
 
-                    if (consultantLists.size()>0) {
+                    if (consultantLists.size() > 0) {
 
                         ArrayAdapter arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, consultantLists);
                         popUpspnConsultant.setAdapter(arrayAdapter);
@@ -625,7 +624,7 @@ public class ScanSelector extends BaseActivity {
                             }
                         });
                         Utils.hideDialog();
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
 
                     }
@@ -635,7 +634,7 @@ public class ScanSelector extends BaseActivity {
 
 //                    wardLists.addAll(response.body());
 
-                    if (wardLists.size()>0) {
+                    if (wardLists.size() > 0) {
 
                         ArrayAdapter arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, wardLists);
                         popUpspnWard.setAdapter(arrayAdapter);
@@ -645,7 +644,7 @@ public class ScanSelector extends BaseActivity {
                             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
 
                                 wardID = String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId());
-                                if(position!=0) hitGetBed();
+                                if (position != 0) hitGetBed();
                                 Log.v("asfasgtrhasb", String.valueOf(wardLists.get(popUpspnWard.getSelectedItemPosition()).getId()));
 
 
@@ -657,7 +656,7 @@ public class ScanSelector extends BaseActivity {
                             }
                         });
                         Utils.hideDialog();
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
 
                     }
@@ -694,6 +693,7 @@ public class ScanSelector extends BaseActivity {
             }
         });
     }
+
     private void hitGetBed() {
 
         bedList.clear();
@@ -724,7 +724,7 @@ public class ScanSelector extends BaseActivity {
                     bedList.addAll(response.body().getBedMaster());
 
 
-                    if (bedList.size()>0) {
+                    if (bedList.size() > 0) {
 
                         ArrayAdapter arrayAdapter = new ArrayAdapter(mActivity, R.layout.inflate_spinner_item, bedList);
                         spnBed.setAdapter(arrayAdapter);
@@ -746,7 +746,7 @@ public class ScanSelector extends BaseActivity {
                             }
                         });
                         Utils.hideDialog();
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.no_data_available), Toast.LENGTH_SHORT).show();
 
                     }
@@ -808,8 +808,7 @@ public class ScanSelector extends BaseActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Transfer Successfully!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                }
-                else {
+                } else {
                     // error case
                     switch (response.code()) {
                         case 400:

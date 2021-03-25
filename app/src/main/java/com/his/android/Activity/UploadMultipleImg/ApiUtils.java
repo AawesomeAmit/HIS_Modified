@@ -2,7 +2,8 @@ package com.his.android.Activity.UploadMultipleImg;
 
 public class ApiUtils {
 
-    private ApiUtils() {}
+    private ApiUtils() {
+    }
 
     /*
      * BaseUrl of this application
@@ -10,8 +11,8 @@ public class ApiUtils {
 
 
     //Live Url For Apk
-  // public static final String BASE_URL = "http://182.156.200.178:229/";
-   public static final String BASE_URL = "http://182.156.200.179:201/";
+  //  public static final String BASE_URL = "http://182.156.200.178:229/";
+     public static final String BASE_URL = "http://182.156.200.179:201/";
 
     //Testing Url
     //public static final String BASE_URL = "http://182.156.200.178:108/Api/";

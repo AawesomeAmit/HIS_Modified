@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,52 +69,68 @@ public class PriscriptionOverviewPopup extends BaseActivity {
         llNursingNote = findViewById(R.id.llNursingNote);
         llAngioReport = findViewById(R.id.llAngioReport);
 
+
+        Intent intent1 = getIntent();
+
+        String name = intent1.getStringExtra("PatientName");
+        String pid = intent1.getStringExtra("Pid");
+        String ward = intent1.getStringExtra("ward");
+
+
         llComplaint.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,ComplaintActivity.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, ComplaintActivity.class));
 
         });
 
         llPatientHistory.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,PatientHistoryActivity.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, PatientHistoryActivity.class));
 
         });
 
         llPhysicalExamination.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,PhysicalExaminationActivity.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, PhysicalExaminationActivity.class));
         });
 
         llProgressNote.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,ProgressNoteActivity.class));
+
+            Intent intentq = new Intent(mActivity, ProgressNoteActivity.class);
+
+            intentq.putExtra("pname", name);
+            intentq.putExtra("pid", pid);
+            intentq.putExtra("ward", ward);
+//            intentq.putExtra("Pid", intent.getStringExtra("Pid"));
+//            intentq.putExtra("cons", intent.getStringExtra("ward"));
+            startActivity(intentq);
 
         });
 
         llProcedureNote.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,ProcedureNoteActivity.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, ProcedureNoteActivity.class));
 
         });
 
         llOTNote.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,OTNote.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, OTNote.class));
 
         });
 
         llConsultantNote.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,ConsultantNote.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, ConsultantNote.class));
 
         });
 
         llPatientNote.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,PatientNote.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, PatientNote.class));
 
         });
 
         llNursingNote.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,NursingNote.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, NursingNote.class));
 
         });
 
         llAngioReport.setOnClickListener(view -> {
-            startActivity(new Intent(PriscriptionOverviewPopup.this,AngioReportActivity.class));
+            startActivity(new Intent(PriscriptionOverviewPopup.this, AngioReportActivity.class));
 
         });
 
@@ -156,43 +173,43 @@ public class PriscriptionOverviewPopup extends BaseActivity {
                     Utils.hideDialog();
                 }
             });
-        }else {
+        } else {
             bindData();
             hitGetIntakeOutputData();
         }
         btnMedication.setOnClickListener(view -> {
-            Intent intent=new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
+            Intent intent = new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
             intent.putExtra("statuss", "1");
-            if(getIntent().getStringExtra("status")!=null)
-            intent.putExtra("status", "1");
+            if (getIntent().getStringExtra("status") != null)
+                intent.putExtra("status", "1");
             startActivity(intent);
         });
         btnObservation.setOnClickListener(view -> {
-            Intent intent=new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
+            Intent intent = new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
             intent.putExtra("statuss", "2");
-            if(getIntent().getStringExtra("status")!=null)
+            if (getIntent().getStringExtra("status") != null)
                 intent.putExtra("status", "1");
             startActivity(intent);
         });
         btnViewMedication.setOnClickListener(view -> {
-            Intent intent=new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
+            Intent intent = new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
             intent.putExtra("statuss", "4");
-            if(getIntent().getStringExtra("status")!=null)
+            if (getIntent().getStringExtra("status") != null)
                 intent.putExtra("status", "1");
             startActivity(intent);
         });
         btnViewInvestigation.setOnClickListener(view -> {
-            Intent intent=new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
+            Intent intent = new Intent(PriscriptionOverviewPopup.this, Dashboard.class);
             intent.putExtra("statuss", "5");
-            if(getIntent().getStringExtra("status")!=null)
+            if (getIntent().getStringExtra("status") != null)
                 intent.putExtra("status", "1");
             startActivity(intent);
         });
     }
 
-    private void bindData(){
+    private void bindData() {
         Utils.showRequestDialog(mActivity);
-        Call<PrescribedMedResp> call1= RetrofitClient.getInstance().getApi().getCurrentPrescripttionHistory(SharedPrefManager.getInstance(getApplicationContext()).getUser().getAccessToken(), SharedPrefManager.getInstance(getApplicationContext()).getUser().getUserid().toString(), SharedPrefManager.getInstance(getApplicationContext()).getPid(), SharedPrefManager.getInstance(getApplicationContext()).getHeadID(), SharedPrefManager.getInstance(getApplicationContext()).getSubDept().getId(), SharedPrefManager.getInstance(getApplicationContext()).getUser().getUserid(), null);
+        Call<PrescribedMedResp> call1 = RetrofitClient.getInstance().getApi().getCurrentPrescripttionHistory(SharedPrefManager.getInstance(getApplicationContext()).getUser().getAccessToken(), SharedPrefManager.getInstance(getApplicationContext()).getUser().getUserid().toString(), SharedPrefManager.getInstance(getApplicationContext()).getPid(), SharedPrefManager.getInstance(getApplicationContext()).getHeadID(), SharedPrefManager.getInstance(getApplicationContext()).getSubDept().getId(), SharedPrefManager.getInstance(getApplicationContext()).getUser().getUserid(), null);
         call1.enqueue(new Callback<PrescribedMedResp>() {
             @Override
             public void onResponse(Call<PrescribedMedResp> call1, Response<PrescribedMedResp> response) {
@@ -200,7 +217,7 @@ public class PriscriptionOverviewPopup extends BaseActivity {
                     if (response.body() != null) {
                         String text = "";
                         for (int i = 0; i < response.body().getPatientHistory().size(); i++) {
-                            if (response.body().getPatientHistory().get(i).getPdmId() == 4){
+                            if (response.body().getPatientHistory().get(i).getPdmId() == 4) {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                     text = text + "\u2022 " + Html.fromHtml(response.body().getPatientHistory().get(i).getDetails().trim(), Html.FROM_HTML_MODE_COMPACT) + "\n";
                                 } else {
@@ -209,7 +226,7 @@ public class PriscriptionOverviewPopup extends BaseActivity {
                             }
 
                         }
-                        if (response.body().getPatientHistory().size()>0){
+                        if (response.body().getPatientHistory().size() > 0) {
                             txtPDiagnosis.setVisibility(View.VISIBLE);
                             txtPDiagnosis.setText(text);
                         }
@@ -225,29 +242,29 @@ public class PriscriptionOverviewPopup extends BaseActivity {
         });
     }
 
-    private void hitGetIntakeOutputData(){
+    private void hitGetIntakeOutputData() {
         Utils.showRequestDialog(mActivity);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
         String dateToStr = format.format(new Date());
 
-        Call<GetIntakeOuttakeResp> call1= RetrofitClient.getInstance().getApi().getIntakeOutputData(
+        Call<GetIntakeOuttakeResp> call1 = RetrofitClient.getInstance().getApi().getIntakeOutputData(
                 SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
                 SharedPrefManager.getInstance(mActivity).getPid(),
                 SharedPrefManager.getInstance(mActivity).getHeadID(),
-                format.format(Utils.getYesterdayDate())+" 08:00 AM",
+                format.format(Utils.getYesterdayDate()) + " 08:00 AM",
                 SharedPrefManager.getInstance(mActivity).getIpNo(),
-                dateToStr+" 08:00 AM",
+                dateToStr + " 08:00 AM",
                 SharedPrefManager.getInstance(mActivity).getSubDept().getId(),
                 SharedPrefManager.getInstance(mActivity).getUser().getUserid());
 
         call1.enqueue(new Callback<GetIntakeOuttakeResp>() {
             @Override
             public void onResponse(Call<GetIntakeOuttakeResp> call, Response<GetIntakeOuttakeResp> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     GetIntakeOuttakeResp getIntakeOuttakeResp = response.body();
-                    if(getIntakeOuttakeResp!=null){
+                    if (getIntakeOuttakeResp != null) {
                         tvIntakeOutput.setVisibility(View.VISIBLE);
 
                         float intakeSum = 0;
@@ -261,8 +278,8 @@ public class PriscriptionOverviewPopup extends BaseActivity {
                             outputSum = outputSum + getIntakeOuttakeResp.getOutputHistory().get(i).getQuantity();
                         }
 
-                        tvIntakeOutput.setText("Total Intake Quantity: " + (int)intakeSum +"\n"+
-                                "Total Output Quantity: " + (int)outputSum);
+                        tvIntakeOutput.setText("Total Intake Quantity: " + (int) intakeSum + "\n" +
+                                "Total Output Quantity: " + (int) outputSum);
 
                     }
                 }
