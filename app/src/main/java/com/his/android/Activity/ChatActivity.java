@@ -55,7 +55,9 @@ import com.his.android.Response.ChatFilesUploaderResp;
 import com.his.android.Response.RecepientListResp;
 import com.his.android.Response.SubjectListResp;
 import com.his.android.Response.SubjectWiseChatResp;
+import com.his.android.Utils.LoginService;
 import com.his.android.Utils.RetrofitClient;
+import com.his.android.Utils.ServiceGenerator;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.view.BaseActivity;
@@ -93,7 +95,7 @@ public class ChatActivity extends BaseActivity {
     TextView txtRecipient;
     RecyclerView rvChat;
     private List<SubjectList> subjectList;
-//    private ArrayAdapter<SubjectList> adapter;
+    //    private ArrayAdapter<SubjectList> adapter;
     TextView btnReply, txtTitle;
     MyAdapter myAdapter;
     LinearLayoutManager mLinearLayoutManager;
@@ -111,7 +113,7 @@ public class ChatActivity extends BaseActivity {
         mLinearLayoutManager = new LinearLayoutManager(mActivity);
         rvChat.setLayoutManager(mLinearLayoutManager);
         subjectList = new ArrayList<>();
-        if(getIntent().getStringExtra("pid")!=null) {
+        if (getIntent().getStringExtra("pid") != null) {
             SharedPrefManager.getInstance(getApplicationContext()).setPid(Integer.parseInt(getIntent().getStringExtra("pid")));
             SharedPrefManager.getInstance(getApplicationContext()).setChatID(Integer.parseInt(getIntent().getStringExtra("chatId")));
         }
@@ -121,13 +123,19 @@ public class ChatActivity extends BaseActivity {
 
     private void bindChat(int subID) {
         Utils.showRequestDialog(mActivity);
+
+
+//        LoginService api
+//                = ServiceGenerator.createService(LoginService.class, "H!$$erV!Ce", "0785C700-B96C-44DA-A3A7-AD76C58A9FBC");
+//        Call<SubjectWiseChatResp> call = api.getSubjectWiseChatList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), subID, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
+//
         Call<SubjectWiseChatResp> call = RetrofitClient.getInstance().getApi().getSubjectWiseChatList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), subID, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), String.valueOf(SharedPrefManager.getInstance(mActivity).getPid()));
         call.enqueue(new Callback<SubjectWiseChatResp>() {
             @Override
             public void onResponse(Call<SubjectWiseChatResp> call, Response<SubjectWiseChatResp> response) {
                 if (response.isSuccessful()) {
-                    if(response.body().getSubjectWiseChatList().size()>0)
-                    txtTitle.setText(response.body().getSubjectWiseChatList().get(0).getSubjectName());
+                    if (response.body().getSubjectWiseChatList().size() > 0)
+                        txtTitle.setText(response.body().getSubjectWiseChatList().get(0).getSubjectName());
                     rvChat.setAdapter(new ChatAdp(response.body().getSubjectWiseChatList()));
                     mLinearLayoutManager.scrollToPosition(response.body().getSubjectWiseChatList().size() - 1);
                     txtRecipient.setText(response.body().getSubjectWiseRecipientList().get(0).getRecipientName());
@@ -323,6 +331,7 @@ public class ChatActivity extends BaseActivity {
             });
         }
     }
+
     /*private void bindSubject() {
         Utils.showRequestDialog(mActivity);
         Call<SubjectListResp> call = RetrofitClient.getInstance().getApi().getSubjectList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
@@ -363,23 +372,23 @@ public class ChatActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
             Gson gson = new Gson();
-            Type type = new TypeToken<List<ChatFilePath>>(){}.getType();
+            Type type = new TypeToken<List<ChatFilePath>>() {
+            }.getType();
 //                String li stString = gson.toJson(subjectWiseChatLists.get(i).getFilePath(), new TypeToken<ArrayList<ChatFilePath>>() {}.getType());
             List<ChatFilePath> filePathList = gson.fromJson(subjectWiseChatLists.get(i).getFilePath(), type);
-                if(subjectWiseChatLists.get(i).getSide().equalsIgnoreCase("left")) {
+            if (subjectWiseChatLists.get(i).getSide().equalsIgnoreCase("left")) {
                 holder.txtMsgLeft.setText(subjectWiseChatLists.get(i).getChatMessage());
                 holder.txtLeftDate.setText(subjectWiseChatLists.get(i).getCreatedDate());
                 holder.txtLeftSender.setText(subjectWiseChatLists.get(i).getUserList());
-                if(filePathList!=null && filePathList.size()>0)
-                holder.rvLeftImg.setAdapter(new ChatImgAdp(filePathList));
+                if (filePathList != null && filePathList.size() > 0)
+                    holder.rvLeftImg.setAdapter(new ChatImgAdp(filePathList));
                 holder.llRight.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 holder.txtMsgRight.setText(String.valueOf(subjectWiseChatLists.get(i).getChatMessage()));
                 holder.txtRightDate.setText(subjectWiseChatLists.get(i).getCreatedDate());
                 holder.txtRightSender.setText(subjectWiseChatLists.get(i).getUserList());
-                    if(filePathList!=null && filePathList.size()>0)
-                holder.rvRightImg.setAdapter(new ChatImgAdp(filePathList));
+                if (filePathList != null && filePathList.size() > 0)
+                    holder.rvRightImg.setAdapter(new ChatImgAdp(filePathList));
                 holder.llLeft.setVisibility(View.GONE);
             }
         }
@@ -393,6 +402,7 @@ public class ChatActivity extends BaseActivity {
             TextView txtMsgLeft, txtMsgRight, txtLeftDate, txtLeftSender, txtRightDate, txtRightSender;
             LinearLayout llLeft, llRight;
             RecyclerView rvLeftImg, rvRightImg;
+
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 txtMsgLeft = itemView.findViewById(R.id.txtMsgLeft);
@@ -410,6 +420,7 @@ public class ChatActivity extends BaseActivity {
             }
         }
     }
+
     public class ChatImgAdp extends RecyclerView.Adapter<ChatImgAdp.RecyclerViewHolder> {
         private List<ChatFilePath> filePathList;
 
@@ -429,8 +440,8 @@ public class ChatActivity extends BaseActivity {
         @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int i) {
-            if(filePathList.get(i).getFileType().equalsIgnoreCase("image/jpeg"))
-            Picasso.with(mActivity).load(filePathList.get(i).getFilePath()).resize((int) getResources().getDimension(R.dimen._294sdp), (int) getResources().getDimension(R.dimen._180sdp)).into(holder.imgChat);
+            if (filePathList.get(i).getFileType().equalsIgnoreCase("image/jpeg"))
+                Picasso.with(mActivity).load(filePathList.get(i).getFilePath()).resize((int) getResources().getDimension(R.dimen._294sdp), (int) getResources().getDimension(R.dimen._180sdp)).into(holder.imgChat);
 //            else if(filePathList.get(i).getFileType().equalsIgnoreCase("image/jpeg"))
             holder.imgChat.setOnClickListener(view -> {
                 zoomPopup(filePathList.get(i).getFilePath(), filePathList.get(i).getFileType());
@@ -444,6 +455,7 @@ public class ChatActivity extends BaseActivity {
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             ImageView imgChat;
+
             public RecyclerViewHolder(@NonNull View itemView) {
                 super(itemView);
                 imgChat = itemView.findViewById(R.id.imgChat);

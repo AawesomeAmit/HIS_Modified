@@ -23,7 +23,7 @@ public class HeadAdp extends RecyclerView.Adapter<HeadAdp.RecyclerViewHolder> {
 
     public HeadAdp(Context mCtx, List<HeadAssign> headList) {
         this.mCtx = mCtx;
-        this.headList=headList;
+        this.headList = headList;
     }
 
     @NonNull
@@ -43,7 +43,7 @@ public class HeadAdp extends RecyclerView.Adapter<HeadAdp.RecyclerViewHolder> {
             recyclerViewHolder.txtHead.setText(headList.get(i).getHeadDiscription());
             Drawable res = mCtx.getResources().getDrawable(imageResource);
             recyclerViewHolder.imgHead.setImageDrawable(res);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -58,10 +58,11 @@ public class HeadAdp extends RecyclerView.Adapter<HeadAdp.RecyclerViewHolder> {
     class RecyclerViewHolder extends RecyclerView.ViewHolder {
         ImageView imgHead;
         TextView txtHead;
+
         RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgHead=itemView.findViewById(R.id.imgHead);
-            txtHead=itemView.findViewById(R.id.txtHead);
+            imgHead = itemView.findViewById(R.id.imgHead);
+            txtHead = itemView.findViewById(R.id.txtHead);
         }
     }
 }

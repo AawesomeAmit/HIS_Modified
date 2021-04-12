@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.api.Api;
 import com.his.android.Activity.BP.Initial;
 import com.his.android.Activity.ViaOximeter.ViaOximeterScanActivity;
 import com.his.android.Adapter.HeadAdp;
@@ -55,9 +56,11 @@ import com.his.android.Response.PatientBarcodeResp;
 import com.his.android.Response.SubHeadIDResp;
 import com.his.android.Utils.ClickListener;
 import com.his.android.Utils.ConnectivityChecker;
+import com.his.android.Utils.LoginService;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.RetrofitClient1;
 import com.his.android.Utils.RetrofitClientOrgan;
+import com.his.android.Utils.ServiceGenerator;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.database.DatabaseController;
@@ -404,7 +407,7 @@ public class PreDashboard extends AppCompatActivity {
     }
 
     public void showPopup(final View anchorView) {
-        progressDialog.show();
+
         final RecyclerView recycler;
         ImageView close;
         TextView txtDept;
@@ -425,12 +428,20 @@ public class PreDashboard extends AppCompatActivity {
 
         if (ConnectivityChecker.checker(PreDashboard.this)) {
 
-            progressDialog.show();
+
+//            LoginService api
+//                    = ServiceGenerator.createService(LoginService.class, "H!$$erV!Ce", "0785C700-B96C-44DA-A3A7-AD76C58A9FBC");
+//
+//            Call<SubHeadIDResp> call = api.basicLogin(SharedPrefManager.getInstance(PreDashboard.this).getUser().getAccessToken(),
+//                    SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid().toString(),
+//                    SharedPrefManager.getInstance(PreDashboard.this).getHeadID().toString(),
+//                    SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid());
             Call<SubHeadIDResp> call = RetrofitClient.getInstance().getApi().getsubDepertmentByHID(
                     SharedPrefManager.getInstance(PreDashboard.this).getUser().getAccessToken(),
                     SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid().toString(),
                     SharedPrefManager.getInstance(PreDashboard.this).getHeadID().toString(),
                     SharedPrefManager.getInstance(PreDashboard.this).getUser().getUserid());
+
             call.enqueue(new Callback<SubHeadIDResp>() {
                 @Override
                 public void onResponse(Call<SubHeadIDResp> call, Response<SubHeadIDResp> response) {
@@ -474,7 +485,23 @@ public class PreDashboard extends AppCompatActivity {
 
                         } else {
                             try {
-                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2029) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2030) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 36) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 14))) {//
+                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2029) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2030) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 36) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 14)) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 45)||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 46)
+                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 46)
+                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 47)
+                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 48)
+                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 49)
+                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 50)
+                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 51)
+                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 53)
+
+
+
+
+
+
+
+                                ) {//
                                     Intent intent = new Intent(PreDashboard.this, PatientList.class);
                                     SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
                                     startActivity(intent);
@@ -505,8 +532,8 @@ public class PreDashboard extends AppCompatActivity {
                             }
                         }
                     } else
-                        Toast.makeText(PreDashboard.this, response.message(), Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+
+                        progressDialog.dismiss();
                 }
 
                 @Override
@@ -523,7 +550,7 @@ public class PreDashboard extends AppCompatActivity {
                 recycler.setAdapter(new SubHeadAdp(PreDashboard.this, subHeadIDResp));
                 popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
             } else {
-                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7))) {
+                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7))|| (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 45)) {
                     Intent intent = new Intent(PreDashboard.this, PatientList.class);
                     SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
                     startActivity(intent);
@@ -557,6 +584,7 @@ public class PreDashboard extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(PreDashboard.this, PatientList.class);
                     SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(position));
+                    Log.d("TAG", "onClickdialoglist: " + subHeadIDResp.getSubDept().get(position).getHeadID());
                     startActivity(intent);
                 }
             }

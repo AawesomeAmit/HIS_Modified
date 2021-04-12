@@ -30,6 +30,7 @@ import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -40,6 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "MainActivity";
     EditText edtUser, edtPwd;
     TextView btnLogin, txtForget, resend, mobilenumbertv;
     ProgressDialog progressDialog;
@@ -86,7 +88,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnLogin) {
-            if (ConnectivityChecker.checker(MainActivity.this)) {
+            try {
+                hitLoginApi();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                Log.d(TAG, "loginFailed !! " + e.getLocalizedMessage());
+            }
+            /*if (ConnectivityChecker.checker(MainActivity.this)) {
                 if (validate()) {
                     try {
                         Utils.showRequestDialog(MainActivity.this);
@@ -114,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         return;
 
                                     String detail = response.body().getOtp().get(0).getCurrentOTP();
-                                    ;
 
                                     button = dialogView.findViewById(R.id.button);
                                     otpTextView = dialogView.findViewById(R.id.otptextview);
@@ -154,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                             e.printStackTrace();
                                                         }
                                                     }
-
 
                                                     Utils.hideDialog();
 //
@@ -245,13 +251,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             } else
-                Toast.makeText(MainActivity.this, "Network connection not found!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Network connection not found!", Toast.LENGTH_SHORT).show();*/
         } else if (view.getId() == R.id.txtForget) {
             if (ConnectivityChecker.checker(MainActivity.this)) {
 
             } else
                 Toast.makeText(MainActivity.this, "Network connection not found!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void hitLoginApi() throws UnsupportedEncodingException {
+
+        progressDialog.show();
+        byte[] data;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+            data = edtPwd.getText().toString().getBytes(StandardCharsets.UTF_8);
+        else data = edtPwd.getText().toString().getBytes("UTF-8");
+        Call<LoginResp> call = RetrofitClient.getInstance().getApi()
+                .loginAuthontication(SharedPrefManager.getInstance(MainActivity.this).getUser().getAccessToken(),
+                        "1234567",
+                        edtUser.getText().toString().trim(),
+                        Base64.encodeToString(data, Base64.DEFAULT).trim());
+
+        call.enqueue(new Callback<LoginResp>() {
+            @Override
+            public void onResponse(Call<LoginResp> call, Response<LoginResp> response) {
+
+                if (response.isSuccessful()) {
+                    progressDialog.dismiss();
+                    UserDetail detail = response.body().getUserDetails().get(0);
+                    SharedPrefManager.getInstance(MainActivity.this).setUser(detail);
+                    SharedPrefManager.getInstance(MainActivity.this).setHead(response.body().getHeadAssign());
+                    SharedPrefManager.getInstance(MainActivity.this).saveHeadList(response.body().getHeadAssign(), "headList");
+                    insertFcmToken();
+
+                    Intent intent = new Intent(MainActivity.this, PreDashboard.class);
+                    intent.putExtra("oldpassword", Base64.encodeToString(data, Base64.DEFAULT).trim());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else {
+                    progressDialog.dismiss();
+                    try {
+                        Toast.makeText(MainActivity.this, response.errorBody().string(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Utils.hideDialog();
+//
+
+            }
+
+            @Override
+            public void onFailure(Call<LoginResp> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Network Error!", Toast.LENGTH_SHORT).show();
+                Utils.hideDialog();
+            }
+        });
     }
 
     private void insertFcmToken() {

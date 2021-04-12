@@ -38,8 +38,10 @@ import com.his.android.Response.IcuPatientListResp;
 import com.his.android.Response.IpdPatientListResp;
 import com.his.android.Response.PhysioPatientListResp;
 import com.his.android.Utils.ConnectivityChecker;
+import com.his.android.Utils.LoginService;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.RetrofitClient1;
+import com.his.android.Utils.ServiceGenerator;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.database.DatabaseController;
@@ -179,7 +181,19 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             bindCovidPatient();
         } else if (SharedPrefManager.getInstance(this).getHeadID() == 9) {
             bindPhysioList();
-        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4 || SharedPrefManager.getInstance(this).getHeadID() == 2029 || SharedPrefManager.getInstance(this).getHeadID() == 2030 || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 36) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 14)) {
+        } else if (SharedPrefManager.getInstance(this).getHeadID() == 3 || SharedPrefManager.getInstance(this).getHeadID() == 4 || SharedPrefManager.getInstance(this).getHeadID() == 2029 || SharedPrefManager.getInstance(this).getHeadID() == 2030 || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 36) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 14) || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 39)|| (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 40)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 45)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 46)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 47)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 48)||
+                (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 49)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 50)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 51)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 53)
+
+
+
+        ) {
             /*int wardId = 0;
             if (SharedPrefManager.getInstance(this).getHeadID() == 3)
                 wardId = 39;
@@ -446,7 +460,16 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
 
         if (ConnectivityChecker.checker(context)) {
 
+//            LoginService api
+//                    = ServiceGenerator.createService(LoginService.class, "H!$$erV!Ce", "0785C700-B96C-44DA-A3A7-AD76C58A9FBC");
+
+
             Utils.showRequestDialog(context);
+//            Call<IcuPatientListResp> call = api.getICUPatientList(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(),
+//                    SharedPrefManager.getInstance(context).getUser().getUserid().toString(),
+//                    SharedPrefManager.getInstance(PatientList.this).getSubDept().getId(),
+//                    SharedPrefManager.getInstance(PatientList.this).getUser().getUserid(),
+//                    SharedPrefManager.getInstance(PatientList.this).getHeadID());
             Call<IcuPatientListResp> call = RetrofitClient.getInstance().getApi().getICUPatientList(
                     SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(),
                     SharedPrefManager.getInstance(context).getUser().getUserid().toString(),

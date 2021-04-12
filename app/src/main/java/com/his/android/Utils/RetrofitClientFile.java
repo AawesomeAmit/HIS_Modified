@@ -13,8 +13,9 @@ public class RetrofitClientFile {
     //Live
     public static final String BASE_URL = "http://182.156.200.179:201/";
 
-    //public static final String BASE_URL = "http://182.156.200.178:229/api/";
-    //public static final String BASE_URL = "http://192.168.7.13:229/api/";
+   //public static final String BASE_URL = "http://182.156.200.178:229/api/";
+   // public static final String BASE_URL = "https://criteriontech.co.in:129/api/";
+   //public static final String BASE_URL = "http://192.168.7.13:229/api/";
 
     //Local
 //    public static final String BASE_URL = "http://192.168.7.13:229/";

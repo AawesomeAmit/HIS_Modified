@@ -54,8 +54,10 @@ import com.his.android.Response.SubjectListResp;
 import com.his.android.Response.SubjectNameExistResp;
 import com.his.android.Response.UniversalResp;
 import com.his.android.Utils.ConnectivityChecker;
+import com.his.android.Utils.LoginService;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.RetrofitClientFile;
+import com.his.android.Utils.ServiceGenerator;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.view.BaseActivity;
@@ -94,7 +96,7 @@ public class SendMessage extends BaseActivity {
     RecyclerView rvRecipient;
     TextView btnSubmit, tvRecp, tvSub;
     EditText edtMsg;
-    private boolean isExist=false;
+    private boolean isExist = false;
     CheckBox chkTimeline;
     LinearLayout linearLayout3;
     private MediaPlayer mPlayer;
@@ -105,8 +107,9 @@ public class SendMessage extends BaseActivity {
     private ArrayList<String> selectedRecipientList = new ArrayList<>();
     private ChipsInput chpRecipient;
     EditText txtSubject;
-//    private ArrayAdapter<SubjectList> adapter;
+    //    private ArrayAdapter<SubjectList> adapter;
     ArrayList<String> returnValue = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +149,12 @@ public class SendMessage extends BaseActivity {
             rvImg.setVisibility(View.VISIBLE);
         });
         txtSubject.setOnFocusChangeListener((view, b) -> {
-            if(!b) {
+            if (!b) {
+//                LoginService api
+//                        = ServiceGenerator.createService(LoginService.class, "H!$$erV!Ce", "0785C700-B96C-44DA-A3A7-AD76C58A9FBC");
+//
+//                Call<SubjectNameExistResp> call = api.getSubjectnameAlreadyExist(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), txtSubject.getText().toString().trim());
+//
                 Call<SubjectNameExistResp> call = RetrofitClient.getInstance().getApi().getSubjectnameAlreadyExist(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), txtSubject.getText().toString().trim());
                 call.enqueue(new Callback<SubjectNameExistResp>() {
                     @Override
@@ -202,20 +210,20 @@ public class SendMessage extends BaseActivity {
         });
 //        bindSubject();
         btnSubmit.setOnClickListener(view -> {
-                if (getIntent().getStringExtra("type").equalsIgnoreCase("new")) {
-                    if (txtSubject.getText().toString().isEmpty()) {
-                        Toast.makeText(mActivity, "Please select a title!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (isExist) {
-                        Toast.makeText(mActivity, "This title already exists!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (chpRecipient.getSelectedChipList().size() <= 0) {
-                        Toast.makeText(mActivity, "Please add atleast one recipient!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+            if (getIntent().getStringExtra("type").equalsIgnoreCase("new")) {
+                if (txtSubject.getText().toString().isEmpty()) {
+                    Toast.makeText(mActivity, "Please select a title!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if (isExist) {
+                    Toast.makeText(mActivity, "This title already exists!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (chpRecipient.getSelectedChipList().size() <= 0) {
+                    Toast.makeText(mActivity, "Please add atleast one recipient!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
             if (!edtMsg.getText().toString().isEmpty()) {
                 Utils.showRequestDialog1(mActivity);
                 JSONArray jsonArray = new JSONArray();
@@ -282,7 +290,7 @@ public class SendMessage extends BaseActivity {
                 } else sendMsg(jsonArray, new JSONArray());
             } else Toast.makeText(mActivity, "Please type a message!", Toast.LENGTH_SHORT).show();
         });
-        if(getIntent().getStringExtra("type").equalsIgnoreCase("reply")){
+        if (getIntent().getStringExtra("type").equalsIgnoreCase("reply")) {
             chpRecipient.setVisibility(View.GONE);
             rvRecipient.setVisibility(View.GONE);
             tvRecp.setVisibility(View.GONE);
@@ -310,19 +318,35 @@ public class SendMessage extends BaseActivity {
             break;
         }
     }
+
     private void sendMsg(JSONArray jsonArray, JSONArray files) {
         Call<ResponseBody> call;
-        if(getIntent().getStringExtra("type").equalsIgnoreCase("new"))
-        call = RetrofitClient.getInstance().getApi().createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), txtSubject.getText().toString().trim(), 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, files);
-        else call = RetrofitClient.getInstance().getApi().createRecipientChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getChatID(), edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), files);
+//        LoginService api
+//                = ServiceGenerator.createService(LoginService.class, "H!$$erV!Ce", "0785C700-B96C-44DA-A3A7-AD76C58A9FBC");
+
+
+        if (getIntent().getStringExtra("type").equalsIgnoreCase("new"))
+
+
+//            call = api.createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), txtSubject.getText().toString().trim(), 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, files);
+//
+//
+            call = RetrofitClient.getInstance().getApi().createNewChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), txtSubject.getText().toString().trim(), 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), jsonArray, edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, files);
+
+//        else
+//            call = api.createRecipientChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getChatID(), edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), files);
+//
+
+        else
+            call = RetrofitClient.getInstance().getApi().createRecipientChatMessage(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getChatID(), edtMsg.getText().toString().trim(), chkTimeline.isChecked() ? 1 : 0, SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), files);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(SendMessage.this, "Message sent successfully!", Toast.LENGTH_SHORT).show();
                     edtMsg.setText("");
-                    if(getIntent().getStringExtra("type").equalsIgnoreCase("new"))
-                    startActivity(new Intent(mActivity, ChatTitle.class));
+                    if (getIntent().getStringExtra("type").equalsIgnoreCase("new"))
+                        startActivity(new Intent(mActivity, ChatTitle.class));
                     else startActivity(new Intent(mActivity, ChatActivity.class));
                 } else {
                     try {
@@ -342,9 +366,18 @@ public class SendMessage extends BaseActivity {
             }
         });
     }
+
     private void bindRecipient(String text) {
-        if(!text.equalsIgnoreCase("")) {
+        if (!text.equalsIgnoreCase("")) {
             Utils.showRequestDialog1(mActivity);
+//
+//            LoginService api
+//                    = ServiceGenerator.createService(LoginService.class, "H!$$erV!Ce", "0785C700-B96C-44DA-A3A7-AD76C58A9FBC");
+//
+//
+//            Call<RecepientListResp> call = api.getDepartmentDesignationUserList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), text);
+//
+
             Call<RecepientListResp> call = RetrofitClient.getInstance().getApi().getDepartmentDesignationUserList(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), text);
             call.enqueue(new Callback<RecepientListResp>() {
                 @Override
@@ -541,11 +574,13 @@ public class SendMessage extends BaseActivity {
         }
         return type;
     }
+
     private boolean CheckPermissions() {
         int result = ContextCompat.checkSelfPermission(mActivity, WRITE_EXTERNAL_STORAGE);
         int result1 = ContextCompat.checkSelfPermission(mActivity, RECORD_AUDIO);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
     }
+
     private void RequestPermissions() {
         ActivityCompat.requestPermissions(mActivity, new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
     }
@@ -569,7 +604,7 @@ public class SendMessage extends BaseActivity {
             }
         });
     }*/
-    
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {

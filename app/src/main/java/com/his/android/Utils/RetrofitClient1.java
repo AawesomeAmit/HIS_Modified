@@ -12,6 +12,7 @@ public class RetrofitClient1 {
 //    public static final String BASE_URL = "http://192.168.7.13:211/api/";
 //    public static final String BASE_URL = "http://182.156.200.178:211/api/";
     //public static final String BASE_URL = "http://182.156.200.178:602/api/";
+//public static final String BASE_URL = "https://criteriontech.co.in:129/api/";
     private static RetrofitClient1 mInstance;
     private Retrofit retrofit;
     private RetrofitClient1() {

@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClientOrgan {
     public static final String BASE_URL = "http://182.156.200.179:330/";
+   // public static final String BASE_URL = "https://criteriontech.co.in:129/api/";
     //public static final String BASE_URL = "http://182.156.200.178:8082/";
     private static RetrofitClientOrgan mInstance;
     private Retrofit retrofit;

@@ -17,7 +17,9 @@ import com.his.android.Model.SubjectNameListTab;
 import com.his.android.R;
 import com.his.android.Response.SubjectNameTabResp;
 import com.his.android.Utils.ClickListener;
+import com.his.android.Utils.LoginService;
 import com.his.android.Utils.RetrofitClient;
+import com.his.android.Utils.ServiceGenerator;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.view.BaseActivity;
@@ -43,7 +45,13 @@ public class ChatTitle extends BaseActivity {
         rvChat.setLayoutManager(mLinearLayoutManager);
         Utils.showRequestDialog(mActivity);
         btnMessage.setOnClickListener(view -> startActivity(new Intent(mActivity, SendMessage.class).putExtra("type", "new")));
-        Call<SubjectNameTabResp> call= RetrofitClient.getInstance().getApi().getSubjectNameforTabsPatientWise(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
+//
+//        LoginService api
+//                = ServiceGenerator.createService(LoginService.class, "H!$$erV!Ce", "0785C700-B96C-44DA-A3A7-AD76C58A9FBC");
+//
+//        Call<SubjectNameTabResp> call=api.getSubjectNameforTabsPatientWise(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
+
+       Call<SubjectNameTabResp> call= RetrofitClient.getInstance().getApi().getSubjectNameforTabsPatientWise(SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(), SharedPrefManager.getInstance(mActivity).getPid(), SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
         call.enqueue(new Callback<SubjectNameTabResp>() {
             @Override
             public void onResponse(Call<SubjectNameTabResp> call, Response<SubjectNameTabResp> response) {
