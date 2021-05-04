@@ -22,6 +22,9 @@ public class GetSubTest {
     @SerializedName("isNormalResult")
     @Expose
     public Boolean isNormalResult;
+    @SerializedName("normalRange")
+    @Expose
+    public String normalRange;
 
     public Integer getId() {
         return id;
@@ -45,5 +48,9 @@ public class GetSubTest {
 
     public Boolean getNormalResult() {
         return isNormalResult;
+    }
+
+    public String getNormalRange() {
+        return normalRange;
     }
 }

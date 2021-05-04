@@ -66,13 +66,22 @@ public class EnterPID extends AppCompatActivity {
                                     SharedPrefManager.getInstance(EnterPID.this).setPid(checkPidResp.getPatientDetails().get(0).getPid());
                                     SharedPrefManager.getInstance(EnterPID.this).setIpNo("0");
                                     if (SharedPrefManager.getInstance(EnterPID.this).getHeadID() == 7 || SharedPrefManager.getInstance(EnterPID.this).getHeadID() == 11)
+                                    {
                                         startActivity(new Intent(EnterPID.this, Dashboard.class).putExtra("status", "3"));
-                                    else if (SharedPrefManager.getInstance(EnterPID.this).getHeadID() == 1)
+                                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                    }
+                                    else if (SharedPrefManager.getInstance(EnterPID.this).getHeadID() == 1) {
                                         startActivity(new Intent(EnterPID.this, Dashboard.class).putExtra("status", "6"));
-                                    else if (SharedPrefManager.getInstance(EnterPID.this).getHeadID() == 26)
+                                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                    }
+                                    else if (SharedPrefManager.getInstance(EnterPID.this).getHeadID() == 26) {
                                         startActivity(new Intent(EnterPID.this, GuardPostActivity.class));
-                                    else
+                                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                    }
+                                    else {
                                         startActivity(new Intent(EnterPID.this, Dashboard.class).putExtra("status", "1"));
+                                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                    }
                                     progressDialog.dismiss();
                                 }
                             } else {
@@ -99,22 +108,23 @@ public class EnterPID extends AppCompatActivity {
         });
         txtCovid.setOnClickListener(view -> {
             startActivity(new Intent(EnterPID.this, PatientList.class));
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
         btnNotAvailable.setOnClickListener(view -> {
             SharedPrefManager.getInstance(EnterPID.this).setPid(0);
             startActivity(new Intent(EnterPID.this, GuardPostActivity.class));
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
-        tvPatientList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(EnterPID.this, GuardPostPatientListActivity.class));
-            }
+        tvPatientList.setOnClickListener(view -> {
+            startActivity(new Intent(EnterPID.this, GuardPostPatientListActivity.class));
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(EnterPID.this, PreDashboard.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

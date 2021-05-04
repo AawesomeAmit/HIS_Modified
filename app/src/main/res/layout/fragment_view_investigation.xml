@@ -100,7 +100,7 @@
             android:textStyle="bold"
             android:gravity="end"
             android:layout_weight="3"
-            android:text="@string/remark"
+            android:text="@string/normal_ranges"
             android:drawablePadding="@dimen/_2sdp"
             android:textColor="@color/blue_text"
             android:textSize="@dimen/_12sdp"/>

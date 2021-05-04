@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else data = edtPwd.getText().toString().getBytes("UTF-8");
         Call<LoginResp> call = RetrofitClient.getInstance().getApi()
                 .loginAuthontication(SharedPrefManager.getInstance(MainActivity.this).getUser().getAccessToken(),
-                        "1234567",
+                        edtUser.getText().toString().trim(),
                         edtUser.getText().toString().trim(),
                         Base64.encodeToString(data, Base64.DEFAULT).trim());
 
@@ -289,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent.putExtra("oldpassword", Base64.encodeToString(data, Base64.DEFAULT).trim());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else {
                     progressDialog.dismiss();
                     try {

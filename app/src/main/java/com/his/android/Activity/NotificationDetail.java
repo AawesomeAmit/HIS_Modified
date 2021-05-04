@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
@@ -231,25 +232,28 @@ public class NotificationDetail extends AppCompatActivity implements View.OnClic
                     Utils.showRequestDialog(NotificationDetail.this);
                     if (response.body() != null) {
                         if (response.isSuccessful()) {
-                            investigationResultNotificationRespList = response.body();
-                            if (investigationResultNotificationRespList.size() > 0) {
-                                txtPName.setText(investigationResultNotificationRespList.get(0).getPatientName() + "("+ investigationResultNotificationRespList.get(0).getPid().toString()+")");
-                                txtDName.setText(investigationResultNotificationRespList.get(0).getConsultantName());
-                                txtResult.setText(investigationResultNotificationRespList.get(0).getResult() + " " + investigationResultNotificationRespList.get(0).getResultUnit());
-                                txtRange.setText(Html.fromHtml(investigationResultNotificationRespList.get(0).getTestNormalRange()));
-                                txtDepartment.setText(investigationResultNotificationRespList.get(0).getDepartment());
-                                txtAge.setText(investigationResultNotificationRespList.get(0).getAge() + " " + investigationResultNotificationRespList.get(0).getAgeUnit());
-                                txtGender.setText(investigationResultNotificationRespList.get(0).getGender());
-                                txtTest.setText(Html.fromHtml(investigationResultNotificationRespList.get(0).getTestName()));
-                                if(investigationResultNotificationRespList.get(0).getGender().equalsIgnoreCase("male")) {
-                                    img = NotificationDetail.this.getResources().getDrawable(R.drawable.male);
-                                    txtGender.setTextColor(NotificationDetail.this.getResources().getColor(R.color.blue_gender));
+                            try {
+                                investigationResultNotificationRespList = response.body();
+                                if (investigationResultNotificationRespList.size() > 0) {
+                                    txtPName.setText(investigationResultNotificationRespList.get(0).getPatientName() + "(" + investigationResultNotificationRespList.get(0).getPid().toString() + ")");
+                                    txtDName.setText(investigationResultNotificationRespList.get(0).getConsultantName());
+                                    txtResult.setText(investigationResultNotificationRespList.get(0).getResult() + " " + investigationResultNotificationRespList.get(0).getResultUnit());
+                                    txtRange.setText(Html.fromHtml(investigationResultNotificationRespList.get(0).getTestNormalRange()));
+                                    txtDepartment.setText(investigationResultNotificationRespList.get(0).getDepartment());
+                                    txtAge.setText(investigationResultNotificationRespList.get(0).getAge() + " " + investigationResultNotificationRespList.get(0).getAgeUnit());
+                                    txtGender.setText(investigationResultNotificationRespList.get(0).getGender());
+                                    txtTest.setText(Html.fromHtml(investigationResultNotificationRespList.get(0).getTestName()));
+                                    if (investigationResultNotificationRespList.get(0).getGender().equalsIgnoreCase("male")) {
+                                        img = NotificationDetail.this.getResources().getDrawable(R.drawable.male);
+                                        txtGender.setTextColor(NotificationDetail.this.getResources().getColor(R.color.blue_gender));
+                                    } else {
+                                        img = NotificationDetail.this.getResources().getDrawable(R.drawable.female);
+                                        txtGender.setTextColor(NotificationDetail.this.getResources().getColor(R.color.pink));
+                                    }
+                                    txtGender.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                                 }
-                                else {
-                                    img = NotificationDetail.this.getResources().getDrawable(R.drawable.female);
-                                    txtGender.setTextColor(NotificationDetail.this.getResources().getColor(R.color.pink));
-                                }
-                                txtGender.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                     }

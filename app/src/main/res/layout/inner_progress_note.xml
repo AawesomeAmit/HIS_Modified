@@ -24,6 +24,7 @@
             android:padding="@dimen/_2sdp"
             android:drawablePadding="@dimen/_5sdp"
             android:textStyle="bold"
+            android:textIsSelectable="true"
             android:textSize="@dimen/_12sdp"
             android:id="@+id/txtNTitle"/>
         <TextView
@@ -32,12 +33,14 @@
             android:textColor="@color/black"
             android:padding="@dimen/_2sdp"
             android:textSize="@dimen/_12sdp"
+            android:textIsSelectable="true"
             android:id="@+id/txtNBody"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:gravity="end"
+            android:textIsSelectable="true"
             android:text="@string/date"
             android:padding="@dimen/_2sdp"
             android:textSize="@dimen/_12sdp"

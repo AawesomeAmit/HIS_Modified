@@ -2,6 +2,7 @@ package com.his.android.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -13,18 +14,22 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.his.android.Adapter.RecyclerTouchListener;
 import com.his.android.Adapter.ViewNotificationAdp;
 import com.his.android.R;
 import com.his.android.Response.ViewNotificationResp;
 import com.his.android.Utils.ClickListener;
+import com.his.android.Utils.RecyclerItemTouchHelper;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -32,10 +37,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NotificationList extends AppCompatActivity {
+public class NotificationList extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     TextView txtDrName, txtDept, txtPName, txtRange, txtDepartment, txtGender, txtAge, txtPid, txtDName, txtNote, img, txtResult;
     RecyclerView rView;
     LinearLayout llRange;
+    ViewNotificationAdp notificationAdp;
     List<ViewNotificationResp> notificationList;
 
     @Override
@@ -58,12 +64,21 @@ public class NotificationList extends AppCompatActivity {
         txtResult = popupView.findViewById(R.id.txtResult);
         txtDName = popupView.findViewById(R.id.txtDName);
         txtNote = popupView.findViewById(R.id.txtNote);
+        notificationList=new ArrayList<>();
+        notificationAdp=new ViewNotificationAdp(this, notificationList);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable());
         txtDrName.setText(SharedPrefManager.getInstance(this).getUser().getDisplayName());
         txtDept.setText(SharedPrefManager.getInstance(this).getSubDept().getSubDepartmentName());
         rView.setLayoutManager(new LinearLayoutManager(this));
+        rView.setAdapter(notificationAdp);
         loadData();
+
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rView);
+
+
         rView.addOnItemTouchListener(new RecyclerTouchListener(this, rView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -110,6 +125,7 @@ public class NotificationList extends AppCompatActivity {
     }
 
     public void loadData() {
+        Utils.showRequestDialog(NotificationList.this);
         Call<List<ViewNotificationResp>> call = RetrofitClient.getInstance().getApi().getNotificationList(SharedPrefManager.getInstance(this).getUser().getAccessToken(), SharedPrefManager.getInstance(this).getUser().getUserid().toString(), SharedPrefManager.getInstance(this).getUser().getUserid());
         call.enqueue(new Callback<List<ViewNotificationResp>>() {
             @Override
@@ -117,10 +133,10 @@ public class NotificationList extends AppCompatActivity {
                 Utils.showRequestDialog(NotificationList.this);
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
-                        notificationList = response.body();
-                        if (notificationList.size() > 0) {
-                            rView.setAdapter(new ViewNotificationAdp(NotificationList.this, notificationList));
-                        } else
+                        notificationList.addAll(response.body());
+                        if (notificationList.size() > 0)
+                            notificationAdp.notifyDataSetChanged();
+                        else
                             Toast.makeText(NotificationList.this, "No data found", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -139,5 +155,31 @@ public class NotificationList extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(NotificationList.this, PreDashboard.class));
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        if (viewHolder instanceof ViewNotificationAdp.RecyclerViewHolder) {
+            // get the removed item name to display it in snack bar
+            String name = notificationList.get(viewHolder.getAdapterPosition()).getNotificationTitle();
+
+            // backup of removed item for undo purpose
+            final ViewNotificationResp deletedItem = notificationList.get(viewHolder.getAdapterPosition());
+            final int deletedIndex = viewHolder.getAdapterPosition();
+
+            // remove the item from recycler view
+//            notificationAdp.removeItem(viewHolder.getAdapterPosition());
+
+            // showing snack bar with Undo option
+            Snackbar snackbar = Snackbar
+                    .make(rView, name + " removed from cart!", Snackbar.LENGTH_LONG);
+            snackbar.setAction("UNDO", view -> {
+
+                // undo is selected, restore the deleted item
+//                    notificationAdp.restoreItem(deletedItem, deletedIndex);
+            });
+            snackbar.setActionTextColor(Color.YELLOW);
+            snackbar.show();
+        }
     }
 }

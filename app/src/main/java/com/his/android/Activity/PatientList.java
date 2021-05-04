@@ -189,8 +189,15 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                 (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 49)
                 || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 50)
                 || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 51)
-                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 53)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 52)
+                || (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 53)||
 
+        (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 40) ||
+                (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 56) ||
+                (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 58) ||
+                (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 55) ||
+                (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 54) ||
+                (SharedPrefManager.getInstance(PatientList.this).getHeadID() == 57)
 
 
         ) {
@@ -393,6 +400,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(PatientList.this, PreDashboard.class));
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     @Override
@@ -462,8 +470,6 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
 
 //            LoginService api
 //                    = ServiceGenerator.createService(LoginService.class, "H!$$erV!Ce", "0785C700-B96C-44DA-A3A7-AD76C58A9FBC");
-
-
             Utils.showRequestDialog(context);
 //            Call<IcuPatientListResp> call = api.getICUPatientList(SharedPrefManager.getInstance(PatientList.this).getUser().getAccessToken(),
 //                    SharedPrefManager.getInstance(context).getUser().getUserid().toString(),

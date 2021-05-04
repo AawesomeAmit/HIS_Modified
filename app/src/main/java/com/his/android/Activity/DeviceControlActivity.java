@@ -155,15 +155,15 @@ public class DeviceControlActivity extends Activity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         ((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
-        mGattServicesList = (ExpandableListView) findViewById(R.id.gatt_services_list);
+        mGattServicesList = findViewById(R.id.gatt_services_list);
         mGattServicesList.setOnChildClickListener(servicesListClickListner);
-        mConnectionState = (TextView) findViewById(R.id.connection_state);
-        mDataField1 = (TextView) findViewById(R.id.txtSpo2);
-        mDataField2 = (TextView) findViewById(R.id.txtPulse);
-        btnGetData = (TextView) findViewById(R.id.btnGetData);
-        btnSaveData = (TextView) findViewById(R.id.btnSaveData);
+        mConnectionState = findViewById(R.id.connection_state);
+        mDataField1 = findViewById(R.id.txtSpo2);
+        mDataField2 = findViewById(R.id.txtPulse);
+        btnGetData = findViewById(R.id.btnGetData);
+        btnSaveData = findViewById(R.id.btnSaveData);
         txtPid = findViewById(R.id.txtPid);
-        btnScan = (TextView) findViewById(R.id.btnScan);
+        btnScan = findViewById(R.id.btnScan);
         mGattServicesList.setVisibility(View.GONE);
         txtPid.addTextChangedListener(new TextWatcher() {
             @Override

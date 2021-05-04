@@ -72,6 +72,7 @@ public class StartActivity extends AppCompatActivity {
                     update = true;
                     Toast.makeText(this, "Please update to latest version", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else {
                     if (SharedPrefManager.getInstance(StartActivity.this).isLoggedIn()) {
                         handler = new Handler();
@@ -79,12 +80,14 @@ public class StartActivity extends AppCompatActivity {
                             Intent intent = new Intent(StartActivity.this, PreDashboard.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         }, 3000);
                     } else {
                         handler = new Handler();
                         handler.postDelayed(() -> {
                             startActivity(new Intent(StartActivity.this, MainActivity.class));
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             finish();
                         }, 3000);
                     }
@@ -98,12 +101,14 @@ public class StartActivity extends AppCompatActivity {
                         Intent intent = new Intent(StartActivity.this, PreDashboard.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         finish();
                     }, 3000);
                 } else {
                     handler = new Handler();
                     handler.postDelayed(() -> {
                         startActivity(new Intent(StartActivity.this, MainActivity.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         finish();
                     }, 3000);
                 }
@@ -115,12 +120,14 @@ public class StartActivity extends AppCompatActivity {
                     Intent intent = new Intent(StartActivity.this, PreDashboard.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     finish();
                 }, 3000);
             } else {
                 handler = new Handler();
                 handler.postDelayed(() -> {
                     startActivity(new Intent(StartActivity.this, MainActivity.class));
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     finish();
                 }, 3000);
             }

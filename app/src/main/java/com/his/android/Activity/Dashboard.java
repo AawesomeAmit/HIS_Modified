@@ -260,7 +260,10 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
-        else super.onBackPressed();
+        else {
+            super.onBackPressed();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        }
     }
 
     @Override

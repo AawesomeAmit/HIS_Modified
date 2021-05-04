@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class ViewNotificationAdp extends RecyclerView.Adapter<ViewNotificationAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewNotificationAdp.RecyclerViewHolder holder, int i) {
-        holder.txtNBody.setText(notificationList.get(i).getNotificationBody());
+        holder.txtNBody.setText(Html.fromHtml(notificationList.get(i).getNotificationBody()));
         holder.txtNDate.setText(mCtx.getResources().getString(R.string.date) + " " + notificationList.get(i).getNotificationDate());
         holder.txtNTitle.setText(notificationList.get(i).getNotificationTitle());
         Drawable res;
@@ -61,7 +62,7 @@ public class ViewNotificationAdp extends RecyclerView.Adapter<ViewNotificationAd
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         TextView txtNBody,txtNDate, txtNTitle;
-        LinearLayout lLayout;
+        public LinearLayout lLayout;
         public RecyclerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNBody=itemView.findViewById(R.id.txtNBody);

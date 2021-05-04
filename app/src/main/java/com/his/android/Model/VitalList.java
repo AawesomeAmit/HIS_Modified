@@ -16,6 +16,12 @@ public class VitalList {
     @SerializedName("vitalUnit")
     @Expose
     public String vitalUnit;
+    @SerializedName("vitalColorCode")
+    @Expose
+    public String vitalColorCode;
+    @SerializedName("vitalType")
+    @Expose
+    public String vitalType;
 
     public String getVitalName() {
         return vitalName;
@@ -47,5 +53,21 @@ public class VitalList {
 
     public void setVitalUnit(String vitalUnit) {
         this.vitalUnit = vitalUnit;
+    }
+
+    public String getVitalColorCode() {
+        return vitalColorCode;
+    }
+
+    public void setVitalColorCode(String vitalColorCode) {
+        this.vitalColorCode = vitalColorCode;
+    }
+
+    public String getVitalType() {
+        return vitalType;
+    }
+
+    public void setVitalType(String vitalType) {
+        this.vitalType = vitalType;
     }
 }

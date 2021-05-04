@@ -43,7 +43,8 @@ public class InnerViewInvestigationAdp extends RecyclerView.Adapter<InnerViewInv
     public void onBindViewHolder(@NonNull InnerViewInvestigationAdp.RecyclerViewHolder holder, int i) {
         holder.txtTestName.setText(getSubTestList.get(i).getSubTestName());
         holder.txtValue.setText(getSubTestList.get(i).getResult() + " " + (getSubTestList.get(i).getUnitname() != null ? getSubTestList.get(i).getUnitname() : ""));
-        holder.txtRange.setText(getSubTestList.get(i).getResultRemark());
+//        holder.txtRange.setText(getSubTestList.get(i).getResultRemark());
+        holder.txtRange.setText(getSubTestList.get(i).getNormalRange() != null ? getSubTestList.get(i).getNormalRange() : "");
         holder.llChart.setOnClickListener(view1 -> viewInvestigation.showChart(view1, getSubTestList.get(i).getId(), catId));
         if (getSubTestList.get(i).getNormalResult() != null) {
             if (getSubTestList.get(i).getNormalResult()) {

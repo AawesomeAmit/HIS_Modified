@@ -112,7 +112,8 @@ public class PreDashboard extends AppCompatActivity {
         if (SharedPrefManager.getInstance(this).getUser().getDesigid() == 3 || SharedPrefManager.getInstance(this).getUser().getDesigid() == 4 ||
                 SharedPrefManager.getInstance(this).getUser().getDesigid() == 5 || SharedPrefManager.getInstance(this).getUser().getDesigid() == 21 ||
                 SharedPrefManager.getInstance(this).getUser().getDesigid() == 22 || SharedPrefManager.getInstance(this).getUser().getDesigid() == 11)
-            txtCovidRegistration.setVisibility(View.VISIBLE);
+//            txtCovidRegistration.setVisibility(View.VISIBLE);
+            txtCovidRegistration.setVisibility(View.GONE);
         else txtCovidRegistration.setVisibility(View.GONE);
         btnGo.setOnClickListener(view -> {
             if (!edtPid.getText().toString().isEmpty()) {
@@ -362,10 +363,14 @@ public class PreDashboard extends AppCompatActivity {
                 Log.v("headID", headAssigns.get(position).getHeadID().toString());
                 try {
                     SharedPrefManager.getInstance(PreDashboard.this).setHeadID(headAssigns.get(position).getHeadID(), headAssigns.get(position).getHeadName(), headAssigns.get(position).getColor());
-                    if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 38)
+                    if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 38) {
                         startActivity(new Intent(PreDashboard.this, PersonalDashboard.class));
-                    else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 31)
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    }
+                    else if (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 31) {
                         startActivity(new Intent(PreDashboard.this, CasualtyRegistration.class));
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    }
                         //startActivity(intent);
                     else showPopup(view);
                 } catch (Exception ex) {
@@ -388,19 +393,23 @@ public class PreDashboard extends AppCompatActivity {
             Intent intent = new Intent(PreDashboard.this, ScannerActivity.class);
             intent.putExtra("redi", "1");
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
         txtScans.setOnClickListener(view -> {
             Intent intent = new Intent(PreDashboard.this, ScannerActivity.class);
             intent.putExtra("redi", "4");
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
         imgNotification.setOnClickListener(view -> {
             Intent intent = new Intent(PreDashboard.this, NotificationList.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
         count.setOnClickListener(view -> {
             Intent intent = new Intent(PreDashboard.this, NotificationList.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
         hitGetUserProfileByPID();
@@ -485,23 +494,33 @@ public class PreDashboard extends AppCompatActivity {
 
                         } else {
                             try {
-                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2029) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2030) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 34) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 35) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 36) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 14)) || (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 45)||
-                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 46)
-                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 46)
-                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 47)
-                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 48)
-                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 49)
-                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 50)
-                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 51)
-                                        ||  (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 53)
-
-
-
-
-
-
-
-                                ) {//
+                                if ((SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 3) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 4) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 9 ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 7) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2029) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 2030) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 34) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 35) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 36) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 14)) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 45) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 46) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 46) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 47) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 48) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 49) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 50) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 51) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 52) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 40) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 56) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 58) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 55) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 54) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 57) ||
+                                        (SharedPrefManager.getInstance(PreDashboard.this).getHeadID() == 53)) {
                                     Intent intent = new Intent(PreDashboard.this, PatientList.class);
                                     SharedPrefManager.getInstance(PreDashboard.this).setSubHead(subHeadIDResp.getSubDept().get(0));
                                     startActivity(intent);

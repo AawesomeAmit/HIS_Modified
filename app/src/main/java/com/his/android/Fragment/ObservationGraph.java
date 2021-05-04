@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -96,7 +97,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
     HIChartView hcView;
     HIChartView hcSys;
     HIChartView hcDys;
-    TextView btnPresOverview, txtDate, btnCall, btnMic, btnOxi, btnImg,tvViewdoc;
+    TextView btnPresOverview, txtDate, btnCall, btnMic, btnOxi, btnImg,tvViewdoc, txtBloodUrea, txtCal, txtK, txtLac, txtNa, txtPh, txtSa, txtSCal, txtSCreatinine, txtSm, txtPco2, txtSp, txtSSodium, txtPo2;
     HIExporting exporting;
     LinearLayout llBP;
     String sp;
@@ -169,6 +170,20 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         txtWeight = view.findViewById(R.id.txtWeight);
         txtHeight = view.findViewById(R.id.txtHeight);
         txtDate = view.findViewById(R.id.txtDate);
+        txtBloodUrea = view.findViewById(R.id.txtBloodUrea);
+        txtCal = view.findViewById(R.id.txtCal);
+        txtK = view.findViewById(R.id.txtK);
+        txtLac = view.findViewById(R.id.txtLac);
+        txtNa = view.findViewById(R.id.txtNa);
+        txtPh = view.findViewById(R.id.txtPh);
+        txtPo2 = view.findViewById(R.id.txtPo2);
+        txtSa = view.findViewById(R.id.txtSa);
+        txtSCal = view.findViewById(R.id.txtSCal);
+        txtSCreatinine = view.findViewById(R.id.txtSCreatinine);
+        txtSm = view.findViewById(R.id.txtSm);
+        txtPco2 = view.findViewById(R.id.txtPco2);
+        txtSp = view.findViewById(R.id.txtSp);
+        txtSSodium = view.findViewById(R.id.txtSSodium);
         context = view.getContext();
         c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
@@ -756,12 +771,96 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
 
                                 DatabaseController.insertData(contentValues, TablePatientVitalList.patient_vital_list);
 
-                                if (vitalChartList.getVitalList().get(i).getVmID() == 1)
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 1) {
                                     txtHeight.setText(vitalChartList.getVitalList().get(i).getVitalValue());
-                                if (vitalChartList.getVitalList().get(i).getVmID() == 2)
+//                                    txtHeight.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 2) {
                                     txtWeight.setText(vitalChartList.getVitalList().get(i).getVitalValue());
-                                if (vitalChartList.getVitalList().get(i).getVmID() == 4) {
-                                    sys = vitalChartList.getVitalList().get(i).getVitalValue();
+//                                    txtWeight.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 496) {
+                                    txtBloodUrea.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtBloodUrea.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 612) {
+                                    txtCal.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtCal.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 611) {
+                                    txtK.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtK.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 614) {
+                                    txtLac.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtLac.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 610) {
+                                    txtNa.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtNa.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 608) {
+                                    txtLac.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtLac.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 609) {
+                                    txtSpo2.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtSpo2.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 612) {
+                                    txtCal.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtCal.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 611) {
+                                    txtK.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtK.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 614) {
+                                    txtLac.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtLac.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 610) {
+                                    txtSSodium.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtSSodium.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 608) {
+                                    txtPco2.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtPco2.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 607) {
+                                    txtPh.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtPh.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 609) {
+                                    txtPo2.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtPo2.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 206) {
+                                    txtSa.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtSa.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 187) {
+                                    txtSCal.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtSCal.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 497) {
+                                    txtSCreatinine.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtSCreatinine.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 250) {
+                                    txtSm.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtSm.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 499) {
+                                    txtSp.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtSp.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                if (vitalChartList.getVitalList().get(i).getVmID() == 498){
+                                    txtSSodium.setText(vitalChartList.getVitalList().get(i).getVitalValue());
+                                    txtSSodium.setTextColor(Color.parseColor(vitalChartList.getVitalList().get(i).getVitalColorCode()));
+                                }
+                                    if (vitalChartList.getVitalList().get(i).getVmID() == 4) {
+                                        sys = vitalChartList.getVitalList().get(i).getVitalValue();
                                     if (!sys.equalsIgnoreCase("-")) {
                                         HIOptions options1 = new HIOptions();
                                         HIChart chart = new HIChart();

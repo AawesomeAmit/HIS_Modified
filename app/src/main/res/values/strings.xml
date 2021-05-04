@@ -92,7 +92,7 @@
     <string name="save">Save</string>
     <string name="hr">HR(bpm) : </string>
     <string name="rr">RR(rpm) : </string>
-    <string name="pulse">Pulse(bpm) : </string>
+    <string name="pulse">Pulse : </string>
     <string name="sys">SYS(mmHg)</string>
     <string name="dys">DIAS(mmHg)</string>
     <string name="temp">Temp(F)</string>
@@ -475,4 +475,18 @@
     <string name="food_table">Food Table</string>
     <string name="sample_type">Sample Type</string>
     <string name="login">Login</string>
+    <string name="blood_urea">Bd Urea : </string>
+    <string name="ca">Ca++ : </string>
+    <string name="k">K+ : </string>
+    <string name="lac">Lac : </string>
+    <string name="na">Na+ : </string>
+    <string name="pco2">PCO2 : </string>
+    <string name="ph">PH : </string>
+    <string name="serum_albumin">Ser Albumin : </string>
+    <string name="serum_calcium">Ser Cal : </string>
+    <string name="serum_magnesium">Mg : </string>
+    <string name="serum_potassium">K+ : </string>
+    <string name="serum_sodium">Na+ : </string>
+    <string name="serum_creatinine">Ser Creatinine : </string>
+    <string name="po2">PO2 : </string>
 </resources>

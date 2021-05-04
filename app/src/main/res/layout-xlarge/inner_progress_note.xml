@@ -23,6 +23,7 @@
             android:padding="@dimen/_1sdp"
             android:drawablePadding="@dimen/_3sdp"
             android:textStyle="bold"
+            android:textIsSelectable="true"
             android:textSize="@dimen/_8sdp"
             android:id="@+id/txtNTitle"/>
         <TextView
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:textIsSelectable="true"
             android:padding="@dimen/_1sdp"
             android:textSize="@dimen/_8sdp"
             android:id="@+id/txtNBody"/>
@@ -38,6 +40,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:gravity="end"
+            android:textIsSelectable="true"
             android:text="@string/date"
             android:padding="@dimen/_1sdp"
             android:textSize="@dimen/_8sdp"

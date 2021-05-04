@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/gryText"
     tools:context="com.his.android.Activity.NotificationList">
@@ -52,6 +53,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F8F8F8"
+
+
+
+
+
+
+
         tools:listitem="@layout/inner_progress_note"
         android:id="@+id/rView"/>
 </LinearLayout>
+    <!--app:leftBgColor="@color/colorAccent"
+            app:leftImage="@drawable/ic_delete"
+            app:leftText="Delete"
+            app:rightBgColor="@color/blue"
+            app:rightImage="@drawable/ic_delete"
+            app:textColor="@android:color/white"-->

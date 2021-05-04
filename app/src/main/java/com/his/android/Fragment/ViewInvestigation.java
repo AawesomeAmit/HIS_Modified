@@ -121,7 +121,7 @@ public class ViewInvestigation extends Fragment implements View.OnClickListener 
         rView.setLayoutManager(new LinearLayoutManager(context));
         dialog.show();
         patientTest=new ArrayList<>();
-        type = new ArrayList<String>();
+        type = new ArrayList<>();
         Call<PatientBillResp> call = RetrofitClient.getInstance().getApi().getPatientBill(SharedPrefManager.getInstance(context).getUser().getAccessToken(), SharedPrefManager.getInstance(context).getUser().getUserid().toString(), SharedPrefManager.getInstance(context).getPid(), SharedPrefManager.getInstance(context).getSubDept().getId(), SharedPrefManager.getInstance(context).getUser().getUserid());
         call.enqueue(new Callback<PatientBillResp>() {
             @Override
