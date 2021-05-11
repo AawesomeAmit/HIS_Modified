@@ -37,6 +37,9 @@ public class PatientList {
     @SerializedName("problem")
     @Expose
     public String problem;
+    @SerializedName("patientDetails")
+    @Expose
+    public String patientDetails;
 
     @Override
     public String toString() {
@@ -95,5 +98,9 @@ public class PatientList {
 
     public String getProblem() {
         return problem;
+    }
+
+    public String getPatientDetails() {
+        return patientDetails;
     }
 }

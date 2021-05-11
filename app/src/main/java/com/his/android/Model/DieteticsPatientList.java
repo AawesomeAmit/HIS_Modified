@@ -31,6 +31,9 @@ public class DieteticsPatientList {
     @SerializedName("feedType")
     @Expose
     public String feedType;
+    @SerializedName("patientDetails")
+    @Expose
+    public String patientDetails;
 
     @Override
     public String toString() {
@@ -78,5 +81,9 @@ public class DieteticsPatientList {
 
     public String getFeedType() {
         return feedType;
+    }
+
+    public String getPatientDetails() {
+        return patientDetails;
     }
 }

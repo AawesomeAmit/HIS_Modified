@@ -136,6 +136,9 @@ public class AdmittedPatientICU {
     @SerializedName("isRead")
     @Expose
     public Boolean isRead;
+    @SerializedName("patientDetails")
+    @Expose
+    public String patientDetails;
     @NonNull
     @Override
     public String toString() {
@@ -345,5 +348,9 @@ public class AdmittedPatientICU {
 
     public void setPreviousWardName(String previousWardName) {
         this.previousWardName = previousWardName;
+    }
+
+    public String getPatientDetails() {
+        return patientDetails;
     }
 }

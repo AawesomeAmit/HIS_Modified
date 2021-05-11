@@ -1,11 +1,14 @@
 package com.his.android.Activity;
 
 import android.app.DatePickerDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -64,10 +67,11 @@ import static com.his.android.Fragment.NutriAnalyserFragment.NUTRI_TOKEN;
 
 public class PatientList extends AppCompatActivity implements View.OnClickListener {
 
-    TextView txtDept, txtDeptT, txtDrName, txtSubDept, img, btnGo, txtFrmDate, txtToDate, btnCovid;
+    TextView txtDept, txtDeptT, txtDrName, txtSubDept, img, btnGo, txtFrmDate, txtToDate, btnCovid, btnCopy;
     static RecyclerView rView;
     static Spinner spnSearch;
     EditText edtPid;
+    String patientDetails="";
     DieteticsPatientResp dieteticsPatientResp;
     static Context context;
     RelativeLayout spnLayout;
@@ -102,6 +106,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
         txtFrmDate = findViewById(R.id.txtFrmDate);
         btnCovid = findViewById(R.id.btnCovid);
         txtDrName = findViewById(R.id.txtDrName);
+        btnCopy = findViewById(R.id.btnCopy);
         edtPid = findViewById(R.id.edtPid);
         btnGo = findViewById(R.id.btnGo);
         llCovid = findViewById(R.id.llCovid);
@@ -156,6 +161,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                                 spnSearch.setSelection(-1);
                                 admittedPatientList = ipdPatientListResp.getAdmittedPatient();
                                 admittedPatientList1 = ipdPatientListResp.getAdmittedPatient();
+                                patientDetails= String.valueOf(Html.fromHtml(ipdPatientListResp.getAdmittedPatient().get(0).getPatientDetails()));
                                 rView.setAdapter(new PatientListAdp(PatientList.this, admittedPatientList));
                             }
                         } else {
@@ -239,7 +245,12 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
 
             }
         });
-
+        btnCopy.setOnClickListener(view -> {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("text", patientDetails);
+            Toast.makeText(getApplicationContext(), "Text Copied", Toast.LENGTH_SHORT).show();
+            clipboard.setPrimaryClip(clip);
+        });
         img.setOnClickListener(view -> {
             PopupMenu menu = new PopupMenu(PatientList.this, img);
             menu.getMenuInflater().inflate(R.menu.popup_menu, menu.getMenu());
@@ -313,6 +324,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                                 spnSearch.setAdapter(dieteticsAdapter);
                                 spnSearch.setSelection(-1);
                                 dieteticsPatientLists = dieteticsPatientResp.getResponseValue();
+                                patientDetails=String.valueOf(Html.fromHtml(dieteticsPatientResp.getResponseValue().get(0).getPatientDetails()));
                                 rView.setAdapter(new DieteticsPatientListAdp(context, dieteticsPatientLists));
                             }
                         }
@@ -346,6 +358,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                                 spnSearch.setAdapter(covidArrayAdp);
                                 spnSearch.setSelection(-1);
                                 covidPAtientList = covidPatientResp.getPatientList();
+                                patientDetails=String.valueOf(Html.fromHtml(covidPatientResp.getPatientList().get(0).getPatientDetails()));
                                 rView.setAdapter(new CovidPatientListAdp(PatientList.this, covidPAtientList));
                             }
                         }
@@ -380,6 +393,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                             spnSearch.setAdapter(physioAdapter);
                             spnSearch.setSelection(-1);
                             physioPatientLists = physioPatientListResp.getPhysioPatientList();
+                            patientDetails=String.valueOf(Html.fromHtml(physioPatientListResp.getPhysioPatientList().get(0).getPatientDetails()));
                             rView.setAdapter(new PhysioPatientListAdp(context, physioPatientListResp.getPhysioPatientList()));
                         }
                     } else
@@ -494,6 +508,7 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                             spnSearch.setSelection(-1);
                             icuPatientList = icuPatientListResp.getAdmittedPatientICU();
                             icuPatientList1 = icuPatientListResp.getAdmittedPatientICU();
+                            patientDetails=String.valueOf(Html.fromHtml(icuPatientListResp.getAdmittedPatientICU().get(0).getPatientDetails()));
                             rView.setAdapter(new IcuPatientListAdp(PatientList.this, icuPatientList));
 
                             try {

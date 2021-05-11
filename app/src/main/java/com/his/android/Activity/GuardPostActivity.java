@@ -77,7 +77,7 @@ public class GuardPostActivity extends AppCompatActivity {
 
     ImageView ivImage, ivCapture;
 
-    EditText etPatientName, etAge, etProblems;
+    EditText etPatientName, etAge, etProblems, etCaseId;
 
     Spinner spinnerAgeUnit;
 
@@ -101,6 +101,7 @@ public class GuardPostActivity extends AppCompatActivity {
         img = findViewById(R.id.img);
         tvSubmit = findViewById(R.id.tvSubmit);
         tvDischarge = findViewById(R.id.tvDischarge);
+        etCaseId = findViewById(R.id.etCaseId);
 
         ivImage = findViewById(R.id.ivImage);
         ivCapture = findViewById(R.id.ivCapture);
@@ -177,9 +178,12 @@ public class GuardPostActivity extends AppCompatActivity {
         tvSubmit.setOnClickListener(view -> {
             if (etPatientName.getText().toString().isEmpty()) {
                 Toast.makeText(this, "Enter Patient Name", Toast.LENGTH_SHORT).show();
-            } else {
-                hitSavePatientEntryByGuard();
+                return;
+            } if (etCaseId.getText().toString().isEmpty()) {
+                Toast.makeText(this, "Enter Case ID", Toast.LENGTH_SHORT).show();
+                return;
             }
+            hitSavePatientEntryByGuard();
         });
         tvDischarge.setOnClickListener(view -> {
             Utils.showRequestDialog(GuardPostActivity.this);
@@ -324,6 +328,7 @@ public class GuardPostActivity extends AppCompatActivity {
                 RequestBody.create(MediaType.parse("text/plain"), etAge.getText().toString()),
                 RequestBody.create(MediaType.parse("text/plain"), ageUnit),
                 RequestBody.create(MediaType.parse("text/plain"), gender),
+                RequestBody.create(MediaType.parse("text/plain"), etCaseId.getText().toString()),
                 RequestBody.create(MediaType.parse("text/plain"), etProblems.getText().toString()),
                 fileParts
         );

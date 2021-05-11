@@ -28,6 +28,9 @@ public class PhysioPatientList {
     @SerializedName("ipNo")
     @Expose
     public String ipNo;
+    @SerializedName("patientDetails")
+    @Expose
+    public String patientDetails;
 
     public PhysioPatientList(Integer pid, String patientName, String age, String gender) {
         this.pid = pid;
@@ -71,5 +74,9 @@ public class PhysioPatientList {
 
     public String getIpNo() {
         return ipNo;
+    }
+
+    public String getPatientDetails() {
+        return patientDetails;
     }
 }

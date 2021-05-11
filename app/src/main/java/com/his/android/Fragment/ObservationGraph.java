@@ -12,19 +12,25 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -74,12 +80,16 @@ import com.his.android.Response.ObservationGraphResp;
 import com.his.android.Response.VitalListResp;
 import com.his.android.Utils.ConnectivityChecker;
 import com.his.android.Utils.RetrofitClient;
+import com.his.android.Utils.RetrofitClientFile;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.database.DatabaseController;
 import com.his.android.database.TablePatientVitalGraph;
 import com.his.android.database.TablePatientVitalList;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -87,11 +97,19 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.Manifest.permission.RECORD_AUDIO;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static com.his.android.Fragment.InputVital.REQUEST_AUDIO_PERMISSION_CODE;
 
 public class ObservationGraph extends Fragment implements View.OnClickListener {
     HIChartView hcView;
@@ -99,6 +117,10 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
     HIChartView hcDys;
     TextView btnPresOverview, txtDate, btnCall, btnMic, btnOxi, btnImg,tvViewdoc, txtBloodUrea, txtCal, txtK, txtLac, txtNa, txtPh, txtSa, txtSCal, txtSCreatinine, txtSm, txtPco2, txtSp, txtSSodium, txtPo2;
     HIExporting exporting;
+    private static final String LOG_TAG = "AudioRecording";
+    private static String mFileName = null;
+    private MediaRecorder mRecorder;
+    private MediaPlayer mPlayer;
     LinearLayout llBP;
     String sp;
     Spinner spnType;
@@ -639,6 +661,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         CardView txtVital=popupView.findViewById(R.id.txtVital);
         CardView txtInput=popupView.findViewById(R.id.txtInput);
         CardView txtOutput=popupView.findViewById(R.id.txtOutput);
+        CardView txtStethoscope=popupView.findViewById(R.id.txtStethoscope);
         final EditText edtRemark=popupView.findViewById(R.id.edtRemark);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable());
@@ -666,6 +689,158 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
             ft.commit();
             popupWindow.dismiss();
         });
+        txtStethoscope.setOnClickListener(view -> {
+            recordingPopup();
+            popupWindow.dismiss();
+        });
+    }
+
+    private boolean CheckPermissions() {
+        int result = ContextCompat.checkSelfPermission(context, WRITE_EXTERNAL_STORAGE);
+        int result1 = ContextCompat.checkSelfPermission(context, RECORD_AUDIO);
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED;
+    }
+    private void RequestPermissions() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{RECORD_AUDIO, WRITE_EXTERNAL_STORAGE}, REQUEST_AUDIO_PERMISSION_CODE);
+    }
+    private void recordingPopup(){
+        View popupView = getLayoutInflater().inflate(R.layout.popup_vital_recording, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        LinearLayout lLayout = popupView.findViewById(R.id.lLayout);
+        ImageButton startbtn = popupView.findViewById(R.id.btnRecord);
+        ImageButton stopbtn = popupView.findViewById(R.id.btnStop);
+        ImageButton playbtn = popupView.findViewById(R.id.btnPlay);
+        ImageButton stopplay = popupView.findViewById(R.id.btnStopPlay);
+        TextView btnSave = popupView.findViewById(R.id.btnSave);
+        TextView btnClose = popupView.findViewById(R.id.btnClose);
+        TextView txtTitle = popupView.findViewById(R.id.txtTitle);
+        txtTitle.setText("Record Stethoscope Sound");
+        stopbtn.setEnabled(false);
+        playbtn.setEnabled(false);
+        stopplay.setEnabled(false);
+        btnSave.setEnabled(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        lLayout.getLocationOnScreen(location);
+        popupWindow.showAtLocation(lLayout, Gravity.CENTER, 0, 0);
+        btnClose.setOnClickListener(view -> popupWindow.dismiss());
+        startbtn.setOnClickListener(v -> {
+            if(CheckPermissions()) {
+                stopbtn.setEnabled(true);
+                startbtn.setEnabled(false);
+                playbtn.setEnabled(false);
+                btnSave.setEnabled(false);
+                stopplay.setEnabled(false);
+                startbtn.setVisibility(View.GONE);
+                stopbtn.setVisibility(View.VISIBLE);
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+                mFileName += "/"+timeStamp+"_OutputRecording.mp3";
+                mRecorder = new MediaRecorder();
+                mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                mRecorder.setOutputFile(mFileName);
+                try {
+                    mRecorder.prepare();
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "prepare() failed");
+                }
+                mRecorder.start();
+                Toast.makeText(context, "Recording Started", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                RequestPermissions();
+            }
+        });
+        stopbtn.setOnClickListener(v -> {
+            stopbtn.setEnabled(false);
+            startbtn.setEnabled(true);
+            playbtn.setEnabled(true);
+            btnSave.setEnabled(true);
+            stopplay.setEnabled(false);
+            startbtn.setVisibility(View.VISIBLE);
+            stopbtn.setVisibility(View.GONE);
+            playbtn.setVisibility(View.VISIBLE);
+            mRecorder.stop();
+            mRecorder.release();
+            mRecorder = null;
+            Toast.makeText(context, "Recording Stopped", Toast.LENGTH_SHORT).show();
+        });
+        playbtn.setOnClickListener(v -> {
+            stopbtn.setEnabled(false);
+            startbtn.setEnabled(true);
+            btnSave.setEnabled(true);
+            playbtn.setEnabled(false);
+            stopplay.setEnabled(true);
+            stopplay.setVisibility(View.VISIBLE);
+            mPlayer = new MediaPlayer();
+            try {
+                mPlayer.setDataSource(mFileName);
+                mPlayer.prepare();
+                mPlayer.start();
+                mPlayer.setOnCompletionListener(mediaPlayer -> playbtn.setEnabled(true));
+                Toast.makeText(context, "Recording Started Playing", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "prepare() failed");
+            }
+        });
+        stopplay.setOnClickListener(v -> {
+            if(mPlayer!=null) {
+                mPlayer.release();
+                mPlayer = null;
+                stopbtn.setEnabled(false);
+                startbtn.setEnabled(true);
+                btnSave.setEnabled(true);
+                playbtn.setEnabled(true);
+                stopplay.setEnabled(false);
+                Toast.makeText(context, "Playing Audio Stopped", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnSave.setOnClickListener(view -> {
+            MultipartBody.Part[] fileParts = new MultipartBody.Part[1];
+            Log.d("filePath", "File Path: " + mFileName);
+            File file = new File(mFileName);
+            MediaType mediaType = MediaType.parse(getMimeType(mFileName));
+            RequestBody fileBody = RequestBody.create(mediaType, file);
+            fileParts[0] = MultipartBody.Part.createFormData("voiceData", file.getName(), fileBody);
+            Log.d("filePath", "File Path: " + fileParts);
+            if(ConnectivityChecker.checker(context)){
+                Call<String> call = RetrofitClientFile.getInstance().getApi().patientAudioVitalData(
+                        SharedPrefManager.getInstance(context).getUser().getAccessToken(),
+                        SharedPrefManager.getInstance(context).getUser().getUserid().toString(),
+                        fileParts,
+                        RequestBody.create(MediaType.parse("text/plain"), SharedPrefManager.getInstance(context).getUser().getUserid().toString()),
+                        RequestBody.create(MediaType.parse("text/plain"), String.valueOf(SharedPrefManager.getInstance(context).getPid())),
+                        RequestBody.create(MediaType.parse("text/plain"), "stethoscope")
+                );
+                call.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            Toast.makeText(context, response.body(), Toast.LENGTH_LONG).show();
+                            btnSave.setEnabled(false);
+                            popupWindow.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+    private static String getMimeType(String url) {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        return type;
     }
     @Override
     public void onClick(View view) {

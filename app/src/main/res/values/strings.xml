@@ -489,4 +489,8 @@
     <string name="serum_sodium">Na+ : </string>
     <string name="serum_creatinine">Ser Creatinine : </string>
     <string name="po2">PO2 : </string>
+    <string name="copy_investigation_data">Copy Investigation Data</string>
+    <string name="case_id_no">Case ID No.</string>
+    <string name="enter_case_id">Enter Case ID</string>
+    <string name="record_stethoscope_sound">Record Stethoscope Sound</string>
 </resources>
