@@ -50,7 +50,7 @@ import retrofit2.Response;
 
 public class ScanSelector extends BaseActivity {
     TextView txtPrescription, txtTransferIn, txtTransferOut, txtDischarge, txtVital, txtUpload, txtUpdateIntake, txtUpdateMedicine, txtUpdateSupplement,
-            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote, txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator, txtSample;
+            tvPtName, tvPID, txtIntake, txtUpdateVital, txtProgressNote, txtScanIntake, txtChecklist, txtUpdateVitals, txtO2, txtVentilator, txtSample, txtWardRound;
     Intent intent;
     Spinner popupspnDepartment, popUpspnConsultant, popUpspnWard, spnBed;
     EditText popUpEtReason;
@@ -74,6 +74,7 @@ public class ScanSelector extends BaseActivity {
         txtUpdateVital = findViewById(R.id.txtUpdateVital);
         txtScanIntake = findViewById(R.id.txtScanIntake);
         txtTransferIn = findViewById(R.id.txtTransferIn);
+        txtWardRound = findViewById(R.id.txtWardRound);
         tvPtName = findViewById(R.id.tvPtName);
         tvPID = findViewById(R.id.tvPID);
         txtO2 = findViewById(R.id.txtO2);
@@ -114,6 +115,10 @@ public class ScanSelector extends BaseActivity {
         });
         txtUpdateVitals.setOnClickListener(view -> {
             intent.putExtra("status1", "5");
+            startActivity(intent);
+        });
+        txtWardRound.setOnClickListener(view -> {
+            intent.putExtra("status1", "6");
             startActivity(intent);
         });
         txtTransferIn.setOnClickListener(view -> alertPatientTransfer());//alertTransferPatient("Transfer-In")

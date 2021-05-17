@@ -62,7 +62,7 @@
     <string name="days">Days</string>
     <string name="dose">Dose</string>
     <string name="action">Action</string>
-    <string name="view_prescription_overview">Prescription Overview</string>
+    <string name="view_prescription_overview">Overview</string><!--Prescription-->
     <string name="logout">Logout</string>
     <string name="height">Height(cm) : </string>
     <string name="weight">Weight(Kg) : </string>
@@ -493,4 +493,13 @@
     <string name="case_id_no">Case ID No.</string>
     <string name="enter_case_id">Enter Case ID</string>
     <string name="record_stethoscope_sound">Record Stethoscope Sound</string>
+    <string name="ward_round_form">Ward Round Form</string>
+    <string name="peep">Peep</string>
+    <string name="ventilator_rr">Ventilator RR</string>
+    <string name="tidal">Tidal</string>
+    <string name="infusion_details">Infusion</string>
+    <string name="infusion_rate">Infusion Rate (ml/hr)</string>
+    <string name="pulse_rate_f">Pulse Rate(F)</string>
+    <string name="pulse_rate_b">Pulse Rate(B)</string>
+    <string name="enter_tidal">Enter Tidal</string>
 </resources>

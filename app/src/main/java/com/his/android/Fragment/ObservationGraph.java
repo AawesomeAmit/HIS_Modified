@@ -115,7 +115,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
     HIChartView hcView;
     HIChartView hcSys;
     HIChartView hcDys;
-    TextView btnPresOverview, txtDate, btnCall, btnMic, btnOxi, btnImg,tvViewdoc, txtBloodUrea, txtCal, txtK, txtLac, txtNa, txtPh, txtSa, txtSCal, txtSCreatinine, txtSm, txtPco2, txtSp, txtSSodium, txtPo2;
+    TextView btnPresOverview, txtDate, btnCall, btnMic, btnSound, btnOxi, btnImg,tvViewdoc, txtBloodUrea, txtCal, txtK, txtLac, txtNa, txtPh, txtSa, txtSCal, txtSCreatinine, txtSm, txtPco2, txtSp, txtSSodium, txtPo2;
     HIExporting exporting;
     private static final String LOG_TAG = "AudioRecording";
     private static String mFileName = null;
@@ -183,6 +183,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         spnType = view.findViewById(R.id.spnType);
         btnCall = view.findViewById(R.id.btnCall);
         btnMic = view.findViewById(R.id.btnMic);
+        btnSound = view.findViewById(R.id.btnSound);
         btnOxi = view.findViewById(R.id.btnOxi);
         btnImg = view.findViewById(R.id.btnImg);
         tvViewdoc = view.findViewById(R.id.tvViewdoc);
@@ -222,6 +223,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         txtDate.setOnClickListener(this);
         btnCall.setOnClickListener(this);
         btnMic.setOnClickListener(this);
+        btnSound.setOnClickListener(this);
         btnOxi.setOnClickListener(this);
         btnImg.setOnClickListener(this);
         tvViewdoc.setOnClickListener(view -> startActivity(new Intent(context, ViewPatientDoc.class)));
@@ -694,6 +696,49 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
             popupWindow.dismiss();
         });
     }
+    private void listenPopup() {
+        View popupView = getLayoutInflater().inflate(R.layout.popup_observation, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
+        CardView txtVital=popupView.findViewById(R.id.txtVital);
+        CardView txtInput=popupView.findViewById(R.id.txtInput);
+        CardView txtOutput=popupView.findViewById(R.id.txtOutput);
+        CardView txtStethoscope=popupView.findViewById(R.id.txtStethoscope);
+        final EditText edtRemark=popupView.findViewById(R.id.edtRemark);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        int[] location = new int[2];
+        llMain.getLocationOnScreen(location);
+        popupWindow.showAtLocation(llMain, Gravity.CENTER, 0, 0);
+        txtVital.setOnClickListener(view -> {
+            Fragment fragment = new ListenSound();
+            FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+            popupWindow.dismiss();
+        });
+        txtInput.setOnClickListener(view -> {
+            Fragment fragment = new ListenSound();
+            FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+            popupWindow.dismiss();
+        });
+        txtOutput.setOnClickListener(view -> {
+            Fragment fragment = new ListenSound();
+            FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+            popupWindow.dismiss();
+        });
+        txtStethoscope.setOnClickListener(view -> {
+            Fragment fragment = new ListenSound();
+            FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
+            popupWindow.dismiss();
+        });
+    }
 
     private boolean CheckPermissions() {
         int result = ContextCompat.checkSelfPermission(context, WRITE_EXTERNAL_STORAGE);
@@ -872,6 +917,8 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
             alertDialog.show();
         } else if(view.getId()==R.id.btnMic){
             showPopup();
+        } else if(view.getId()==R.id.btnSound){
+            listenPopup();
         } else if(view.getId()==R.id.btnOxi){
             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {

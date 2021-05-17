@@ -46,6 +46,7 @@ import com.his.android.Fragment.VentilatorSetting;
 import com.his.android.Fragment.ViewInvestigation;
 import com.his.android.Fragment.ViewMedication;
 import com.his.android.Fragment.VitalGraph;
+import com.his.android.Fragment.WardRound;
 import com.his.android.Model.ConsultantName;
 import com.his.android.R;
 import com.his.android.Response.ControlBySubDeptResp;
@@ -249,6 +250,8 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
                 else spnConsultant.setVisibility(View.GONE);
                 fragment = new InputVital();
             }
+            if (Objects.requireNonNull(getIntent().getExtras()).getString("status1").equalsIgnoreCase("6"))
+                fragment = new WardRound();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();

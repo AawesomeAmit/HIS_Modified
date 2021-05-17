@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.ListenSound">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:textColor="@color/blue_text"
+        android:id="@+id/txtTitle"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="Stethoscope Sound"
+        android:textSize="@dimen/_15sdp"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold"
+        android:layout_height="@dimen/_30sdp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSound"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="#F8F8F8"
+        android:layout_marginLeft="@dimen/_2sdp"
+        tools:listitem="@layout/inner_sound"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -151,25 +151,28 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
                 call.enqueue(new Callback<IpdPatientListResp>() {
                     @Override
                     public void onResponse(Call<IpdPatientListResp> call, Response<IpdPatientListResp> response) {
-                        Utils.showRequestDialog(context);
-                        if (response.isSuccessful()) {
-                            ipdPatientListResp = response.body();
-                            if (ipdPatientListResp != null) {
-                                ipdArrayAdapter = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, ipdPatientListResp.getAdmittedPatient());
-                                ipdArrayAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
-                                spnSearch.setAdapter(ipdArrayAdapter);
-                                spnSearch.setSelection(-1);
-                                admittedPatientList = ipdPatientListResp.getAdmittedPatient();
-                                admittedPatientList1 = ipdPatientListResp.getAdmittedPatient();
-                                patientDetails= String.valueOf(Html.fromHtml(ipdPatientListResp.getAdmittedPatient().get(0).getPatientDetails()));
-                                rView.setAdapter(new PatientListAdp(PatientList.this, admittedPatientList));
+                        try {
+                            Utils.showRequestDialog(context);
+                            if (response.isSuccessful()) {
+                                ipdPatientListResp = response.body();
+                                if (ipdPatientListResp != null) {
+                                    ipdArrayAdapter = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, ipdPatientListResp.getAdmittedPatient());
+                                    ipdArrayAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
+                                    spnSearch.setAdapter(ipdArrayAdapter);
+                                    spnSearch.setSelection(-1);
+                                    admittedPatientList = ipdPatientListResp.getAdmittedPatient();
+                                    admittedPatientList1 = ipdPatientListResp.getAdmittedPatient();
+                                    rView.setAdapter(new PatientListAdp(PatientList.this, admittedPatientList));
+                                }
+                            } else {
+                                Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
+                            patientDetails = String.valueOf(Html.fromHtml(ipdPatientListResp.getAdmittedPatient().get(0).getPatientDetails()));
+                            Utils.hideDialog();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        Utils.hideDialog();
                     }
-
                     @Override
                     public void onFailure(Call<IpdPatientListResp> call, Throwable t) {
                         Toast.makeText(PatientList.this, t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -315,23 +318,26 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             call.enqueue(new Callback<DieteticsPatientResp>() {
                 @Override
                 public void onResponse(Call<DieteticsPatientResp> call, Response<DieteticsPatientResp> response) {
-                    if (response.isSuccessful()) {
-                        if (response.body() != null && response.body().getResponseCode() == 1) {
-                            dieteticsPatientResp = response.body();
-                            if (dieteticsPatientResp != null && dieteticsPatientResp.getResponseValue().size() > 0) {
-                                ArrayAdapter<DieteticsPatientList> dieteticsAdapter = new ArrayAdapter<>(context, R.layout.spinner_item_text_size, dieteticsPatientResp.getResponseValue());
-                                dieteticsAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
-                                spnSearch.setAdapter(dieteticsAdapter);
-                                spnSearch.setSelection(-1);
-                                dieteticsPatientLists = dieteticsPatientResp.getResponseValue();
-                                patientDetails=String.valueOf(Html.fromHtml(dieteticsPatientResp.getResponseValue().get(0).getPatientDetails()));
-                                rView.setAdapter(new DieteticsPatientListAdp(context, dieteticsPatientLists));
+                    try {
+                        if (response.isSuccessful()) {
+                            if (response.body() != null && response.body().getResponseCode() == 1) {
+                                dieteticsPatientResp = response.body();
+                                if (dieteticsPatientResp != null && dieteticsPatientResp.getResponseValue().size() > 0) {
+                                    ArrayAdapter<DieteticsPatientList> dieteticsAdapter = new ArrayAdapter<>(context, R.layout.spinner_item_text_size, dieteticsPatientResp.getResponseValue());
+                                    dieteticsAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
+                                    spnSearch.setAdapter(dieteticsAdapter);
+                                    spnSearch.setSelection(-1);
+                                    dieteticsPatientLists = dieteticsPatientResp.getResponseValue();
+                                    rView.setAdapter(new DieteticsPatientListAdp(context, dieteticsPatientLists));
+                                }
                             }
                         }
+                        patientDetails = String.valueOf(Html.fromHtml(dieteticsPatientResp.getResponseValue().get(0).getPatientDetails()));
+                        Utils.hideDialog();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    Utils.hideDialog();
                 }
-
                 @Override
                 public void onFailure(Call<DieteticsPatientResp> call, Throwable t) {
                     Utils.hideDialog();
@@ -349,25 +355,28 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             call.enqueue(new Callback<CovidPatientResp>() {
                 @Override
                 public void onResponse(Call<CovidPatientResp> call, Response<CovidPatientResp> response) {
-                    if (response.isSuccessful()) {
-                        covidPatientResp = response.body();
-                        if (covidPatientResp != null) {
-                            if (covidPatientResp.getPatientList().size() > 0) {
-                                covidArrayAdp = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, covidPatientResp.getPatientList());
-                                covidArrayAdp.setDropDownViewResource(R.layout.spinner_item_text_size);
-                                spnSearch.setAdapter(covidArrayAdp);
-                                spnSearch.setSelection(-1);
-                                covidPAtientList = covidPatientResp.getPatientList();
-                                patientDetails=String.valueOf(Html.fromHtml(covidPatientResp.getPatientList().get(0).getPatientDetails()));
-                                rView.setAdapter(new CovidPatientListAdp(PatientList.this, covidPAtientList));
+                    try {
+                        if (response.isSuccessful()) {
+                            covidPatientResp = response.body();
+                            if (covidPatientResp != null) {
+                                if (covidPatientResp.getPatientList().size() > 0) {
+                                    covidArrayAdp = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, covidPatientResp.getPatientList());
+                                    covidArrayAdp.setDropDownViewResource(R.layout.spinner_item_text_size);
+                                    spnSearch.setAdapter(covidArrayAdp);
+                                    spnSearch.setSelection(-1);
+                                    covidPAtientList = covidPatientResp.getPatientList();
+                                    rView.setAdapter(new CovidPatientListAdp(PatientList.this, covidPAtientList));
+                                }
                             }
+                        } else {
+                            Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
+                        patientDetails = String.valueOf(Html.fromHtml(covidPatientResp.getPatientList().get(0).getPatientDetails()));
+                        Utils.hideDialog();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    Utils.hideDialog();
                 }
-
                 @Override
                 public void onFailure(Call<CovidPatientResp> call, Throwable t) {
                     Utils.hideDialog();
@@ -385,22 +394,25 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             call.enqueue(new Callback<PhysioPatientListResp>() {
                 @Override
                 public void onResponse(Call<PhysioPatientListResp> call, Response<PhysioPatientListResp> response) {
-                    if (response.isSuccessful()) {
-                        PhysioPatientListResp physioPatientListResp = response.body();
-                        if (physioPatientListResp != null && physioPatientListResp.getPhysioPatientList().size() > 0) {
-                            ArrayAdapter<PhysioPatientList> physioAdapter = new ArrayAdapter<>(context, R.layout.spinner_item_text_size, physioPatientListResp.getPhysioPatientList());
-                            physioAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
-                            spnSearch.setAdapter(physioAdapter);
-                            spnSearch.setSelection(-1);
-                            physioPatientLists = physioPatientListResp.getPhysioPatientList();
-                            patientDetails=String.valueOf(Html.fromHtml(physioPatientListResp.getPhysioPatientList().get(0).getPatientDetails()));
-                            rView.setAdapter(new PhysioPatientListAdp(context, physioPatientListResp.getPhysioPatientList()));
-                        }
-                    } else
-                        Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
-                    Utils.hideDialog();
+                    try {
+                        if (response.isSuccessful()) {
+                            PhysioPatientListResp physioPatientListResp = response.body();
+                            if (physioPatientListResp != null && physioPatientListResp.getPhysioPatientList().size() > 0) {
+                                ArrayAdapter<PhysioPatientList> physioAdapter = new ArrayAdapter<>(context, R.layout.spinner_item_text_size, physioPatientListResp.getPhysioPatientList());
+                                physioAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
+                                spnSearch.setAdapter(physioAdapter);
+                                spnSearch.setSelection(-1);
+                                physioPatientLists = physioPatientListResp.getPhysioPatientList();
+                                patientDetails = String.valueOf(Html.fromHtml(physioPatientListResp.getPhysioPatientList().get(0).getPatientDetails()));
+                                rView.setAdapter(new PhysioPatientListAdp(context, physioPatientListResp.getPhysioPatientList()));
+                            }
+                        } else
+                            Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
+                        Utils.hideDialog();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-
                 @Override
                 public void onFailure(Call<PhysioPatientListResp> call, Throwable t) {
                     Utils.hideDialog();
@@ -499,84 +511,87 @@ public class PatientList extends AppCompatActivity implements View.OnClickListen
             call.enqueue(new Callback<IcuPatientListResp>() {
                 @Override
                 public void onResponse(Call<IcuPatientListResp> call, Response<IcuPatientListResp> response) {
-                    if (response.isSuccessful()) {
-                        icuPatientListResp = response.body();
-                        if (icuPatientListResp != null) {
-                            icuArrayAdapter = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, icuPatientListResp.getAdmittedPatientICU());
-                            icuArrayAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
-                            spnSearch.setAdapter(icuArrayAdapter);
-                            spnSearch.setSelection(-1);
-                            icuPatientList = icuPatientListResp.getAdmittedPatientICU();
-                            icuPatientList1 = icuPatientListResp.getAdmittedPatientICU();
-                            patientDetails=String.valueOf(Html.fromHtml(icuPatientListResp.getAdmittedPatientICU().get(0).getPatientDetails()));
-                            rView.setAdapter(new IcuPatientListAdp(PatientList.this, icuPatientList));
+                    try {
+                        if (response.isSuccessful()) {
+                            icuPatientListResp = response.body();
+                            if (icuPatientListResp != null) {
+                                icuArrayAdapter = new ArrayAdapter<>(PatientList.this, R.layout.spinner_item_text_size, icuPatientListResp.getAdmittedPatientICU());
+                                icuArrayAdapter.setDropDownViewResource(R.layout.spinner_item_text_size);
+                                spnSearch.setAdapter(icuArrayAdapter);
+                                spnSearch.setSelection(-1);
+                                icuPatientList = icuPatientListResp.getAdmittedPatientICU();
+                                icuPatientList1 = icuPatientListResp.getAdmittedPatientICU();
+                                rView.setAdapter(new IcuPatientListAdp(PatientList.this, icuPatientList));
 
-                            try {
-                                DatabaseController.myDataBase.beginTransaction();
+                                try {
+                                    DatabaseController.myDataBase.beginTransaction();
 
-                                DatabaseController.deleteRow(TableICUAdmittedPatientList.icu_admitted_patient_list,
-                                        TableICUAdmittedPatientList.icuPatientColumn.headId_subDeptId.toString(),
-                                        SharedPrefManager.getInstance(PatientList.this).getHeadID() + SharedPrefManager.getInstance(PatientList.this).getSubDept().getId().toString());
+                                    DatabaseController.deleteRow(TableICUAdmittedPatientList.icu_admitted_patient_list,
+                                            TableICUAdmittedPatientList.icuPatientColumn.headId_subDeptId.toString(),
+                                            SharedPrefManager.getInstance(PatientList.this).getHeadID() + SharedPrefManager.getInstance(PatientList.this).getSubDept().getId().toString());
 
-                                for (int i = 0; i < response.body().getAdmittedPatientICU().size(); i++) {
+                                    for (int i = 0; i < response.body().getAdmittedPatientICU().size(); i++) {
 
-                                    AdmittedPatientICU admittedPatientICU = response.body().getAdmittedPatientICU().get(i);
+                                        AdmittedPatientICU admittedPatientICU = response.body().getAdmittedPatientICU().get(i);
 
-                                    ContentValues contentValues = new ContentValues();
+                                        ContentValues contentValues = new ContentValues();
 
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.headId_subDeptId.toString(), SharedPrefManager.getInstance(PatientList.this).getHeadID() + SharedPrefManager.getInstance(PatientList.this).getSubDept().getId().toString());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.pmid.toString(), admittedPatientICU.getPmid());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.wardID.toString(), admittedPatientICU.getWardID());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.previousWardID.toString(), admittedPatientICU.getPreviousWardID());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.bedName.toString(), admittedPatientICU.getBedName());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.pid.toString(), admittedPatientICU.getPid());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.crNo.toString(), admittedPatientICU.getCrNo());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.ipNo.toString(), admittedPatientICU.getIpNo());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.userID.toString(), admittedPatientICU.getUserID());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.subDeptID.toString(), admittedPatientICU.getSubDeptID());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.subDepartmentName.toString(), admittedPatientICU.getSubDepartmentName());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.status.toString(), admittedPatientICU.getStatus());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.consultantName.toString(), admittedPatientICU.getConsultantName());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.pname.toString(), admittedPatientICU.getPname());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.sex.toString(), admittedPatientICU.getSex());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.gender.toString(), admittedPatientICU.getGender());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.age.toString(), admittedPatientICU.getAge());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.ageUnit.toString(), admittedPatientICU.getAgeUnit());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.address.toString(), admittedPatientICU.getAddress());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.fatherName.toString(), admittedPatientICU.getFatherName());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.phoneNo.toString(), admittedPatientICU.getPhoneNo());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.relation.toString(), admittedPatientICU.getRelation());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.admitDate.toString(), admittedPatientICU.getAdmitDate());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.dischargeDate.toString(), admittedPatientICU.getDischargeDate());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.ddate.toString(), admittedPatientICU.getDdate());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.dischargeStatus.toString(), admittedPatientICU.getDischargeStatus());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.previousWardName.toString(), admittedPatientICU.getPreviousWardName());
-                                    contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.notificationCount.toString(), admittedPatientICU.getNotificationCount());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.headId_subDeptId.toString(), SharedPrefManager.getInstance(PatientList.this).getHeadID() + SharedPrefManager.getInstance(PatientList.this).getSubDept().getId().toString());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.pmid.toString(), admittedPatientICU.getPmid());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.wardID.toString(), admittedPatientICU.getWardID());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.previousWardID.toString(), admittedPatientICU.getPreviousWardID());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.bedName.toString(), admittedPatientICU.getBedName());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.pid.toString(), admittedPatientICU.getPid());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.crNo.toString(), admittedPatientICU.getCrNo());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.ipNo.toString(), admittedPatientICU.getIpNo());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.userID.toString(), admittedPatientICU.getUserID());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.subDeptID.toString(), admittedPatientICU.getSubDeptID());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.subDepartmentName.toString(), admittedPatientICU.getSubDepartmentName());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.status.toString(), admittedPatientICU.getStatus());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.consultantName.toString(), admittedPatientICU.getConsultantName());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.pname.toString(), admittedPatientICU.getPname());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.sex.toString(), admittedPatientICU.getSex());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.gender.toString(), admittedPatientICU.getGender());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.age.toString(), admittedPatientICU.getAge());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.ageUnit.toString(), admittedPatientICU.getAgeUnit());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.address.toString(), admittedPatientICU.getAddress());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.fatherName.toString(), admittedPatientICU.getFatherName());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.phoneNo.toString(), admittedPatientICU.getPhoneNo());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.relation.toString(), admittedPatientICU.getRelation());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.admitDate.toString(), admittedPatientICU.getAdmitDate());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.dischargeDate.toString(), admittedPatientICU.getDischargeDate());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.ddate.toString(), admittedPatientICU.getDdate());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.dischargeStatus.toString(), admittedPatientICU.getDischargeStatus());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.previousWardName.toString(), admittedPatientICU.getPreviousWardName());
+                                        contentValues.put(TableICUAdmittedPatientList.icuPatientColumn.notificationCount.toString(), admittedPatientICU.getNotificationCount());
 
-                                    // DatabaseController.insertUpdateData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list, "subDeptID", admittedPatientICU.getPmid().toString());
+                                        // DatabaseController.insertUpdateData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list, "subDeptID", admittedPatientICU.getPmid().toString());
 //                                    DatabaseController.insertUpdateData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list, "subDeptID", admittedPatientICU.getPid().toString());
 
-                                    DatabaseController.insertData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list);
+                                        DatabaseController.insertData(contentValues, TableICUAdmittedPatientList.icu_admitted_patient_list);
+
+                                    }
+
+                                    DatabaseController.myDataBase.setTransactionSuccessful();
+
+                                } finally {
+                                    DatabaseController.myDataBase.endTransaction();
+
+                                    Utils.hideDialog();
 
                                 }
 
-                                DatabaseController.myDataBase.setTransactionSuccessful();
-
-                            } finally {
-                                DatabaseController.myDataBase.endTransaction();
-
-                                Utils.hideDialog();
-
-
                             }
+                        } else
+                            Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
 
-                        }
-                    } else
-                        Toast.makeText(PatientList.this, response.message(), Toast.LENGTH_SHORT).show();
-                    Utils.hideDialog();
+                        patientDetails = String.valueOf(Html.fromHtml(icuPatientListResp.getAdmittedPatientICU().get(0).getPatientDetails()));
+                        Utils.hideDialog();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-
-                @Override
+                    @Override
                 public void onFailure(Call<IcuPatientListResp> call, Throwable t) {
                     Utils.hideDialog();
                 }
