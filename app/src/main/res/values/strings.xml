@@ -497,9 +497,11 @@
     <string name="peep">Peep</string>
     <string name="ventilator_rr">Ventilator RR</string>
     <string name="tidal">Tidal</string>
-    <string name="infusion_details">Infusion</string>
+    <string name="infusion_details">Infusion Details</string>
     <string name="infusion_rate">Infusion Rate (ml/hr)</string>
     <string name="pulse_rate_f">Pulse Rate(F)</string>
     <string name="pulse_rate_b">Pulse Rate(B)</string>
     <string name="enter_tidal">Enter Tidal</string>
+    <string name="from_time">From Time</string>
+    <string name="to_time">To Time</string>
 </resources>

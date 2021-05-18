@@ -19,7 +19,107 @@
         android:layout_alignParentStart="true"
         android:textStyle="bold"
         android:layout_height="@dimen/_30sdp"/>
+    <LinearLayout
+        android:id="@+id/llTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/edt_bor"
+            android:layout_marginEnd="@dimen/_1sdp"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/blue_text"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="@string/from_time"
+                android:textSize="@dimen/_13sdp"
+                android:layout_height="@dimen/_30sdp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textColor="@color/white"
+                    android:id="@+id/txtFrmDate"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:gravity="center_vertical"
+                    android:background="@color/blue_heading"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    android:layout_height="@dimen/_20sdp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/edt_bor"
+            android:layout_marginStart="@dimen/_1sdp"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="@color/blue_text"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="@string/to_time"
+                android:textSize="@dimen/_13sdp"
+                android:layout_height="@dimen/_30sdp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textColor="@color/white"
+                    android:id="@+id/txtToDate"
+                    android:paddingStart="@dimen/_2sdp"
+                    android:paddingEnd="@dimen/_2sdp"
+                    android:gravity="center_vertical"
+                    android:background="@color/blue_heading"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold"
+                    android:layout_height="@dimen/_20sdp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
+    <TextView
+        android:id="@+id/btnGo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/btn_medication"
+        android:gravity="center"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="@string/go"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llTime" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSound"
         android:layout_width="0dp"
@@ -31,5 +131,5 @@
         tools:listitem="@layout/inner_sound"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/btnGo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

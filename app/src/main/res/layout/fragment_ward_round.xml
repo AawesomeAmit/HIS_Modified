@@ -29,6 +29,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
+                android:inputType="numberDecimal"
                 android:hint="BP Systolic (mmHg)"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
@@ -50,6 +51,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
+                android:inputType="numberDecimal"
                 android:hint="BP Diastolic (mmHg)"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
@@ -64,7 +66,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <EditText
-                android:id="@+id/edtPulseF"
+                android:id="@+id/edtPulse"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_4sdp"
@@ -72,10 +74,11 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/pulse_rate"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -93,10 +96,11 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/pulse_rate"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13sdp"/>
-            <!--<TextView
+                android:textSize="@dimen/_13sdp"/>-->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -106,12 +110,14 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <EditText
+                android:id="@+id/edtRespRate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
+                android:inputType="numberDecimal"
                 android:hint="@string/respiratory_rate"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
@@ -126,6 +132,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <EditText
+                android:id="@+id/edtTemp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_4sdp"
@@ -133,6 +140,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/temp"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
@@ -146,6 +154,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <EditText
+                android:id="@+id/edtSpo2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_4sdp"
@@ -153,9 +162,10 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/spo2"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_13sdp"/>-->
+                android:textSize="@dimen/_13sdp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -196,7 +206,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@drawable/edt_bor">
                 <Spinner
-                    android:id="@+id/spnO2PositionType"
+                    android:id="@+id/spnO2SupportType"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
             </LinearLayout>
@@ -218,6 +228,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="Flow Rate (L/Min)"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
@@ -239,6 +250,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/fio2"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
@@ -260,6 +272,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/peep"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
@@ -281,6 +294,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/ventilator_rr"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
@@ -302,11 +316,12 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/enter_tidal"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
 
-            <!--<TextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -319,9 +334,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:background="@color/darkGreyIcon"/>-->
+                android:background="@color/darkGreyIcon"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -364,6 +379,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 android:hint="@string/infusion_rate"
+                android:inputType="numberDecimal"
                 android:background="@drawable/edt_bor"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
@@ -389,7 +405,15 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp" />
             </RelativeLayout>
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInfusion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="#F8F8F8"
+                android:layout_marginLeft="@dimen/_2sdp"
+                tools:listitem="@layout/inner_infusion_ward_round"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
