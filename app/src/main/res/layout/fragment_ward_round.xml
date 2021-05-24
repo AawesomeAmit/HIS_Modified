@@ -11,6 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/viewlinecolor"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
@@ -62,7 +63,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
-                android:text="@string/pulse_rate_f"
+                android:text="@string/pulse_rate"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <EditText
@@ -211,6 +212,7 @@
                     android:layout_height="match_parent"/>
             </LinearLayout>
             <TextView
+                android:id="@+id/txtFlowRate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -233,6 +235,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <TextView
+                android:id="@+id/txtFio2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -255,6 +258,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <TextView
+                android:id="@+id/txtPeep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -277,6 +281,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <TextView
+                android:id="@+id/txtVentilatorRr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -299,6 +304,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13sdp"/>
             <TextView
+                android:id="@+id/txtTidal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -322,6 +328,30 @@
                 android:textSize="@dimen/_13sdp"/>
 
             <TextView
+                android:id="@+id/txtTidal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@string/symptoms"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp"/>
+            <LinearLayout
+                android:id="@+id/llSymptom"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@drawable/edt_bor">
+                <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
+                    android:id="@+id/spnSymptom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -336,7 +366,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:background="@color/darkGreyIcon"/>
+                android:background="@color/grey_heading"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -397,13 +427,13 @@
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/btn_investigation"
                     android:textStyle="bold"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingEnd="@dimen/_10sdp"
-                    android:paddingBottom="@dimen/_4sdp"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_15sdp"
+                    android:paddingBottom="@dimen/_5sdp"
                     android:text="@string/add"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_15sdp" />
             </RelativeLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvInfusion"
@@ -414,27 +444,25 @@
                 android:background="#F8F8F8"
                 android:layout_marginLeft="@dimen/_2sdp"
                 tools:listitem="@layout/inner_infusion_ward_round"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+
                 <TextView
                     android:id="@+id/btnSave"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
                     android:background="@drawable/btn_investigation"
                     android:textStyle="bold"
+                    android:gravity="center"
                     android:paddingStart="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_4sdp"
+                    android:paddingTop="@dimen/_7sdp"
                     android:paddingEnd="@dimen/_10sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:text="@string/save"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_7sdp"
+                    android:text="@string/save_data"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10sdp" />
-            </RelativeLayout>
+                    android:textSize="@dimen/_15sdp" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

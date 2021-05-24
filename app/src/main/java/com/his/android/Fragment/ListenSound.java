@@ -2,19 +2,21 @@ package com.his.android.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
-import com.his.android.Adapter.ShowVitalAdp;
 import com.his.android.Model.VoiceData;
 import com.his.android.R;
 import com.his.android.Response.VoiceDataResp;
@@ -42,7 +44,9 @@ public class ListenSound extends BaseFragment implements View.OnClickListener {
     private Date toToday = new Date();
     SimpleDateFormat format;
     RecyclerView rvSound;
+    VideoView videoView;
     VoiceDataResp voiceDataResp;
+    MediaController mediaController;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class ListenSound extends BaseFragment implements View.OnClickListener {
         txtToDate=view.findViewById(R.id.txtToDate);
         btnGo=view.findViewById(R.id.btnGo);
         rvSound=view.findViewById(R.id.rvSound);
+        videoView = view.findViewById(R.id.vView);
         rvSound.setLayoutManager(new LinearLayoutManager(mActivity));
         Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
@@ -67,6 +72,8 @@ public class ListenSound extends BaseFragment implements View.OnClickListener {
         txtFrmDate.setOnClickListener(this);
         txtToDate.setOnClickListener(this);
         btnGo.setOnClickListener(this);
+        mediaController = new MediaController(mActivity);
+        bind();
         return view;
     }
     private void bind(){
@@ -79,7 +86,7 @@ public class ListenSound extends BaseFragment implements View.OnClickListener {
                 SharedPrefManager.getInstance(mActivity).getSubDept().getId(),
                 format.format(today),
                 format.format(toToday),
-                "stethoscope"
+                getArguments().getString("forName")
                 );
         call.enqueue(new Callback<VoiceDataResp>() {
             @Override
@@ -129,6 +136,15 @@ public class ListenSound extends BaseFragment implements View.OnClickListener {
             datePickerDialog.getDatePicker().setMaxDate(toToday.getTime());
         } else if(view.getId()==R.id.btnGo) bind();
     }
+    private void playAudio(String audio) {
+        Uri uri = Uri.parse("http://182.156.200.179:201/Uploads/patientVoiceData/"+audio);
+        videoView.setVideoURI(uri);
+        videoView.setMediaController(mediaController);
+        mediaController.setAnchorView(videoView);
+        videoView.start();
+        mediaController.show();
+        Toast.makeText(mActivity, "Audio started playing..", Toast.LENGTH_SHORT).show();
+    }
     private class SoundListAdp extends RecyclerView.Adapter<SoundListAdp.RecyclerViewHolder>{
         List<VoiceData> voiceDataList;
 
@@ -148,6 +164,7 @@ public class ListenSound extends BaseFragment implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull SoundListAdp.RecyclerViewHolder holder, int position) {
             holder.txtTitle.setText(voiceDataList.get(position).getVoiceData());
+            holder.txtTitle.setOnClickListener(view -> playAudio(voiceDataList.get(position).getVoiceData()));
         }
 
         @Override

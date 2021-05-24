@@ -3,6 +3,7 @@ package com.his.android.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +18,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.androidbuts.multispinnerfilter.KeyPairBoolData;
+import com.androidbuts.multispinnerfilter.MultiSpinnerListener;
+import com.androidbuts.multispinnerfilter.MultiSpinnerSearch;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.his.android.Model.VoiceData;
+import com.his.android.Model.Problem;
 import com.his.android.R;
+import com.his.android.Response.ProblemResp;
 import com.his.android.Utils.RetrofitClient;
 import com.his.android.Utils.SharedPrefManager;
 import com.his.android.Utils.Utils;
 import com.his.android.view.BaseFragment;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,14 +45,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.google.android.gms.vision.L.TAG;
+
 public class WardRound extends BaseFragment {
     EditText edtBpSys, edtBpDias, edtPulse, edtFlowRate, edtFio2, edtPeep, edtVentilatorRr, edtTidal, edtInfusionRate, edtSpo2, edtTemp, edtRespRate;
-    TextView btnAdd, btnSave;
+    TextView btnAdd, btnSave, txtTidal, txtVentilatorRr, txtPeep, txtFio2, txtFlowRate;
     Spinner spnInfusion, spnO2SupportType, spnPositionType;
+    MultiSpinnerSearch spnSymptom;
     RecyclerView rvInfusion;
     private List<Item> positionList;
     private List<Item> o2SupportList;
     private List<Item> infusionList;
+    private List<Problem> problemList;
+    List<KeyPairBoolData> problemList1;
     private List<InfusionNorad> infusionNoradList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,11 +80,19 @@ public class WardRound extends BaseFragment {
         btnAdd=view.findViewById(R.id.btnAdd);
         btnSave=view.findViewById(R.id.btnSave);
         rvInfusion=view.findViewById(R.id.rvInfusion);
+        txtFio2=view.findViewById(R.id.txtFio2);
+        txtPeep=view.findViewById(R.id.txtPeep);
+        txtVentilatorRr=view.findViewById(R.id.txtVentilatorRr);
+        txtTidal=view.findViewById(R.id.txtTidal);
+        txtFlowRate=view.findViewById(R.id.txtFlowRate);
+        spnSymptom=view.findViewById(R.id.spnSymptom);
         rvInfusion.setLayoutManager(new LinearLayoutManager(mActivity));
         positionList=new ArrayList<>();
         o2SupportList=new ArrayList<>();
         infusionList=new ArrayList<>();
+        problemList=new ArrayList<>();
         infusionNoradList=new ArrayList<>();
+        problemList.add(0, new Problem(0, "-Select Problem-"));
         positionList.add(0, new Item("-Select Position Type-", 0));
         positionList.add(1, new Item("Sitting", 1));
         positionList.add(2, new Item("Supine", 2));
@@ -104,103 +124,149 @@ public class WardRound extends BaseFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i==0){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(true);
+                    edtFlowRate.setVisibility(View.VISIBLE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(false);
+                    edtFio2.setVisibility(View.GONE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(false);
+                    edtPeep.setVisibility(View.GONE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(false);
+                    edtVentilatorRr.setVisibility(View.GONE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(false);
+                    txtFlowRate.setVisibility(View.VISIBLE);
+                    edtTidal.setVisibility(View.GONE);
+                    txtFio2.setVisibility(View.GONE);
+                    txtPeep.setVisibility(View.GONE);
+                    txtVentilatorRr.setVisibility(View.GONE);
+                    txtTidal.setVisibility(View.GONE);
                 } else if (i==1){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(true);
+                    edtFlowRate.setVisibility(View.VISIBLE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(true);
+                    edtFio2.setVisibility(View.VISIBLE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(false);
+                    edtPeep.setVisibility(View.GONE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(false);
+                    edtVentilatorRr.setVisibility(View.GONE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(false);
+                    edtTidal.setVisibility(View.GONE);
+                    edtTidal.setVisibility(View.GONE);
+                    txtFlowRate.setVisibility(View.VISIBLE);
+                    txtFio2.setVisibility(View.VISIBLE);
+                    txtPeep.setVisibility(View.GONE);
+                    txtVentilatorRr.setVisibility(View.GONE);
+                    txtTidal.setVisibility(View.GONE);
                 } else if (i==2){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(true);
+                    edtFlowRate.setVisibility(View.VISIBLE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(true);
+                    edtFio2.setVisibility(View.VISIBLE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(false);
+                    edtPeep.setVisibility(View.GONE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(false);
+                    edtVentilatorRr.setVisibility(View.GONE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(false);
+                    edtTidal.setVisibility(View.GONE);
+                    txtFlowRate.setVisibility(View.VISIBLE);
+                    txtFio2.setVisibility(View.VISIBLE);
+                    txtPeep.setVisibility(View.GONE);
+                    txtVentilatorRr.setVisibility(View.GONE);
+                    txtTidal.setVisibility(View.GONE);
                 } else if (i==3){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(true);
+                    edtFlowRate.setVisibility(View.VISIBLE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(false);
+                    edtFio2.setVisibility(View.GONE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(false);
+                    edtPeep.setVisibility(View.GONE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(false);
+                    edtVentilatorRr.setVisibility(View.GONE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(false);
+                    edtTidal.setVisibility(View.GONE);
+                    txtFlowRate.setVisibility(View.VISIBLE);
+                    txtFio2.setVisibility(View.GONE);
+                    txtPeep.setVisibility(View.GONE);
+                    txtVentilatorRr.setVisibility(View.GONE);
+                    txtTidal.setVisibility(View.GONE);
                 } else if (i==4){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(true);
+                    edtFlowRate.setVisibility(View.VISIBLE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(false);
+                    edtFio2.setVisibility(View.GONE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(false);
+                    edtPeep.setVisibility(View.GONE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(false);
+                    edtVentilatorRr.setVisibility(View.GONE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(false);
+                    edtTidal.setVisibility(View.GONE);
+                    txtFlowRate.setVisibility(View.VISIBLE);
+                    txtFio2.setVisibility(View.GONE);
+                    txtPeep.setVisibility(View.GONE);
+                    txtVentilatorRr.setVisibility(View.GONE);
+                    txtTidal.setVisibility(View.GONE);
                 } else if (i==5){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(true);
+                    edtFlowRate.setVisibility(View.VISIBLE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(false);
+                    edtFio2.setVisibility(View.GONE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(false);
+                    edtPeep.setVisibility(View.GONE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(false);
+                    edtVentilatorRr.setVisibility(View.GONE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(false);
+                    edtTidal.setVisibility(View.GONE);
+                    txtFlowRate.setVisibility(View.VISIBLE);
+                    txtFio2.setVisibility(View.GONE);
+                    txtPeep.setVisibility(View.GONE);
+                    txtVentilatorRr.setVisibility(View.GONE);
+                    txtTidal.setVisibility(View.GONE);
                 } else if (i==6){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(false);
+                    edtFlowRate.setVisibility(View.GONE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(false);
+                    edtFio2.setVisibility(View.GONE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(false);
+                    edtPeep.setVisibility(View.GONE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(false);
+                    edtVentilatorRr.setVisibility(View.GONE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(false);
+                    edtTidal.setVisibility(View.GONE);
+                    txtFlowRate.setVisibility(View.GONE);
+                    txtFio2.setVisibility(View.GONE);
+                    txtPeep.setVisibility(View.GONE);
+                    txtVentilatorRr.setVisibility(View.GONE);
+                    txtTidal.setVisibility(View.GONE);
                 } else if (i==7){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(true);
+                    edtFlowRate.setVisibility(View.VISIBLE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(true);
+                    edtFio2.setVisibility(View.VISIBLE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(true);
+                    edtPeep.setVisibility(View.VISIBLE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(true);
+                    edtVentilatorRr.setVisibility(View.VISIBLE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(true);
+                    edtTidal.setVisibility(View.VISIBLE);
+                    txtFlowRate.setVisibility(View.VISIBLE);
+                    txtFio2.setVisibility(View.VISIBLE);
+                    txtPeep.setVisibility(View.VISIBLE);
+                    txtVentilatorRr.setVisibility(View.VISIBLE);
+                    txtTidal.setVisibility(View.VISIBLE);
                 } else if (i==8){
                     edtFlowRate.setText("");
-                    edtFlowRate.setEnabled(true);
+                    edtFlowRate.setVisibility(View.VISIBLE);
                     edtFio2.setText("");
-                    edtFio2.setEnabled(true);
+                    edtFio2.setVisibility(View.VISIBLE);
                     edtPeep.setText("");
-                    edtPeep.setEnabled(true);
+                    edtPeep.setVisibility(View.VISIBLE);
                     edtVentilatorRr.setText("");
-                    edtVentilatorRr.setEnabled(true);
+                    edtVentilatorRr.setVisibility(View.VISIBLE);
                     edtTidal.setText("");
-                    edtTidal.setEnabled(true);
+                    edtTidal.setVisibility(View.VISIBLE);
+                    txtFlowRate.setVisibility(View.VISIBLE);
+                    txtFio2.setVisibility(View.VISIBLE);
+                    txtPeep.setVisibility(View.VISIBLE);
+                    txtVentilatorRr.setVisibility(View.VISIBLE);
+                    txtTidal.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -211,6 +277,24 @@ public class WardRound extends BaseFragment {
         });
         btnSave.setOnClickListener(view1 -> {
             Utils.showRequestDialog(mActivity);
+
+
+            JSONArray array = new JSONArray();
+            for (int i=0; i<problemList1.size(); i++){
+                if (problemList1.get(i).isSelected()) {
+                    JSONObject obj = new JSONObject();
+                    try {
+                        obj.put("detailID", problemList1.get(i).getId());
+                        obj.put("details", problemList1.get(i).getName());
+                        array.put(obj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+
+
             Gson gson = new Gson();
             Call<ResponseBody> call= RetrofitClient.getInstance().getApi().saveWardRoundForm(
                     SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
@@ -230,13 +314,39 @@ public class WardRound extends BaseFragment {
                     edtTidal.getText().toString().trim(),
                     SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
                     SharedPrefManager.getInstance(mActivity).getHeadID(),
-                    gson.toJson(infusionNoradList));
+                    gson.toJson(infusionNoradList),
+                    array.toString()
+            );
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.isSuccessful()){
+                    if (response.isSuccessful()) {
+                        edtBpSys.setText("");
+                        edtBpDias.setText("");
+                        edtPulse.setText("");
+                        edtFlowRate.setText("");
+                        edtFio2.setText("");
+                        edtPeep.setText("");
+                        edtVentilatorRr.setText("");
+                        edtTidal.setText("");
+                        edtInfusionRate.setText("");
+                        edtSpo2.setText("");
+                        edtTemp.setText("");
+                        edtRespRate.setText("");
+                        infusionNoradList.clear();
+                        rvInfusion.setAdapter(null);
+                        for (int i = 0; i < problemList1.size(); i++) {
+                            problemList1.get(i).setSelected(false);
+                        }
+                        spnSymptom.setItems(problemList1, items -> {
+                            for (int i = 0; i < items.size(); i++) {
+                                if (items.get(i).isSelected()) {
+                                    Log.i(TAG, i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());
+                                }
+                            }
+                        });
                         Toast.makeText(mActivity, "Data Saved Successfully!", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         try {
                             Toast.makeText(mActivity, response.errorBody().string(), Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
@@ -260,7 +370,44 @@ public class WardRound extends BaseFragment {
             spnInfusion.setSelection(0);
             rvInfusion.setAdapter(new InfusionDetailAdp(infusionNoradList));
         });
+        bind();
         return view;
+    }
+    private void bind(){
+        Utils.showRequestDialog(mActivity);
+        Call<ProblemResp> call=RetrofitClient.getInstance().getApi().getProblemList(
+                SharedPrefManager.getInstance(mActivity).getUser().getAccessToken(),
+                SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString());
+        call.enqueue(new Callback<ProblemResp>() {
+            @Override
+            public void onResponse(Call<ProblemResp> call, Response<ProblemResp> response) {
+                if (response.isSuccessful()){
+                    problemList=response.body().getProblemList();
+                    problemList1 = new ArrayList<>();
+                    for (int i = 0; i < problemList.size(); i++) {
+                        KeyPairBoolData h = new KeyPairBoolData();
+                        h.setId(problemList.get(i).getId() + 1);
+                        h.setName(problemList.get(i).getProblemName());
+                        h.setSelected(false);
+                        problemList1.add(h);
+                    }
+
+                    spnSymptom.setItems(problemList1, items -> {
+                        for (int i = 0; i < items.size(); i++) {
+                            if (items.get(i).isSelected()) {
+                                Log.i(TAG, i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());
+                            }
+                        }
+                    });
+                }
+                Utils.hideDialog();
+            }
+
+            @Override
+            public void onFailure(Call<ProblemResp> call, Throwable t) {
+                Utils.hideDialog();
+            }
+        });
     }
     private class InfusionDetailAdp extends RecyclerView.Adapter<InfusionDetailAdp.RecyclerViewHolder>{
         List<InfusionNorad> infusionNoradList;

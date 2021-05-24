@@ -170,6 +170,7 @@ public class ScanSelector extends BaseActivity {
             txtDischarge.setVisibility(View.GONE);
             txtTransferIn.setVisibility(View.GONE);
         }
+        txtUpdateVitals.setVisibility(View.GONE);
     }
 
     //Dialog transfer patient

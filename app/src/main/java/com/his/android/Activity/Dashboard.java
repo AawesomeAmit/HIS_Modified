@@ -184,6 +184,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             }
 //        ScannerActivity.patientInfo = null;
             txtPId.setText(String.valueOf(SharedPrefManager.getInstance(this).getPid()));
+            txtPName.setText(String.valueOf(SharedPrefManager.getInstance(this).getPtName()));
         } catch (Exception e) {
             e.printStackTrace();
         }

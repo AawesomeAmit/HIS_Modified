@@ -24,6 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="4"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle"
@@ -50,16 +52,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:background="@drawable/edt_bor"
                 android:gravity="center_vertical">
                 <TextView
                     android:layout_width="match_parent"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:id="@+id/txtFrmDate"
                     android:paddingStart="@dimen/_2sdp"
                     android:paddingEnd="@dimen/_2sdp"
                     android:gravity="center_vertical"
-                    android:background="@color/blue_heading"
-                    android:textSize="@dimen/_10sdp"
+                    android:textSize="@dimen/_13sdp"
                     android:textStyle="bold"
                     android:layout_height="@dimen/_20sdp"/>
             </LinearLayout>
@@ -86,17 +90,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:background="@drawable/edt_bor"
                 android:gravity="center_vertical">
                 <TextView
                     android:layout_width="match_parent"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:id="@+id/txtToDate"
                     android:paddingStart="@dimen/_2sdp"
                     android:paddingEnd="@dimen/_2sdp"
                     android:gravity="center_vertical"
-                    android:background="@color/blue_heading"
-                    android:textSize="@dimen/_10sdp"
                     android:textStyle="bold"
+                    android:textSize="@dimen/_13sdp"
                     android:layout_height="@dimen/_20sdp"/>
             </LinearLayout>
         </LinearLayout>
@@ -107,8 +113,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
         android:background="@drawable/btn_medication"
         android:gravity="center"
         android:paddingStart="@dimen/_10sdp"
@@ -120,16 +126,30 @@
         android:textSize="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/llTime" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSound"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/_2sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="#F8F8F8"
+        android:layout_height="0dp"
         android:layout_marginLeft="@dimen/_2sdp"
-        tools:listitem="@layout/inner_sound"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_2sdp"
+        android:background="#F8F8F8"
+        app:layout_constraintBottom_toTopOf="@+id/vView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGo" />
+        app:layout_constraintTop_toBottomOf="@+id/btnGo"
+        tools:listitem="@layout/inner_sound" />
+
+    <VideoView
+        android:id="@+id/vView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:elevation="@dimen/_10sdp"
+        android:keepScreenOn="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

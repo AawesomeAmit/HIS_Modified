@@ -73,6 +73,7 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             SharedPrefManager.getInstance(mCtx).setPhysioPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getPatientName());
             Intent intent = new Intent(mCtx, Dashboard.class);
             mCtx.startActivity(intent);
         });
@@ -80,6 +81,7 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             SharedPrefManager.getInstance(mCtx).setPhysioPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getPatientName());
             Intent intent = new Intent(mCtx, Dashboard.class);
             mCtx.startActivity(intent);
         });
@@ -87,6 +89,7 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             SharedPrefManager.getInstance(mCtx).setPhysioPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getPatientName());
             Intent intent = new Intent(mCtx, Dashboard.class);
             mCtx.startActivity(intent);
         });
@@ -94,6 +97,7 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             SharedPrefManager.getInstance(mCtx).setPhysioPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getPatientName());
             Intent intent = new Intent(mCtx, PriscriptionOverviewPopup.class);
             intent.putExtra("PatientName", physioPatientLists.get(i).getPatientName());
             intent.putExtra("Pid", physioPatientLists.get(i).getPid());
@@ -105,6 +109,7 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             SharedPrefManager.getInstance(mCtx).setPhysioPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getPatientName());
             Intent intent = new Intent(mCtx, MedicineSidePathway.class);
             mCtx.startActivity(intent);
         });
@@ -112,6 +117,7 @@ public class PhysioPatientListAdp extends RecyclerView.Adapter<PhysioPatientList
             SharedPrefManager.getInstance(mCtx).setPhysioPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(physioPatientLists.get(i).getIpNo());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getPatientName());
 //            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
             mCtx.startActivity(new Intent(mCtx, ChatTitle.class));
         });

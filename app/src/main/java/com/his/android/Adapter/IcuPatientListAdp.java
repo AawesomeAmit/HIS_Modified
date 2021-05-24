@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.his.android.Activity.ChatActivity;
 import com.his.android.Activity.ChatTitle;
 import com.his.android.Activity.Dashboard;
+import com.his.android.Activity.PreDashboard;
 import com.his.android.Activity.PriscriptionOverviewPopup;
 import com.his.android.Fragment.MedicineSidePathway;
 import com.his.android.Model.AdmittedPatientICU;
@@ -81,6 +82,7 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
             SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
+            SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getPname());
             Intent intent = new Intent(mCtx, Dashboard.class);
             mCtx.startActivity(intent);
 //            }
@@ -93,6 +95,7 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
             SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
+            SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getPname());
             Intent intent = new Intent(mCtx, Dashboard.class);
             mCtx.startActivity(intent);
 //            }
@@ -105,6 +108,7 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
             SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
+            SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getPname());
             Intent intent = new Intent(mCtx, Dashboard.class);
             mCtx.startActivity(intent);
 //            }
@@ -117,6 +121,7 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
             SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
+            SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getPname());
             Intent intent = new Intent(mCtx, PriscriptionOverviewPopup.class);
             intent.putExtra("PatientName", admittedPatient.get(i).getPname() + "( " + admittedPatient.get(i).getAge() + " )");
             intent.putExtra("Pid", String.valueOf(admittedPatient.get(i).getPid()));
@@ -133,6 +138,7 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
             SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
+            SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getPname());
             Intent intent = new Intent(mCtx, MedicineSidePathway.class);
             mCtx.startActivity(intent);
 //            }
@@ -144,6 +150,7 @@ public class IcuPatientListAdp extends RecyclerView.Adapter<IcuPatientListAdp.Re
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
             SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
             SharedPrefManager.getInstance(mCtx).setPmId(admittedPatient.get(i).getPmid());
+            SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getPname());
 //            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
             mCtx.startActivity(new Intent(mCtx, ChatTitle.class));
         });

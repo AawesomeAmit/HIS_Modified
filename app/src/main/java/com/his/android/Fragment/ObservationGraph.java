@@ -140,7 +140,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
     ProgressBar mProgress;
     int pStatus = 0;
     private Handler handler = new Handler();
-
+    Bundle args = new Bundle();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -712,6 +712,8 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         popupWindow.showAtLocation(llMain, Gravity.CENTER, 0, 0);
         txtVital.setOnClickListener(view -> {
             Fragment fragment = new ListenSound();
+            args.putString("forName","vital");
+            fragment.setArguments(args);
             FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
@@ -719,6 +721,8 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         });
         txtInput.setOnClickListener(view -> {
             Fragment fragment = new ListenSound();
+            args.putString("forName","intakeOutput");
+            fragment.setArguments(args);
             FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
@@ -726,6 +730,8 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         });
         txtOutput.setOnClickListener(view -> {
             Fragment fragment = new ListenSound();
+            args.putString("forName","intakeOutput");
+            fragment.setArguments(args);
             FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
@@ -733,6 +739,8 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
         });
         txtStethoscope.setOnClickListener(view -> {
             Fragment fragment = new ListenSound();
+            args.putString("forName","stethoscope");
+            fragment.setArguments(args);
             FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();

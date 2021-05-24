@@ -63,6 +63,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 1) {
                 SharedPrefManager.getInstance(mCtx).setCovidPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
+                SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getName());
                 //SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
                 SharedPrefManager.getInstance(mCtx).setIsCovid(true);
                 Intent intent = new Intent(mCtx, Dashboard.class);
@@ -73,6 +74,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 1) {
                 SharedPrefManager.getInstance(mCtx).setCovidPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
+                SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getName());
                 //SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
                 SharedPrefManager.getInstance(mCtx).setIsCovid(true);
                 Intent intent = new Intent(mCtx, Dashboard.class);
@@ -83,6 +85,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 1) {
                 SharedPrefManager.getInstance(mCtx).setCovidPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
+                SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getName());
                 //SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
                 SharedPrefManager.getInstance(mCtx).setIsCovid(true);
                 Intent intent = new Intent(mCtx, Dashboard.class);
@@ -93,6 +96,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 1) {
                 SharedPrefManager.getInstance(mCtx).setCovidPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
+                SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getName());
                 //SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
                 SharedPrefManager.getInstance(mCtx).setIsCovid(true);
                 Intent intent = new Intent(mCtx, Dashboard.class);
@@ -107,6 +111,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
             if (SharedPrefManager.getInstance(mCtx).getHeadID() == 1) {
                 SharedPrefManager.getInstance(mCtx).setCovidPatient(admittedPatient.get(i));
                 SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
+                SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getName());
                 //SharedPrefManager.getInstance(mCtx).setIpNo(admittedPatient.get(i).getIpNo());
                 SharedPrefManager.getInstance(mCtx).setIsCovid(true);
                 Intent intent = new Intent(mCtx, MedicineSidePathway.class);
@@ -117,6 +122,7 @@ public class CovidPatientListAdp extends RecyclerView.Adapter<CovidPatientListAd
         holder.imgMsg.setOnClickListener(view -> {
             SharedPrefManager.getInstance(mCtx).setCovidPatient(admittedPatient.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(admittedPatient.get(i).getPid());
+            SharedPrefManager.getInstance(mCtx).setPtName(admittedPatient.get(i).getName());
             SharedPrefManager.getInstance(mCtx).setIsCovid(true);
 //            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
             mCtx.startActivity(new Intent(mCtx, ChatTitle.class));

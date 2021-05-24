@@ -73,6 +73,7 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
         holder.txtPName.setOnClickListener(view -> {
             SharedPrefManager.getInstance(mCtx).setDieteticsPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getpID());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getName());
             SharedPrefManager.getInstance(mCtx).setIpNo("0");
 //            Intent intent = new Intent(mCtx, Dashboard.class);
             Intent intent = new Intent(mCtx, NutriAnalyserFragment.class);
@@ -81,6 +82,7 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
         holder.txtDiagnosis.setOnClickListener(view -> {
             SharedPrefManager.getInstance(mCtx).setDieteticsPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getpID());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getName());
             SharedPrefManager.getInstance(mCtx).setIpNo("0");
 //            Intent intent = new Intent(mCtx, Dashboard.class);
             Intent intent = new Intent(mCtx, NutriAnalyserFragment.class);
@@ -89,6 +91,7 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
         holder.txtPId.setOnClickListener(view -> {
             SharedPrefManager.getInstance(mCtx).setDieteticsPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getpID());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getName());
             SharedPrefManager.getInstance(mCtx).setIpNo("0");
 //            Intent intent = new Intent(mCtx, Dashboard.class);
             Intent intent = new Intent(mCtx, NutriAnalyserFragment.class);
@@ -97,6 +100,7 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
         holder.imgInfo.setOnClickListener(view -> {
             SharedPrefManager.getInstance(mCtx).setDieteticsPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getpID());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getName());
             SharedPrefManager.getInstance(mCtx).setIpNo("0");
             Intent intent = new Intent(mCtx, PriscriptionOverviewPopup.class);
             intent.putExtra("PatientName", physioPatientLists.get(i).getName());
@@ -108,6 +112,7 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
         holder.txtMed.setOnClickListener(view -> {
             SharedPrefManager.getInstance(mCtx).setDieteticsPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getpID());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getName());
             SharedPrefManager.getInstance(mCtx).setIpNo("0");
             Intent intent = new Intent(mCtx, MedicineSidePathway.class);
             mCtx.startActivity(intent);
@@ -115,6 +120,7 @@ public class DieteticsPatientListAdp extends RecyclerView.Adapter<DieteticsPatie
         holder.imgMsg.setOnClickListener(view -> {
             SharedPrefManager.getInstance(mCtx).setDieteticsPatient(physioPatientLists.get(i));
             SharedPrefManager.getInstance(mCtx).setPid(physioPatientLists.get(i).getpID());
+            SharedPrefManager.getInstance(mCtx).setPtName(physioPatientLists.get(i).getName());
             SharedPrefManager.getInstance(mCtx).setIpNo("0");
 //            mCtx.startActivity(new Intent(mCtx, ChatActivity.class));
             mCtx.startActivity(new Intent(mCtx, ChatTitle.class));

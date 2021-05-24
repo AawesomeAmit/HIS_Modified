@@ -493,7 +493,7 @@
     <string name="case_id_no">Case ID No.</string>
     <string name="enter_case_id">Enter Case ID</string>
     <string name="record_stethoscope_sound">Record Stethoscope Sound</string>
-    <string name="ward_round_form">Ward Round Form</string>
+    <string name="ward_round_form">Vital Data</string>
     <string name="peep">Peep</string>
     <string name="ventilator_rr">Ventilator RR</string>
     <string name="tidal">Tidal</string>
@@ -504,4 +504,5 @@
     <string name="enter_tidal">Enter Tidal</string>
     <string name="from_time">From Time</string>
     <string name="to_time">To Time</string>
+    <string name="save_data">Save Data</string>
 </resources>
