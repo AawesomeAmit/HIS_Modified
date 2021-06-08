@@ -352,6 +352,28 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txtOther"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:text="@string/other_symptoms"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp"/>
+            <EditText
+                android:id="@+id/edtOther"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:padding="@dimen/_4sdp"
+                android:hint="@string/other_symptoms"
+                android:background="@drawable/edt_bor"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"

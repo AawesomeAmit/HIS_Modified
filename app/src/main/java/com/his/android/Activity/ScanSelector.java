@@ -99,7 +99,8 @@ public class ScanSelector extends BaseActivity {
         });
         txtSample.setOnClickListener(view -> {
 //            intent.putExtra("status1", "0");
-            startActivity(new Intent(mActivity, SampleCollection.class));
+//            startActivity(new Intent(mActivity, SampleCollection.class));
+            startActivity(new Intent(mActivity, USBCameraActivity.class));
         });
         txtVital.setOnClickListener(view -> {
             intent.putExtra("status1", "1");

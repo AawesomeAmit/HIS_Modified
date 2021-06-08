@@ -35,6 +35,8 @@
     <uses-permission android:name="android.permision.CALL_PHONE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.usb.host"/>
     <uses-permission android:name="android.permission.STORAGE" />
 
     <application
@@ -48,6 +50,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.USBCameraActivity"></activity>
         <activity android:name=".Activity.UploadDocument" />
         <activity android:name=".Activity.UploadPatientDocument" />
         <activity android:name=".Activity.FoodTable" />

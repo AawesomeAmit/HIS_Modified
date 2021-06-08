@@ -505,4 +505,6 @@
     <string name="from_time">From Time</string>
     <string name="to_time">To Time</string>
     <string name="save_data">Save Data</string>
+    <string name="other_symptoms">Other Symptoms</string>
+    <string name="neuro_icu_daily_chart">Neuro ICU Daily Chart</string>
 </resources>

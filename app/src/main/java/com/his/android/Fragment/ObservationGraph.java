@@ -716,7 +716,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
             fragment.setArguments(args);
             FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
-            ft.commit();
+//            ft.commit();
             popupWindow.dismiss();
         });
         txtInput.setOnClickListener(view -> {
@@ -725,7 +725,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
             fragment.setArguments(args);
             FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
-            ft.commit();
+//            ft.commit();
             popupWindow.dismiss();
         });
         txtOutput.setOnClickListener(view -> {
@@ -734,7 +734,7 @@ public class ObservationGraph extends Fragment implements View.OnClickListener {
             fragment.setArguments(args);
             FragmentTransaction ft = ((Dashboard) context).getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
-            ft.commit();
+//            ft.commit();
             popupWindow.dismiss();
         });
         txtStethoscope.setOnClickListener(view -> {

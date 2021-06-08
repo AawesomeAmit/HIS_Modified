@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_takepic"
+        android:title="takingPhotos"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_recording"
+        android:title="recording"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_focus"
+        android:title="cameraFocus"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_resolution"
+        android:title="resolution"
+        android:visible="false"
+        app:showAsAction="never" />
+</menu>

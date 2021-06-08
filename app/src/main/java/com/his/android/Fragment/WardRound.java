@@ -48,7 +48,7 @@ import retrofit2.Response;
 import static com.google.android.gms.vision.L.TAG;
 
 public class WardRound extends BaseFragment {
-    EditText edtBpSys, edtBpDias, edtPulse, edtFlowRate, edtFio2, edtPeep, edtVentilatorRr, edtTidal, edtInfusionRate, edtSpo2, edtTemp, edtRespRate;
+    EditText edtBpSys, edtBpDias, edtPulse, edtFlowRate, edtFio2, edtPeep, edtVentilatorRr, edtTidal, edtInfusionRate, edtSpo2, edtTemp, edtRespRate, edtOther;
     TextView btnAdd, btnSave, txtTidal, txtVentilatorRr, txtPeep, txtFio2, txtFlowRate;
     Spinner spnInfusion, spnO2SupportType, spnPositionType;
     MultiSpinnerSearch spnSymptom;
@@ -68,6 +68,7 @@ public class WardRound extends BaseFragment {
         edtFlowRate=view.findViewById(R.id.edtFlowRate);
         edtFio2=view.findViewById(R.id.edtFio2);
         edtPeep=view.findViewById(R.id.edtPeep);
+        edtOther=view.findViewById(R.id.edtOther);
         edtVentilatorRr=view.findViewById(R.id.edtVentilatorRr);
         edtTidal=view.findViewById(R.id.edtTidal);
         edtInfusionRate=view.findViewById(R.id.edtInfusionRate);
@@ -315,7 +316,8 @@ public class WardRound extends BaseFragment {
                     SharedPrefManager.getInstance(mActivity).getUser().getUserid().toString(),
                     SharedPrefManager.getInstance(mActivity).getHeadID(),
                     gson.toJson(infusionNoradList),
-                    array.toString()
+                    array.toString(),
+                    edtOther.getText().toString().trim()
             );
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -333,6 +335,7 @@ public class WardRound extends BaseFragment {
                         edtSpo2.setText("");
                         edtTemp.setText("");
                         edtRespRate.setText("");
+                        edtOther.setText("");
                         infusionNoradList.clear();
                         rvInfusion.setAdapter(null);
                         for (int i = 0; i < problemList1.size(); i++) {
@@ -391,7 +394,11 @@ public class WardRound extends BaseFragment {
                         h.setSelected(false);
                         problemList1.add(h);
                     }
-
+                    KeyPairBoolData h = new KeyPairBoolData();
+                    h.setId(0);
+                    h.setName("Other Symptom");
+                    h.setSelected(false);
+                    problemList1.add(h);
                     spnSymptom.setItems(problemList1, items -> {
                         for (int i = 0; i < items.size(); i++) {
                             if (items.get(i).isSelected()) {
