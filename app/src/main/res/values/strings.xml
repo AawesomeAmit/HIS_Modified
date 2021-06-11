@@ -507,4 +507,8 @@
     <string name="save_data">Save Data</string>
     <string name="other_symptoms">Other Symptoms</string>
     <string name="neuro_icu_daily_chart">Neuro ICU Daily Chart</string>
+    <string name="general">General</string>
+    <string name="diagnosis_progress">Diagnosis Progress :</string>
+    <string name="a_cns">A. CNS</string>
+    <string name="b_cvs">B. CVS</string>
 </resources>

@@ -1,0 +1,1651 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<!--        app:cardBackgroundColor="@color/green_dashboard"-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginBottom="@dimen/_1sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:paddingStart="@dimen/_3sdp"
+            android:paddingEnd="@dimen/_3sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingBottom="@dimen/_2sdp">
+
+            <TextView
+                android:id="@+id/txtGeneral"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/general"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                android:padding="@dimen/_2sdp"
+                android:background="@drawable/btn_activity4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/hdDiagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtGeneral" />
+
+            <TextView
+                android:id="@+id/txtDiagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdDiagnosis" />
+
+            <TextView
+                android:id="@+id/hdPreMorbid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDiagnosis" />
+
+            <TextView
+                android:id="@+id/txtPreMorbid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdPreMorbid" />
+
+            <TextView
+                android:id="@+id/hdACns"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/a_cns"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                android:padding="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/btn_activity4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPreMorbid" />
+
+            <TextView
+                android:id="@+id/hdE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdACns" />
+
+            <TextView
+                android:id="@+id/txtE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdE" />
+
+            <TextView
+                android:id="@+id/hdM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtE" />
+
+            <TextView
+                android:id="@+id/txtM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdM" />
+
+            <TextView
+                android:id="@+id/hdV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtM" />
+
+            <TextView
+                android:id="@+id/txtV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdV" />
+            <TextView
+                android:id="@+id/hdPupilsRt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtV" />
+
+            <TextView
+                android:id="@+id/txtPupilsRt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdPupilsRt" />
+            <TextView
+                android:id="@+id/hdPupilsLt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPupilsRt" />
+
+            <TextView
+                android:id="@+id/txtPupilsLt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdV" />
+            <TextView
+                android:id="@+id/hdRt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPupilsLt" />
+
+            <TextView
+                android:id="@+id/txtRt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdRt" />
+            <TextView
+                android:id="@+id/hdLt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtRt" />
+
+            <TextView
+                android:id="@+id/txtLt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdLt" />
+            <TextView
+                android:id="@+id/hdLimbMp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLt" />
+
+            <TextView
+                android:id="@+id/txtLimbMp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdLimbMp" />
+            <TextView
+                android:id="@+id/hdUpperRt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLimbMp" />
+
+            <TextView
+                android:id="@+id/txtUpperRt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdUpperRt" />
+            <TextView
+                android:id="@+id/hdUpperLt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtUpperRt" />
+
+            <TextView
+                android:id="@+id/txtUpperLt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdUpperLt" />
+            <TextView
+                android:id="@+id/hdLowerRt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtUpperLt" />
+
+            <TextView
+                android:id="@+id/txtLowerRt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdLowerRt" />
+            <TextView
+                android:id="@+id/hdLowerLt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLowerRt" />
+
+            <TextView
+                android:id="@+id/txtLowerLt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdLowerRt" />
+            <TextView
+                android:id="@+id/hdBrainstemReflexes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLowerLt" />
+
+            <TextView
+                android:id="@+id/txtBrainstemReflexes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdBrainstemReflexes" />
+            <TextView
+                android:id="@+id/hdSedation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtBrainstemReflexes" />
+
+            <TextView
+                android:id="@+id/txtSedation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdSedation" />
+            <TextView
+                android:id="@+id/hdAnalgesia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSedation" />
+
+            <TextView
+                android:id="@+id/txtAnalgesia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdAnalgesia" />
+
+            <TextView
+                android:id="@+id/hdBCvs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/btn_activity4"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:text="@string/b_cvs"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.875"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtAnalgesia" />
+
+            <TextView
+                android:id="@+id/hdHr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdBCvs" />
+
+            <TextView
+                android:id="@+id/txtHr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdHr" />
+
+            <TextView
+                android:id="@+id/hdRhythm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtHr" />
+
+            <TextView
+                android:id="@+id/txtRhythm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdRhythm" />
+
+            <TextView
+                android:id="@+id/hdSysBp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtRhythm" />
+
+            <TextView
+                android:id="@+id/txtSysBp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdSysBp" />
+            <TextView
+                android:id="@+id/hdDiasBp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSysBp" />
+
+            <TextView
+                android:id="@+id/txtDiasBp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdDiasBp" />
+            <TextView
+                android:id="@+id/hdMeanBp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Mean Blood Pressure"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDiasBp" />
+
+            <TextView
+                android:id="@+id/txtMeanBp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdMeanBp" />
+            <TextView
+                android:id="@+id/hdPerfusionLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Perfusion Location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtMeanBp" />
+
+            <TextView
+                android:id="@+id/txtPerfusionLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdPerfusionLocation" />
+            <TextView
+                android:id="@+id/hdPerfusionGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Perfusion Grade"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPerfusionLocation" />
+
+            <TextView
+                android:id="@+id/txtPerfusionGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdPerfusionGrade" />
+            <TextView
+                android:id="@+id/hdEdemaLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Edema Location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPerfusionGrade" />
+
+            <TextView
+                android:id="@+id/txtEdemaLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdEdemaLocation" />
+            <TextView
+                android:id="@+id/hdEdemaGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtEdemaLocation" />
+
+            <TextView
+                android:id="@+id/txtEdemaGrade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="Edema Grade"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdEdemaGrade" />
+            <TextView
+                android:id="@+id/hdVDrug"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Vasoactive Drug"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtEdemaGrade" />
+
+            <TextView
+                android:id="@+id/txtVDrug"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdVDrug" />
+
+            <TextView
+                android:id="@+id/hdCRs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/btn_activity4"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:text="C. Respiratory System"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.875"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtVDrug" />
+
+            <TextView
+                android:id="@+id/hdSao2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdCRs" />
+
+            <TextView
+                android:id="@+id/txtSao2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdSao2"
+                app:layout_constraintTop_toBottomOf="@+id/hdCRs" />
+
+            <TextView
+                android:id="@+id/hdSigns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSao2" />
+
+            <TextView
+                android:id="@+id/txtSigns"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdSigns"
+                app:layout_constraintTop_toBottomOf="@+id/txtSao2" />
+
+            <TextView
+                android:id="@+id/hdVentMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSigns" />
+
+            <TextView
+                android:id="@+id/txtVentMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdVentMode"
+                app:layout_constraintTop_toBottomOf="@+id/txtSigns" />
+
+            <TextView
+                android:id="@+id/hdFio2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtVentMode" />
+
+            <TextView
+                android:id="@+id/txtFio2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdFio2"
+                app:layout_constraintTop_toBottomOf="@+id/txtVentMode" />
+
+            <TextView
+                android:id="@+id/hdPeep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="PEEP/CPAP(cm H2O)"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtFio2" />
+
+            <TextView
+                android:id="@+id/txtPeep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdPeep"
+                app:layout_constraintTop_toBottomOf="@+id/txtFio2" />
+
+            <TextView
+                android:id="@+id/hdTidalVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Tidal Volume(cc)"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtPeep" />
+
+            <TextView
+                android:id="@+id/txtTidalVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdTidalVolume"
+                app:layout_constraintTop_toBottomOf="@+id/txtPeep" />
+
+            <TextView
+                android:id="@+id/hdFreq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTidalVolume" />
+
+            <TextView
+                android:id="@+id/txtFreq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/freq"
+                app:layout_constraintStart_toEndOf="@+id/hdFreq"
+                app:layout_constraintTop_toBottomOf="@+id/txtTidalVolume" />
+
+            <TextView
+                android:id="@+id/hdChestXRay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Chest X-Ray: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtFreq" />
+
+            <TextView
+                android:id="@+id/txtChestXRay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdChestXRay"
+                app:layout_constraintTop_toBottomOf="@+id/txtFreq" />
+
+            <TextView
+                android:id="@+id/hdBedTilt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Bed Tilt: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdChestXRay" />
+
+            <TextView
+                android:id="@+id/txtBedTilt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="Bed Tilt(30 deg): "
+                app:layout_constraintStart_toEndOf="@+id/hdBedTilt"
+                app:layout_constraintTop_toBottomOf="@+id/hdChestXRay" />
+
+            <TextView
+                android:id="@+id/hdSedVacation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtBedTilt" />
+
+            <TextView
+                android:id="@+id/txtSedVacation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="Sedation Vacation: "
+                app:layout_constraintStart_toEndOf="@+id/hdSedVacation"
+                app:layout_constraintTop_toBottomOf="@+id/txtBedTilt" />
+
+            <TextView
+                android:id="@+id/hdStressUlcer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Stress Ulcer Prophylaxis: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSedVacation" />
+
+            <TextView
+                android:id="@+id/txtStressUlcer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdStressUlcer"
+                app:layout_constraintTop_toBottomOf="@+id/txtSedVacation" />
+
+            <TextView
+                android:id="@+id/hdDvt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="DVT Prophylaxis: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdStressUlcer" />
+
+            <TextView
+                android:id="@+id/txtDvt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdDvt"
+                app:layout_constraintTop_toBottomOf="@+id/hdStressUlcer" />
+
+            <TextView
+                android:id="@+id/hdChemRemark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Chemical Remarks: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDvt" />
+
+            <TextView
+                android:id="@+id/txtChemRemark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdChemRemark"
+                app:layout_constraintTop_toBottomOf="@+id/txtDvt" />
+
+            <TextView
+                android:id="@+id/hdDGiSign"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/btn_activity4"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:text="D. GI SIGN"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.875"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtChemRemark" />
+
+            <TextView
+                android:id="@+id/hdLocalExam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Local Examination"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdDGiSign" />
+
+            <TextView
+                android:id="@+id/txtLocalExam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdLocalExam"
+                app:layout_constraintTop_toBottomOf="@+id/hdDGiSign" />
+
+            <TextView
+                android:id="@+id/hdNutrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Nutrition: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLocalExam" />
+
+            <TextView
+                android:id="@+id/txtNutrition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdNutrition"
+                app:layout_constraintTop_toBottomOf="@+id/txtLocalExam" />
+
+            <TextView
+                android:id="@+id/hdFeeding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Feeding: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtNutrition" />
+
+            <TextView
+                android:id="@+id/txtFeeding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdFeeding"
+                app:layout_constraintTop_toBottomOf="@+id/txtNutrition" />
+
+            <TextView
+                android:id="@+id/hdOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="If Other: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtFeeding" />
+
+            <TextView
+                android:id="@+id/txtOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="If Other: "
+                app:layout_constraintStart_toEndOf="@+id/hdOther"
+                app:layout_constraintTop_toBottomOf="@+id/txtFeeding" />
+
+            <TextView
+                android:id="@+id/hdKCal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="kCal/24hrs: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtOther" />
+
+            <TextView
+                android:id="@+id/txtKCal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdKCal"
+                app:layout_constraintTop_toBottomOf="@+id/txtOther" />
+
+            <TextView
+                android:id="@+id/hdProteinPDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Protein/Day: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtKCal" />
+
+            <TextView
+                android:id="@+id/txtProteinPDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdProteinPDay"
+                app:layout_constraintTop_toBottomOf="@+id/txtKCal" />
+
+            <TextView
+                android:id="@+id/hdBowelMove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Bowel Movement: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtProteinPDay" />
+
+            <TextView
+                android:id="@+id/txtBowelMove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdBowelMove"
+                app:layout_constraintTop_toBottomOf="@+id/txtProteinPDay" />
+
+            <TextView
+                android:id="@+id/hdRbs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="RBS: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtBowelMove" />
+
+            <TextView
+                android:id="@+id/txtRbs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdRbs"
+                app:layout_constraintTop_toBottomOf="@+id/txtBowelMove" />
+
+            <TextView
+                android:id="@+id/hdBedScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Bed Score: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtRbs" />
+
+            <TextView
+                android:id="@+id/txtBedScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdBedScore"
+                app:layout_constraintTop_toBottomOf="@+id/txtRbs" />
+
+            <TextView
+                android:id="@+id/hdERenal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/btn_activity4"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:text="E. Renal"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.875"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtBedScore" />
+
+            <TextView
+                android:id="@+id/hdInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Input(cc/ml): "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdERenal" />
+
+            <TextView
+                android:id="@+id/txtInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdInput"
+                app:layout_constraintTop_toBottomOf="@+id/hdERenal" />
+
+            <TextView
+                android:id="@+id/hdUrine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Urine(cc/ml): "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtInput" />
+
+            <TextView
+                android:id="@+id/txtUrine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdUrine"
+                app:layout_constraintTop_toBottomOf="@+id/txtInput" />
+
+            <TextView
+                android:id="@+id/hdDrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Drain(cc/ml): "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtUrine" />
+
+            <TextView
+                android:id="@+id/txtDrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdDrain"
+                app:layout_constraintTop_toBottomOf="@+id/txtUrine" />
+
+            <TextView
+                android:id="@+id/hdAspirate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Aspirate(cc/ml): "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdDrain" />
+
+            <TextView
+                android:id="@+id/txtAspirate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdAspirate"
+                app:layout_constraintTop_toBottomOf="@+id/hdDrain" />
+
+            <TextView
+                android:id="@+id/hdFInfection"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/btn_activity4"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:text="F. Infection Status"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.875"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtAspirate" />
+
+            <TextView
+                android:id="@+id/hdFever"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Fever Spikes: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdFInfection" />
+
+            <TextView
+                android:id="@+id/txtFever"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdFever"
+                app:layout_constraintTop_toBottomOf="@+id/hdFInfection" />
+
+            <TextView
+                android:id="@+id/hdMaxTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Maximum Temperature(Celsius): "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtFever" />
+
+            <TextView
+                android:id="@+id/txtMaxTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdMaxTemp"
+                app:layout_constraintTop_toBottomOf="@+id/txtFever" />
+
+            <TextView
+                android:id="@+id/hdSbp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="SBP<100(mm Hg): "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdMaxTemp" />
+
+            <TextView
+                android:id="@+id/txtSbp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdSbp"
+                app:layout_constraintTop_toBottomOf="@+id/hdMaxTemp" />
+
+            <TextView
+                android:id="@+id/hdRr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="RR(/min): "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSbp" />
+
+            <TextView
+                android:id="@+id/txtRr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdRr"
+                app:layout_constraintTop_toBottomOf="@+id/txtSbp" />
+
+            <TextView
+                android:id="@+id/hdGcs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="GCS<13: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtRr" />
+
+            <TextView
+                android:id="@+id/txtGcs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdGcs"
+                app:layout_constraintTop_toBottomOf="@+id/txtRr" />
+
+            <TextView
+                android:id="@+id/hdTotalScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Total Score: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtGcs" />
+
+            <TextView
+                android:id="@+id/txtTotalScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdTotalScore"
+                app:layout_constraintTop_toBottomOf="@+id/txtGcs" />
+
+            <TextView
+                android:id="@+id/hdEtTube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="ET Tube/TT: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdTotalScore" />
+
+            <TextView
+                android:id="@+id/txtEtTube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdEtTube"
+                app:layout_constraintTop_toBottomOf="@+id/hdTotalScore" />
+
+            <TextView
+                android:id="@+id/hdFreka"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:text="Freka/RT: "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hdEtTube" />
+
+            <TextView
+                android:id="@+id/txtFreka"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:textColor="@color/grey_heading"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:text="@string/diagnosis_progress"
+                app:layout_constraintStart_toEndOf="@+id/hdFreka"
+                app:layout_constraintTop_toBottomOf="@+id/hdEtTube" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
+    <!--5-02-1994, lko-->
