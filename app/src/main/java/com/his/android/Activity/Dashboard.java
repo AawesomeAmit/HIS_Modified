@@ -35,6 +35,7 @@ import com.his.android.Fragment.InputVital;
 import com.his.android.Fragment.Intake;
 import com.his.android.Fragment.IntakeInput;
 import com.his.android.Fragment.IntakeOutputVitalRange;
+import com.his.android.Fragment.NeuroIcuDailyChart;
 import com.his.android.Fragment.NutritiAnalyzer;
 import com.his.android.Fragment.ObservationGraph;
 import com.his.android.Fragment.Output;
@@ -162,6 +163,7 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
             menu.findItem(R.id.nav_activity_movement).setVisible(false);
             menu.findItem(R.id.nav_progress_note).setVisible(false);
             menu.findItem(R.id.nav_observation).setVisible(false);
+            menu.findItem(R.id.nav_neuro).setVisible(false);
             menu.findItem(R.id.nav_calculator).setVisible(false);
             menu.findItem(R.id.nav_nutrition).setVisible(false);
             menu.findItem(R.id.nav_questionnaire).setVisible(false);
@@ -310,6 +312,9 @@ public class Dashboard extends AppCompatActivity implements NavigationView.OnNav
         } else if (id == R.id.nav_observation) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new ObservationGraph();
+        } else if (id == R.id.nav_neuro) {
+            spnConsultant.setVisibility(View.GONE);
+            fragment = new NeuroIcuDailyChart();
         } else if (id == R.id.nav_analysing) {
             spnConsultant.setVisibility(View.GONE);
             fragment = new CombinedGraph();

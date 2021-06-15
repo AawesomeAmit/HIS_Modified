@@ -20,6 +20,10 @@
             android:icon="@drawable/ic_observationgraph"
             android:title="@string/observation_graph" />
         <item
+            android:id="@+id/nav_neuro"
+            android:icon="@drawable/ic_observationgraph"
+            android:title="@string/neuro_icu_daily_chart" />
+        <item
             android:id="@+id/nav_analysing"
             android:icon="@drawable/ic_observationgraph"
             android:title="@string/analysing_graph" />

@@ -511,4 +511,6 @@
     <string name="diagnosis_progress">Diagnosis Progress :</string>
     <string name="a_cns">A. CNS</string>
     <string name="b_cvs">B. CVS</string>
+    <string name="sbp_100"><![CDATA[SBP<100(mm Hg):]]></string>
+    <string name="gcs_13"><![CDATA[GCS<13:]]></string>
 </resources>

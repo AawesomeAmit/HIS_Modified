@@ -17,7 +17,8 @@ public class NeuroIcuDailyChart extends BaseFragment {
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view=inflater.inflate(R.layout.fragment_neuro_icu_daily_chart, container, false);
+//        view=inflater.inflate(R.layout.fragment_neuro_icu_daily_chart, container, false);
+        view=inflater.inflate(R.layout.inner_neuro_icu_daily_chart, container, false);
         return view;
     }
 
