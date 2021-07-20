@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pr_result">
+        <item>No irregularity found</item>
+        <item>Suspected a little fast pulse</item>
+        <item>Suspected fast pulse</item>
+        <item>Suspected short run of fast pulse</item>
+        <item>Suspected a little slow pulse</item>
+        <item>Suspected slow pulse</item>
+        <item>Suspected occasional short pulse interval</item>
+        <item>Suspected irregular pulse interval</item>
+        <item>Suspected fast pulse with short pulse interval</item>
+        <item>Suspected slow pulse with short pulse interval</item><!-- 9 -->
+        <item>Suspected slow pulse with irregular pulse interval</item><!-- 0x0a -->
+        <item>Poor signal. Measure again</item><!-- 0xFF -->
+    </string-array>
+
+</resources>

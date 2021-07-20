@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.Api;
 import com.his.android.Activity.BP.Initial;
+import com.his.android.Activity.OxySmart.OxySmartActivity;
 import com.his.android.Activity.ViaOximeter.ViaOximeterScanActivity;
 import com.his.android.Adapter.HeadAdp;
 import com.his.android.Adapter.RecyclerTouchListener;
@@ -174,7 +175,7 @@ public class PreDashboard extends AppCompatActivity {
         });
         txtCovidRegistration.setOnClickListener(view -> startActivity(new Intent(PreDashboard.this, ChecklistCovidPatient.class)));
         txtSpo2.setOnClickListener(view -> {
-            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            /*int currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
                 if (!checkPermission()) {
                     requestPermission();
@@ -185,7 +186,8 @@ public class PreDashboard extends AppCompatActivity {
                         startActivity(new Intent(PreDashboard.this, ViaOximeterScanActivity.class));
                     }
                 }
-            }
+            }*/
+            startActivity(new Intent(PreDashboard.this, OxySmartActivity.class));
         });
         String head = "headList";
         GridLayoutManager mGridLayoutManager;

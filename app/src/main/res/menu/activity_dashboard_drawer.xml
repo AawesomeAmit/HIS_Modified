@@ -22,6 +22,7 @@
         <item
             android:id="@+id/nav_neuro"
             android:icon="@drawable/ic_observationgraph"
+            android:visible="false"
             android:title="@string/neuro_icu_daily_chart" />
         <item
             android:id="@+id/nav_analysing"

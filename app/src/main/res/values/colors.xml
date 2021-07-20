@@ -51,4 +51,10 @@
     <color name="darkPurpleSecond">#251A2B</color>
     <color name="orange_dashboard">#c77809</color>
     <color name="green_dashboard">#c9be00</color>
+    <color name="wavebackground">#e8e8e8</color>
+    <color name="data_temp">#898b0a</color>
+    <color name="gridviewbg">#fff</color>
+    <color name="data_spo2">#b939bb</color>
+    <color name="data_pr">#0a7b14</color>
+    <color name="data_pi">#898b0a</color>
 </resources>

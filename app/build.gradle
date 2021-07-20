@@ -7,8 +7,8 @@ android {
         applicationId "com.his.android"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 23
-        versionName "2.3"
+        versionCode 24
+        versionName "2.4"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -32,6 +32,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/CreativeHealth_pod.jar')
     implementation project(':medchecklib')
 //    implementation project(':libusbcamera')
     implementation 'com.android.support:multidex:1.0.3'
